@@ -1,0 +1,36 @@
+html {
+  box-sizing: border-box;
+  font-size: 16px;
+  color: $dk-grey;
+  font-family: $body-font;
+}
+
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+body, h1, h2, h3, h4, p, ol, ul {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #fff;
+}
+
+h1, h2, h3, h4 {
+  font-family: $heading-font;
+}
+
+// Icons
+.feather {
+  width: 24px;
+  height: 24px;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  vertical-align: middle;
+}
+

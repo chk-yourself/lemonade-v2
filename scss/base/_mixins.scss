@@ -1,0 +1,34 @@
+
+// Media queries
+@mixin xs { @media (min-width: #{$screen-xs-min}) {@content;} } // 425px Tiny devices
+@mixin sm { @media (min-width: #{$screen-sm-min}) {@content;} } // 576px Small devices
+@mixin md { @media (min-width: #{$screen-md-min}) {@content;} } // 768px Medium devices
+@mixin lg { @media (min-width: #{$screen-lg-min}) {@content;} } // 992px Large devices
+@mixin xl { @media (min-width: #{$screen-xl-min}) {@content;} } // 1200px Extra large devices
+
+/* Ex)
+.sample-padding-class {
+  
+  padding-bottom: 200%; // Default property, this will be applied to all screen sizes
+  color: #FFF;          // Unless overriden below
+  
+  @include sm {         // 576px window width and more
+    padding-bottom: 100%;
+    color: #000;
+  }
+  
+  @include md {         // 768px window width and more
+    padding-bottom: 50%;
+  }
+  
+  @include lg {         // 992px window width and more
+    padding-bottom: 10%;
+  }
+
+  @include xl {         // 1200px window width and more
+    padding-top: 20%;
+    padding-bottom: 0;
+    color: #1337;
+  }
+}
+*/

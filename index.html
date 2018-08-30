@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Oxygen:300,400,700" rel="stylesheet">
+  <link rel="stylesheet" href="scss/styles.css">
+</head>
+
+<body>
+
+  <div id="siteWrapper" class="site-wrapper">
+    <div class="sidebar__canvas" id="sidebarCanvas">
+      <div id="todoApp" class="todo-app">
+        <header class="todo-app__header">
+          <nav class="sidebar" id="sideNav">
+            <button type="button" class="sidebar__btn--icon sidebar__btn--toggle sidebar__btn--toggle-open" id="toggleOpenBtn" data-action="toggleMenu">
+              <i data-feather="menu"></i>
+            </button>
+            <div class="sidebar__menu-wrapper">
+              <button type="button" class="sidebar__btn--icon sidebar__btn--toggle" id="toggleCloseBtn" data-action="toggleMenu">
+                <i data-feather="x"></i>
+              </button>
+              <div class="header__logo header__logo--sm">Todo App</div>
+              <ul class="sidebar__menu accordion" id="sidebar__menu">
+                <li class="sidebar__item">
+                  <a class="sidebar__link is-active" href="#inbox">
+                    <i data-feather="inbox"></i>
+                    Inbox</a>
+                </li>
+                <li class="sidebar__item">
+                  <a class="sidebar__link" id="todayNavLink" href="#today">
+                    <i data-feather="star"></i>
+                    Today</a>
+                </li>
+              </ul>
+              <!--/ .sidebar__menu -->
+              <button id="openListFormBtn" type="button" class="btn btn--neutral sidebar__btn" data-action="openListForm">
+                <i data-feather="plus-circle"></i>Create List</button>
+            </div>
+            <!--/ .sidebar__menu-wrapper -->
+            <form id="searchForm" class="search-form">
+              <div class="form__form-group--inline search-form__form-group--inline">
+                <button id="searchBtn" type="submit" class="btn btn--icon form__btn form__btn--sm form__btn--neutral btn--inline" data-action="filterTodos">
+                  <i data-feather="search"></i>
+                </button>
+                <input id="searchInput" class="form__input form__input--inline search-form__input" type="text" placeholder="Search by tags..."
+                />
+              </div>
+            </form>
+          </nav>
+        </header>
+
+        <main class="todo-app__main" id="main">
+          <h1 class="todo-app__main-title"></h1>
+          <form id="addTodoForm" class="add-todo-form">
+            <div class="form__form-group--inline add-todo-form__form-group--inline">
+              <button id="addTodoBtn" type="submit" class="btn form__btn form__btn--sm form__btn--neutral cross-icon cross-icon--dk btn--inline"
+                data-action="addTodo"></button>
+              <input id="todoInput" class="form__input form__input--inline add-todo-form__input" type="text" placeholder="What would you like to do?"
+              />
+            </div>
+          </form>
+          <ul id="inbox" class="todo-list is-active-list" data-name="inbox">
+          </ul>
+          <ul id="filteredList" class="todo-list" data-name="filteredList">
+          </ul>
+          <ul id="today" class="todo-list" data-name="today">
+            </ul>
+
+          <div id="views" class="views">
+            <button type="button" class="btn btn--neutral form__btn views__btn is-selected" data-action="viewAll">All</button>
+            <button type="button" class="btn btn--neutral form__btn views__btn" data-action="viewActive">Active</button>
+            <button type="button" class="btn btn--neutral form__btn views__btn" data-action="viewCompleted">Done</button>
+          </div>
+          <button id="clearAllBtn" type="button" class="btn btn--neutral form__btn" data-action="clearAll">Clear All</button>
+        </main>
+        <!--/ todo-app__main-->
+
+        <div id="newListFormContainer" class="new-list-form__container">
+          <div id="newListFormWrapper" class="new-list-form__wrapper">
+            <button type="button" class="form__btn--icon new-list-form__btn--close" id="closeListFormBtn" data-action="closeListForm">
+              <i data-feather="x"></i>
+            </button>
+            <h2 class="form__title">Create new list</h2>
+            <form id="newListForm" class="form new-list-form">
+              <fieldset class="form__fieldset">
+                <label for="newListNameInput" class="label--text">List Name:</label>
+                <input id="newListNameInput" class="form__input form__input--inline new-list-name__input" type="text" />
+              </fieldset>
+              <fieldset class="form__fieldset form__fieldset--folder">
+                <p class="label--text">Folder:</p>
+                <input type="radio" id="folderNone" name="folder" value="null" checked />
+                <label class="form__label--folder" for="folderNone">None</label>
+                <input type="radio" name="folder" id="folderNew" value="new" />
+                <div class="form__form-group--inline new-list-form__form-group--inline">
+                  <button id="createFolderBtn" type="button" class="btn form__btn form__btn--sm form__btn--neutral cross-icon cross-icon--dk btn--inline"
+                    data-action="createFolder"></button>
+                  <input id="newFolderInput" class="form__input form__input--inline new-list-form__input" type="text" placeholder="Create new folder"
+                  />
+                </div>
+              </fieldset>
+              <button id="addListBtn" type="submit" class="btn btn--primary" data-action="addList">Create List</button>
+            </form>
+          </div>
+          <!--/ #newListFormWrapper-->
+        </div>
+        <!--/ #newListFormContainer-->
+
+        <div id="todoContent" class="todo-content clearfix">
+          <form id="editTodoForm" class="form edit-todo-form" data-index="">
+              <p class="todo-content__section-title">Due Date:</p>
+              <div class="edit-todo-form__input-wrapper" id="inputDueDateWrapper">
+                <i data-feather="calendar"></i>
+                <span class="due-date-text"></span>
+              <input class="form__input edit-todo-form__input--due-date" id="inputDueDate" type="date">
+              </div>
+              
+
+              <div class="dp-calendar clearfix" id="dpCalendar">
+                  <div class="dp-calendar__wrapper">
+                  <button type="button" class="dp-calendar__btn-prevnext dp-calendar__btn-prevnext--prev" id="btnSelectPrevMonth" data-action="selectPrevMonth"><i data-feather="chevron-left"></i></button>
+                  <div class="dp-calendar__month-picker" id="dpCalendarMonthPicker">
+                    <button type="button" class="dp-calendar__toggle-btn dp-calendar__toggle-btn--month" id="btnToggleMonthDropdown" data-action="toggleMonthDropdown"></button>
+                    <div class="dp-calendar__dropdown dp-calendar__dropdown--month" id="dpCalendarMonthDropdown" data-name="month">
+                      <input id="jan" type="radio" class="dp-calendar__radio" name="month" value="January">
+                      <label for="jan" class="dp-calendar__month">
+                        January
+                      </label>
+                      <input id="feb" type="radio" class="dp-calendar__radio" name="month" value="February">
+                      <label for="feb" class="dp-calendar__month">
+                        February
+                      </label>
+                      <input id="mar" type="radio" class="dp-calendar__radio" name="month" value="March">
+                      <label for="mar" class="dp-calendar__month">
+                        March
+                      </label>
+                      <input id="apr" type="radio" class="dp-calendar__radio" name="month" value="April">
+                      <label for="apr" class="dp-calendar__month">
+                        April
+                      </label>
+                      <input id="may" type="radio" class="dp-calendar__radio" name="month" value="May">
+                      <label for="may" class="dp-calendar__month">
+                        May
+                      </label>
+                      <input id="jun" type="radio" class="dp-calendar__radio" name="month" value="June">
+                      <label for="jun" class="dp-calendar__month">
+                        June
+                      </label>
+                      <input id="jul" type="radio" class="dp-calendar__radio" name="month" value="July">
+                      <label for="jul" class="dp-calendar__month">
+                        July
+                      </label>
+                      <input id="aug" type="radio" class="dp-calendar__radio" name="month" value="August">
+                      <label for="aug" class="dp-calendar__month">
+                        August
+                      </label>
+                      <input id="sep" type="radio" class="dp-calendar__radio" name="month" value="September">
+                      <label for="sep" class="dp-calendar__month">
+                        September
+                      </label>
+                      <input id="oct" type="radio" class="dp-calendar__radio" name="month" value="October">
+                      <label for="oct" class="dp-calendar__month">
+                        October
+                      </label>
+                      <input id="nov" type="radio" class="dp-calendar__radio" name="month" value="November">
+                      <label for="nov" class="dp-calendar__month">
+                        November
+                      </label>
+                      <input id="dec" type="radio" class="dp-calendar__radio" name="month" value="December">
+                      <label for="dec" class="dp-calendar__month">
+                        December
+                      </label>
+                    </div>
+                  </div>
+                  <!--/ #dpCalendarMonthPicker-->
+                  
+                  <button type="button" class="dp-calendar__btn-prevnext dp-calendar__btn-prevnext--next" id="btnSelectNextMonth" data-action="selectNextMonth"><i data-feather="chevron-right"></i></button>
+        
+        <div class="dp-calendar__year-picker" id="dpCalendarYearPicker">
+                          <button type="button" class="dp-calendar__toggle-btn dp-calendar__toggle-btn--year" id="btnToggleYearDropdown" data-action="toggleYearDropdown"></button>
+                          <div class="dp-calendar__dropdown dp-calendar__dropdown--year" id="dpCalendarYearDropdown" data-name="year">
+                          </div>
+                      </div> <!--/ #dpCalendarYearPicker-->
+        
+                  </div> <!--/ .dp-calendar__wrapper-->
+        
+                  <div class="dp-calendar__wrapper dp-calendar__weekday-headers" id="dpCalendarWeekdayHeaders">
+                    <div class="dp-calendar__weekday-header">S</div>
+                    <div class="dp-calendar__weekday-header">M</div>
+                    <div class="dp-calendar__weekday-header">T</div>
+                    <div class="dp-calendar__weekday-header">W</div>
+                    <div class="dp-calendar__weekday-header">T</div>
+                    <div class="dp-calendar__weekday-header">F</div>
+                    <div class="dp-calendar__weekday-header">S</div>
+                  </div>
+                  <!--/ #dpCalendarWeekdayHeaders-->
+        
+                  <div class="dp-calendar__wrapper">
+                    <div class="dp-calendar__day-picker" id="dpCalendarDayPicker">
+                    </div> <!--/ #dpCalendarDayPicker -->
+                  </div> <!--/ .dp-calendar__wrapper -->
+        
+                  <button class="btn btn--primary form__btn form__btn--rt dp-calendar__btn" type="button" id="btnSetDueDate" action="setDueDate">Done</button>
+                  <button class="btn btn--neutral form__btn form__btn--rt dp-calendar__btn dp-calendar__btn--clear" type="button" id="btnClearDueDate" action="clearDueDate">Clear</button>
+                </div>
+                <!--/ #datePickerCalendar-->
+            <p class="todo-content__section-title">Subtasks:</p>
+            <ul id="subtaskList" class="subtask-list">
+            </ul>
+            <div class="form__form-group--inline edit-todo-form__form-group--inline">
+              <button id="btnAddSubtask" type="submit" class="btn btn--neutral form__btn--sm form__btn--neutral btn--inline js-add-subtask-btn"
+                data-action="addSubtask">
+                <i data-feather="plus-circle"></i>
+              </button>
+              <input id="newSubtaskInput" class="form__input form__input--inline edit-todo-form__input--subtask" type="text" data-action="addSubtask"
+                placeholder="Add a subtask" />
+            </div>
+            <p class="todo-content__section-title">Note:</p>
+            <textarea id="todoItemNote" class="form__textarea todo-item__note" placeholder="Add a note..."></textarea>
+            <p class="todo-content__section-title">Tags:</p>
+            <div class="todo-content__tags form__form-group--inline edit-todo-form__form-group--inline" id="tagsContainer">
+              <button id="btnAddTag" type="button" class="btn btn--neutral form__btn--sm form__btn--neutral btn--inline" data-action="addTag">
+                <i data-feather="plus-circle"></i>
+              </button>
+              <input id="newTagInput" class="form__input form__input--inline edit-todo-form__input--add-tag" type="text" data-action="addTag"
+                placeholder="Add a tag" />
+            </div>
+            <!--/ #tagsContainer -->
+            
+            <div class="color-picker" id="colorPicker">
+              <input type="radio" class="color-picker__radio" name="tagColor" id="colorDefault" value="bg--default" checked/>
+              <label class="color-picker__swatch bg--default" for="colorDefault"></label>
+              <input type="radio" class="color-picker__radio" name="tagColor" value="bg--dk-orange" id="colorOrange" />
+              <label class="color-picker__swatch bg--dk-orange" for="colorOrange"></label>
+              <input type="radio" class="color-picker__radio" name="tagColor" value="bg--dk-pink" id="colorPink" />
+              <label class="color-picker__swatch bg--dk-pink" for="colorPink"></label>
+              <input type="radio" class="color-picker__radio" name="tagColor" value="bg--dk-blue" id="colorBlue">
+              <label class="color-picker__swatch bg--dk-blue" for="colorBlue"></label>
+              <input type="radio" class="color-picker__radio" name="tagColor" value="bg--dk-purple" id="colorPurple">
+              <label class="color-picker__swatch bg--dk-purple" for="colorPurple"></label>
+              <input type="radio" class="color-picker__radio" name="tagColor" id="colorGreen" value="bg--dk-green">
+              <label class="color-picker__swatch bg--dk-green" for="colorGreen"></label>
+            </div>
+            <!--/ #colorPicker-->
+            <button id="deleteTodoBtn" type="button" class="btn btn--neutral form__btn form__btn--rt" data-action="deleteTodo">
+              Delete Task</button>
+          </form>
+        </div>
+
+
+      </div>
+      <!-- /todoApp -->
+    </div>
+    <!-- /sidebarCanvas -->
+  </div>
+  <!-- /siteWrapper -->
+
+  <script src="js/vendors/feather.min.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/plugins.js"></script>
+</body>
+
+</html>

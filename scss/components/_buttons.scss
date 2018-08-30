@@ -1,0 +1,108 @@
+button {
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  &:active, &:focus {
+    outline: none;
+  }
+}
+
+.btn {
+  box-shadow: 0 2px 5px 1px rgba(0,0,0,0.3);
+  border: 1px solid transparent;
+  letter-spacing: .08em;
+  font-family: $heading-font;
+  box-sizing: border-box;
+  padding: 8px 16px;
+  font-size: 14px;
+}
+
+.btn:hover {
+  box-shadow: 0 4px 11px 0px rgba(0,0,0,0.375);
+}
+
+.btn--inline {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+}
+
+.cross-icon {
+  position: relative;
+  &::before {
+  content: '';
+  width: 16px;
+  height: 2px;
+  position: absolute;
+  top: calc(50% - (2px/2));
+  left: calc(50% - (16px/2));
+}
+  &::after {
+  content: '';
+  width: 2px;
+  height: 16px;
+  position: absolute;
+  left: calc(50% - (2px/2));
+  top: calc(50% - (16px/2));
+}
+  &--lt::before,
+  &--lt::after {
+    background-color: $white;
+  }
+  &--dk::before,
+  &--dk::after {
+    background-color: $dk-grey;
+  }
+}
+
+.form__btn--neutral {
+  color: $dk-grey;
+  background-color: transparent;
+  box-shadow: none;
+  &:hover, &:active {
+    box-shadow: none;
+  }
+}
+
+.btn--primary {
+  background: $primary-color; 
+  color: #fff;
+  font-weight: 500;
+  border-radius: 4px;
+}
+
+.btn--primary:hover, btn--primary:active {
+  background: saturate($primary-color, 20%);
+}
+
+.btn--neutral {
+  background: transparent;
+  color: rgba($dk-grey, 0.5);
+  font-weight: 700;
+  box-shadow: none;
+}
+
+.todo-content .btn--primary {
+  margin-right: 1rem;
+}
+.btn--link {
+  border: 1px solid transparent;
+  background: transparent;
+  color: lighten($dk-grey, 30%);
+  font-weight: 700;
+  box-shadow: none;
+}
+
+.btn--neutral:hover,
+.btn--neutral:active,
+.btn--link:hover, 
+.btn--link:active {
+  color: rgba(15.7, 19.2, 28.6, 1);
+  box-shadow: none;
+}
+
+.btn--icon {
+  position: relative;
+  text-align: center;
+}

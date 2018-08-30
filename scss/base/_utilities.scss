@@ -1,0 +1,68 @@
+// Clearfix
+.clearfix::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+// Background Colors
+.bg--primary {
+  background-color: $primary-color;
+    .close-icon::before,
+  .close-icon::after {
+    background-color: $white;
+  }
+}
+.bg--default {
+  background-color: $off-white;
+  color: $dk-grey;
+  .close-icon::before,
+  .close-icon::after {
+    background-color: $dk-grey;
+  }
+}
+.bg--dk-green {
+  background-color: $dk-green;
+  color: $white;
+  border-color: transparent;
+  .close-icon::before,
+  .close-icon::after {
+    background-color: $white;
+  }
+}
+.bg--dk-pink {
+  background-color: $dk-pink;
+  color: $white;
+  border-color: transparent;
+  .close-icon::before,
+  .close-icon::after {
+    background-color: $white;
+  }
+}
+.bg--dk-orange {
+  background-color: $dk-orange;
+  color: $white;
+  border-color: transparent;
+  .close-icon::before,
+  .close-icon::after {
+    background-color: $white;
+  }
+}
+.bg--dk-purple {
+  background-color: $dk-purple;
+  color: $white;
+  border-color: transparent;
+  .close-icon::before,
+  .close-icon::after {
+    background-color: $white;
+  }
+}
+.bg--dk-blue {
+  background-color: $dk-blue;
+  color: $white;
+  border-color: transparent;
+  .close-icon::before,
+  .close-icon::after {
+    background-color: $white;
+  }
+}

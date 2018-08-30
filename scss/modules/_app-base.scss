@@ -1,0 +1,91 @@
+// Site Wrapper
+.site-wrapper {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  &.show-nav {
+    @include md {
+      .tag-label {
+        display: none;
+      }
+      .tooltip__btn--tags {
+        display: inline-block;
+      }
+    }
+    @include lg {
+      .tag-label {
+        display: inline-block;
+      }
+      .tooltip__btn--tags {
+        display: none;
+      }
+    }
+    .sidebar__canvas {
+      -webkit-transform: translateX(575px);
+      transform: translateX(575px);
+      -webkit-transform: translate3d(575px, 0, 0);
+      transform: translate3d(575px, 0, 0);
+      @include sm {
+        -webkit-transform: translateX(250px);
+        transform: translateX(250px);
+        -webkit-transform: translate3d(250px, 0, 0);
+        transform: translate3d(250px, 0, 0);
+      }
+    }
+    .sidebar__btn--toggle-open {
+      visibility: hidden;
+    }
+    .todo-app {
+      width: calc(100% - 250px);
+    }
+  }
+}
+
+.sidebar__canvas {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  top: 0;
+  left: 0;
+  background-color: $off-white;
+  border-right: 1px solid $lt-grey;
+  -webkit-transform: translateX(0);
+  transform: translateX(0);
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  -webkit-transition: 300ms ease all;
+  transition: 300ms ease all;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  @include lg {
+    .sidebar__canvas {
+      //width: 250px;
+      //height: 100vh;
+      //position: fixed;
+      top: 0;
+      left: 0;
+      background-color: $off-white;
+      border-right: 1px solid $lt-grey;
+     // padding: 56px 24px 24px;
+    }
+  }
+}
+
+.todo-app {
+  background-color: $off-white;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 100%;
+  min-height: 100vh;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  padding: 16px;
+  @include md {
+    padding: 24px;
+  }
+  @include lg {
+    width: 100%;
+    margin: 0;
+    padding: 24px 32px 32px;
+    min-height: 100vh;
+  }
+}

@@ -1,0 +1,20 @@
+.todo-app__header {
+  width: 100%;
+  height: auto; // 88px
+  background-color: $off-white;
+  padding: 0 0 16px 0;
+  border-radius: 8px;
+}
+
+.header__logo {
+  font-size: 2.25rem;
+  color: $dk-grey;
+  font-family: $heading-font;
+  font-weight: 700;
+  width: 65%;
+}
+
+.header__logo--sm {
+  font-size: 24px;
+  margin-bottom: 32px;
+}

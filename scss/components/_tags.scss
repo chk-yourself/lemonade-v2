@@ -1,0 +1,91 @@
+.tag, .tooltip__btn--tags {
+  display: inline-block;
+  box-sizing: border-box;
+  border: 1px solid $lt-grey;
+  border-radius: 500px; // allows for pill-shape, without set width or height
+  color: $dk-grey;
+  background-color: $off-white;
+  width: auto;
+  font-size: 14px;
+  padding: 0.4em 0.8em;
+  margin: 2px 0.175em;
+  vertical-align: middle;
+  position: relative;
+  .close-icon::before,
+  .close-icon::after {
+    background-color: $dk-grey;
+  }
+  &.is-focused {
+    background-color: $primary-color;
+    color: #fff;
+    .close-icon {
+      background-color: transparent;
+      &::before, &::after {
+        background-color: $white;
+      }
+    }
+  }
+}
+
+.tags-wrapper {
+  position: absolute;
+  display: none;
+}
+
+.todo-item__tag-labels {
+  position: absolute;
+  top: 4px;
+  right: 48px;
+  display: block;
+    &.is-hidden {
+    display: none;
+  }
+}
+.tag-label, .tooltip__btn--tags {
+  font-size: 10px;
+  padding: 0 6px;
+  letter-spacing: .06em;
+  .close-icon {
+    display: none;
+  }
+}
+
+.tag-label {
+  display: none;
+  @include md {
+    display: inline-block;
+  }
+}
+
+.close-icon {
+  box-sizing: border-box;
+  position: relative;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  margin-left: 4px;
+  vertical-align: middle;
+  border: 1px solid transparent;
+  background-color: transparent;
+  cursor: pointer;
+  &::before, &::after {
+    content: '';
+    position: absolute;
+    height: 1px;
+    width: 10px;
+    top: calc(50% - .5px);
+    left: 2px;
+    background-color: $dk-grey;
+  }
+  &::before {
+    transform: rotate(45deg);
+  }
+  &::after {
+    transform: rotate(-45deg);
+  }
+}
+
+.is-hidden {
+  display: none;
+}

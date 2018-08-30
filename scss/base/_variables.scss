@@ -1,0 +1,30 @@
+// Colors
+$primary-color: #7CA0FF;
+$dk-grey: #404551;
+$lt-grey: #d6dee2;
+$white: #fff;
+$black: #000;
+$off-white: #f4f6f7;
+$green: #60efb8;
+$dk-green: darken($green, 30%);
+$pink: #ff7ca0;
+$dk-pink: darken($pink, 10%);
+$red: #f2002e;
+$yellow: #ffdb7c;
+$orange: #ff9a7c;
+$dk-orange: #ff5f2e;
+$purple: #9a7cff;
+$dk-purple: darken($purple, 10%);
+$blue: #63dcff;
+$dk-blue: #00a9da;
+
+// Fonts
+$heading-font: 'Oxygen', Helvetica, Arial, sans-serif;
+$body-font: 'Open Sans', Arial, sans-serif;
+
+// Screen size variables
+$screen-xs-min: 425px;  // Tiny phones
+$screen-sm-min: 576px;  // Small tablets and large smartphones (landscape view)
+$screen-md-min: 768px;  // Small tablets (portrait view)
+$screen-lg-min: 992px;  // Tablets and small desktops
+$screen-xl-min: 1200px; // Large tablets and desktops

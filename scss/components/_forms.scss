@@ -1,0 +1,188 @@
+.form {
+  position: relative;
+  width: 100%;
+}
+
+.form__input {
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  padding: 16px 8px;
+  font-size: 16px;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 100%;
+  color: $black;
+  outline: none;
+  height: 50px;
+  &::placeholder {
+    color: rgba($dk-grey, 0.6);
+  }
+}
+
+.form__textarea {
+  resize: none;
+  outline: none;
+  border: none;
+  margin-top: 0;
+  &::placeholder {
+    color: rgba($dk-grey, 0.6);
+  }
+}
+
+.form__form-group--inline {
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  border-radius: 4px;
+  font-size: 0; //Gets rid of extra whitespace between inline elements
+}
+
+.form__input--inline {
+  width: calc(100% - 30px); //Button width = 30px
+  display: inline-block;
+  margin: 0;
+  border: none;
+  vertical-align: middle;
+  background-color: transparent;
+}
+
+.form__btn {
+  cursor: pointer;
+  font-size: 14px;
+  vertical-align: middle;
+  margin-top:4px;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  font-weight: 700;
+  text-transform: uppercase;
+  box-sizing: border-box;
+  height: 43px;
+  text-align: center;
+  outline: none;
+  display: inline-block;
+}
+
+.form__btn--rt {
+  float: right;
+  margin-right: 16px;
+  .feather {
+    vertical-align: middle;
+  }
+}
+
+.form__btn--sm {
+  width: 30px;
+  height: 30px;
+  .feather {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+[type="checkbox"] {
+  position: absolute;
+  box-sizing: border-box;
+  vertical-align: middle;
+  opacity: 0;
+  cursor: pointer;
+}
+
+[type="checkbox"] + label {
+  box-sizing: border-box;
+  position: relative;
+  vertical-align: middle;
+  font-size: 20px;
+  line-height: 20px;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  border: 1px solid rgba($dk-grey, .5);
+  border-radius: 2px;
+}
+
+// Make clickable area larger for accessibility
+[type="checkbox"] + label:before {
+  content: '';
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  cursor: pointer;
+}
+
+label.todo-list__checkbox {
+  margin-right: 12px;
+}
+
+.subtask-list__checkbox + label {
+  margin-right: 12px;
+}
+
+.subtask-list__checkbox + label:before {
+  left: 0;
+}
+
+[type="checkbox"]:checked + label + .todo-item__title,
+[type="checkbox"]:checked + label + .edit-todo-form__input--edit-subtask {
+  color: lighten($dk-grey, 25%);
+  text-decoration: line-through;
+}
+
+// custom checkmark
+[type="checkbox"]:checked + label:after {
+  content: '';
+  width: 6px;
+  height: 11px;
+  border-bottom: 2px solid $primary-color;
+  border-right: 2px solid $primary-color;
+  transform: rotate(45deg);
+  position: absolute;
+  top: 2px;
+  left: 6px;
+  cursor: pointer;
+}
+
+[type="radio"]:checked + label {
+  &::after {
+  content: '';
+  font-size: 16px;
+width: 6px;
+height: 11px;
+border-bottom: 2px solid $white;
+border-right: 2px solid $white;
+transform: rotate(45deg);
+position: absolute;
+top: calc(50% - 5px);
+left: calc(50% - 3px);
+cursor: pointer;
+z-index: 3;
+  }
+  &.bg--default::after {
+    border-color: $dk-grey;
+  }
+}
+
+.label--text {
+  display: block;
+  font-family: $heading-font;
+  font-size: 14px;
+  letter-spacing: .03em;
+  font-weight: 700;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.form__fieldset {
+  border: none;
+  padding: 0;
+  &:not(:last-child) {
+  margin-bottom: 24px;
+  }
+}
+
+.form__label--block {
+  display: block;
+}
