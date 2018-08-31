@@ -1276,7 +1276,7 @@ label.todo-list__checkbox {
   display: block;
 }
 
-.edit-todo-form__input-wrapper {
+.edit-todo-form__due-date-wrapper {
   position: relative;
   border: 1px solid #d6dee2;
   border-radius: 5000px;
@@ -1288,24 +1288,24 @@ label.todo-list__checkbox {
   color: #404551;
 }
 
-.edit-todo-form__input-wrapper .due-date-text {
+.edit-todo-form__due-date-wrapper .due-date-text {
   line-height: 50px;
   color: #11a56c;
 }
 
-.edit-todo-form__input-wrapper.show-input .feather {
+.edit-todo-form__due-date-wrapper.show-input .feather {
   display: none;
 }
 
-.edit-todo-form__input-wrapper.show-input .due-date-text {
+.edit-todo-form__due-date-wrapper.show-input .due-date-text {
   display: none;
 }
 
-.edit-todo-form__input-wrapper.show-input .edit-todo-form__input--due-date {
+.edit-todo-form__due-date-wrapper.show-input .edit-todo-form__input--due-date {
   display: inline-block;
 }
 
-.edit-todo-form__input-wrapper .feather {
+.edit-todo-form__due-date-wrapper .feather {
   stroke: #404551;
   width: 20px;
   height: 20px;
@@ -1323,6 +1323,7 @@ label.todo-list__checkbox {
   position: absolute;
   top: 0;
   left: 0;
+  line-height: 50px;
   display: none;
 }
 

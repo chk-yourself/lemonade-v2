@@ -249,7 +249,7 @@
   display: block;
 }
 
-.edit-todo-form__input-wrapper {
+.edit-todo-form__due-date-wrapper {
   position: relative;
   border: 1px solid $lt-grey;
   border-radius: 5000px;
@@ -293,5 +293,6 @@
   position: absolute;
   top: 0;
   left: 0;
+  line-height: 50px;
   display: none;
 }

@@ -114,10 +114,10 @@
         <div id="todoContent" class="todo-content clearfix">
           <form id="editTodoForm" class="form edit-todo-form" data-index="">
               <p class="todo-content__section-title">Due Date:</p>
-              <div class="edit-todo-form__input-wrapper" id="inputDueDateWrapper">
+              <div class="edit-todo-form__due-date-wrapper" id="dueDateWrapper">
                 <i data-feather="calendar"></i>
                 <span class="due-date-text"></span>
-              <input class="form__input edit-todo-form__input--due-date" id="inputDueDate" type="date">
+              <input class="form__input edit-todo-form__input--due-date" id="inputDueDate" type="text" required pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
               </div>
               
 
