@@ -1174,23 +1174,6 @@ label.todo-list__checkbox {
   border-bottom: 1px solid #d6dee2;
 }
 
-.dp-calendar__btn-prevnext {
-  display: inline-block;
-  color: rgba(64, 69, 81, 0.3);
-  width: 16px;
-  vertical-align: top;
-  height: 32px;
-  line-height: 14px;
-  text-align: center;
-  padding: 0;
-}
-
-.dp-calendar__btn-prevnext .feather {
-  width: 16px;
-  height: 16px;
-  pointer-events: none;
-}
-
 .dp-calendar__day-picker {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1279,7 +1262,7 @@ label.todo-list__checkbox {
   display: inline-block;
   width: 180px;
   text-align: center;
-  height: 50px;
+  height: 100px;
   vertical-align: middle;
   color: #404551;
 }
@@ -1321,6 +1304,27 @@ label.todo-list__checkbox {
   left: 0;
   line-height: 50px;
   display: none;
+}
+
+.dp-calendar__day--prev-month,
+.dp-calendar__day--next-month {
+  color: rgba(64, 69, 81, 0.3);
+}
+
+.dp-calendar__btn-prevnext {
+  display: inline-block;
+  width: 16px;
+  vertical-align: top;
+  height: 32px;
+  line-height: 14px;
+  text-align: center;
+  padding: 0;
+}
+
+.dp-calendar__btn-prevnext .feather {
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
 }
 
 .todo-app__header {
