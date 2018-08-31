@@ -1689,7 +1689,7 @@
     $("#dpCalendar").classList.add("is-active");
   });
 
-  $("#inputDueDate").onchange = e => {
+  $("#inputDueDate").addEventListener('input', (e) => {
     const dateRegex = /[0-9]{2}-[0-9]{2}-[0-9]{4}/;
     if (e.target.value.match(dateRegex)) {
 
@@ -1758,7 +1758,7 @@
     }
   };
     
-  };
+  });
 
   $("#todayNavLink").addEventListener("click", filterTasksDueToday);
   $("#btnClearDueDate").addEventListener('click', (e) => {
