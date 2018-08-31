@@ -1176,7 +1176,7 @@ label.todo-list__checkbox {
 
 .dp-calendar__btn-prevnext {
   display: inline-block;
-  color: #404551;
+  color: rgba(64, 69, 81, 0.3);
   width: 16px;
   vertical-align: top;
   height: 32px;
@@ -1188,6 +1188,7 @@ label.todo-list__checkbox {
 .dp-calendar__btn-prevnext .feather {
   width: 16px;
   height: 16px;
+  pointer-events: none;
 }
 
 .dp-calendar__day-picker {
@@ -1215,11 +1216,6 @@ label.todo-list__checkbox {
   text-align: center;
   position: relative;
   color: #404551;
-}
-
-.dp-calendar__day--prev-month,
-.dp-calendar__day--next-month {
-  color: rgba(64, 69, 81, 0.3);
 }
 
 .dp-calendar__btn--select-day {

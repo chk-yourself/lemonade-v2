@@ -155,7 +155,7 @@
 
 .dp-calendar__btn-prevnext {
   display: inline-block;
-  color: $dk-grey;
+  color: rgba($dk-grey, 0.3);
   width: 16px;
   vertical-align: top;
   height: 32px;
@@ -165,6 +165,7 @@
   .feather {
     width: 16px;
     height: 16px;
+    pointer-events: none;
   }
 }
 
@@ -190,11 +191,6 @@
   text-align: center;
   position: relative;
   color: $dk-grey;
-}
-
-.dp-calendar__day--prev-month,
-.dp-calendar__day--next-month {
-  color: rgba($dk-grey, 0.3);
 }
 
 .dp-calendar__btn--select-day {
