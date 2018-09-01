@@ -122,8 +122,9 @@
               
 
               <div class="dp-calendar clearfix" id="dpCalendar">
-                  <div class="dp-calendar__wrapper">
+                  <div class="dp-calendar__wrapper dp-calendar__main-header">
                   <button type="button" class="dp-calendar__btn-prevnext dp-calendar__btn-prevnext--prev" id="btnSelectPrevMonth" data-action="selectPrevMonth"><i data-feather="chevron-left"></i></button>
+                  <div class="d-flex justify-content-center">
                   <div class="dp-calendar__month-picker" id="dpCalendarMonthPicker">
                     <button type="button" class="dp-calendar__toggle-btn dp-calendar__toggle-btn--month" id="btnToggleMonthDropdown" data-action="toggleMonthDropdown"></button>
                     <div class="dp-calendar__dropdown dp-calendar__dropdown--month" id="dpCalendarMonthDropdown" data-name="month">
@@ -178,14 +179,13 @@
                     </div>
                   </div>
                   <!--/ #dpCalendarMonthPicker-->
-                  
+                  <div class="dp-calendar__year-picker" id="dpCalendarYearPicker">
+                    <button type="button" class="dp-calendar__toggle-btn dp-calendar__toggle-btn--year" id="btnToggleYearDropdown" data-action="toggleYearDropdown"></button>
+                    <div class="dp-calendar__dropdown dp-calendar__dropdown--year" id="dpCalendarYearDropdown" data-name="year">
+                    </div>
+                </div> <!--/ #dpCalendarYearPicker-->
+                </div> <!--/ .d-flex -->
                   <button type="button" class="dp-calendar__btn-prevnext dp-calendar__btn-prevnext--next" id="btnSelectNextMonth" data-action="selectNextMonth"><i data-feather="chevron-right"></i></button>
-        
-        <div class="dp-calendar__year-picker" id="dpCalendarYearPicker">
-                          <button type="button" class="dp-calendar__toggle-btn dp-calendar__toggle-btn--year" id="btnToggleYearDropdown" data-action="toggleYearDropdown"></button>
-                          <div class="dp-calendar__dropdown dp-calendar__dropdown--year" id="dpCalendarYearDropdown" data-name="year">
-                          </div>
-                      </div> <!--/ #dpCalendarYearPicker-->
         
                   </div> <!--/ .dp-calendar__wrapper-->
         

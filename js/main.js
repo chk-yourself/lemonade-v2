@@ -1625,10 +1625,8 @@
     }
   });
 
-  // Select previous or next month on click
-  $all(".dp-calendar__btn-prevnext").forEach(x => {
-    x.addEventListener("click", (e) => {
-      let action = e.currentTarget.dataset.action;
+function selectPrevNext(e) {
+  let action = e.currentTarget.dataset.action;
       let month = $('input[name="month"]:checked').value;
       let year = $('input[name="year"]:checked').value;
       const dayBtn = $('.dp-calendar__btn--select-day.is-selected');
@@ -1679,8 +1677,9 @@
           $(`.dp-calendar__btn--select-day[value="${day}"][data-month="${prevMonth.name}"]`).classList.add('is-selected');
         }
       }
-    });
-  });
+}
+  // Select previous or next month on click
+  $all(".dp-calendar__btn-prevnext").forEach(x => x.addEventListener("click", selectPrevNext));
 
   $("#dpCalendarDayPicker").addEventListener("click", selectDay);
   $("#btnSetDueDate").addEventListener("click", setDueDate);
@@ -1757,7 +1756,6 @@
       });
     }
   };
-    
   });
 
   $("#todayNavLink").addEventListener("click", filterTasksDueToday);

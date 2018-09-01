@@ -1032,25 +1032,29 @@ label.todo-list__checkbox {
   display: block;
 }
 
+.dp-calendar__main-header {
+  padding: 8px 0;
+}
+
 .dp-calendar__month-picker {
   position: relative;
   display: inline-block;
-  width: 156px;
+  width: auto;
 }
 
 .dp-calendar__year-picker {
   position: relative;
   display: block;
-  width: 80px;
+  width: auto;
   font-size: 11px;
 }
 
 .dp-calendar__toggle-btn {
-  margin: 0 auto;
+  margin: 0;
   display: block;
   font-family: "Open Sans", Arial, sans-serif;
-  font-size: 14px;
-  padding: 8px 0;
+  font-size: 16px;
+  padding: 8px 4px;
   height: 32px;
   line-height: 14px;
   border: 1px solid transparent;
@@ -1071,6 +1075,7 @@ label.todo-list__checkbox {
 }
 
 .dp-calendar__toggle-btn.is-active {
+  padding-left: 16px;
   border-color: #d6dee2;
 }
 
@@ -1078,13 +1083,12 @@ label.todo-list__checkbox {
   display: inline-block;
 }
 
-.dp-calendar__toggle-btn--year {
-  text-align: right;
-  padding-right: 16px;
+.dp-calendar__toggle-btn--year.is-active {
+  padding-right: 27px;
 }
 
-.dp-calendar__toggle-btn--year .feather {
-  left: 4px;
+.dp-calendar__toggle-btn--month.is-active {
+  padding-right: 32px;
 }
 
 .dp-calendar__dropdown {
@@ -1100,10 +1104,19 @@ label.todo-list__checkbox {
   border: 1px solid #d6dee2;
   left: 0;
   z-index: 99;
+  text-align: left;
 }
 
 .dp-calendar__dropdown.is-active {
   display: block;
+}
+
+.dp-calendar__dropdown--month {
+  width: calc(100% + 47px);
+}
+
+.dp-calendar__dropdown--year {
+  width: 100%;
 }
 
 .dp-calendar__radio {
@@ -1120,7 +1133,7 @@ label.todo-list__checkbox {
 .dp-calendar__radio:checked + label::after {
   border-color: #7CA0FF;
   top: 8px;
-  left: 12px;
+  left: 10px;
 }
 
 .dp-calendar__radio:checked + label:hover {
@@ -1131,17 +1144,12 @@ label.todo-list__checkbox {
   border-color: #60efb8;
 }
 
-.dp-calendar__radio:checked + .dp-calendar__year::after {
-  left: 8px;
-}
-
 .dp-calendar__month,
 .dp-calendar__year {
   font-family: "Open Sans", Arial, sans-serif;
   display: block;
-  text-align: center;
   line-height: 1.6;
-  padding: 3px 0;
+  padding: 3px 0 3px 28px;
   position: relative;
 }
 
@@ -1149,11 +1157,6 @@ label.todo-list__checkbox {
 .dp-calendar__year:hover {
   background-color: #404551;
   color: #fff;
-}
-
-.dp-calendar__year {
-  text-align: right;
-  padding-right: 16px;
 }
 
 .dp-calendar__wrapper {
@@ -1217,6 +1220,7 @@ label.todo-list__checkbox {
 
 .dp-calendar__btn--select-day.is-selected {
   background-color: #60efb8;
+  font-weight: 700;
 }
 
 .dp-calendar__time-picker {
@@ -1318,18 +1322,26 @@ label.todo-list__checkbox {
 
 .dp-calendar__btn-prevnext {
   display: inline-block;
-  width: 16px;
+  width: 32px;
   vertical-align: top;
   height: 32px;
-  line-height: 14px;
+  line-height: 16px;
   text-align: center;
   padding: 0;
+  color: rgba(64, 69, 81, 0.3);
 }
 
 .dp-calendar__btn-prevnext .feather {
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
+}
+
+.dp-calendar__btn-prevnext svg {
   pointer-events: none;
+}
+
+.dp-calendar__btn-prevnext:hover, .dp-calendar__btn-prevnext:active {
+  color: #404551;
 }
 
 .todo-app__header {
@@ -1717,5 +1729,17 @@ input[name="folder"]:checked + label .feather {
 .bg--dk-blue .close-icon::before,
 .bg--dk-blue .close-icon::after {
   background-color: #fff;
+}
+
+.d-flex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.justify-content-center {
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 /*# sourceMappingURL=styles.css.map */
