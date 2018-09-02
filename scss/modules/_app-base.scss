@@ -3,6 +3,7 @@
   position: relative;
   width: 100vw;
   height: 100vh;
+  overflow-x: hidden;
   &.show-nav {
     @include md {
       .tag-label {
@@ -48,7 +49,6 @@
   top: 0;
   left: 0;
   background-color: $off-white;
-  border-right: 1px solid $lt-grey;
   -webkit-transform: translateX(0);
   transform: translateX(0);
   -webkit-transform: translate3d(0, 0, 0);
@@ -57,23 +57,11 @@
   transition: 300ms ease all;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  @include lg {
-    .sidebar__canvas {
-      //width: 250px;
-      //height: 100vh;
-      //position: fixed;
-      top: 0;
-      left: 0;
-      background-color: $off-white;
-      border-right: 1px solid $lt-grey;
-     // padding: 56px 24px 24px;
-    }
-  }
 }
 
 .todo-app {
   background-color: $off-white;
-  border-radius: 8px;
+  position: relative;
   width: 100%;
   max-width: 100%;
   min-height: 100vh;

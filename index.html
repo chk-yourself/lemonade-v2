@@ -81,9 +81,9 @@
         </main>
         <!--/ todo-app__main-->
 
-        <div id="newListFormContainer" class="new-list-form__container">
-          <div id="newListFormWrapper" class="new-list-form__wrapper">
-            <button type="button" class="form__btn--icon new-list-form__btn--close" id="closeListFormBtn" data-action="closeListForm">
+        <div id="newListFormContainer" class="new-list-form__container modal">
+          <div id="newListFormWrapper" class="new-list-form__wrapper modal__content">
+            <button type="button" class="form__btn--icon modal__btn--close modal__icon-btn--close" data-action="closeModal">
               <i data-feather="x"></i>
             </button>
             <h2 class="form__title">Create new list</h2>
@@ -104,7 +104,10 @@
                   />
                 </div>
               </fieldset>
-              <button id="addListBtn" type="submit" class="btn btn--primary" data-action="addList">Create List</button>
+              <button id="addListBtn" type="submit" class="btn btn--primary form__btn" data-action="addList">Create List</button>
+              <button type="button" class="btn btn--neutral form__btn modal__btn--close" id="closeListFormBtn" data-action="closeListForm">
+                Cancel
+              </button>
             </form>
           </div>
           <!--/ #newListFormWrapper-->

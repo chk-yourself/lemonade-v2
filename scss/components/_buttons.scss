@@ -5,6 +5,9 @@ button {
   &:active, &:focus {
     outline: none;
   }
+  .feather {
+    pointer-events: none;
+  }
 }
 
 .btn {

@@ -872,6 +872,10 @@
     formAddTodo.classList.add("is-hidden");
     state.activeList = null;
     state.filteredList = filteredArray;
+    if (document.documentElement.clientWidth < 768) {
+      console.log(document.documentElement.clientWidth);
+      $('#siteWrapper').classList.remove('show-nav');
+    }
   }
 
   function toggleMenu() {
@@ -1060,6 +1064,10 @@
           let id = e.target.getAttribute("href").slice(1);
           let listObj = todoLists.find(list => list.id === id);
           displayList(listObj);
+          if (document.documentElement.clientWidth < 768) {
+            console.log(document.documentElement.clientWidth);
+            $('#siteWrapper').classList.remove('show-nav');
+          }
         }
   }
 
@@ -1490,6 +1498,11 @@
     $("#dpCalendar").classList.remove("is-active");
   }
 
+  function closeModal(e) {
+    if (!e.target.classList.contains('modal__btn--close')) return;
+    e.currentTarget.classList.remove('is-active');
+  }
+
   // Event Listeners
 
   document.querySelectorAll(".sidebar__btn--toggle").forEach(btn => {
@@ -1600,15 +1613,18 @@
 
   $("#openListFormBtn").addEventListener("click", e => {
     $("#newListFormContainer").classList.add("is-active");
+    if (document.documentElement.clientWidth < 768) {
+      console.log(document.documentElement.clientWidth);
+      $('#siteWrapper').classList.remove('show-nav');
+    };
   });
   formNewList.addEventListener("submit", addList);
   inputNewFolder.addEventListener("click", e => {
     let newFolderRadio = $('input[id="folderNew"]');
     newFolderRadio.checked = true;
   });
-  $("#closeListFormBtn").addEventListener("click", e => {
-    $("#newListFormContainer").classList.remove("is-active");
-  });
+
+  $all('.modal').forEach(modal => modal.addEventListener('click', closeModal));
 
   $all(".dp-calendar__toggle-btn").forEach(btn => {
     btn.addEventListener("click", e => {
