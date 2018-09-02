@@ -1679,11 +1679,11 @@ function selectPrevNext(e) {
         
         if (nextMonth === "January") {
           let nextYear = +selectedYear + 1;
-          $(`input[value="${nextYear}"`).checked = true;
+          $(`input[value="${nextYear}"]`).checked = true;
           $("#btnToggleYearDropdown").innerHTML =
             nextYear + `<i data-feather="chevron-down"></i>`;
         }
-        $(`input[value="${nextMonth}"`).checked = true;
+        $(`input[value="${nextMonth}"]`).checked = true;
         $("#btnToggleMonthDropdown").innerHTML =
           nextMonth + `<i data-feather="chevron-down"></i>`;
         populateCalendarDays(nextMonth);
@@ -1695,11 +1695,11 @@ function selectPrevNext(e) {
       if (action === "selectPrevMonth") {
         if (prevMonth === "December") {
           let prevYear = +selectedYear - 1;
-          $(`input[value="${prevYear}"`).checked = true;
+          $(`input[value="${prevYear}"]`).checked = true;
           $("#btnToggleYearDropdown").innerHTML =
             prevYear + `<i data-feather="chevron-down"></i>`;
         }
-        $(`input[value="${prevMonth}"`).checked = true;
+        $(`input[value="${prevMonth}"]`).checked = true;
         $("#btnToggleMonthDropdown").innerHTML =
           prevMonth + `<i data-feather="chevron-down"></i>`;
         populateCalendarDays(prevMonth);
