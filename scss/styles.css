@@ -1362,6 +1362,7 @@ label.todo-list__checkbox {
   padding: 0;
   color: rgba(64, 69, 81, 0.3);
   cursor: pointer;
+  z-index: 3;
 }
 
 .dp-calendar__btn-prevnext .feather {

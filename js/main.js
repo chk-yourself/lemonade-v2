@@ -1470,7 +1470,7 @@
   }
 
   function initDpCalendar(e) {
-    
+
     const id = $("#dpCalendar").parentNode.dataset.id;
     console.log({id});
     const currentTask = state.activeList.tasks.find(task => task.id === id);
@@ -1662,7 +1662,7 @@
   });
 
 function selectPrevNext(e) {
-  const action = e.currentTarget.dataset.action;
+  const action = e.target.dataset.action;
   const selectedMonth = $('input[name="month"]:checked').value;
   const selectedYear = $('input[name="year"]:checked').value;
   const selectedMonthIndex = monthsArr.findIndex(x => x.name === selectedMonth);
