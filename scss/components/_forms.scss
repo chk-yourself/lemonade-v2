@@ -81,6 +81,17 @@
   }
 }
 
+.form__btn--neutral {
+  color: $dk-grey;
+  background-color: transparent;
+  box-shadow: none;
+  margin-right: 0;
+  margin-left: 0;
+  &:hover, &:active {
+    box-shadow: none;
+  }
+}
+
 [type="checkbox"] {
   position: absolute;
   box-sizing: border-box;

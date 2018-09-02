@@ -59,15 +59,6 @@ button {
   }
 }
 
-.form__btn--neutral {
-  color: $dk-grey;
-  background-color: transparent;
-  box-shadow: none;
-  &:hover, &:active {
-    box-shadow: none;
-  }
-}
-
 .btn--primary {
   background: $primary-color; 
   color: #fff;

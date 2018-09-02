@@ -129,18 +129,6 @@ button .feather {
   background-color: #404551;
 }
 
-.form__btn--neutral {
-  color: #404551;
-  background-color: transparent;
-  -webkit-box-shadow: none;
-          box-shadow: none;
-}
-
-.form__btn--neutral:hover, .form__btn--neutral:active {
-  -webkit-box-shadow: none;
-          box-shadow: none;
-}
-
 .btn--primary {
   background: #7CA0FF;
   color: #fff;
@@ -299,6 +287,20 @@ button .feather {
 .form__btn--sm .feather {
   width: 20px;
   height: 20px;
+}
+
+.form__btn--neutral {
+  color: #404551;
+  background-color: transparent;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.form__btn--neutral:hover, .form__btn--neutral:active {
+  -webkit-box-shadow: none;
+          box-shadow: none;
 }
 
 [type="checkbox"] {
@@ -1359,6 +1361,7 @@ label.todo-list__checkbox {
   text-align: center;
   padding: 0;
   color: rgba(64, 69, 81, 0.3);
+  cursor: pointer;
 }
 
 .dp-calendar__btn-prevnext .feather {
@@ -1372,6 +1375,10 @@ label.todo-list__checkbox {
 
 .dp-calendar__btn-prevnext:hover, .dp-calendar__btn-prevnext:active {
   color: #404551;
+}
+
+.dp-calendar__btn--reset {
+  margin-right: 0;
 }
 
 .todo-app__header {

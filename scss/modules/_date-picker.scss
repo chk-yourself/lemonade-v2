@@ -299,6 +299,7 @@
   text-align: center;
   padding: 0;
   color: rgba($dk-grey, 0.3);
+  cursor: pointer;
   .feather {
     width: 20px;
     height: 20px;
@@ -309,4 +310,8 @@
   &:hover, &:active {
     color: $dk-grey;
   }
+}
+
+.dp-calendar__btn--reset {
+  margin-right: 0;
 }

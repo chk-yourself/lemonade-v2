@@ -697,52 +697,18 @@
     const newTagInput = todoItem.querySelector("#newTagInput");
     todoItemTitle.value = currentTask.text;
     todoItemNote.value = currentTask.note;
+
     if (currentTask.dueDate !== null) {
-      let dueDate = new Date(currentTask.dueDate);
+      const dueDate = new Date(currentTask.dueDate);
       // month index starts at 0
-      let monthNum = dueDate.getMonth();
-      let monthText = monthsArr[monthNum].name;
-      let monthNumStr = monthNum + 1 > 9 ? monthNum + 1 : "0" + (monthNum + 1);
-      let month = monthsArr[monthNum];
-      let dayNum = dueDate.getDate();
-      let dayNumStr = dayNum > 9 ? dayNum : "0" + dayNum;
-      let year = dueDate.getFullYear();
-
-      $("#dueDateWrapper .due-date-text").textContent = `${monthText} ${dayNum}`;
-      $("#inputDueDate").value = `${monthNumStr}-${dayNumStr}-${year}`;
-
-      $(`input[value="${year}"`).checked = true;
-      $("#btnToggleYearDropdown").innerHTML =
-        year + `<i data-feather="chevron-down"></i>`;
-      $(`input[value="${monthText}"`).checked = true;
-      $("#btnToggleMonthDropdown").innerHTML =
-        monthText + `<i data-feather="chevron-down"></i>`;
-      populateCalendarDays(monthText);
-      $(`.dp-calendar__btn--select-day[value="${dayNum}"][data-month="${monthText}"]`).classList.add('is-selected');
+      const dueMonthIndex = dueDate.getMonth();
+      const dueMonth = monthsArr[dueMonthIndex].name;
+      const dueDay = dueDate.getDate();
+    $("#dueDateWrapper .due-date-text").textContent = `${dueMonth} ${dueDay}`;
     } else {
-      const now = new Date();
-      let currentMonthNum = now.getMonth();
-      let currentMonth = monthsArr[currentMonthNum];
-      let currentYear = now.getFullYear();
-      let currentDay = now.getDate();
-      updateDateInput('all', currentMonth.name, currentDay, currentYear);
-      
-      
-      // Set default month to current month
-      $(
-        `#dpCalendarMonthDropdown input[value="${currentMonth.name}"]`
-      ).checked = true;
-      $("#btnToggleMonthDropdown").innerHTML =
-        currentMonth.name + `<i data-feather="chevron-down"></i>`;
-    
-      // Sets default year to current year
-      $(`#dpCalendarYearDropdown input[value="${currentYear}"]`).checked = true;
-      $("#btnToggleYearDropdown").innerHTML =
-        `<i data-feather="chevron-down"></i>` + currentYear;
       $("#dueDateWrapper .due-date-text").textContent = "Set due date";
-      populateCalendarDays(currentMonth.name);
-      $(`.dp-calendar__btn--select-day[value="${currentDay}"][data-month="${currentMonth.name}"]`).classList.add('is-selected');
     }
+
     populateSubList(state.activeList.tasks, "subtasks", ulSubtasks, todoIndex);
     formEditTodo.dataset.index = todoIndex;
     formEditTodo.dataset.id = id;
@@ -1224,7 +1190,6 @@
       daysTotal: 31
     }
   ];
-  const weekdaysArr = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
   function populateCalendarYears() {
     let date = new Date();
@@ -1286,57 +1251,58 @@
 
   function selectMonth(e) {
     if (!e.target.classList.contains("dp-calendar__month")) return;
-    const currentMonth = $('input[name="month"]:checked').value;
+    const currentDueDate = $('#inputDueDate').value; // mm-dd-yyyy
+    const dueMonthIndex = +currentDueDate.slice(0, 2) - 1;
+    const dueMonth = monthsArr[dueMonthIndex].name;
+    const dueDay = +currentDueDate.slice(3, 5);
+    
+    const prevSelectedMonth = $('input[name="month"]:checked').value;
     const monthDropdown = $("#dpCalendarMonthDropdown");
     const btnToggleMonthDropdown = $("#btnToggleMonthDropdown");
     const radioId = e.target.getAttribute("for");
     const radio = $(`#${radioId}`);
     radio.checked = true;
     const selectedMonth = radio.value;
-    const selectedDate = $(".dp-calendar__btn--select-day.is-selected");
-    if (currentMonth !== selectedMonth) {
+    if (selectedMonth !== prevSelectedMonth) {
       btnToggleMonthDropdown.innerHTML =
-        selectedMonth + `<i data-feather="chevron-down"></i>`;
+      selectedMonth + `<i data-feather="chevron-down"></i>`;
       feather.replace();
       populateCalendarDays(selectedMonth);
-      updateDateInput("month", selectedMonth);
-      let monthIndex = monthsArr.findIndex((x) => x.name === selectedMonth);
-        const monthLastDay = monthsArr[monthIndex].daysTotal;
-      if (selectedDate.dataset.last === "true" || selectedDate.value > monthLastDay) {
-        $(`.dp-calendar__btn--select-day[value="${monthLastDay}"][data-month="${selectedMonth}"]`).classList.add('is-selected');
-        updateDateInput('day', monthLastDay);
-      } else {
-        $(`.dp-calendar__btn--select-day[value="${selectedDate.value}"][data-month="${selectedMonth}"]`).classList.add('is-selected');
+      
+      if (selectedMonth === dueMonth) {
+        $(`.dp-calendar__btn--select-day[value="${dueDay}"][data-month="${selectedMonth}"]`).classList.add('is-selected');
       };
-    }
+    };
     btnToggleMonthDropdown.classList.remove("is-active");
     monthDropdown.classList.remove("is-active");
   }
 
   function selectYear(e) {
     if (!e.target.classList.contains("dp-calendar__year")) return;
-    const currentYear = $('input[name="year"]:checked').value;
+
+    const currentDueDate = $('#inputDueDate').value; // mm-dd-yyyy
+    const dueMonthIndex = +currentDueDate.slice(0, 2) - 1;
+    const dueMonth = monthsArr[dueMonthIndex].name;
+    const dueDay = +currentDueDate.slice(3, 5);
+    const dueYear = currentDueDate.slice(6);
+
+    const prevSelectedYear = $('input[name="year"]:checked').value;
     const btnToggleYearDropdown = $("#btnToggleYearDropdown");
     const yearDropdown = $("#dpCalendarYearDropdown");
     const radioId = e.target.getAttribute("for");
     const radio = $(`#${radioId}`);
     radio.checked = true;
     const selectedYear = radio.value;
-    const selectedDate = $(".dp-calendar__btn--select-day.is-selected");
-    if (currentYear !== selectedYear) {
+
+    if (selectedYear !== prevSelectedYear) {
       btnToggleYearDropdown.innerHTML =
         `<i data-feather="chevron-down"></i>` + selectedYear;
       feather.replace();
-      const selectedMonth = $('input[name="month"]:checked').value;
-      populateCalendarDays(selectedMonth);
-      updateDateInput("year", selectedYear);
+      populateCalendarDays(dueMonth);
+
       // Length of February depends on leap year
-      if (selectedMonth === "February") {
-        const monthLastDay = monthsArr[1].daysTotal;
-        $(`.dp-calendar__btn--select-day[value="${monthLastDay}"][data-month="${selectedMonth}"]`).classList.add('is-selected');
-        updateDateInput('day', monthLastDay);
-      } else {
-        $(`.dp-calendar__btn--select-day[value="${selectedDate.value}"][data-month="${selectedMonth}"]`).classList.add('is-selected');
+      if (selectedYear === dueYear) {
+        $(`.dp-calendar__btn--select-day[value="${dueDay}"][data-month="${dueMonth}"]`).classList.add('is-selected');
       };
     }
     btnToggleYearDropdown.classList.remove("is-active");
@@ -1353,7 +1319,6 @@
     const month = monthsArr[monthIndex];
     const monthStartingDate = new Date(year, monthIndex, 1);
     const monthStartingDayNum = monthStartingDate.getDay();
-    const monthStartingDay = weekdaysArr[monthStartingDayNum];
     const prevMonth =
       monthIndex !== 0 ? monthsArr[monthIndex - 1] : monthsArr[11];
     const nextMonth =
@@ -1461,24 +1426,25 @@
         x.classList.remove("is-selected");
       }
     });
-    let selectedDay = el.value;
-    updateDateInput("day", selectedDay);
+    const selectedDay = el.value;
+    const selectedMonth = el.dataset.month;
+    const selectedYear = el.dataset.year;
+    updateDateInput("all", selectedMonth, selectedDay, selectedYear);
 
-    const month = el.dataset.month;
-    const year = el.dataset.year;
 
-    if (el.classList.contains("dp-calendar__btn--prev-month")) {
-      updateDateInput("month", month);
-      if (month === "December") {
-        updateDateInput("year", year);
-      }
-    }
-    if (el.classList.contains("dp-calendar__btn--next-month")) {
-      updateDateInput("month", month);
-      if (month === "January") {
-        updateDateInput("year", year);
-      }
-    }
+    if (el.classList.contains("dp-calendar__btn--prev-month") || el.classList.contains("dp-calendar__btn--next-month")) {
+      if ((el.classList.contains('dp-calendar__btn--prev-month') && selectedMonth === "December") || (el.classList.contains('dp-calendar__btn--next-month') && selectedMonth === "January")) {
+        $(`input[name="year"][value="${selectedYear}"]`).checked = true;
+        $("#btnToggleYearDropdown").innerHTML =
+            selectedYear + `<i data-feather="chevron-down"></i>`;
+      };
+
+      $(`input[name="month"][value="${selectedMonth}"]`).checked = true;
+      btnToggleMonthDropdown.innerHTML =
+      selectedMonth + `<i data-feather="chevron-down"></i>`;
+      populateCalendarDays(selectedMonth);
+      $(`.dp-calendar__btn--select-day[value="${selectedDay}"][data-month="${selectedMonth}"]`).classList.add('is-selected');
+    };
   }
 
   function setDueDate(e) {
@@ -1502,6 +1468,60 @@
     if (!e.target.classList.contains('modal__btn--close')) return;
     e.currentTarget.classList.remove('is-active');
   }
+
+  function initDpCalendar(e) {
+    
+    const id = $("#dpCalendar").parentNode.dataset.id;
+    console.log({id});
+    const currentTask = state.activeList.tasks.find(task => task.id === id);
+    console.log({currentTask});
+    
+    if (currentTask.dueDate !== null) {
+    const dueDate = new Date(currentTask.dueDate);
+    console.log({dueDate});
+      // month index starts at 0
+    const dueMonthIndex = dueDate.getMonth();
+    const dueMonth = monthsArr[dueMonthIndex].name;
+    const dueDay = dueDate.getDate();
+    const dueYear = dueDate.getFullYear();
+
+    updateDateInput('all', dueMonth, dueDay, dueYear);
+
+    $(`input[name="year"][value="${dueYear}"]`).checked = true;
+    $("#btnToggleYearDropdown").innerHTML =
+        dueYear + `<i data-feather="chevron-down"></i>`;
+      $(`input[name="month"][value="${dueMonth}"]`).checked = true;
+      $("#btnToggleMonthDropdown").innerHTML =
+        dueMonth + `<i data-feather="chevron-down"></i>`;
+      populateCalendarDays(dueMonth);
+      $(`.dp-calendar__btn--select-day[value="${dueDay}"][data-month="${dueMonth}"]`).classList.add('is-selected');
+
+      $("#dueDateWrapper .due-date-text").textContent = `${dueMonth} ${dueDay}`;
+    } else {
+      const now = new Date();
+      let currentMonthNum = now.getMonth();
+      let currentMonth = monthsArr[currentMonthNum];
+      let currentYear = now.getFullYear();
+      let currentDay = now.getDate();
+      updateDateInput('all', currentMonth.name, currentDay, currentYear);
+      
+      // Set default month to current month
+      $(
+        `#dpCalendarMonthDropdown input[value="${currentMonth.name}"]`
+      ).checked = true;
+      $("#btnToggleMonthDropdown").innerHTML =
+        currentMonth.name + `<i data-feather="chevron-down"></i>`;
+    
+      // Sets default year to current year
+      $(`#dpCalendarYearDropdown input[value="${currentYear}"]`).checked = true;
+      $("#btnToggleYearDropdown").innerHTML =
+        `<i data-feather="chevron-down"></i>` + currentYear;
+      $("#dueDateWrapper .due-date-text").textContent = "Set due date";
+      populateCalendarDays(currentMonth.name);
+      $(`.dp-calendar__btn--select-day[value="${currentDay}"][data-month="${currentMonth.name}"]`).classList.add('is-selected');
+    }
+  }
+
 
   // Event Listeners
 
@@ -1642,67 +1662,65 @@
   });
 
 function selectPrevNext(e) {
-  let action = e.currentTarget.dataset.action;
-      let month = $('input[name="month"]:checked').value;
-      let year = $('input[name="year"]:checked').value;
-      const dayBtn = $('.dp-calendar__btn--select-day.is-selected');
-      const day = dayBtn.value;
-      let monthIndex = monthsArr.findIndex(x => x.name === month);
-      let prevMonth =
-        monthIndex !== 0 ? monthsArr[monthIndex - 1] : monthsArr[11];
-      let nextMonth =
-        monthIndex !== 11 ? monthsArr[monthIndex + 1] : monthsArr[0];
+  const action = e.currentTarget.dataset.action;
+  const selectedMonth = $('input[name="month"]:checked').value;
+  const selectedYear = $('input[name="year"]:checked').value;
+  const selectedMonthIndex = monthsArr.findIndex(x => x.name === selectedMonth);
+  const prevMonth = selectedMonthIndex !== 0 ? monthsArr[selectedMonthIndex - 1].name : "December";
+  const nextMonth = selectedMonthIndex !== 11 ? monthsArr[selectedMonthIndex + 1].name : "January";
+  const currentDueDate = $('#inputDueDate').value; // mm-dd-yyyy
+  const dueMonthIndex = +currentDueDate.slice(0, 2) - 1;
+  const dueMonth = monthsArr[dueMonthIndex].name;
+  const dueDay = +currentDueDate.slice(3, 5);
+  const dueYear = currentDueDate.slice(6);
+  console.log({dueDay});
+
       if (action === "selectNextMonth") {
-        if (nextMonth.name === "January") {
-          let nextYear = +year + 1;
+        
+        if (nextMonth === "January") {
+          let nextYear = +selectedYear + 1;
           $(`input[value="${nextYear}"`).checked = true;
-          updateDateInput('year', nextYear);
           $("#btnToggleYearDropdown").innerHTML =
             nextYear + `<i data-feather="chevron-down"></i>`;
         }
-        $(`input[value="${nextMonth.name}"`).checked = true;
-        updateDateInput('month', nextMonth.name);
+        $(`input[value="${nextMonth}"`).checked = true;
         $("#btnToggleMonthDropdown").innerHTML =
-          nextMonth.name + `<i data-feather="chevron-down"></i>`;
-        populateCalendarDays(nextMonth.name);
-        if (dayBtn.dataset.last === "true" || day > nextMonth.daysTotal) {
-          $(`.dp-calendar__btn--select-day[value="${nextMonth.daysTotal}"][data-month="${nextMonth.name}"]`).classList.add('is-selected');
-          updateDateInput('day', nextMonth.daysTotal);
-        } else {
-          $(`.dp-calendar__btn--select-day[value="${day}"][data-month="${nextMonth.name}"]`).classList.add('is-selected');
-        }
-
+          nextMonth + `<i data-feather="chevron-down"></i>`;
+        populateCalendarDays(nextMonth);
+        if (nextMonth === dueMonth && selectedYear === dueYear) {
+          $(`.dp-calendar__btn--select-day[value="${dueDay}"][data-month="${dueMonth}"]`).classList.add('is-selected');
+        };
       }
+
       if (action === "selectPrevMonth") {
-        if (prevMonth.name === "December") {
-          let prevYear = +year - 1;
+        if (prevMonth === "December") {
+          let prevYear = +selectedYear - 1;
           $(`input[value="${prevYear}"`).checked = true;
-          updateDateInput('year', prevYear);
           $("#btnToggleYearDropdown").innerHTML =
             prevYear + `<i data-feather="chevron-down"></i>`;
         }
-        $(`input[value="${prevMonth.name}"`).checked = true;
-        updateDateInput('month', prevMonth.name);
+        $(`input[value="${prevMonth}"`).checked = true;
         $("#btnToggleMonthDropdown").innerHTML =
-          prevMonth.name + `<i data-feather="chevron-down"></i>`;
-        populateCalendarDays(prevMonth.name);
-        if (dayBtn.dataset.last === "true" || day > prevMonth.daysTotal) {
-          $(`.dp-calendar__btn--select-day[value="${prevMonth.daysTotal}"][data-month="${prevMonth.name}"]`).classList.add('is-selected');
-          updateDateInput('day', prevMonth.daysTotal);
-        } else {
-          $(`.dp-calendar__btn--select-day[value="${day}"][data-month="${prevMonth.name}"]`).classList.add('is-selected');
-        }
-      }
+          prevMonth + `<i data-feather="chevron-down"></i>`;
+        populateCalendarDays(prevMonth);
+        if (prevMonth === dueMonth && selectedYear === dueYear) {
+          console.log({selectedYear});
+          $(`.dp-calendar__btn--select-day[value="${dueDay}"][data-month="${dueMonth}"]`).classList.add('is-selected');
+        };
+      };
 }
   // Select previous or next month on click
   $all(".dp-calendar__btn-prevnext").forEach(x => x.addEventListener("click", selectPrevNext));
 
   $("#dpCalendarDayPicker").addEventListener("click", selectDay);
   $("#btnSetDueDate").addEventListener("click", setDueDate);
-  $("#dueDateWrapper").addEventListener("click", e => {
+  
+  $("#dueDateWrapper").addEventListener("click", (e) => {
+    initDpCalendar(e);
     e.currentTarget.classList.add("show-input");
     $("#dpCalendar").classList.add("is-active");
   });
+
 
   $("#inputDueDate").addEventListener('input', (e) => {
     const dateRegex = /[0-9]{2}-[0-9]{2}-[0-9]{4}/;
@@ -1781,6 +1799,11 @@ function selectPrevNext(e) {
     currentTask.dueDate = null;
     localStorage.setItem("todoLists", JSON.stringify(todoLists));
     $("#dueDateWrapper .due-date-text").textContent = 'Set due date';
+    $("#dueDateWrapper").classList.remove("show-input");
+    $("#dpCalendar").classList.remove("is-active");
+  });
+
+  $('#btnResetDueDate').addEventListener('click', (e) => {
     $("#dueDateWrapper").classList.remove("show-input");
     $("#dpCalendar").classList.remove("is-active");
   });
