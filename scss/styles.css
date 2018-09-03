@@ -149,7 +149,7 @@ button .feather {
 }
 
 .todo-content .btn--primary {
-  margin-right: 1rem;
+  margin-right: 11px;
 }
 
 .btn--link {
@@ -689,14 +689,35 @@ label.todo-list__checkbox {
   display: none;
 }
 
-.tag-label, .tooltip__btn--tags {
+.tag-label,
+.tooltip__btn--tags {
   font-size: 10px;
   padding: 0 6px;
   letter-spacing: .06em;
 }
 
-.tag-label .close-icon, .tooltip__btn--tags .close-icon {
+.tag-label .close-icon,
+.tooltip__btn--tags .close-icon {
   display: none;
+}
+
+.label--due-date {
+  position: absolute;
+  bottom: 4px;
+  left: 42px;
+  display: block;
+  font-size: 10px;
+  padding: 0 6px;
+  letter-spacing: .06em;
+  color: rgba(64, 69, 81, 0.4);
+}
+
+.label--today {
+  color: #f2002e;
+}
+
+.label--tomorrow {
+  color: #7CA0FF;
 }
 
 .tag-label {
@@ -1007,7 +1028,9 @@ label.todo-list__checkbox {
   display: inline-block;
   margin-bottom: 0;
   background-color: transparent;
-  height: auto;
+  height: 20px;
+  line-height: 20px;
+  vertical-align: middle;
   border-radius: 0;
   width: calc(100% - 69px);
   margin: 0 0 0 -4px;
@@ -1085,7 +1108,8 @@ label.todo-list__checkbox {
   margin: 0;
   display: block;
   font-family: "Open Sans", Arial, sans-serif;
-  font-size: 16px;
+  font-size: 14px;
+  font-weight: 700;
   padding: 8px 4px;
   height: 32px;
   line-height: 14px;
@@ -1095,6 +1119,10 @@ label.todo-list__checkbox {
   position: relative;
   cursor: pointer;
   width: 100%;
+}
+
+.dp-calendar__toggle-btn--month {
+  padding-right: 0;
 }
 
 .dp-calendar__toggle-btn .feather {
@@ -1230,23 +1258,23 @@ label.todo-list__checkbox {
 
 .dp-calendar__day {
   width: calc(100% / 7);
-  height: 32px;
+  height: 37px;
   text-align: center;
   position: relative;
   color: #404551;
 }
 
 .dp-calendar__btn--select-day {
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
   padding: 0;
   border-radius: 50%;
   text-align: center;
   position: absolute;
-  top: calc(50% - 12px);
-  left: calc(50% - 12px);
+  top: calc(50% - 16px);
+  left: calc(50% - 16px);
   vertical-align: middle;
-  line-height: 24px;
+  line-height: 33px;
   color: inherit;
 }
 
@@ -1278,13 +1306,14 @@ label.todo-list__checkbox {
 .dp-calendar__btn {
   display: inline-block;
   position: relative;
-  margin-top: 16px;
+  margin-top: 8px;
   width: auto;
   height: 36px;
 }
 
 .dp-calendar__btn--clear {
   margin-right: 0;
+  padding: 8px;
 }
 
 .edit-todo-form__label--due-date {
@@ -1341,6 +1370,7 @@ label.todo-list__checkbox {
   display: none;
   font-size: 16px;
   vertical-align: middle;
+  padding: 15px 0 14px;
 }
 
 .edit-todo-form__input--due-date:focus {

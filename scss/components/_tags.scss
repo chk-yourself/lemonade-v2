@@ -41,13 +41,33 @@
     display: none;
   }
 }
-.tag-label, .tooltip__btn--tags {
+.tag-label, 
+.tooltip__btn--tags {
   font-size: 10px;
   padding: 0 6px;
   letter-spacing: .06em;
   .close-icon {
     display: none;
   }
+}
+
+.label--due-date {
+  position: absolute;
+  bottom: 4px;
+  left: 42px;
+  display: block;
+  font-size: 10px;
+  padding: 0 6px;
+  letter-spacing: .06em;
+  color: rgba($dk-grey, 0.4);
+}
+
+.label--today {
+  color: $red;
+}
+
+.label--tomorrow {
+  color: $primary-color;
 }
 
 .tag-label {

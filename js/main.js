@@ -45,6 +45,77 @@
     filteredList: null
   };
 
+  let now = new Date();
+  let currentDate = now.getDate();
+  let currentYear = now.getFullYear();
+
+  const isLeapYear = year => {
+    return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+  };
+
+  const monthsArr = [
+    {
+      name: "January",
+      daysTotal: 31,
+      abbrev: "Jan"
+    },
+    {
+      name: "February",
+      daysTotal: isLeapYear(currentYear) ? 29 : 28,
+      abbrev: "Feb"
+    },
+    {
+      name: "March",
+      daysTotal: 31,
+      abbrev: "Mar"
+    },
+    {
+      name: "April",
+      daysTotal: 30,
+      abbrev: "Apr"
+    },
+    {
+      name: "May",
+      daysTotal: 31,
+      abbrev: "May"
+    },
+    {
+      name: "June",
+      daysTotal: 30,
+      abbrev: "Jun"
+    },
+    {
+      name: "July",
+      daysTotal: 31,
+      abbrev: "Jul"
+    },
+    {
+      name: "August",
+      daysTotal: 31,
+      abbrev: "Aug"
+    },
+    {
+      name: "September",
+      daysTotal: 30,
+      abbrev: "Sep"
+    },
+    {
+      name: "October",
+      daysTotal: 31,
+      abbrev: "Oct"
+    },
+    {
+      name: "November",
+      daysTotal: 30,
+      abbrev: "Nov"
+    },
+    {
+      name: "December",
+      daysTotal: 31,
+      abbrev: "Dec"
+    }
+  ];
+
   // Generates unique ID string, used for identifying todo items.
   const uniqueID = () => +Date.now() + Math.random().toString(36).slice(2);
 
@@ -217,6 +288,44 @@
       // Creates tag labels for each todo item, if any
       let id = itemsCollection[i].id;
       for (let j = 0; j < itemsArray.length; j++) {
+        if (id === itemsArray[j].id && itemsArray[j].dueDate !== null) {
+          let dueDate = new Date(itemsArray[j].dueDate);
+          console.log({dueDate});
+          let dueMonthIndex = dueDate.getMonth();
+          let dueMonthAbbrev = monthsArr[dueMonthIndex].abbrev;
+          let dueDay = dueDate.getDate();
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+          const currentDay = today.getDate();
+          const currentMonthIndex = today.getMonth();
+          const currentYear = today.getFullYear();
+          const nextYear = currentYear + 1;
+          const currentMonth = monthsArr[currentMonthIndex];
+          const nextMonthIndex = currentMonth.name !== "December" ? currentMonthIndex + 1 : 0;
+          if (currentMonth.name === 'February') {
+            currentMonth.daysTotal = isLeapYear(currentYear) ? 29 : 28;
+          }
+          if (currentDay === currentMonth.daysTotal) {
+
+          }
+          const tomorrow = (currentDay < currentMonth.daysTotal) ? new Date(currentYear, currentMonthIndex, currentDay + 1)
+          : (nextMonthIndex !== 0 ) ? new Date(currentYear, nextMonthIndex, 1) : new Date(nextYear, nextMonthIndex, 1);
+          tomorrow.setHours(0, 0, 0, 0);
+          
+          const dueDateLabel = createNode("span", {class: 'label--due-date'});
+         
+          if (dueDate.valueOf() === today.valueOf()) {
+            console.log('Today!');
+            dueDateLabel.textContent = "Today";
+            dueDateLabel.classList.add('label--today');
+          } else if (dueDate.valueOf() === tomorrow.valueOf()) {
+            dueDateLabel.textContent = "Tomorrow";
+            dueDateLabel.classList.add('label--tomorrow');
+          } else {
+            dueDateLabel.textContent = `${dueMonthAbbrev} ${dueDay}`;
+          }
+          itemsCollection[i].appendChild(dueDateLabel);
+        }
         if (id === itemsArray[j].id && itemsArray[j].tags.length > 0) {
           let tagLabels =
             $(".todo-item__tag-labels", itemsCollection[i]) ||
@@ -702,9 +811,9 @@
       const dueDate = new Date(currentTask.dueDate);
       // month index starts at 0
       const dueMonthIndex = dueDate.getMonth();
-      const dueMonth = monthsArr[dueMonthIndex].name;
+      const dueMonthAbbrev = monthsArr[dueMonthIndex].abbrev;
       const dueDay = dueDate.getDate();
-    $("#dueDateWrapper .due-date-text").textContent = `${dueMonth} ${dueDay}`;
+    $("#dueDateWrapper .due-date-text").textContent = `${dueMonthAbbrev} ${dueDay}`;
     } else {
       $("#dueDateWrapper .due-date-text").textContent = "Set due date";
     }
@@ -1132,65 +1241,6 @@
     state.filteredList = null;
   }
 
-  let now = new Date();
-  let currentDate = now.getDate();
-  let currentYear = now.getFullYear();
-
-  const isLeapYear = year => {
-    return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
-  };
-
-  const monthsArr = [
-    {
-      name: "January",
-      daysTotal: 31
-    },
-    {
-      name: "February",
-      daysTotal: isLeapYear(currentYear) ? 29 : 28
-    },
-    {
-      name: "March",
-      daysTotal: 31
-    },
-    {
-      name: "April",
-      daysTotal: 30
-    },
-    {
-      name: "May",
-      daysTotal: 31
-    },
-    {
-      name: "June",
-      daysTotal: 30
-    },
-    {
-      name: "July",
-      daysTotal: 31
-    },
-    {
-      name: "August",
-      daysTotal: 31
-    },
-    {
-      name: "September",
-      daysTotal: 30
-    },
-    {
-      name: "October",
-      daysTotal: 31
-    },
-    {
-      name: "November",
-      daysTotal: 30
-    },
-    {
-      name: "December",
-      daysTotal: 31
-    }
-  ];
-
   function populateCalendarYears() {
     let date = new Date();
     let year = date.getFullYear();
@@ -1223,7 +1273,7 @@
   // Sets default month to current month
 
   function updateDateInput(dateComponent, ...newValues) {
-    let currentDate = $("#inputDueDate").value; // `mm-dd-yyyy`
+    let currentDate = $("#inputDueDate").value; // `mm/dd/yy`
     let currentYear = currentDate.slice(6);
     let currentMonth = currentDate.slice(0, 2);
     let currentDay = currentDate.slice(3, 5);
@@ -1232,26 +1282,26 @@
         let monthNum = monthsArr.findIndex(x => x.name === newValues[0]);
         $("#inputDueDate").value = `${
           monthNum > 8 ? monthNum + 1 : "0" + (monthNum + 1)
-        }-${currentDay}-${currentYear}`;
+        }/${currentDay}/${currentYear}`;
         break;
       case "day":
-        $("#inputDueDate").value = `${currentMonth}-${
+        $("#inputDueDate").value = `${currentMonth}/${
           newValues[0] > 9 ? newValues[0] : "0" + newValues[0]
-        }-${currentYear}`;
+        }/${currentYear}`;
         break;
       case "year":
-        $("#inputDueDate").value = `${currentMonth}-${currentDay}-${newValues[0]}`;
+        $("#inputDueDate").value = `${currentMonth}/${currentDay}/${newValues[0].slice(2)}`;
         break;
       case "all":
       let monthIndex = monthsArr.findIndex(x => x.name === newValues[0]);
-        $("#inputDueDate").value = `${monthIndex > 8 ? monthIndex + 1 : "0" + (monthIndex + 1)}-${newValues[1] > 9 ? newValues[1] : "0" + newValues[1]}-${newValues[2]}`;
+        $("#inputDueDate").value = `${monthIndex > 8 ? monthIndex + 1 : "0" + (monthIndex + 1)}/${newValues[1] > 9 ? newValues[1] : "0" + newValues[1]}/${newValues[2].slice(2)}`;
         break;
     }
   }
 
   function selectMonth(e) {
     if (!e.target.classList.contains("dp-calendar__month")) return;
-    const currentDueDate = $('#inputDueDate').value; // mm-dd-yyyy
+    const currentDueDate = $('#inputDueDate').value; // mm-dd-yy
     const dueMonthIndex = +currentDueDate.slice(0, 2) - 1;
     const dueMonth = monthsArr[dueMonthIndex].name;
     const dueDay = +currentDueDate.slice(3, 5);
@@ -1280,11 +1330,11 @@
   function selectYear(e) {
     if (!e.target.classList.contains("dp-calendar__year")) return;
 
-    const currentDueDate = $('#inputDueDate').value; // mm-dd-yyyy
+    const currentDueDate = $('#inputDueDate').value; // mm-dd-yy
     const dueMonthIndex = +currentDueDate.slice(0, 2) - 1;
     const dueMonth = monthsArr[dueMonthIndex].name;
     const dueDay = +currentDueDate.slice(3, 5);
-    const dueYear = currentDueDate.slice(6);
+    const dueYear = '20' + currentDueDate.slice(6);
 
     const prevSelectedYear = $('input[name="year"]:checked').value;
     const btnToggleYearDropdown = $("#btnToggleYearDropdown");
@@ -1450,16 +1500,17 @@
   function setDueDate(e) {
     const id = $("#dpCalendar").parentNode.dataset.id;
     const currentTask = state.activeList.tasks.find(task => task.id === id);
-    const selectedDate = $(".dp-calendar__btn--select-day.is-selected");
-    const dayNum = +selectedDate.value;
-    const month = selectedDate.dataset.month;
-    const monthNum = monthsArr.findIndex(x => x.name === month);
-    const year = +selectedDate.dataset.year;
 
-    currentTask.dueDate = new Date(year, monthNum, dayNum);
+    const newDueDate = $("#inputDueDate").value; // `mm/dd/yy`
+    const dueYear = +('20' + newDueDate.slice(6));
+    const dueMonthIndex = +newDueDate.slice(0, 2) - 1;
+    const dueDay = +newDueDate.slice(3, 5);
+    const dueMonthAbbrev = monthsArr[dueMonthIndex].abbrev;
+
+    currentTask.dueDate = new Date(dueYear, dueMonthIndex, dueDay);
     localStorage.setItem("todoLists", JSON.stringify(todoLists));
 
-    $("#dueDateWrapper .due-date-text").textContent = `${month} ${dayNum}`;
+    $("#dueDateWrapper .due-date-text").textContent = `${dueMonthAbbrev} ${dueDay}`;
     $("#dueDateWrapper").classList.remove("show-input");
     $("#dpCalendar").classList.remove("is-active");
   }
@@ -1471,6 +1522,8 @@
 
   function initDpCalendar(e) {
 
+    if (e.currentTarget.classList.contains('show-input')) return;
+
     const id = $("#dpCalendar").parentNode.dataset.id;
     console.log({id});
     const currentTask = state.activeList.tasks.find(task => task.id === id);
@@ -1478,12 +1531,11 @@
     
     if (currentTask.dueDate !== null) {
     const dueDate = new Date(currentTask.dueDate);
-    console.log({dueDate});
       // month index starts at 0
     const dueMonthIndex = dueDate.getMonth();
     const dueMonth = monthsArr[dueMonthIndex].name;
     const dueDay = dueDate.getDate();
-    const dueYear = dueDate.getFullYear();
+    const dueYear = `${dueDate.getFullYear()}`;
 
     updateDateInput('all', dueMonth, dueDay, dueYear);
 
@@ -1496,12 +1548,11 @@
       populateCalendarDays(dueMonth);
       $(`.dp-calendar__btn--select-day[value="${dueDay}"][data-month="${dueMonth}"]`).classList.add('is-selected');
 
-      $("#dueDateWrapper .due-date-text").textContent = `${dueMonth} ${dueDay}`;
     } else {
       const now = new Date();
       let currentMonthNum = now.getMonth();
       let currentMonth = monthsArr[currentMonthNum];
-      let currentYear = now.getFullYear();
+      let currentYear = `${now.getFullYear()}`;
       let currentDay = now.getDate();
       updateDateInput('all', currentMonth.name, currentDay, currentYear);
       
@@ -1516,7 +1567,6 @@
       $(`#dpCalendarYearDropdown input[value="${currentYear}"]`).checked = true;
       $("#btnToggleYearDropdown").innerHTML =
         `<i data-feather="chevron-down"></i>` + currentYear;
-      $("#dueDateWrapper .due-date-text").textContent = "Set due date";
       populateCalendarDays(currentMonth.name);
       $(`.dp-calendar__btn--select-day[value="${currentDay}"][data-month="${currentMonth.name}"]`).classList.add('is-selected');
     }
@@ -1668,11 +1718,11 @@ function selectPrevNext(e) {
   const selectedMonthIndex = monthsArr.findIndex(x => x.name === selectedMonth);
   const prevMonth = selectedMonthIndex !== 0 ? monthsArr[selectedMonthIndex - 1].name : "December";
   const nextMonth = selectedMonthIndex !== 11 ? monthsArr[selectedMonthIndex + 1].name : "January";
-  const currentDueDate = $('#inputDueDate').value; // mm-dd-yyyy
+  const currentDueDate = $('#inputDueDate').value; // mm/dd/yy
   const dueMonthIndex = +currentDueDate.slice(0, 2) - 1;
   const dueMonth = monthsArr[dueMonthIndex].name;
   const dueDay = +currentDueDate.slice(3, 5);
-  const dueYear = currentDueDate.slice(6);
+  const dueYear = '20' + currentDueDate.slice(6);
   console.log({dueDay});
 
       if (action === "selectNextMonth") {
@@ -1722,39 +1772,49 @@ function selectPrevNext(e) {
   });
 
 
-  $("#inputDueDate").addEventListener('input', (e) => {
-    const dateRegex = /[0-9]{2}-[0-9]{2}-[0-9]{4}/;
-    if (e.target.value.match(dateRegex)) {
+  $("#inputDueDate").addEventListener('change', (e) => {
+    const dateRegex = /[01][0-9]\/[0-3][0-9]\/[12][0-9]/; // mm/dd/yy
 
-    const dateStr = $("#inputDueDate").value; // mm-dd-yyyy
+    if (!dateRegex.test(e.target.value)) {
+
+      // Returns value for month as a double digit
+      if (/^[0-9]\//.test(e.target.value)) {
+        let foo = e.target.value;
+        e.target.value = '0' + foo;
+      };
+
+      // Returns value for day as a double digit 
+      if (/^[01][0-9]\/[0-9]-/.test(e.target.value)) {
+        let foo = e.target.value;
+        e.target.value = foo.slice(0, 3) + '0' + foo.slice(3);
+      }
+    };
+
+    if (dateRegex.test(e.target.value)) {
+
+    const dateStr = $("#inputDueDate").value; // mm/dd/yy
     console.log({dateStr});
-    let day = +dateStr.slice(3, 5);
+
     let selectedDay = $(".dp-calendar__btn--select-day.is-selected");
-    let year = dateStr.slice(6);
+    let year = '20' + dateStr.slice(6);
+    console.log({year});
     let monthNum = +dateStr.slice(0, 2) - 1;
     let month = monthsArr[monthNum];
-    let lastDay = month.daysTotal;
-
-    console.log({monthNum});
-
-   
-    if (selectedDay.value > month.daysTotal) {
-      updateDateInput('day', month.daysTotal);
-    } else {
-      updateDateInput('day', selectedDay.value);
+    let monthText = month.name;
+    if (monthText === 'February') {
+      month.daysTotal = isLeapYear(+year) ? 29 : 28;
     }
 
+    let lastDay = month.daysTotal;
+    const day = +dateStr.slice(3, 5) > lastDay ? (
+      updateDateInput('day', lastDay),
+      lastDay
+    ) : +dateStr.slice(3, 5);
+
     console.log({day});
-
-    
-
-
-    
-    let monthText = month.name;
-
-
+  
     if ($(`input[name="year"]:checked`).value !== year) {
-      $(`input[value="${year}"`).checked = true;
+      $(`input[value="${year}"]`).checked = true;
       $("#btnToggleYearDropdown").innerHTML =
         year + `<i data-feather="chevron-down"></i>`;
       populateCalendarDays(monthText);
@@ -1762,21 +1822,13 @@ function selectPrevNext(e) {
     }
 
     if ($(`input[name="month"]:checked`).value !== monthText) {
-      $(`input[value="${monthText}"`).checked = true;
+      $(`input[value="${monthText}"]`).checked = true;
       $("#btnToggleMonthDropdown").innerHTML =
         monthText + `<i data-feather="chevron-down"></i>`;
-        if (monthText === 'February') {
-          month.daysTotal = isLeapYear(year) ? 29 : 28;
-        }
       populateCalendarDays(monthText);
-      if (selectedDay.dataset.last === "true") {
-        $(`.dp-calendar__btn--select-day[value="${month.daysTotal}"][data-month="${monthText}"]`).classList.add('is-selected');
-      } else {
-        $(`.dp-calendar__btn--select-day[value="${day}"][data-month="${monthText}"]`).classList.add('is-selected');
-      };
     }
 
-    if (selectedDay && selectedDay.value != day) {
+    if (selectedDay && selectedDay.value !== day) {
       $all(".dp-calendar__btn--select-day").forEach(x => {
         if (
           x.value == day &&
@@ -1817,6 +1869,6 @@ $all('.form__input--inline').forEach(x => {
   });
 });
 
-$('#todoItemNote').addEventListener("click", autoHeightResize, false);
+$('#todoItemNote').addEventListener("input", autoHeightResize, false);
 
 }());

@@ -46,7 +46,8 @@
   margin: 0;
   display: block;
   font-family: $body-font;
-  font-size: 16px;
+  font-size: 14px;
+  font-weight: 700;
   padding: 8px 4px;
   height: 32px;
   line-height: 14px;
@@ -56,6 +57,9 @@
   position: relative;
   cursor: pointer;
   width: 100%;
+  &--month {
+    padding-right: 0;
+  }
   .feather {
     display: none;
     width: 16px;
@@ -174,23 +178,23 @@
 
 .dp-calendar__day {
   width: calc(100% / 7);
-  height: 32px;
+  height: 37px;
   text-align: center;
   position: relative;
   color: $dk-grey;
 }
 
 .dp-calendar__btn--select-day {
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
   padding: 0;
   border-radius: 50%;
   text-align: center;
   position: absolute;
-  top: calc(50% - 12px);
-  left: calc(50% - 12px);
+  top: calc(50% - 16px);
+  left: calc(50% - 16px);
   vertical-align: middle;
-  line-height: 24px;
+  line-height: 33px;
   color: inherit;
   &.is-selected {
     background-color: $green;
@@ -221,11 +225,12 @@
 .dp-calendar__btn {
   display: inline-block;
   position: relative;
-  margin-top: 16px;
+  margin-top: 8px;
   width: auto;
   height: 36px;
   &--clear {
     margin-right: 0;
+    padding: 8px;
   }
 }
 
@@ -280,6 +285,7 @@
   display: none;
   font-size: 16px;
   vertical-align: middle;
+  padding: 15px 0 14px;
   &:focus {
     outline: none;
   }
