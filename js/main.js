@@ -290,7 +290,6 @@
       for (let j = 0; j < itemsArray.length; j++) {
         if (id === itemsArray[j].id && itemsArray[j].dueDate !== null) {
           let dueDate = new Date(itemsArray[j].dueDate);
-          console.log({dueDate});
           let dueMonthIndex = dueDate.getMonth();
           let dueMonthAbbrev = monthsArr[dueMonthIndex].abbrev;
           let dueDay = dueDate.getDate();
@@ -1501,14 +1500,53 @@
     const id = $("#dpCalendar").parentNode.dataset.id;
     const currentTask = state.activeList.tasks.find(task => task.id === id);
 
-    const newDueDate = $("#inputDueDate").value; // `mm/dd/yy`
-    const dueYear = +('20' + newDueDate.slice(6));
-    const dueMonthIndex = +newDueDate.slice(0, 2) - 1;
-    const dueDay = +newDueDate.slice(3, 5);
+    const dueDate = $("#inputDueDate").value; // `mm/dd/yy`
+    const dueYear = +('20' + dueDate.slice(6));
+    const dueMonthIndex = +dueDate.slice(0, 2) - 1;
+    const dueDay = +dueDate.slice(3, 5);
     const dueMonthAbbrev = monthsArr[dueMonthIndex].abbrev;
 
-    currentTask.dueDate = new Date(dueYear, dueMonthIndex, dueDay);
+    const newDueDate = new Date(dueYear, dueMonthIndex, dueDay);
+    
+    if (new Date(currentTask.dueDate).valueOf() !== newDueDate.valueOf()) {
+    currentTask.dueDate = newDueDate;
     localStorage.setItem("todoLists", JSON.stringify(todoLists));
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const currentDay = today.getDate();
+    const currentMonthIndex = today.getMonth();
+    const currentYear = today.getFullYear();
+    const nextYear = currentYear + 1;
+    const currentMonth = monthsArr[currentMonthIndex];
+    const nextMonthIndex = currentMonth.name !== "December" ? currentMonthIndex + 1 : 0;
+    
+    if (currentMonth.name === 'February') {
+      currentMonth.daysTotal = isLeapYear(currentYear) ? 29 : 28;
+    }
+   
+    const tomorrow = (currentDay < currentMonth.daysTotal) ? new Date(currentYear, currentMonthIndex, currentDay + 1)
+    : (nextMonthIndex !== 0 ) ? new Date(currentYear, nextMonthIndex, 1) : new Date(nextYear, nextMonthIndex, 1);
+    tomorrow.setHours(0, 0, 0, 0);
+    
+    const todoItem = $(`#${id}`);
+    const dueDateLabel = todoItem.contains($('.label--due-date')) ? $('.label--due-date', todoItem) : createNode("span", {class: 'label--due-date'});
+   
+    if (newDueDate.valueOf() === today.valueOf()) {
+      dueDateLabel.textContent = "Today";
+      dueDateLabel.classList.add('label--today');
+    } else if (newDueDate.valueOf() === tomorrow.valueOf()) {
+      dueDateLabel.textContent = "Tomorrow";
+      dueDateLabel.classList.add('label--tomorrow');
+    } else {
+      dueDateLabel.textContent = `${dueMonthAbbrev} ${dueDay}`;
+    };
+
+    if (!todoItem.contains($('.label--due-date'))) {
+      todoItem.appendChild(dueDateLabel);
+    };
+
+  }
 
     $("#dueDateWrapper .due-date-text").textContent = `${dueMonthAbbrev} ${dueDay}`;
     $("#dueDateWrapper").classList.remove("show-input");
