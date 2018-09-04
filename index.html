@@ -43,15 +43,15 @@
                 <i data-feather="plus-circle"></i>Create List</button>
             </div>
             <!--/ .sidebar__menu-wrapper -->
+            <div id="searchBar" class="search-bar">
             <form id="searchForm" class="search-form">
-              <div class="form__form-group--inline search-form__form-group--inline">
-                <button id="searchBtn" type="submit" class="btn btn--icon form__btn form__btn--sm form__btn--neutral btn--inline" data-action="filterTodos">
+                <input id="searchInput" class="form__input form__input--inline search-form__input" type="text" placeholder="Search by keywords, tags, etc...">
+                <input id="searchSubmit" class="search-form__submit" type="submit" value="">
+                <button id="searchBtn" type="button" class="btn form__btn btn--neutral search-form__btn" data-action="filterTodos">
                   <i data-feather="search"></i>
                 </button>
-                <input id="searchInput" class="form__input form__input--inline search-form__input" type="text" placeholder="Search by keywords, tags, etc..."
-                />
-              </div>
             </form>
+            </div> <!--/ #searchBar-->
           </nav>
         </header>
 

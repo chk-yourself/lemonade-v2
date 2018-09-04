@@ -1636,8 +1636,22 @@
     }
   }
 
+  function expandSearchBar(e) {
+    e.stopPropagation();
+    const searchBar = $('#searchBar');
+    if (e.target === searchInput) return;
+    if (!searchBar.classList.contains('is-expanded')) {
+     e.preventDefault();
+      searchBar.classList.add('is-expanded');
+    } else if (searchBar.classList.contains('is-expanded') && searchInput.value == "") {
+      searchBar.classList.remove('is-expanded');
+    }
+  }
+
 
   // Event Listeners
+
+$('#searchBar').addEventListener('click', expandSearchBar);
 
   $('#btnAddTag').addEventListener('click', addTag);
 
