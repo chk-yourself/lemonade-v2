@@ -97,5 +97,11 @@ input[type="search"].search-form__input {
     width: 20px;
     height: 20px;
     vertical-align: middle;
+    position: relative;
+    top: -2.75px;
+    @include lg {
+      width: 24px;
+      height: 24px;
+    }
   }
 }

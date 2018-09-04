@@ -18,10 +18,16 @@ button {
   box-sizing: border-box;
   padding: 8px 16px;
   font-size: 14px;
-}
-
-.btn:hover {
-  box-shadow: 0 4px 11px 0px rgba(0,0,0,0.375);
+  &:hover {
+    box-shadow: 0 4px 11px 0px rgba(0,0,0,0.375);
+  }
+  &:disabled {
+    color: $lt-grey;
+    pointer-events: none;
+    &:hover {
+      color: $lt-grey;
+    }
+  }
 }
 
 .btn--inline {

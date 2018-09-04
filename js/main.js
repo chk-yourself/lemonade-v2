@@ -28,6 +28,7 @@
   const formAddTodo = $("#addTodoForm");
   const formEditTodo = $("#editTodoForm");
   const formSearch = $("#searchForm");
+  const searchBar = $('#searchBar');
   const inputSearch = $("#searchInput");
   const ulInbox = $("#inbox");
   const ulSubtasks = $("#subtaskList");
@@ -35,7 +36,10 @@
   const btnClearAll = $("#clearAllBtn");
   const colorPicker = $("#colorPicker");
   const formNewList = $("#newListForm");
+  const fieldsetFolders = $('#fieldsetFolders');
+  const formEditList = $('#editListForm');
   const inputNewFolder = $("#newFolderInput");
+  const todoContent = $("#todoContent");
   const todoLists = JSON.parse(localStorage.getItem("todoLists")) || [];
 
   const BACKSPACE_KEY = 8;
@@ -232,12 +236,6 @@
     e.preventDefault();
 
     const activeList_ul = $('.is-active-list');
-
-      // Prevents todoContent div from being deleted, if attached to todo Item
-      if (todoContent.classList.contains('is-visible')) {
-      todoContent.classList.remove('is-visible');
-      divTodoApp.appendChild(todoContent);
-      };
     
     let text = $("#todoInput").value;
     if (text !== "") {
@@ -252,6 +250,11 @@
 
   // Renders todo objects as list items
   function populateList(itemsArray = [], itemsList) {
+    // Prevents todoContent from being deleted if attached to list item
+    if (todoContent.classList.contains('is-visible')) {
+      todoContent.classList.remove('is-visible');
+      divTodoApp.appendChild(todoContent);
+    }
     itemsList.innerHTML = itemsArray
       .map((item, i) => {
         return `<li class= ${
@@ -317,14 +320,14 @@
           : (nextMonthIndex !== 0 ) ? new Date(currentYear, nextMonthIndex, 1) : new Date(nextYear, nextMonthIndex, 1);
           tomorrow.setHours(0, 0, 0, 0);
           
-          const dueDateLabel = createNode("span", {class: 'label--due-date'});
+          const dueDateLabel = createNode("span", {class: 'badge--due-date'});
          
           if (dueDate.valueOf() === today.valueOf()) {
             dueDateLabel.textContent = "Today";
-            dueDateLabel.classList.add('label--today');
+            dueDateLabel.classList.add('badge--today');
           } else if (dueDate.valueOf() === tomorrow.valueOf()) {
             dueDateLabel.textContent = "Tomorrow";
-            dueDateLabel.classList.add('label--tomorrow');
+            dueDateLabel.classList.add('badge--tomorrow');
           } else {
             dueDateLabel.textContent = `${dueMonthAbbrev} ${dueDay}`;
           }
@@ -377,7 +380,6 @@
   // Updates todo object's `done` property to reflect current `checked` state
   function toggleDone(e) {
     let el = e.target;
-    let todoContent = divTodoApp.querySelector(".todo-content");
     if (!el.classList.contains("todo-list__checkbox")) return;
 
     let id = el.parentNode.id; // ID of list item
@@ -443,7 +445,6 @@
 
   // Empties todos array and removes all rendered todo items
   function clearAll(e) {
-    let todoContent = divTodoApp.querySelector(".todo-content");
     divTodoApp.appendChild(todoContent);
     while (todoLists.length > 1) {
       todoLists.pop(); // Remove all lists, except inbox
@@ -572,10 +573,8 @@
     if (!(e.target.dataset.action === "toggleContent")) return;
     let todoItem = e.currentTarget;
     let id = todoItem.id;
-
-    let todoContent = divTodoApp.querySelector("#todoContent");
     let tagLabels = todoItem.querySelector(".todo-item__tag-labels");
-    let dueDateLabel = todoItem.querySelector('.label--due-date');
+    let dueDateLabel = todoItem.querySelector('.badge--due-date');
 
     if (!(window.getComputedStyle(todoContent).display === "none")) {
       todoItem.classList.remove("is-expanded");
@@ -612,7 +611,6 @@
     if (!(e.target.dataset.action === "deleteTodo")) return;
     let todoItem = e.currentTarget;
     let id = todoItem.id;
-    let todoContent = $("#todoContent");
     const activeList_ul = $(".is-active-list");
     let todoIndex = state.activeList.tasks.findIndex(task => task.id === id); // index of todo object with matching ID in TODOS array
     todoContent.classList.remove("is-visible");
@@ -662,7 +660,6 @@
   }
 
   function removeTag(todoIndex, tagIndex) {
-    const activeList_ul = $(".is-active-list");
     let id = state.activeList.tasks[todoIndex].id;
     let todoItem = document.getElementById(id);
     formEditTodo.querySelectorAll("#tagsContainer .tag")[tagIndex].remove();
@@ -925,15 +922,10 @@
           })
         );
       }, []);
-          // Prevents todoContent div from being deleted, if attached to todo Item
-    if (todoContent.classList.contains('is-visible')) {
-      todoContent.classList.remove('is-visible');
-      divTodoApp.appendChild(todoContent);
-    };
       populateList(filteredArray, $("#filteredList"));
       $(".is-active-list").classList.remove("is-active-list");
       $("#filteredList").classList.add("is-active-list");
-      $(".todo-app__main-title").textContent = "Search Results";
+      $("#activeListTitle").textContent = "Search Results";
       formAddTodo.classList.add("is-hidden");
       state.activeList = null;
       state.filteredList = filteredArray;
@@ -945,7 +937,6 @@
     e.preventDefault();
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    console.log({ today });
     const filteredArray = todoLists.reduce((acc, list) => {
       return acc.concat(
         list.tasks.filter(task => {
@@ -953,20 +944,16 @@
         })
       );
     }, []);
-        // Prevents todoContent div from being deleted, if attached to todo Item
-        if (todoContent.classList.contains('is-visible')) {
-          todoContent.classList.remove('is-visible');
-          divTodoApp.appendChild(todoContent);
-        };
     populateList(filteredArray, $("#today"));
     $(".is-active-list").classList.remove("is-active-list");
     $("#today").classList.add("is-active-list");
-    $(".todo-app__main-title").textContent = "Due Today";
+    $("#activeListTitle").textContent = "Due Today";
     formAddTodo.classList.add("is-hidden");
     state.activeList = null;
     state.filteredList = filteredArray;
+
+    // Closes sidebar if viewport is < 768px
     if (document.documentElement.clientWidth < 768) {
-      console.log(document.documentElement.clientWidth);
       $('#siteWrapper').classList.remove('show-nav');
     }
   }
@@ -1048,7 +1035,7 @@
             aListLink
           );
     if (listObj.folder === "null") {
-      $("#sidebar__menu").appendChild(item_li);
+      $("#sidebarMenu").appendChild(item_li);
     } else {
       $(`[data-folder="${listObj.folder}"]`).appendChild(item_li);
     }
@@ -1130,7 +1117,7 @@
         frag.appendChild(miscList_li);
       }
     });
-    $("#sidebar__menu").appendChild(frag);
+    $("#sidebarMenu").appendChild(frag);
 
     // Render feather icons
     feather.replace();
@@ -1158,7 +1145,6 @@
           let listObj = todoLists.find(list => list.id === id);
           displayList(listObj);
           if (document.documentElement.clientWidth < 768) {
-            console.log(document.documentElement.clientWidth);
             $('#siteWrapper').classList.remove('show-nav');
           }
         }
@@ -1167,7 +1153,7 @@
   function renderFolderOption(text) {
     let folderRadio_input = createNode("input", {
       type: "radio",
-      id: `folder${camelCased(text)}`,
+      id: `folder--${camelCased(text)}`,
       name: "folder",
       value: text
     });
@@ -1178,16 +1164,14 @@
       "label",
       {
         class: "form__label--folder",
-        for: `folder${camelCased(text)}`
+        for: `folder--${camelCased(text)}`
       },
       iFolderIcon,
       text
     );
-    let formFieldset = $("#newListForm").querySelector(
-      ".form__fieldset--folder"
-    );
-    formFieldset.insertBefore(folderRadio_input, $('input[value="new"]'));
-    formFieldset.insertBefore(folderLabel_label, $('input[value="new"]'));
+    let customFolders = $("#fieldsetFolders .custom-folders");
+    customFolders.appendChild(folderRadio_input);
+    customFolders.appendChild(folderLabel_label);
   }
 
   function addList(e) {
@@ -1219,7 +1203,7 @@
           ulFolderPanel
         );
         folder_li.addEventListener("click", displayPanel);
-        $("#sidebar__menu").insertBefore(folder_li, $('[data-folder="null"]'));
+        $("#sidebarMenu").insertBefore(folder_li, $('[data-folder="null"]'));
 
         renderFolderOption(selectedFolder);
         feather.replace();
@@ -1241,15 +1225,85 @@
     }
   }
 
+  function prepEditListForm(e) {
+    // Attach folder options
+    const btnUpdateList = $('#btnUpdateList');
+    formEditList.insertBefore(fieldsetFolders, btnUpdateList);
+    // Insert list name
+    $('#editListNameInput').value = state.activeList.name;
+    // Check radio for list folder
+    $(`input[name="folder"][value="${state.activeList.folder}"]`).checked = true;
+    $('#editListFormContainer').classList.add('is-active');
+  }
+
+
+  function updateList(e) {
+    e.preventDefault();
+    const ulActiveList = $('.is-active-list');
+    const newListName = $('#editListNameInput').value;
+    const checkedRadio = $('input[name="folder"]:checked').value;
+    const selectedFolder = checkedRadio === "new" ? $("#newFolderInput").value : checkedRadio;
+    const listNavLink = $(`a[href="#${state.activeList.id}"]`);
+    const listNavItem = listNavLink.parentNode;
+    // Rename list
+    if (newListName !== "" && newListName !== state.activeList.name) {
+      state.activeList.name = newListName;
+
+    // Update list nav link
+    listNavLink.textContent = newListName;
+    $('#activeListTitle').textContent = newListName;
+    }
+    // Create new folder
+    if (checkedRadio === "new" && selectedFolder !== "") {
+      console.log({selectedFolder});
+      let ulFolderPanel = createNode("ul", {
+        class: "accordion__panel",
+        "data-folder": selectedFolder
+      });
+      let iFolderIcon = createNode("i", {
+        "data-feather": "folder"
+      });
+      let folder_li = createNode(
+        "li",
+        {
+          class: "sidebar__item accordion__item"
+        },
+        iFolderIcon,
+        selectedFolder,
+        ulFolderPanel
+      );
+      folder_li.addEventListener("click", displayPanel);
+      $("#sidebarMenu").insertBefore(folder_li, $('[data-folder="null"]'));
+
+      renderFolderOption(selectedFolder);
+      feather.replace();
+    }
+    // Set different/new folder
+    if (state.activeList.folder !== selectedFolder && selectedFolder !== "") {
+      state.activeList.folder = selectedFolder;    
+      
+      // Append list nav item to sidebar
+      if (selectedFolder === "null") {
+        listNavItem.className = "sidebar__item";
+        listNavItem.dataset.folder = "null";
+        $("#sidebarMenu").appendChild(listNavItem);
+      } else {
+        // Append list nav item to different/new folder
+        console.log({selectedFolder});
+        listNavItem.className = "accordion__sub-item";
+        listNavItem.removeAttribute('data-folder');
+        $(`[data-folder="${selectedFolder}"]`).appendChild(listNavItem);
+      }
+    }
+    // Save changes to storage
+    localStorage.setItem("todoLists", JSON.stringify(todoLists));
+    e.currentTarget.reset();
+    $("#editListFormContainer").classList.remove("is-active");
+  }
+
   function displayList(listObj) {
 
-    // Prevents todoContent div from being deleted, if attached to todo Item
-    if (todoContent.classList.contains('is-visible')) {
-      todoContent.classList.remove('is-visible');
-      divTodoApp.appendChild(todoContent);
-    };
-
-    $(".todo-app__main-title").textContent = listObj.name;
+    $("#activeListTitle").textContent = listObj.name;
     let list_ul = $(`#${listObj.id}`);
     $all(".todo-list").forEach(x => {
       if (x !== list_ul) {
@@ -1556,19 +1610,19 @@
     tomorrow.setHours(0, 0, 0, 0);
     
     const todoItem = $(`#${id}`);
-    const dueDateLabel = todoItem.contains($('.label--due-date')) ? $('.label--due-date', todoItem) : createNode("span", {class: 'label--due-date is-hidden'});
+    const dueDateLabel = todoItem.contains($('.badge--due-date')) ? $('.badge--due-date', todoItem) : createNode("span", {class: 'badge--due-date is-hidden'});
    
     if (newDueDate.valueOf() === today.valueOf()) {
       dueDateLabel.textContent = "Today";
-      dueDateLabel.classList.add('label--today');
+      dueDateLabel.classList.add('badge--today');
     } else if (newDueDate.valueOf() === tomorrow.valueOf()) {
       dueDateLabel.textContent = "Tomorrow";
-      dueDateLabel.classList.add('label--tomorrow');
+      dueDateLabel.classList.add('badge--tomorrow');
     } else {
       dueDateLabel.textContent = `${dueMonthAbbrev} ${dueDay}`;
     };
 
-    if (!todoItem.contains($('.label--due-date'))) {
+    if (!todoItem.contains($('.badge--due-date'))) {
       todoItem.appendChild(dueDateLabel);
     };
 
@@ -1638,7 +1692,6 @@
 
   function expandSearchBar(e) {
     e.stopPropagation();
-    const searchBar = $('#searchBar');
     if (e.target === searchInput) return;
     if (!searchBar.classList.contains('is-expanded')) {
      e.preventDefault();
@@ -1650,8 +1703,34 @@
 
 
   // Event Listeners
+formEditList.addEventListener('submit', updateList);
+  
+$("#listActionsWrapper").addEventListener('click', (e) => {
 
-$('#searchBar').addEventListener('click', expandSearchBar);
+  if (!e.target.classList.contains('more-actions__item')) return;
+
+  if (e.target === $("#btnEditList")) {
+    prepEditListForm(e);
+  }
+    e.currentTarget.classList.remove('show-actions');
+});
+
+  $all('.more-actions__btn--toggle').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+    if (btn.classList.contains('list-actions__btn--toggle')) {
+      if (state.activeList === null || state.activeList.name === "Inbox") {
+        $('#btnEditList').disabled = true;
+        $('#btnDeleteList').disabled = true;
+      } else {
+        $('#btnEditList').disabled = false;
+        $('#btnDeleteList').disabled = false;
+      } 
+    };
+    e.currentTarget.parentNode.classList.toggle('show-actions');
+  });
+});
+
+searchBar.addEventListener('click', expandSearchBar);
 
   $('#btnAddTag').addEventListener('click', addTag);
 
@@ -1723,8 +1802,9 @@ $('#searchBar').addEventListener('click', expandSearchBar);
 
   inputSearch.addEventListener("click", e => e.currentTarget.select());
 
-  // Hides colorPicker when you click outside it
+// Hides certain elements if you click outside of them
   document.body.addEventListener("click", e => {
+    // Hides colorPicker
     if (
       colorPicker.classList.contains("is-visible") 
       && e.target !== $('#btnAddTag') 
@@ -1734,6 +1814,8 @@ $('#searchBar').addEventListener('click', expandSearchBar);
       colorPicker.classList.remove("is-visible");
       formEditTodo.appendChild(colorPicker);
     }
+    
+    // Hides tooltip
     if (
       divTodoApp.contains($(".show-tooltip")) &&
       e.target !== $(".show-tooltip")
@@ -1746,6 +1828,7 @@ $('#searchBar').addEventListener('click', expandSearchBar);
     const yearDropdown = $("#dpCalendarYearDropdown");
     const btnToggleYearDropdown = $("#btnToggleYearDropdown");
 
+    // Hides monthDropdown
     if (
       monthDropdown.classList.contains("is-active") &&
       e.target !== monthDropdown &&
@@ -1756,6 +1839,7 @@ $('#searchBar').addEventListener('click', expandSearchBar);
       btnToggleMonthDropdown.classList.remove("is-active");
     }
 
+    // Hides yearDropdown
     if (
       yearDropdown.classList.contains("is-active") &&
       e.target !== yearDropdown &&
@@ -1765,12 +1849,25 @@ $('#searchBar').addEventListener('click', expandSearchBar);
       yearDropdown.classList.remove("is-active");
       btnToggleYearDropdown.classList.remove("is-active");
     }
+
+    // Hides searchBar input
+    if (searchBar.classList.contains('is-expanded') && searchInput.value === "" && e.target !== searchBar && !searchBar.contains(e.target)) {
+      searchBar.classList.remove('is-expanded');
+    }
+
+    // Hides listActions
+    const listActionsWrapper = $('#listActionsWrapper');
+    if (listActionsWrapper.classList.contains('show-actions') && e.target !== listActionsWrapper && !listActionsWrapper.contains(e.target)) {
+      listActionsWrapper.classList.remove('show-actions');
+    }
   });
 
   $("#openListFormBtn").addEventListener("click", e => {
+    if (!formNewList.contains(fieldsetFolders)) {
+      formNewList.insertBefore(fieldsetFolders, $('#addListBtn'));
+    }
     $("#newListFormContainer").classList.add("is-active");
     if (document.documentElement.clientWidth < 768) {
-      console.log(document.documentElement.clientWidth);
       $('#siteWrapper').classList.remove('show-nav');
     };
   });

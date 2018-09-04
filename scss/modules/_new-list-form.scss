@@ -1,7 +1,7 @@
-.new-list-name__input {
+.form__input--list-name {
   max-width: 320px;
   background-color: rgba($primary-color, 0.2);
-  border-radius: 20px;
+  border-radius: 4px;
   padding: 16px;
 }
 .new-list-form__form-group--inline {
@@ -13,17 +13,6 @@
 }
 
 @media (max-width: 767px) {
-  .new-list-form__container {
-    padding: 24px;
-    width: 100%;
-    height: 100vh;
-    background-color: $white;
-  }
-  .new-list-form__wrapper {
-    box-shadow: none;
-    top: 0;
-    left: 0;
-  }
   .show-nav .new-list-form__wrapper {
     top: 0;
   }
