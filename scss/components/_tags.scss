@@ -60,6 +60,9 @@
   padding: 0 6px;
   letter-spacing: .06em;
   color: rgba($dk-grey, 0.4);
+  &.is-hidden {
+    display: none;
+  }
 }
 
 .label--today {

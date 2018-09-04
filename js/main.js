@@ -230,7 +230,15 @@
   // Adds new task object to current list array
   function addTodo(e) {
     e.preventDefault();
+
     const activeList_ul = $('.is-active-list');
+
+      // Prevents todoContent div from being deleted, if attached to todo Item
+      if (todoContent.classList.contains('is-visible')) {
+      todoContent.classList.remove('is-visible');
+      divTodoApp.appendChild(todoContent);
+      };
+    
     let text = $("#todoInput").value;
     if (text !== "") {
       let todo = new Task(text);
@@ -240,8 +248,6 @@
     }
     // Resets addTodoForm
     e.currentTarget.reset();
-    console.table(todoLists);
-    console.log(state.activeList);
   }
 
   // Renders todo objects as list items
@@ -314,7 +320,6 @@
           const dueDateLabel = createNode("span", {class: 'label--due-date'});
          
           if (dueDate.valueOf() === today.valueOf()) {
-            console.log('Today!');
             dueDateLabel.textContent = "Today";
             dueDateLabel.classList.add('label--today');
           } else if (dueDate.valueOf() === tomorrow.valueOf()) {
@@ -426,7 +431,6 @@
   function toggleComplete(e) {
     if (!e.target.classList.contains("subtask-list__checkbox")) return;
     let id = e.currentTarget.parentNode.dataset.id;
-    const activeList_ul = $(".is-active-list");
     let todoIndex = state.activeList.tasks.findIndex(task => task.id === id);
     let currentTask = state.activeList.tasks.find(task => task.id === id);
     let subtaskIndex = e.target.dataset.subIndex;
@@ -500,21 +504,23 @@
    * Adds subtask
    */
   function addSubtask(e) {
+    
     e.preventDefault();
+   
     if (e.target.dataset.action !== "addSubtask") return;
-    let id = e.currentTarget.dataset.id;
+    let id = formEditTodo.dataset.id;
 
     let currentTask = state.activeList.tasks.find(task => task.id === id);
     let todoIndex = state.activeList.tasks.findIndex(task => task.id === id); // index of todo object with matching ID in TODOS array
     let currentList = state.activeList;
 
-    let text = e.target.value;
+    let text = $('#newSubtaskInput').value;
     if (text) {
       const newSubtask = new Subtask(text);
       currentTask.subtasks.push(newSubtask);
       populateSubList(currentList.tasks, "subtasks", ulSubtasks, todoIndex);
       localStorage.setItem("todoLists", JSON.stringify(todoLists));
-      e.target.value = "";
+      $('#newSubtaskInput').value = "";
     }
   }
 
@@ -538,7 +544,6 @@
   function autoHeightResize() {
     const todoItemNote = $('#todoItemNote');
     todoItemNote.style.height = "0px";
-    console.log(todoItemNote.scrollHeight);
     todoItemNote.style.height = todoItemNote.scrollHeight + "px";
   }
 
@@ -555,7 +560,6 @@
     if (!e.target.classList.contains("edit-todo-form__input--edit-subtask"))
       return;
     let id = e.currentTarget.dataset.id;
-    const activeList_ul = $(".is-active-list");
     let currentTask = state.activeList.tasks.find(task => task.id === id);
     let newSubtaskText = e.target.value;
     let subtaskIndex = e.target.dataset.subIndex;
@@ -571,12 +575,16 @@
 
     let todoContent = divTodoApp.querySelector("#todoContent");
     let tagLabels = todoItem.querySelector(".todo-item__tag-labels");
+    let dueDateLabel = todoItem.querySelector('.label--due-date');
 
     if (!(window.getComputedStyle(todoContent).display === "none")) {
       todoItem.classList.remove("is-expanded");
       todoContent.classList.remove("is-visible");
       if (todoItem.contains(tagLabels)) {
         tagLabels.classList.remove("is-hidden");
+      }
+      if (todoItem.contains(dueDateLabel)) {
+        dueDateLabel.classList.remove("is-hidden");
       }
       let tags = todoContent.querySelectorAll("#tagsContainer .tag");
       tags.forEach(x => x.remove());
@@ -590,6 +598,9 @@
       $('#dpCalendar').classList.remove('is-active');
       if (todoItem.contains(tagLabels)) {
         tagLabels.classList.add("is-hidden");
+      }
+      if (todoItem.contains(dueDateLabel)) {
+        dueDateLabel.classList.add("is-hidden");
       }
       populateContent(e);
       todoItem.classList.add("is-expanded");
@@ -668,18 +679,16 @@
 
   function addTag(e) {
     e.preventDefault();
-    if (e.target.dataset.action !== "addTag" && !e.target.value) return;
-    let target = e.currentTarget; // formEditTodo
+    if (e.target.dataset.action !== "addTag" && $('#newTagInput').value === "") return;
     let tagsContainer = $("#tagsContainer");
-    let newTagInput = e.target;
-    let id = e.currentTarget.dataset.id;
-    const activeList_ul = $(".is-active-list");
+    let newTagInput = $('#newTagInput');
+    let id = formEditTodo.dataset.id;
     let todoIndex = state.activeList.tasks.findIndex(task => task.id === id);
     let currentTask = state.activeList.tasks.find(task => task.id === id);
     let todoItem = document.getElementById(id);
     let tagLabels =
       $(".todo-item__tag-labels", todoItem) ||
-      createNode("div", {
+      createNode("div", { 
         class: "todo-item__tag-labels"
       });
     let tagsTooltipBtn =
@@ -697,13 +706,13 @@
       tagLabels.appendChild(tagsTooltipBtn);
     }
     if (newTagInput.value !== "") {
-      let text = filterTag(newTagInput.value);
+      const text = filterTag(newTagInput.value);
 
       // Prevents duplicating existing tags for a todo item
       if (findExistingTag(text, todoIndex)) return;
 
       if (text.length > 0) {
-        let existingTag = findExistingTag(text);
+        const existingTag = findExistingTag(text);
         let tag = {
           text,
           // Assigns color of previously created tag that matches text, if exists
@@ -754,10 +763,12 @@
         tagLabels.insertBefore(tagLabel, tagsTooltipBtn);
         todoItem.appendChild(tagLabels);
         newTagInput.value = "";
-
+        
         // Appends color picker to tag node if there are no existing tags that matches text
         if (existingTag === undefined) {
+          console.log({newTagNode});
           newTagNode.appendChild(colorPicker);
+          console.log({colorPicker});
           colorPicker.classList.add("is-visible");
         }
       }
@@ -914,7 +925,11 @@
           })
         );
       }, []);
-      console.log(filteredArray);
+          // Prevents todoContent div from being deleted, if attached to todo Item
+    if (todoContent.classList.contains('is-visible')) {
+      todoContent.classList.remove('is-visible');
+      divTodoApp.appendChild(todoContent);
+    };
       populateList(filteredArray, $("#filteredList"));
       $(".is-active-list").classList.remove("is-active-list");
       $("#filteredList").classList.add("is-active-list");
@@ -938,7 +953,11 @@
         })
       );
     }, []);
-    console.log({ filteredArray });
+        // Prevents todoContent div from being deleted, if attached to todo Item
+        if (todoContent.classList.contains('is-visible')) {
+          todoContent.classList.remove('is-visible');
+          divTodoApp.appendChild(todoContent);
+        };
     populateList(filteredArray, $("#today"));
     $(".is-active-list").classList.remove("is-active-list");
     $("#today").classList.add("is-active-list");
@@ -1223,6 +1242,13 @@
   }
 
   function displayList(listObj) {
+
+    // Prevents todoContent div from being deleted, if attached to todo Item
+    if (todoContent.classList.contains('is-visible')) {
+      todoContent.classList.remove('is-visible');
+      divTodoApp.appendChild(todoContent);
+    };
+
     $(".todo-app__main-title").textContent = listObj.name;
     let list_ul = $(`#${listObj.id}`);
     $all(".todo-list").forEach(x => {
@@ -1530,7 +1556,7 @@
     tomorrow.setHours(0, 0, 0, 0);
     
     const todoItem = $(`#${id}`);
-    const dueDateLabel = todoItem.contains($('.label--due-date')) ? $('.label--due-date', todoItem) : createNode("span", {class: 'label--due-date'});
+    const dueDateLabel = todoItem.contains($('.label--due-date')) ? $('.label--due-date', todoItem) : createNode("span", {class: 'label--due-date is-hidden'});
    
     if (newDueDate.valueOf() === today.valueOf()) {
       dueDateLabel.textContent = "Today";
@@ -1613,6 +1639,8 @@
 
   // Event Listeners
 
+  $('#btnAddTag').addEventListener('click', addTag);
+
   document.querySelectorAll(".sidebar__btn--toggle").forEach(btn => {
     btn.addEventListener("click", toggleMenu, true);
   });
@@ -1623,8 +1651,10 @@
   ulSubtasks.addEventListener("click", toggleComplete);
   btnClearAll.addEventListener("click", clearAll);
   formEditTodo.addEventListener("submit", addSubtask);
+  $('#btnAddSubtask').addEventListener("click", addSubtask);
   colorPicker.addEventListener("click", setTagColor);
 
+  
   formEditTodo.addEventListener("keyup", e => {
     if (e.keyCode === ENTER_KEY) {
       if (e.target === $("#newSubtaskInput")) {
@@ -1635,9 +1665,12 @@
       }
     }
   });
+  
+
   formEditTodo.addEventListener("input", addNote);
   formEditTodo.addEventListener("input", editSubtask);
 
+  // Delete tag on double backspace
   formEditTodo.addEventListener("keyup", e => {
     let newTagInput = $("#newTagInput");
     if (e.target !== newTagInput) return;
@@ -1679,9 +1712,10 @@
   // Hides colorPicker when you click outside it
   document.body.addEventListener("click", e => {
     if (
-      colorPicker.classList.contains("is-visible") &&
-      e.target !== colorPicker &&
-      !colorPicker.contains(e.target)
+      colorPicker.classList.contains("is-visible") 
+      && e.target !== $('#btnAddTag') 
+      && e.target !== colorPicker 
+      && !colorPicker.contains(e.target)
     ) {
       colorPicker.classList.remove("is-visible");
       formEditTodo.appendChild(colorPicker);
