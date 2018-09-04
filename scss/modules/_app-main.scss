@@ -170,6 +170,13 @@
 
 .todo-app__main {
   position: relative;
+  padding: 16px;
+  @include md {
+    padding: 24px;
+  }
+  @include lg {
+    padding: 24px 32px 32px;
+  }
 }
 
 .add-todo-form {

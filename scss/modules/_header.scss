@@ -1,9 +1,15 @@
 .todo-app__header {
   width: 100%;
   height: auto; // 88px
-  background-color: $off-white;
-  padding: 0 0 16px 0;
-  border-radius: 8px;
+  background-color: $primary-color;
+  padding: 8px 16px;
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,0.15);
+  @include md {
+    padding: 8px 24px;
+  }
+  @include lg {
+    padding: 8px 32px;
+  }
 }
 
 .header__logo {
