@@ -1239,7 +1239,6 @@
 
   function updateList(e) {
     e.preventDefault();
-    const ulActiveList = $('.is-active-list');
     const newListName = $('#editListNameInput').value;
     const checkedRadio = $('input[name="folder"]:checked').value;
     const selectedFolder = checkedRadio === "new" ? $("#newFolderInput").value : checkedRadio;
@@ -1299,6 +1298,30 @@
     localStorage.setItem("todoLists", JSON.stringify(todoLists));
     e.currentTarget.reset();
     $("#editListFormContainer").classList.remove("is-active");
+  }
+
+  function deleteList(listObj) {
+
+// TODO: add alert msg
+    const listNavLink = $(`a[href="#${listObj.id}"]`);
+    const listNavItem = listNavLink.parentNode;
+    const listElement = $(`#${listObj.id}`);
+
+    // Delete list object
+    const listIndex = todoLists.indexOf(listObj);
+    console.log({listIndex});
+    todoLists.splice(listIndex, 1);
+    localStorage.setItem("todoLists", JSON.stringify(todoLists));
+
+    // Delete list nav item 
+    listNavItem.remove();
+
+    // Delete list `ul` element
+    listElement.remove();
+
+    // Reload inbox
+    const inbox = todoLists.find(list => list.name === "Inbox");
+    displayList(inbox);
   }
 
   function displayList(listObj) {
@@ -1703,6 +1726,10 @@
 
 
   // Event Listeners
+
+$('#btnDeleteList').addEventListener('click', (e) => {
+  deleteList(state.activeList);
+});
 formEditList.addEventListener('submit', updateList);
   
 $("#listActionsWrapper").addEventListener('click', (e) => {
@@ -1718,6 +1745,13 @@ $("#listActionsWrapper").addEventListener('click', (e) => {
   $all('.more-actions__btn--toggle').forEach(btn => {
     btn.addEventListener('click', (e) => {
     if (btn.classList.contains('list-actions__btn--toggle')) {
+
+    // Prevents todoContent from being deleted if attached to list item
+    if (todoContent.classList.contains('is-visible')) {
+      todoContent.classList.remove('is-visible');
+      divTodoApp.appendChild(todoContent);
+    }
+      
       if (state.activeList === null || state.activeList.name === "Inbox") {
         $('#btnEditList').disabled = true;
         $('#btnDeleteList').disabled = true;
