@@ -38,12 +38,47 @@
 }
 
 .edit-todo-form__form-group--inline {
-  padding: 2px 4px;
+  padding: 2px 0;
+  width: calc(100% - 32px);
   &.is-focused {
     border:1px solid $lt-grey;
     border-radius: 4px;
   }
   .form__input--inline {
     height: 25px;
+  }
+}
+
+.edit-todo-form__input {
+  height: 38px;
+  padding: 2px 8px;
+  width: calc(100% - 32px);
+  border: 1px solid transparent;
+  &:focus {
+    border:1px solid $lt-grey;
+    border-radius: 4px;
+  }
+}
+
+.todo-content__section {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 24px;
+}
+
+.edit-todo-form__form-group {
+  width: 100%;
+  border: none;
+}
+
+.todo-content__section-icon {
+  width: 32px;
+  height: 40px;
+  line-height: 40px;
+  vertical-align: middle;
+  text-align: center;
+  .feather {
+    width: 20px;
+    height: 20px;
   }
 }

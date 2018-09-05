@@ -21,6 +21,7 @@
   padding: 8px 4px;
   position: relative;
   display: none;
+  left: 32px;
   &.is-active {
     display: block;
   }
@@ -241,15 +242,16 @@
 .edit-todo-form__due-date-wrapper {
   position: relative;
   border: 1px solid $lt-grey;
-  border-radius: 5000px;
+  border-radius: 4px;
   display: inline-block;
-  width: 180px;
+  width: 140px;
   text-align: center;
-  height: 50px;
+  height: 40px;
+  line-height: 40px;
   vertical-align: middle;
   color: $dk-grey;
   .due-date-text {
-    line-height: 50px;
+    line-height: 40px;
       color: $dk-green;
   }
   &.show-input {
@@ -274,7 +276,7 @@
 
 .edit-todo-form__input--due-date {
   border: 1px solid transparent;
-  border-radius: 5000px;
+  border-radius: 4px;
   width: 100%;
   text-align: center;
   height: 100%;

@@ -1195,7 +1195,8 @@ input[type="search"].search-form__input {
 }
 
 .edit-todo-form__form-group--inline {
-  padding: 2px 4px;
+  padding: 2px 0;
+  width: calc(100% - 32px);
 }
 
 .edit-todo-form__form-group--inline.is-focused {
@@ -1205,6 +1206,45 @@ input[type="search"].search-form__input {
 
 .edit-todo-form__form-group--inline .form__input--inline {
   height: 25px;
+}
+
+.edit-todo-form__input {
+  height: 38px;
+  padding: 2px 8px;
+  width: calc(100% - 32px);
+  border: 1px solid transparent;
+}
+
+.edit-todo-form__input:focus {
+  border: 1px solid #d6dee2;
+  border-radius: 4px;
+}
+
+.todo-content__section {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  margin-top: 24px;
+}
+
+.edit-todo-form__form-group {
+  width: 100%;
+  border: none;
+}
+
+.todo-content__section-icon {
+  width: 32px;
+  height: 40px;
+  line-height: 40px;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.todo-content__section-icon .feather {
+  width: 20px;
+  height: 20px;
 }
 
 .date-picker {
@@ -1233,6 +1273,7 @@ input[type="search"].search-form__input {
   padding: 8px 4px;
   position: relative;
   display: none;
+  left: 32px;
 }
 
 .dp-calendar.is-active {
@@ -1475,17 +1516,18 @@ input[type="search"].search-form__input {
 .edit-todo-form__due-date-wrapper {
   position: relative;
   border: 1px solid #d6dee2;
-  border-radius: 5000px;
+  border-radius: 4px;
   display: inline-block;
-  width: 180px;
+  width: 140px;
   text-align: center;
-  height: 50px;
+  height: 40px;
+  line-height: 40px;
   vertical-align: middle;
   color: #404551;
 }
 
 .edit-todo-form__due-date-wrapper .due-date-text {
-  line-height: 50px;
+  line-height: 40px;
   color: #11a56c;
 }
 
@@ -1511,7 +1553,7 @@ input[type="search"].search-form__input {
 
 .edit-todo-form__input--due-date {
   border: 1px solid transparent;
-  border-radius: 5000px;
+  border-radius: 4px;
   width: 100%;
   text-align: center;
   height: 100%;
@@ -1673,7 +1715,8 @@ input[type="search"].search-form__input {
 }
 
 .subtask-list {
-  margin: 8px 0;
+  margin: 0 0 4px 0;
+  width: 100%;
 }
 
 .todo-list__item,
@@ -1696,9 +1739,11 @@ input[type="search"].search-form__input {
 
 .todo-item__note {
   line-height: 1.4;
-  min-height: 64px;
+  min-height: 40px;
   overflow: hidden;
   margin-top: 0;
+  padding: 8px;
+  width: calc(100% - 32px);
 }
 
 .todo-item__note:focus {
@@ -1707,7 +1752,7 @@ input[type="search"].search-form__input {
 
 .subtask-list__item {
   margin: 0;
-  padding: 4px 14px;
+  padding: 4px 7px;
 }
 
 .todo-item__toggle-btn {

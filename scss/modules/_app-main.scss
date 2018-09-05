@@ -60,7 +60,8 @@
 }
 
 .subtask-list {
-  margin: 8px 0;
+  margin: 0 0 4px 0;
+  width: 100%;
 }
 
 .todo-list__item,
@@ -82,9 +83,11 @@
 
 .todo-item__note {
   line-height: 1.4;
-  min-height: 64px;
+  min-height: 40px;
   overflow: hidden;
   margin-top: 0;
+  padding: 8px;
+  width: calc(100% - 32px);
   &:focus {
     border: 1px solid $lt-grey;
   }
@@ -92,7 +95,7 @@
 
 .subtask-list__item {
   margin: 0;
-  padding: 4px 14px;
+  padding: 4px 7px;
 }
 
 .todo-item__toggle-btn {
