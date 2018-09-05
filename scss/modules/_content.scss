@@ -74,9 +74,10 @@
 .todo-content__section-icon {
   width: 32px;
   height: 40px;
-  line-height: 40px;
+  line-height: 38px;
   vertical-align: middle;
   text-align: center;
+  display: inline-block;
   .feather {
     width: 20px;
     height: 20px;

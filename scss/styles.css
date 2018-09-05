@@ -1237,9 +1237,10 @@ input[type="search"].search-form__input {
 .todo-content__section-icon {
   width: 32px;
   height: 40px;
-  line-height: 40px;
+  line-height: 38px;
   vertical-align: middle;
   text-align: center;
+  display: inline-block;
 }
 
 .todo-content__section-icon .feather {
@@ -1273,7 +1274,7 @@ input[type="search"].search-form__input {
   padding: 8px 4px;
   position: relative;
   display: none;
-  left: 32px;
+  left: 40px;
 }
 
 .dp-calendar.is-active {
@@ -1514,9 +1515,10 @@ input[type="search"].search-form__input {
 }
 
 .edit-todo-form__due-date-wrapper {
+  margin-left: 8px;
   position: relative;
   border: 1px solid #d6dee2;
-  border-radius: 4px;
+  border-radius: 5000px;
   display: inline-block;
   width: 140px;
   text-align: center;
@@ -1551,9 +1553,30 @@ input[type="search"].search-form__input {
   margin-top: -4px;
 }
 
+.edit-todo-form__due-date-wrapper.has-due-date::before {
+  content: 'Due';
+  position: absolute;
+  font-size: 10px;
+  display: block;
+  top: 4px;
+  height: 10px;
+  line-height: 10px;
+  left: calc(50% - 10px);
+  padding: 0;
+  width: 20px;
+  color: rgba(64, 69, 81, 0.6);
+  letter-spacing: 0.05em;
+  font-weight: 700;
+}
+
+.edit-todo-form__due-date-wrapper.has-due-date .due-date-text {
+  position: relative;
+  top: 4px;
+}
+
 .edit-todo-form__input--due-date {
   border: 1px solid transparent;
-  border-radius: 4px;
+  border-radius: 5000px;
   width: 100%;
   text-align: center;
   height: 100%;

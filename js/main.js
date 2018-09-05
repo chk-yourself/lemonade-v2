@@ -530,13 +530,14 @@
    */
   function addNote(e) {
     if (!e.target.classList.contains("todo-item__note")) return;
-    let id = e.currentTarget.dataset.id;
+    const id = formEditTodo.dataset.id;
 
     let currentTask = state.activeList.tasks.find(task => task.id === id);
     let todoIndex = state.activeList.tasks.findIndex(task => task.id === id); // index of todo object with matching ID in TODOS array
 
+    console.log(currentTask.note);
     let text = e.target.value;
-    if (text) {
+    if (!/^\s+$/.test(text)) {
       currentTask.note = text;
       localStorage.setItem("todoLists", JSON.stringify(todoLists));
     }
@@ -593,6 +594,7 @@
       }
     } else {
       todoItem.appendChild(todoContent);
+      $('#dueDateWrapper').classList.remove('has-due-date');
       $("#dueDateWrapper").classList.remove("show-input");
       $('#dpCalendar').classList.remove('is-active');
       if (todoItem.contains(tagLabels)) {
@@ -820,8 +822,10 @@
       const dueMonthIndex = dueDate.getMonth();
       const dueMonthAbbrev = monthsArr[dueMonthIndex].abbrev;
       const dueDay = dueDate.getDate();
+      $('#dueDateWrapper').classList.add('has-due-date');
     $("#dueDateWrapper .due-date-text").textContent = `${dueMonthAbbrev} ${dueDay}`;
     } else {
+      $('#dueDateWrapper').classList.remove('has-due-date');
       $("#dueDateWrapper .due-date-text").textContent = "Set due date";
     }
 
@@ -1651,6 +1655,7 @@
 
   }
 
+    $('#dueDateWrapper').classList.add('has-due-date');
     $("#dueDateWrapper .due-date-text").textContent = `${dueMonthAbbrev} ${dueDay}`;
     $("#dueDateWrapper").classList.remove("show-input");
     $("#dpCalendar").classList.remove("is-active");
@@ -1793,8 +1798,7 @@ searchBar.addEventListener('click', expandSearchBar);
     }
   });
   
-
-  formEditTodo.addEventListener("input", addNote);
+$('#todoItemNote').addEventListener('change', addNote);
   formEditTodo.addEventListener("input", editSubtask);
 
   // Delete tag on double backspace
@@ -2067,6 +2071,7 @@ function selectPrevNext(e) {
     const currentTask = state.activeList.tasks.find(task => task.id === id);
     currentTask.dueDate = null;
     localStorage.setItem("todoLists", JSON.stringify(todoLists));
+    $('#dueDateWrapper').classList.remove('has-due-date');
     $("#dueDateWrapper .due-date-text").textContent = 'Set due date';
     $("#dueDateWrapper").classList.remove("show-input");
     $("#dpCalendar").classList.remove("is-active");
