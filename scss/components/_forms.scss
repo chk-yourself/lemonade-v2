@@ -20,6 +20,8 @@ input[type=text] {
   color: $black;
   outline: none;
   height: 50px;
+  font-family: $body-font;
+  letter-spacing: -0.01em;
   &::placeholder {
     color: rgba($dk-grey, 0.6);
   }
@@ -30,7 +32,9 @@ input[type=text] {
   outline: none;
   border: none;
   margin-top: 0;
+  letter-spacing: -0.01em;
   &::placeholder {
+    font-family: $body-font;
     color: rgba($dk-grey, 0.6);
   }
 }

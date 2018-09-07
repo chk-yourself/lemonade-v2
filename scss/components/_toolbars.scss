@@ -1,6 +1,6 @@
 .toolbar {
   box-sizing: border-box;
-  padding: 12px 14px;
+  padding: 8px 14px;
   font-size: 16px;
   border: 1px solid rgba($dk-grey, 0.4);
   border-radius: 4px;
@@ -23,13 +23,14 @@
   text-align: center;
   .feather {
     margin-bottom: 2px;
+    stroke: $dk-grey;
   }
 }
 
 .toolbar__item-label {
   display: block;
   font-family: $heading-font;
-  font-size: 11px;
+  font-size: 10px;
   line-height: 1.2;
   font-weight: 500;
   letter-spacing: 0.01em;
@@ -43,5 +44,8 @@
   box-shadow: none;
   &:hover, &:active {
     box-shadow: none;
+    .feather {
+      stroke: $primary-color;
+    }
   }
 }

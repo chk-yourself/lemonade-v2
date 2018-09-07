@@ -181,6 +181,8 @@ input[type=text]:focus {
   color: #000;
   outline: none;
   height: 50px;
+  font-family: "Open Sans", Arial, sans-serif;
+  letter-spacing: -0.01em;
 }
 
 .form__input::-webkit-input-placeholder {
@@ -204,21 +206,26 @@ input[type=text]:focus {
   outline: none;
   border: none;
   margin-top: 0;
+  letter-spacing: -0.01em;
 }
 
 .form__textarea::-webkit-input-placeholder {
+  font-family: "Open Sans", Arial, sans-serif;
   color: rgba(64, 69, 81, 0.6);
 }
 
 .form__textarea:-ms-input-placeholder {
+  font-family: "Open Sans", Arial, sans-serif;
   color: rgba(64, 69, 81, 0.6);
 }
 
 .form__textarea::-ms-input-placeholder {
+  font-family: "Open Sans", Arial, sans-serif;
   color: rgba(64, 69, 81, 0.6);
 }
 
 .form__textarea::placeholder {
+  font-family: "Open Sans", Arial, sans-serif;
   color: rgba(64, 69, 81, 0.6);
 }
 
@@ -644,7 +651,7 @@ input[type="search"].search-form__input {
   position: absolute;
   top: 0;
   left: -575px;
-  padding: 24px;
+  padding: 24px 16px;
 }
 
 @media (min-width: 576px) {
@@ -673,7 +680,7 @@ input[type="search"].search-form__input {
 .sidebar__item {
   margin-bottom: 8px;
   font-family: "Roboto", Helvetica, Arial, sans-serif;
-  font-size: 1rem;
+  font-size: 16px;
   font-weight: 400;
   vertical-align: middle;
   line-height: 1.4;
@@ -752,7 +759,8 @@ input[type="search"].search-form__input {
 }
 
 .sidebar__btn--create-list {
-  margin-top: 24px;
+  margin-top: 16px;
+  padding: 8px 16px;
 }
 
 .more-actions__btn--toggle {
@@ -944,7 +952,7 @@ input[type="search"].search-form__input {
 .toolbar {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
-  padding: 12px 14px;
+  padding: 8px 14px;
   font-size: 16px;
   border: 1px solid rgba(64, 69, 81, 0.4);
   border-radius: 4px;
@@ -980,12 +988,13 @@ input[type="search"].search-form__input {
 
 .toolbar__item .feather {
   margin-bottom: 2px;
+  stroke: #404551;
 }
 
 .toolbar__item-label {
   display: block;
   font-family: "Roboto", Helvetica, Arial, sans-serif;
-  font-size: 11px;
+  font-size: 10px;
   line-height: 1.2;
   font-weight: 500;
   letter-spacing: 0.01em;
@@ -1003,6 +1012,10 @@ input[type="search"].search-form__input {
 .toolbar__btn:hover, .toolbar__btn:active {
   -webkit-box-shadow: none;
           box-shadow: none;
+}
+
+.toolbar__btn:hover .feather, .toolbar__btn:active .feather {
+  stroke: #638eff;
 }
 
 .todo-item__tooltip-btn {
@@ -1234,7 +1247,7 @@ input[type="search"].search-form__input {
   display: none;
   -webkit-transition: .2s ease-out;
   transition: .2s ease-out;
-  padding: 16px 8px;
+  padding: 16px 0;
 }
 
 .todo-content__section-title {
@@ -1288,11 +1301,11 @@ input[type="search"].search-form__input {
   padding: 2px 8px;
   width: calc(100% - 32px);
   border: 1px solid transparent;
+  border-radius: 4px;
 }
 
 .edit-todo-form__input:focus {
   border: 1px solid #d6dee2;
-  border-radius: 4px;
 }
 
 .todo-content__section {
@@ -1606,6 +1619,7 @@ input[type="search"].search-form__input {
 .edit-todo-form__due-date-wrapper .due-date-text {
   line-height: 40px;
   color: rgba(64, 69, 81, 0.6);
+  letter-spacing: -0.01em;
 }
 
 .edit-todo-form__due-date-wrapper.show-input .feather {
@@ -1618,6 +1632,10 @@ input[type="search"].search-form__input {
 
 .edit-todo-form__due-date-wrapper.show-input .edit-todo-form__input--due-date {
   display: inline-block;
+}
+
+.edit-todo-form__due-date-wrapper.show-input.has-due-date::before {
+  display: none;
 }
 
 .edit-todo-form__due-date-wrapper .feather {
@@ -1736,6 +1754,7 @@ input[type="search"].search-form__input {
 .header__logo--sm {
   font-size: 24px;
   margin-bottom: 32px;
+  padding-left: 16px;
 }
 
 .todo-list__item {
@@ -1967,9 +1986,12 @@ input[type="search"].search-form__input {
 
 .form__input--list-name {
   max-width: 320px;
-  background-color: rgba(99, 142, 255, 0.2);
   border-radius: 4px;
   padding: 16px;
+}
+
+.form__input--list-name:focus {
+  border: 1px solid #d6dee2;
 }
 
 .new-list-form__form-group--inline {

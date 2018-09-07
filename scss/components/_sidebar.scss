@@ -36,7 +36,7 @@
   position: absolute;
   top: 0;
   left: -575px;
-  padding: 24px;
+  padding: 24px 16px;
   @include sm {
     width: 250px;
     left: -250px;
@@ -59,7 +59,7 @@
   .sidebar__item {
     margin-bottom: 8px;
     font-family: $heading-font;
-    font-size: 1rem;
+    font-size: 16px;
     font-weight: 400;
     vertical-align: middle;
     line-height: 1.4;
@@ -137,7 +137,8 @@
   }
 
  .sidebar__btn--create-list {
-    margin-top: 24px;
+    margin-top: 16px;
+    padding: 8px 16px;
   }
 
 .more-actions__btn--toggle {
