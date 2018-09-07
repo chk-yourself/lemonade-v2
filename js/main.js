@@ -1807,6 +1807,7 @@ function transferTasks(e) {
   // Reload current list to reflect changes
   populateList(currentListObj.tasks, ulActiveList);
   $('#bulkEditingToolbar').classList.remove('is-active');
+  $('#transferTasksFormContainer').classList.remove('is-active');
 }
 
 function deleteSelected(e) {
