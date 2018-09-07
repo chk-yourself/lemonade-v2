@@ -1,0 +1,47 @@
+.toolbar {
+  box-sizing: border-box;
+  padding: 12px 14px;
+  font-size: 16px;
+  border: 1px solid rgba($dk-grey, 0.4);
+  border-radius: 4px;
+  margin: 4px 0;
+  font-family: $body-font;
+  width: 100%;
+  line-height: 16px;
+  background-color: rgba($white, 0.75);
+  display: none;
+  align-items: center;
+  &.is-active {
+    display: flex;
+  }
+}
+
+.toolbar__item {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  .feather {
+    margin-bottom: 2px;
+  }
+}
+
+.toolbar__item-label {
+  display: block;
+  font-family: $heading-font;
+  font-size: 11px;
+  line-height: 1.2;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  width: 65px;
+  vertical-align: middle;
+  color: rgba($dk-grey, 0.8);
+  pointer-events: none;
+}
+
+.toolbar__btn {
+  box-shadow: none;
+  &:hover, &:active {
+    box-shadow: none;
+  }
+}

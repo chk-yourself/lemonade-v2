@@ -60,7 +60,7 @@
     margin-bottom: 8px;
     font-family: $heading-font;
     font-size: 1rem;
-    font-weight: 500;
+    font-weight: 400;
     vertical-align: middle;
     line-height: 1.4;
     border-radius: 14px; // height = 38px
@@ -136,7 +136,7 @@
     }
   }
 
-  [data-action="openListForm"] {
+ .sidebar__btn--create-list {
     margin-top: 24px;
   }
 
@@ -178,6 +178,7 @@ position: relative;
 .more-actions__item {
   padding: 4px 16px;
   color: $dk-grey;
+  font-weight: 700;
   &:hover {
     color: $primary-color;
   }

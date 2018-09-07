@@ -3,6 +3,12 @@
   width: 100%;
 }
 
+input[type=text] {
+  &:focus {
+    box-shadow: none;
+  }
+}
+
 .form__input {
   box-sizing: border-box;
   border: 1px solid transparent;
@@ -126,18 +132,21 @@
 
 label.todo-list__checkbox {
   margin-right: 12px;
+  &.is-hidden {
+    display: none;
+  }
 }
 
-.subtask-list__checkbox + label {
+label.subtask-list__checkbox {
   margin-right: 12px;
 }
 
-.subtask-list__checkbox + label:before {
+label.subtask-list__checkbox:before {
   left: 0;
 }
 
-[type="checkbox"]:checked + label + .todo-item__title,
-[type="checkbox"]:checked + label + .edit-todo-form__input--edit-subtask {
+[type="checkbox"]:checked + .todo-list__checkbox + .todo-item__title,
+[type="checkbox"]:checked + .subtask-list__checkbox + .edit-todo-form__input--edit-subtask {
   color: lighten($dk-grey, 25%);
   text-decoration: line-through;
 }

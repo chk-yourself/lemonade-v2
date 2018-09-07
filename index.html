@@ -39,7 +39,7 @@
                 </li>
               </ul>
               <!--/ #sidebarMenu -->
-              <button id="openListFormBtn" type="button" class="btn btn--neutral sidebar__btn" data-action="openListForm">
+              <button id="openListFormBtn" type="button" class="btn btn--neutral sidebar__btn sidebar__btn--create-list" data-action="openListForm">
                 <i data-feather="plus-circle"></i>Create List</button>
             </div>
             <!--/ .sidebar__menu-wrapper -->
@@ -61,8 +61,8 @@
               <button type="button" class="btn btn--neutral more-actions__item" id="btnEditList" data-action="editList">
                 Edit List
               </button>
-              <button type="button" class="btn btn--neutral more-actions__item" id="btnEditTasks" data-action="editTasks">
-                Edit Tasks
+              <button type="button" class="btn btn--neutral more-actions__item" id="btnOpenBulkEditing" data-action="openBulkEditing">
+                Bulk Actions
               </button>
               <button type="button" class="btn btn--neutral more-actions__item" id="btnDeleteList" data-action="deleteList">
                 Delete List
@@ -84,6 +84,26 @@
               />
             </div>
           </form>
+          <div id="bulkEditingToolbar" class="toolbar bulk-editing-toolbar">
+            <div class="toolbar__item bulk-editing-toolbar__item--check-all" data-action="checkAll">
+                <input type="checkbox" id="masterCheckbox" class="bulk-editing__checkbox">
+                <label class="bulk-editing__checkbox-label" for="masterCheckbox" id="bulkEditingMasterCheckbox"></label>
+                <p class="toolbar__item-label">Select All/None</p>
+            </div>
+            <div class="toolbar__item flex-column">
+                <button class="btn btn--inline toolbar__btn" type="button" data-action="transferSelected">
+                    <i data-feather="arrow-right-circle"></i>
+                    <span class="toolbar__item-label">Move</span>
+                </button>
+                
+            </div>
+            <div class="toolbar__item flex-column">
+                <button class="btn btn--inline toolbar__btn" type="button" data-action="deleteSelected">
+                    <i data-feather="trash-2"></i>
+                    <span class="toolbar__item-label">Delete</span>
+                </button>
+            </div>
+          </div>
           <ul id="inbox" class="todo-list is-active-list" data-name="inbox">
           </ul>
           <ul id="filteredList" class="todo-list" data-name="filteredList">
@@ -154,6 +174,36 @@
             <!--/ #editListFormWrapper-->
           </div>
           <!--/ #editListFormContainer-->
+
+          <div id="transferTasksFormContainer" class="transfer-tasks-form__container modal">
+              <div id="transferTasksFormWrapper" class="transfer-tasks-form__wrapper modal__content">
+                <button type="button" class="form__btn--icon modal__btn--close modal__icon-btn--close" data-action="closeModal">
+                  <i data-feather="x"></i>
+                </button>
+                <h2 class="form__title">Move tasks to</h2>
+                <form id="transferTasksForm" class="form transfer-tasks-form">
+
+                  <fieldset class="form__fieldset" id="fieldsetLists">
+                      <input type="radio" id="list--inbox" name="list" value="inbox">
+                      <label class="form__label--list" for="list--inbox">Inbox</label>
+                    </fieldset>
+                
+                <div class="form__form-group--inline transfer-tasks-form__form-group--inline">
+                  <input type="radio" name="list" id="listNew" value="new" />
+                  <button id="createListBtn" type="button" class="btn form__btn form__btn--sm form__btn--neutral cross-icon cross-icon--dk btn--inline"
+                    data-action="createList"></button>
+                  <input id="newListInput" class="form__input form__input--inline transfer-tasks-form__input" data-action="openListForm" type="text" placeholder="Create new list"
+                  />
+                </div>
+                  <button id="btnTransferTasks" type="submit" class="btn btn--primary form__btn" data-action="transferTasks">Done</button>
+                  <button type="button" class="btn btn--neutral form__btn modal__btn--close" data-action="closeForm">
+                    Cancel
+                  </button>
+                </form>
+              </div>
+              <!--/ #editListFormWrapper-->
+            </div>
+            <!--/ #editListFormContainer-->
 
         <div id="todoContent" class="todo-content clearfix">
           <form id="editTodoForm" class="form edit-todo-form" data-index="">

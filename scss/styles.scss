@@ -8,6 +8,7 @@
 @import "components/search.scss";
 @import "components/sidebar.scss";
 @import "components/tags.scss";
+@import "components/toolbars.scss";
 @import "components/tooltips.scss";
 
 @import "modules/app-base.scss";
@@ -17,5 +18,7 @@
 @import "modules/header.scss";
 @import "modules/app-main.scss";
 @import "modules/new-list-form.scss";
+@import "modules/bulk-editing.scss";
+@import "modules/transfer-tasks-form.scss";
 
 @import "base/utilities.scss";

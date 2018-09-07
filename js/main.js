@@ -260,7 +260,7 @@
         return `<li class= ${
           item.done ? "todo-list__item is-done" : "todo-list__item"
         } data-index="${i}" id="${item.id}">
-<input type="checkbox" id="item-${i}" name="item-${i}" data-index="${i}" value="${
+<input type="checkbox" id="item-${i}" data-index="${i}" value="${
           item.text
         }" ${item.done ? "checked" : ""} />
 <label for ="item-${i}" class="todo-list__checkbox"></label>
@@ -379,13 +379,15 @@
 
   // Updates todo object's `done` property to reflect current `checked` state
   function toggleDone(e) {
+
     let el = e.target;
-    if (!el.classList.contains("todo-list__checkbox")) return;
+    if (!el.classList.contains("todo-list__checkbox") || el.classList.contains('bulk-editing__checkbox')) return;
 
     let id = el.parentNode.id; // ID of list item
     if (state.activeList === null) {
       state.activeList = getList(id);
     }
+
     const activeList_ul = $(".is-active-list");
     let index = state.activeList.tasks.findIndex(task => task.id === id);
     let currentTask = state.activeList.tasks.find(task => task.id === id);
@@ -393,6 +395,7 @@
       item => item.done === true
     ); // Represents index of most recently completed task
     currentTask.done = !currentTask.done; // Toggle `done` property of todo item: true becomes false; false becomes true
+    
     if (currentTask.done) {
       if (indexLastCompleted !== -1) {
         state.activeList.tasks.splice(
@@ -411,6 +414,7 @@
         state.activeList.tasks.splice(index, 1)[0]
       ); // Move task reverted to incomplete to the bottom of all unfinished tasks (and to  the top of the entire todo list, if there are none)
     }
+
     localStorage.setItem("todoLists", JSON.stringify(todoLists));
     todoContent.classList.remove("is-visible");
     divTodoApp.appendChild(todoContent);
@@ -432,7 +436,7 @@
   // Updates subtask object's `done` property to reflect current `checked` state
   function toggleComplete(e) {
     if (!e.target.classList.contains("subtask-list__checkbox")) return;
-    let id = e.currentTarget.parentNode.dataset.id;
+    let id = formEditTodo.dataset.id;
     let todoIndex = state.activeList.tasks.findIndex(task => task.id === id);
     let currentTask = state.activeList.tasks.find(task => task.id === id);
     let subtaskIndex = e.target.dataset.subIndex;
@@ -570,8 +574,8 @@
   }
 
   function toggleContent(e) {
-    e.preventDefault();
     if (!(e.target.dataset.action === "toggleContent")) return;
+    e.preventDefault();
     let todoItem = e.currentTarget;
     let id = todoItem.id;
     let tagLabels = todoItem.querySelector(".todo-item__tag-labels");
@@ -622,6 +626,11 @@
     let currentTasksList =
       state.filteredList === null ? state.activeList.tasks : state.filteredList;
     populateList(currentTasksList, activeList_ul);
+  }
+
+  function deleteTask(listObj, taskId) {
+    let taskIndex = listObj.tasks.findIndex(task => task.id === taskId);
+    listObj.tasks.splice(taskIndex, 1);
   }
 
   function filterTag(tag) {
@@ -677,8 +686,8 @@
   }
 
   function addTag(e) {
-    e.preventDefault();
     if (e.target.dataset.action !== "addTag" && $('#newTagInput').value === "") return;
+    e.preventDefault();
     let tagsContainer = $("#tagsContainer");
     let newTagInput = $('#newTagInput');
     let id = formEditTodo.dataset.id;
@@ -996,6 +1005,7 @@
     });
     list_ul.addEventListener("click", toggleDone);
     $("#main").insertBefore(list_ul, $("#views"));
+    renderListOption(listObj)
   }
 
   // Sidebar accordion
@@ -1155,27 +1165,47 @@
   }
 
   function renderFolderOption(text) {
-    let folderRadio_input = createNode("input", {
+    const folderRadio = createNode("input", {
       type: "radio",
       id: `folder--${camelCased(text)}`,
       name: "folder",
       value: text
     });
-    let iFolderIcon = createNode("i", {
+    const folderIcon = createNode("i", {
       "data-feather": "folder"
     });
-    let folderLabel_label = createNode(
+    const folderLabel = createNode(
       "label",
       {
         class: "form__label--folder",
         for: `folder--${camelCased(text)}`
       },
-      iFolderIcon,
+      folderIcon,
       text
     );
-    let customFolders = $("#fieldsetFolders .custom-folders");
-    customFolders.appendChild(folderRadio_input);
-    customFolders.appendChild(folderLabel_label);
+    const customFolders = $("#fieldsetFolders .custom-folders");
+    customFolders.appendChild(folderRadio);
+    customFolders.appendChild(folderLabel);
+  }
+
+  function renderListOption(listObj) {
+    const listRadio = createNode("input", {
+      type: "radio",
+      id: `list--${listObj.id}`,
+      name: "list",
+      value: listObj.id
+    });
+    const listLabel = createNode(
+      "label",
+      {
+        class: "form__label--list",
+        for: `list--${listObj.id}`
+      },
+      listObj.name
+    );
+    const fieldsetLists = $('#fieldsetLists');
+    fieldsetLists.appendChild(listRadio);
+    fieldsetLists.appendChild(listLabel);
   }
 
   function addList(e) {
@@ -1185,7 +1215,7 @@
       let checkedRadio = $('input[name="folder"]:checked').value;
       let selectedFolder =
         checkedRadio === "new" ? $("#newFolderInput").value : checkedRadio;
-      let newList = new List(newListName, selectedFolder);
+      const newList = new List(newListName, selectedFolder);
       todoLists.push(newList);
       createList(newList);
       // Creates new folder accordion element
@@ -1222,10 +1252,14 @@
          link.classList.remove('is-active');
         }
       });
-      displayList(newList);
       console.table(todoLists);
       e.currentTarget.reset();
       $("#newListFormContainer").classList.remove("is-active");
+      if ($('#transferTasksFormContainer').classList.contains('is-active')) {
+        $(`input[name="list"][value=${newList.id}]`).checked = true;
+      } else {
+        displayList(newList);
+      }
     }
   }
 
@@ -1322,6 +1356,11 @@
 
     // Delete list `ul` element
     listElement.remove();
+
+    // Delete list option from transfer tasks form
+    const listRadio = $(`input[name="list"][value=${listObj.id}]`);
+    listRadio.remove();
+    $(`.form__label--list[for=${listRadio.id}]`).remove();
 
     // Reload inbox
     const inbox = todoLists.find(list => list.name === "Inbox");
@@ -1729,8 +1768,83 @@
     }
   }
 
+function openBulkEditing(e) {
+  // Hide add todo form
+  $('#addTodoForm').classList.add('is-hidden');
+   // Reveal bulk editing toolbar
+   $('#bulkEditingToolbar').classList.add('is-active');
+  // Add bulk-editing checkboxes and hide regular checkboxes for toggling completeness
+  const ulActiveList = $('.is-active-list');
+  $all('.todo-list__item', ulActiveList).forEach((x, i) => {
+    const frag = document.createDocumentFragment();
+    const checkbox = createNode('input', {type: 'checkbox', id: `bulk-item-${i}`, 'data-index': i, 'data-id': x.id, class: 'bulk-editing__checkbox'});
+    const checkboxLabel = createNode('label', {class: 'bulk-editing__checkbox-label', for: `bulk-item-${i}`});
+    frag.appendChild(checkbox);
+    frag.appendChild(checkboxLabel);
+    x.insertBefore(frag, $('input[type="checkbox"]', x));
+    $('.todo-list__checkbox', x).classList.add('is-hidden');
+  });
+}
+
+function transferTasks(e) {
+  e.preventDefault();
+  const ulActiveList = $('.is-active-list');
+  const currentListObj = state.activeList;
+  const checkedItems = $all('.bulk-editing__checkbox:checked', ulActiveList);
+  const newListId = $('input[name="list"]:checked').value;
+  const newListObj = todoLists.find(list => list.id === newListId);
+
+  // Remove tasks from current list and add to new list
+  checkedItems.forEach(item => {
+    let taskId = item.dataset.id;
+    let taskIndex = currentListObj.tasks.findIndex(task => task.id === taskId);
+    let task = currentListObj.tasks.splice(taskIndex, 1)[0];
+    newListObj.tasks.unshift(task);
+  });
+
+  localStorage.setItem("todoLists", JSON.stringify(todoLists));
+
+  // Reload current list to reflect changes
+  populateList(currentListObj.tasks, ulActiveList);
+  $('#bulkEditingToolbar').classList.remove('is-active');
+}
+
+function deleteSelected(e) {
+  e.preventDefault();
+  const ulActiveList = $('.is-active-list');
+  const currentListObj = state.activeList;
+  const checkedItems = $all('.bulk-editing__checkbox:checked', ulActiveList);
+  checkedItems.forEach(item => {
+    deleteTask(currentListObj, item.dataset.id);
+  });
+  localStorage.setItem("todoLists", JSON.stringify(todoLists));
+  populateList(currentListObj.tasks, ulActiveList);
+  $('#bulkEditingToolbar').classList.remove('is-active');
+}
+
 
   // Event Listeners
+
+  $('#transferTasksForm').addEventListener('submit', transferTasks);
+
+  $('#newListInput').addEventListener("click", e => {
+    $('input[id="listNew"]').checked = true;
+  });
+
+  $('#bulkEditingToolbar').addEventListener('click', (e) => {
+    let el = e.target;
+    if (el.dataset.action === "transferSelected") {
+      $('#transferTasksFormContainer').classList.add('is-active');
+    } else if (el.dataset.action === 'deleteSelected') {
+      deleteSelected(e);
+    }
+  });
+
+  $('#masterCheckbox').addEventListener('change', (e) => {
+    const checkedState = e.currentTarget.checked;
+    const ulActiveList = $('.is-active-list');
+    $all('.bulk-editing__checkbox', ulActiveList).forEach(x => x.checked = checkedState);
+  });
 
 $('#btnDeleteList').addEventListener('click', (e) => {
   deleteList(state.activeList);
@@ -1743,6 +1857,8 @@ $("#listActionsWrapper").addEventListener('click', (e) => {
 
   if (e.target === $("#btnEditList")) {
     prepEditListForm(e);
+  } else if (e.target === $('#btnOpenBulkEditing')) {
+    openBulkEditing(e);
   }
     e.currentTarget.classList.remove('show-actions');
 });
@@ -1900,15 +2016,21 @@ $('#todoItemNote').addEventListener('change', addNote);
     }
   });
 
-  $("#openListFormBtn").addEventListener("click", e => {
+  $all("[data-action='openListForm']").forEach(btn => {
+    btn.addEventListener("click", e => {
     if (!formNewList.contains(fieldsetFolders)) {
       formNewList.insertBefore(fieldsetFolders, $('#addListBtn'));
     }
     $("#newListFormContainer").classList.add("is-active");
+    $('#newListNameInput').focus();
     if (document.documentElement.clientWidth < 768) {
       $('#siteWrapper').classList.remove('show-nav');
     };
   });
+});
+
+
+
   formNewList.addEventListener("submit", addList);
   inputNewFolder.addEventListener("click", e => {
     let newFolderRadio = $('input[id="folderNew"]');

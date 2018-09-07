@@ -253,7 +253,7 @@
   color: $dk-grey;
   .due-date-text {
     line-height: 40px;
-      color: $dk-green;
+      color: rgba($dk-grey, 0.6);
   }
   &.show-input {
     .feather {
@@ -275,23 +275,23 @@
   }
   &.has-due-date {
     &::before {
-      content: 'Due';
+      content: 'Due Date';
       position: absolute;
       font-size: 10px;
       display: block;
-      top: 4px;
+      top: -5px;
       height: 10px;
       line-height: 10px;
-      left: calc(50% - 10px);
+      left: calc(50% - 28px);
       padding: 0;
-      width: 20px;
+      width: 56px;
+      background-color: $white;
       color: rgba($dk-grey, 0.6);
       letter-spacing: 0.05em;
       font-weight: 700;
     }
     .due-date-text {
-      position: relative;
-      top: 4px;
+      color: $dk-green;
     }
   }
 }

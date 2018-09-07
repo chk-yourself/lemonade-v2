@@ -1,0 +1,29 @@
+.form__label--list {
+  vertical-align: middle;
+  padding: 8px 0 8px 16px;
+  width: calc(100% - 24px);
+  font-size: 16px;
+  display: inline-block;
+  font-family: $body-font;
+  .feather {
+    margin-right: 10px;
+  }
+  &:focus {
+    outline: none;
+  }
+}
+
+input[name="list"] {
+  position: absolute;
+  visibility: hidden;
+  display: none;
+  &:checked + label {
+    font-weight: 700;
+    position: relative;
+    display: block;
+  }
+  &:checked + label::after {
+    border-color: $primary-color;
+    left: 0;
+  }
+}
