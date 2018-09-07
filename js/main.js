@@ -1834,10 +1834,15 @@ function deleteSelected(e) {
 
   $('#bulkEditingToolbar').addEventListener('click', (e) => {
     let el = e.target;
+    const ulActiveList = $('.is-active-list');
+  const currentListObj = state.activeList;
     if (el.dataset.action === "transferSelected") {
       $('#transferTasksFormContainer').classList.add('is-active');
     } else if (el.dataset.action === 'deleteSelected') {
       deleteSelected(e);
+    } else if (el.dataset.action === 'closeBulkEditingToolbar') {
+      $('#bulkEditingToolbar').classList.remove('is-active');
+      populateList(currentListObj.tasks, ulActiveList);
     }
   });
 
