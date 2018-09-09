@@ -2136,7 +2136,7 @@ input[type="search"].search-form__input {
 }
 
 .new-list-form__container {
-  z-index: 9999;
+  z-index: 99;
 }
 
 .form__input--list-name {

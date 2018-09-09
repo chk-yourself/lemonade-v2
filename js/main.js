@@ -2160,15 +2160,16 @@ $('#todoItemNote').addEventListener('change', addNote);
 
   $all("[data-action='openListForm']").forEach(btn => {
     btn.addEventListener("click", e => {
-      e.preventDefault();
+      if (document.documentElement.clientWidth < 768) {
+        $('#siteWrapper').classList.remove('show-nav');
+      };
     if (!formNewList.contains(fieldsetFolders)) {
       formNewList.insertBefore(fieldsetFolders, $('#addListBtn'));
-    }
-    if (document.documentElement.clientWidth < 768) {
-      $('#siteWrapper').classList.remove('show-nav');
     };
     $("#newListFormContainer").classList.add("is-active");
-    $('#newListNameInput').focus();
+    window.setTimeout(() => {
+      $('#newListNameInput').focus();
+    }, 100);
   });
 });
 
