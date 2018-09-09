@@ -1884,7 +1884,7 @@ function hideComponents(e) {
   }
 
   // Hides searchBar input
-  if (searchBar.classList.contains('is-expanded') && (searchInput.value === "" && e.target !== searchBar && !searchBar.contains(e.target) || e.target.classList.contains('sidebar__link'))) {
+  if (searchBar.classList.contains('is-expanded') && (searchInput.value === "" && e.target !== searchBar && !searchBar.contains(e.target) || e.target.classList.contains('sidebar__link') || e.target.classList.contains('breadcrumb__link'))) {
     formSearch.reset();
     searchBar.classList.remove('is-expanded');
   }
