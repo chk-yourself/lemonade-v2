@@ -85,6 +85,14 @@ button {
   box-shadow: none;
 }
 
+.btn--warning {
+  background: transparent; 
+  color: $red;
+  font-weight: 500;
+  border-radius: 4px;
+  box-shadow: none;
+}
+
 .todo-content .btn--primary {
   margin-right: 11px;
 }

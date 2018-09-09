@@ -1387,9 +1387,16 @@
     // Reload inbox
     const inbox = todoLists.find(list => list.name === "Inbox");
     displayList(inbox);
+
+    if ($('#warningAlertDeleteList').classList.contains('is-active')) {
+      $('#warningAlertDeleteList').classList.remove('is-active');
+    }
   }
 
   function displayList(listObj) {
+    if ($('#bulkEditingToolbar').classList.contains('is-active')) {
+      $('#bulkEditingToolbar').classList.remove('is-active');
+    }
 
     $("#activeListTitle").textContent = listObj.name;
     let list_ul = $(`#${listObj.id}`);
@@ -1942,15 +1949,27 @@ $("#listActionsWrapper").addEventListener('click', (e) => {
 
   if (!e.target.classList.contains('more-actions__item')) return;
 
-  if (e.target === $("#btnEditList")) {
-    prepEditListForm(e);
-  } else if (e.target === $('#btnOpenBulkEditing')) {
-    openBulkEditing(e);
-  } else if (e.target === $("#clearAllBtn")) {
-    clearAll(e);
+  const action = e.target.dataset.action;
+
+  switch (action) {
+    case "editList":
+      prepEditListForm(e);
+      break;
+    case "openBulkEditing":
+      openBulkEditing(e);
+      break;
+    case "clearAll":
+      $('#warningAlertClearAll').classList.add('is-active');
+      break;
+    case "deleteList":
+      $('#warningAlertDeleteList .list-name').textContent = state.activeList.name;
+      $('#warningAlertDeleteList').classList.add('is-active');
+      break;
   }
     e.currentTarget.classList.remove('show-actions');
 });
+
+$('#clearAllBtn').addEventListener('click', clearAll);
 
   $all('.more-actions__btn--toggle').forEach(btn => {
     btn.addEventListener('click', (e) => {

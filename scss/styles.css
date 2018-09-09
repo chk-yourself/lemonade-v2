@@ -167,6 +167,15 @@ button .feather {
           box-shadow: none;
 }
 
+.btn--warning {
+  background: transparent;
+  color: #f2002e;
+  font-weight: 500;
+  border-radius: 4px;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
 .todo-content .btn--primary {
   margin-right: 11px;
 }
@@ -502,12 +511,57 @@ label.subtask-list__checkbox:before {
   }
 }
 
+.modal__content--sm {
+  width: 300px;
+}
+
+@media (min-width: 768px) {
+  .modal__content--sm {
+    left: calc(50% - 150px);
+  }
+}
+
 .modal__icon-btn--close {
   position: absolute;
   top: 16px;
   right: 16px;
   padding: 8px;
   z-index: 99;
+}
+
+.modal__btn {
+  background: transparent;
+  color: #404551;
+  font-weight: 700;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+.modal__btn:hover, .modal__btn:active {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  color: #638eff;
+}
+
+.modal__title {
+  margin-bottom: 24px;
+  font-weight: 700;
+}
+
+.modal__btn--warning:hover, .modal__btn--warning:active {
+  color: #f2002e;
+}
+
+.warning-alert__msg {
+  margin-bottom: 16px;
+}
+
+.warning-alert__msg .list-name {
+  font-weight: 700;
+}
+
+.warning-alert .modal__btn {
+  float: right;
 }
 
 .search-bar {

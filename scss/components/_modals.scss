@@ -35,10 +35,52 @@
   }
 }
 
+.modal__content--sm {
+  width: 300px;
+  @include md {
+    left: calc(50% - 150px);
+  }
+}
+
 .modal__icon-btn--close {
   position: absolute;
   top: 16px;
   right: 16px;
   padding: 8px;
   z-index: 99;
+}
+
+.modal__btn {
+    background: transparent;
+    color: $dk-grey;
+    font-weight: 700;
+    box-shadow: none;
+    &:hover, &:active {
+      box-shadow: none;
+      color: $primary-color;
+    }
+}
+
+.modal__title {
+  margin-bottom: 24px;
+  font-weight: 700;
+}
+
+.modal__btn--warning {
+  &:hover, &:active {
+    color: $red;
+  }
+}
+
+.warning-alert__msg {
+  margin-bottom: 16px;
+  .list-name {
+    font-weight: 700;
+  }
+}
+
+.warning-alert {
+  .modal__btn {
+    float: right;
+  }
 }
