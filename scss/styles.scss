@@ -2,20 +2,22 @@
 @import "base/mixins.scss";
 @import "base/global.scss";
 
+@import "components/badges.scss";
 @import "components/buttons.scss";
 @import "components/forms.scss";
 @import "components/modals.scss";
 @import "components/search.scss";
-@import "components/sidebar.scss";
 @import "components/tags.scss";
 @import "components/toolbars.scss";
 @import "components/tooltips.scss";
+@import "components/breadcrumbs.scss";
 
 @import "modules/app-base.scss";
 @import "modules/color-picker.scss";
 @import "modules/content.scss";
 @import "modules/date-picker.scss";
 @import "modules/header.scss";
+@import "modules/sidebar.scss";
 @import "modules/app-main.scss";
 @import "modules/new-list-form.scss";
 @import "modules/bulk-editing.scss";

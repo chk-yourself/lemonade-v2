@@ -1,0 +1,16 @@
+.breadcrumb {
+  position: absolute;
+  top: -16px;
+  left: 0;
+  display: block;
+  font-size: 10.5px;
+  padding: 0 6px;
+  letter-spacing: .03em;
+  color: rgba($grey, 0.6);
+  font-style: italic;
+}
+
+.breadcrumb__list {
+  color: $grey;
+  font-style: normal;
+}

@@ -1,0 +1,21 @@
+.badge--due-date {
+  position: absolute;
+  bottom: 2px;
+  left: 42px;
+  display: block;
+  font-size: 10.5px;
+  padding: 0 6px;
+  letter-spacing: .03em;
+  color: rgba($dk-grey, 0.4);
+  &.is-hidden {
+    display: none;
+  }
+}
+
+.badge--today {
+  color: $red;
+}
+
+.badge--tomorrow {
+  color: $primary-color;
+}

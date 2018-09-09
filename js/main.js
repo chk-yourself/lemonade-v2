@@ -258,6 +258,13 @@
       todoContent.classList.remove('is-visible');
       divTodoApp.appendChild(todoContent);
     }
+
+    if (itemsList === $('#filteredList')) {
+      $('#main').classList.add('show-search-results');
+    } else {
+      $('#main').classList.remove('show-search-results');
+    }
+
     itemsList.innerHTML = itemsArray
       .map((item, i) => {
         return `<li class= ${
@@ -285,7 +292,7 @@
           "click",
           e => {
             let id = e.currentTarget.id;
-            state.activeList = getList(id);
+            state.activeList = getListByTaskId(id);
           },
           false
         );
@@ -293,7 +300,7 @@
       let itemTitle = $(".todo-item__title", itemsCollection[i]);
       itemTitle.addEventListener("click", e => {
         let id = e.currentTarget.dataset.id;
-        state.activeList = getList(id);
+        state.activeList = getListByTaskId(id);
       });
       itemTitle.addEventListener("input", renameTodo);
 
@@ -388,7 +395,7 @@
 
     let id = el.parentNode.id; // ID of list item
     if (state.activeList === null) {
-      state.activeList = getList(id);
+      state.activeList = getListByTaskId(id);
     }
 
     const activeList_ul = $(".is-active-list");
@@ -808,7 +815,7 @@
     return taskIndex;
   }
 
-  function getList(todoId) {
+  function getListByTaskId(todoId) {
     return todoLists.find(list => {
       return list.tasks.find(task => task.id === todoId);
     });
@@ -817,7 +824,7 @@
   function populateContent(e) {
     let todoItem = e.currentTarget;
     let id = todoItem.id;
-    state.activeList = getList(id);
+    state.activeList = getListByTaskId(id);
     const activeList_ul = $(".is-active-list");
     let currentTask = state.activeList.tasks.find(task => task.id === id);
     let todoIndex = state.activeList.tasks.findIndex(task => task.id === id); // index of todo object with matching ID in TODOS array
@@ -921,7 +928,6 @@
     e.preventDefault();
     let query = inputSearch.value.toLowerCase();
     if (query !== "") {
-      console.log(query);
       let filteredArray = todoLists.reduce((acc, list) => {
         return acc.concat(
           list.tasks.filter(todo => {
@@ -939,9 +945,18 @@
         );
       }, []);
       populateList(filteredArray, $("#filteredList"));
+
+      $all('.todo-list__item', $('#filteredList')).forEach(item => {
+        const list = getListByTaskId(item.id);
+        const folderName = list.folder !== "null" ? list.folder + " > ": "";
+        const listName = createNode('span', {class: 'breadcrumb__list'}, list.name);
+        const breadcrumb = createNode('div', {class: 'breadcrumb'}, folderName, listName);
+        item.appendChild(breadcrumb);
+      });
+
       $(".is-active-list").classList.remove("is-active-list");
       $("#filteredList").classList.add("is-active-list");
-      $("#activeListTitle").textContent = "Search Results";
+      $("#activeListTitle").innerHTML = `${filteredArray.length} search results for <strong>${query}</strong>`;
       formAddTodo.classList.add("is-hidden");
       state.activeList = null;
       state.filteredList = filteredArray;
@@ -1148,7 +1163,6 @@
 
   function openList(e) {
     e.preventDefault();
-    formSearch.reset();
     const navLinksAll = $all(".sidebar__link");
     navLinksAll.forEach(link => {
       if (link === e.target) {
@@ -1758,6 +1772,7 @@
     if (!searchBar.classList.contains('is-expanded')) {
      e.preventDefault();
       searchBar.classList.add('is-expanded');
+      $('#searchInput').focus();
     } else if (searchBar.classList.contains('is-expanded') && searchInput.value == "") {
       searchBar.classList.remove('is-expanded');
     }
@@ -1868,7 +1883,8 @@ function hideComponents(e) {
   }
 
   // Hides searchBar input
-  if (searchBar.classList.contains('is-expanded') && searchInput.value === "" && e.target !== searchBar && !searchBar.contains(e.target)) {
+  if (searchBar.classList.contains('is-expanded') && (searchInput.value === "" && e.target !== searchBar && !searchBar.contains(e.target) || e.target.classList.contains('sidebar__link'))) {
+    formSearch.reset();
     searchBar.classList.remove('is-expanded');
   }
 

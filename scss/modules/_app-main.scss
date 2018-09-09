@@ -170,6 +170,7 @@
 
 .active-list__title {
   margin-bottom: 24px;
+  font-size: 1.75rem;
 }
 
 .todo-app__main {
@@ -181,6 +182,19 @@
   @include lg {
     padding: 24px 32px 32px;
   }
+  &.show-search-results {
+    .active-list__title {
+      font-size: 1.25rem;
+      font-weight: 400;
+    }
+    .todo-list__item {
+      margin: 24px 0;
+    }
+  }
+}
+
+.filtered-list {
+  padding-top: 2px;
 }
 
 .add-todo-form {
