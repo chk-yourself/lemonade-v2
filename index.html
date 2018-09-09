@@ -58,13 +58,13 @@
               <i data-feather="more-vertical"></i>
             </button>
             <div class="more-actions list-actions" id="listActions">
-              <button type="button" class="btn btn--neutral more-actions__item" id="btnEditList" data-action="editList">
+              <button type="button" class="btn btn--neutral more-actions__item" id="btnEditList" data-required="custom-list" data-action="editList">
                 Edit List
               </button>
               <button type="button" class="btn btn--neutral more-actions__item" id="btnOpenBulkEditing" data-action="openBulkEditing">
                 Bulk Actions
               </button>
-              <button type="button" class="btn btn--neutral more-actions__item" data-action="deleteList">
+              <button type="button" class="btn btn--neutral more-actions__item" id="btnTriggerAlertWarningDeleteList" data-required="custom-list" data-action="deleteList">
                 Delete List
               </button>
               <button type="button" class="btn btn--neutral more-actions__item" data-action="clearAll">Clear All</button>
@@ -210,23 +210,23 @@
               <!--/ #editListFormWrapper-->
             </div>
             <!--/ #editListFormContainer-->
-        <div class="warning-alert modal" id="warningAlertClearAll">
+        <div class="alert-warning modal" id="alertWarningClearAll">
           <div class="modal__content modal__content--sm clearfix">
-            <h3 class="modal__title">Are you sure?</h3>
-            <p class="warning-alert__msg">All items will be deleted forever.</p>
-            <button type="button" class="btn modal__btn modal__btn--warning form__btn" id="clearAllBtn" data-action="clearAll">Clear All</button>
-            <button type="button" class="btn form__btn modal__btn modal__btn--close" data-action="closeModal">
+            <h3 class="alert__title">Are you sure?</h3>
+            <p class="alert__msg">All items will be deleted forever.</p>
+            <button type="button" class="btn modal__btn alert__btn alert-warning__btn form__btn" id="clearAllBtn" data-action="clearAll">Clear All</button>
+            <button type="button" class="btn form__btn alert__btn modal__btn--close" data-action="closeModal">
                 Cancel
             </button>
           </div>
         </div>
 
-        <div class="warning-alert modal" id="warningAlertDeleteList">
+        <div class="alert-warning modal" id="alertWarningDeleteList">
             <div class="modal__content modal__content--sm clearfix">
-              <h3 class="modal__title">Are you sure?</h3>
-              <p class="warning-alert__msg"><span class="list-name"></span> will be deleted forever.</p>
-              <button type="button" class="btn modal__btn modal__btn--warning form__btn" id="btnDeleteList" data-action="deleteList">Delete list</button>
-              <button type="button" class="btn form__btn modal__btn modal__btn--close" data-action="closeModal">
+              <h3 class="alert__title">Are you sure?</h3>
+              <p class="alert__msg"><span class="list-name"></span> will be deleted forever.</p>
+              <button type="button" class="btn modal__btn alert__btn alert-warning__btn form__btn" id="btnDeleteList" data-action="deleteList">Delete list</button>
+              <button type="button" class="btn form__btn alert__btn modal__btn modal__btn--close" data-action="closeModal">
                   Cancel
               </button>
             </div>

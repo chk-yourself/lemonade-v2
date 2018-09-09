@@ -394,6 +394,7 @@
     if (!el.classList.contains("todo-list__checkbox") || el.classList.contains('bulk-editing__checkbox')) return;
 
     let id = el.parentNode.id; // ID of list item
+
     if (state.activeList === null) {
       state.activeList = getListByTaskId(id);
     }
@@ -430,15 +431,25 @@
     divTodoApp.appendChild(todoContent);
     let currentTasksList =
       state.filteredList === null ? state.activeList.tasks : state.filteredList;
-    let activeTodos = currentTasksList.filter(task => !task.done);
-    let completedTodos = currentTasksList.filter(task => task.done);
+    const activeFilter = (task) => !task.done;
+    const completedFilter = (task) => task.done;
+      const filteredArray = (arr, callback) => arr.reduce((acc, list) => {
+      const filteredTasks = list.filter(callback);
+      if (filteredTasks.length > 0) {
+        acc.push(filteredTasks);
+      }
+      return acc;
+    }, []);
+    let activeTodos = Array.isArray(currentTasksList[0]) ? filteredArray(currentTasksList, activeFilter) : currentTasksList.filter(task => !task.done);
+    console.log(activeTodos);
+    let completedTodos = Array.isArray(currentTasksList[0]) ? filteredArray(currentTasksList, completedFilter) : currentTasksList.filter(task => task.done);
     let action = divViews.querySelector(".is-selected").dataset.action;
     if (action === "viewActive") {
-      populateList(activeTodos, activeList_ul);
+      renderList(activeTodos, activeList_ul);
     } else if (action === "viewCompleted") {
-      populateList(completedTodos, activeList_ul);
+      renderList(completedTodos, activeList_ul);
     } else {
-      populateList(currentTasksList, activeList_ul);
+      renderList(currentTasksList, activeList_ul);
     }
     console.table(todoLists);
   }
@@ -603,9 +614,6 @@
       let tags = todoContent.querySelectorAll("#tagsContainer .tag");
       tags.forEach(x => x.remove());
       divTodoApp.appendChild(todoContent); // Detaches edit form from list item
-      if (state.filteredList !== null) {
-        populateList(state.filteredList, $("#filteredList"));
-      }
     } else {
       todoItem.appendChild(todoContent);
       $('#dueDateWrapper').classList.remove('has-due-date');
@@ -635,7 +643,7 @@
     localStorage.setItem("todoLists", JSON.stringify(todoLists));
     let currentTasksList =
       state.filteredList === null ? state.activeList.tasks : state.filteredList;
-    populateList(currentTasksList, activeList_ul);
+    renderList(currentTasksList, activeList_ul);
   }
 
   function deleteTask(listObj, taskId) {
@@ -896,18 +904,28 @@
     const activeList_ul = $(".is-active-list");
     let currentTasksList =
       state.filteredList !== null ? state.filteredList : state.activeList.tasks;
-    let activeTodos = currentTasksList.filter(task => !task.done);
-    let completedTodos = currentTasksList.filter(task => task.done);
+
+      const activeFilter = (task) => !task.done;
+      const completedFilter = (task) => task.done;
+        const filteredArray = (arr, callback) => arr.reduce((acc, list) => {
+        const filteredTasks = list.filter(callback);
+        if (filteredTasks.length > 0) {
+          acc.push(filteredTasks);
+        }
+        return acc;
+      }, []);
+      let activeTodos = Array.isArray(currentTasksList[0]) ? filteredArray(currentTasksList, activeFilter) : currentTasksList.filter(task => !task.done);
+      let completedTodos = Array.isArray(currentTasksList[0]) ? filteredArray(currentTasksList, completedFilter) : currentTasksList.filter(task => task.done);
     let action = e.target.dataset.action;
     switch (action) {
       case "viewAll":
-        populateList(currentTasksList, activeList_ul);
+        renderList(currentTasksList, activeList_ul);
         break;
       case "viewActive":
-        populateList(activeTodos, activeList_ul);
+        renderList(activeTodos, activeList_ul);
         break;
       case "viewCompleted":
-        populateList(completedTodos, activeList_ul);
+        renderList(completedTodos, activeList_ul);
         break;
     }
     const viewBtns = divViews.querySelectorAll(".views__btn");
@@ -934,7 +952,7 @@
 
   /**
    * Filters and renders todo items that match the provided query string
-   */
+   
   function filterTasks(e) {
     e.preventDefault();
     let query = inputSearch.value.toLowerCase();
@@ -969,6 +987,65 @@
       inputSearch.blur();
     }
   }
+*/
+
+function renderList(itemsArray, itemsList) {
+  if (Array.isArray(itemsArray[0])) {
+    itemsList.innerHTML = '';
+    itemsArray.forEach((list) => {
+    const listName = getListByTaskId(list[0].id).name;
+    // Create sub-list
+    const ulSubList = createNode('ul', {class: 'filtered-list__sub-list'});
+    // Create filtered list item
+    const liSubListName = createNode('li', {class: 'filtered-list__sub-list-name'}, listName, ulSubList);
+    // Populate tasks for each sub-list
+    populateList(list, ulSubList);
+    itemsList.appendChild(liSubListName);
+  });
+  } else {
+    populateList(itemsArray, itemsList);
+  }
+}
+
+function filterTasks(e) {
+  e.preventDefault();
+  let query = inputSearch.value.toLowerCase();
+  if (query !== "") {
+    let filteredArray = todoLists.reduce((acc, list) => {
+      const filteredTasks = list.tasks.filter(todo => {
+        return Object.keys(todo).some(key => {
+          if (typeof todo[key] === "string") {
+            return todo[key].toLowerCase().includes(query);
+          }
+          if (Array.isArray(todo[key])) {
+            return todo[key].some(item => {
+              return item.text.toLowerCase().includes(query);
+            });
+          }
+        });
+      });
+      if (filteredTasks.length > 0) {
+        acc.push(filteredTasks);
+      }
+      return acc;
+    }, []);
+
+    const ulFilteredList = $('#filteredList');
+
+    renderList(filteredArray, ulFilteredList);
+
+    const taskCount = filteredArray.reduce((acc, list) => {
+      return acc.concat(list);
+    }, []).length;
+    $(".is-active-list").classList.remove("is-active-list");
+    ulFilteredList.classList.add("is-active-list");
+    $("#activeListTitle").innerHTML = `${taskCount} search result(s) for <strong>${query}</strong>`;
+    formAddTodo.classList.add("is-hidden");
+    state.activeList = null;
+    state.filteredList = filteredArray;
+    inputSearch.blur();
+  }
+}
 
   function filterTasksDueToday(e) {
     e.preventDefault();
@@ -1388,8 +1465,8 @@
     const inbox = todoLists.find(list => list.name === "Inbox");
     displayList(inbox);
 
-    if ($('#warningAlertDeleteList').classList.contains('is-active')) {
-      $('#warningAlertDeleteList').classList.remove('is-active');
+    if ($('#alertWarningDeleteList').classList.contains('is-active')) {
+      $('#alertWarningDeleteList').classList.remove('is-active');
     }
   }
 
@@ -1794,6 +1871,14 @@
     }
   }
 
+  function enableBulkActions(e) {
+    const ulActiveList = $('.is-active-list');
+    const checkedItems = $all('.bulk-editing__checkbox:checked', ulActiveList);
+    if (checkedItems.length === 0) {
+      // Disable bulk editing buttons
+    }
+  }
+
 function openBulkEditing(e) {
   // Hide add todo form
   $('#addTodoForm').classList.add('is-hidden');
@@ -1812,12 +1897,15 @@ function openBulkEditing(e) {
     x.insertBefore(frag, $('input[type="checkbox"]', x));
     $('.todo-list__checkbox', x).classList.add('is-hidden');
   });
+  ulActiveList.addEventListener('click', enableBulkActions);
+  // TODO: remove event listener!!!!!
 }
 
 function transferTasks(e) {
   e.preventDefault();
   const ulActiveList = $('.is-active-list');
-  const currentListObj = state.activeList;
+  let currentTasksList =
+      state.filteredList === null ? state.activeList.tasks : state.filteredList;
   const checkedItems = $all('.bulk-editing__checkbox:checked', ulActiveList);
   const newListId = $('input[name="list"]:checked').value;
   const newListObj = todoLists.find(list => list.id === newListId);
@@ -1825,15 +1913,16 @@ function transferTasks(e) {
   // Remove tasks from current list and add to new list
   checkedItems.forEach(item => {
     let taskId = item.dataset.id;
-    let taskIndex = currentListObj.tasks.findIndex(task => task.id === taskId);
-    let task = currentListObj.tasks.splice(taskIndex, 1)[0];
+    let listObj = getListByTaskId(taskId);
+    let taskIndex = listObj.tasks.findIndex(task => task.id === taskId);
+    let task = listObj.tasks.splice(taskIndex, 1)[0];
     newListObj.tasks.unshift(task);
   });
 
   localStorage.setItem("todoLists", JSON.stringify(todoLists));
 
   // Reload current list to reflect changes
-  populateList(currentListObj.tasks, ulActiveList);
+  renderList(currentTasksList, ulActiveList);
   $('#bulkEditingToolbar').classList.remove('is-active');
   $('#transferTasksFormContainer').classList.remove('is-active');
 }
@@ -1841,13 +1930,15 @@ function transferTasks(e) {
 function deleteSelected(e) {
   e.preventDefault();
   const ulActiveList = $('.is-active-list');
-  const currentListObj = state.activeList;
+  let currentTasksList =
+      state.filteredList === null ? state.activeList.tasks : state.filteredList;
   const checkedItems = $all('.bulk-editing__checkbox:checked', ulActiveList);
   checkedItems.forEach(item => {
-    deleteTask(currentListObj, item.dataset.id);
+    listObj = getListByTaskId(item.dataset.id);
+    deleteTask(listObj, item.dataset.id);
   });
   localStorage.setItem("todoLists", JSON.stringify(todoLists));
-  populateList(currentListObj.tasks, ulActiveList);
+  renderList(currentTasksList, ulActiveList);
   $('#bulkEditingToolbar').classList.remove('is-active');
 }
 
@@ -1923,7 +2014,7 @@ function hideComponents(e) {
   $('#bulkEditingToolbar').addEventListener('click', (e) => {
     let el = e.target;
     const ulActiveList = $('.is-active-list');
-  const currentListObj = state.activeList;
+    const currentListObj = state.activeList;
     if (el.dataset.action === "transferSelected") {
       $('#transferTasksFormContainer').classList.add('is-active');
     } else if (el.dataset.action === 'deleteSelected') {
@@ -1931,6 +2022,7 @@ function hideComponents(e) {
     } else if (el.dataset.action === 'closeBulkEditingToolbar') {
       $('#bulkEditingToolbar').classList.remove('is-active');
       populateList(currentListObj.tasks, ulActiveList);
+      $('#addTodoForm').classList.remove('is-hidden');
     }
   });
 
@@ -1959,11 +2051,11 @@ $("#listActionsWrapper").addEventListener('click', (e) => {
       openBulkEditing(e);
       break;
     case "clearAll":
-      $('#warningAlertClearAll').classList.add('is-active');
+      $('#alertWarningClearAll').classList.add('is-active');
       break;
     case "deleteList":
-      $('#warningAlertDeleteList .list-name').textContent = state.activeList.name;
-      $('#warningAlertDeleteList').classList.add('is-active');
+      $('#alertWarningDeleteList .list-name').textContent = state.activeList.name;
+      $('#alertWarningDeleteList').classList.add('is-active');
       break;
   }
     e.currentTarget.classList.remove('show-actions');
@@ -1973,6 +2065,7 @@ $('#clearAllBtn').addEventListener('click', clearAll);
 
   $all('.more-actions__btn--toggle').forEach(btn => {
     btn.addEventListener('click', (e) => {
+      const moreActionsWrapper = e.currentTarget.parentNode;
     if (btn.classList.contains('list-actions__btn--toggle')) {
 
     // Prevents todoContent from being deleted if attached to list item
@@ -1980,16 +2073,16 @@ $('#clearAllBtn').addEventListener('click', clearAll);
       todoContent.classList.remove('is-visible');
       divTodoApp.appendChild(todoContent);
     }
-      
+
+    $all('button[data-required="custom-list"]', moreActionsWrapper).forEach(btn => {
       if (state.activeList === null || state.activeList.name === "Inbox") {
-        $('#btnEditList').disabled = true;
-        $('#btnDeleteList').disabled = true;
+        btn.disabled = true;
       } else {
-        $('#btnEditList').disabled = false;
-        $('#btnDeleteList').disabled = false;
-      } 
+        btn.disabled = false;
+      }
+    });
     };
-    e.currentTarget.parentNode.classList.toggle('show-actions');
+    moreActionsWrapper.classList.toggle('show-actions');
   });
 });
 

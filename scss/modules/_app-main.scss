@@ -201,3 +201,18 @@
     display: none;
   }
 }
+
+.filtered-list {
+  list-style-type: none;
+}
+.filtered-list__sub-list-name {
+  text-align: center;
+  margin-top: 16px;
+  font-family: $heading-font;
+}
+
+.filtered-list__sub-list {
+  list-style-type: none;
+  text-align: left;
+  font-family: $body-font;
+}

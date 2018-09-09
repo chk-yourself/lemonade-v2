@@ -37,6 +37,9 @@
 
 .modal__content--sm {
   width: 300px;
+  top: 10%;
+  left: calc(50% - 150px);
+  @include box-shadow(5);
   @include md {
     left: calc(50% - 150px);
   }
@@ -61,26 +64,24 @@
     }
 }
 
-.modal__title {
+.alert__title {
   margin-bottom: 24px;
   font-weight: 700;
 }
 
-.modal__btn--warning {
+.alert__btn {
+  float: right;
+}
+
+.alert-warning__btn {
   &:hover, &:active {
     color: $red;
   }
 }
 
-.warning-alert__msg {
+.alert__msg {
   margin-bottom: 16px;
   .list-name {
     font-weight: 700;
-  }
-}
-
-.warning-alert {
-  .modal__btn {
-    float: right;
   }
 }

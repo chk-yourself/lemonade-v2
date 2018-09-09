@@ -1,3 +1,11 @@
+// Floats
+.float-rt {
+  float: right;
+}
+
+.float-lt {
+  float: left;
+}
 // Clearfix
 .clearfix::after {
   content: '';
@@ -79,3 +87,4 @@
 .justify-content-center {
   justify-content: center;
 }
+
