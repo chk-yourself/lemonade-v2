@@ -949,8 +949,9 @@
       $all('.todo-list__item', $('#filteredList')).forEach(item => {
         const list = getListByTaskId(item.id);
         const folderName = list.folder !== "null" ? list.folder + " > ": "";
-        const listName = createNode('span', {class: 'breadcrumb__list'}, list.name);
-        const breadcrumb = createNode('div', {class: 'breadcrumb'}, folderName, listName);
+        const listLink = createNode('a', {class: 'breadcrumb__link', href: `#${list.id}`}, list.name);
+        listLink.addEventListener('click', openList);
+        const breadcrumb = createNode('div', {class: 'breadcrumb'}, folderName, listLink);
         item.appendChild(breadcrumb);
       });
 

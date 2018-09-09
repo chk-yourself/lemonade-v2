@@ -910,9 +910,13 @@ input[type="search"].search-form__input {
   font-style: italic;
 }
 
-.breadcrumb__list {
+.breadcrumb__link {
+  padding: 0;
   color: #565d6d;
   font-style: normal;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .site-wrapper {
