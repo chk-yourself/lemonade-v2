@@ -466,6 +466,10 @@ label.subtask-list__checkbox:before {
   display: block;
 }
 
+.form__title {
+  font-weight: 700;
+}
+
 .modal {
   padding: 24px;
   width: 100%;
