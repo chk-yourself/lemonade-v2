@@ -27,11 +27,16 @@
 input[name="folder"] {
   position: absolute;
   visibility: hidden;
+  display: none;
   &:checked + label {
     font-weight: 700;
-    .feather {
-      fill: $green;
-    }
+    position: relative;
+    display: block;
+  }
+  &:checked + label::after {
+    border-color: $primary-color;
+    left: 12px;
+    top: 30%;
   }
 }
 
@@ -41,15 +46,23 @@ input[name="folder"] {
 
 .form__label--folder {
   vertical-align: middle;
-  padding: 8px 0;
+  padding: 8px 0 8px 30px;
+  position: relative;
   width: calc(100% - 24px);
   font-size: 16px;
   display: inline-block;
   font-family: $body-font;
-  .feather {
-    margin-right: 10px;
-  }
   &:focus {
     outline: none;
+  }
+}
+
+.form__fieldset--folders {
+  .feather {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    position: relative;
+    top: -2px;
   }
 }

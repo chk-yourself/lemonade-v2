@@ -284,19 +284,19 @@
     &::before {
       content: 'Due Date';
       position: absolute;
-      font-family: $heading-font;
-      font-size: 10px;
+      font-family: $body-font;
+      font-size: 11px;
       display: block;
-      top: -5px;
-      height: 10px;
-      line-height: 10px;
+      top: -5.5px;
+      height: 11px;
+      line-height: 1;
       left: calc(50% - 28px);
       padding: 0;
       width: 56px;
       background-color: $white;
       color: rgba($dk-grey, 0.6);
-      letter-spacing: 0.05em;
-      font-weight: 700;
+      letter-spacing: 0.02em;
+      font-weight: 500;
     }
     .due-date-text {
       color: $dk-green;

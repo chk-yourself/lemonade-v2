@@ -67,6 +67,7 @@
               <button type="button" class="btn btn--neutral more-actions__item" id="btnDeleteList" data-action="deleteList">
                 Delete List
               </button>
+              <button type="button" class="btn btn--neutral more-actions__item" id="clearAllBtn" data-action="clearAll">Clear All</button>
               
             </div> <!--/ #listActions -->
             </div> <!--/ .list-actions__wrapper-->
@@ -122,7 +123,6 @@
             <button type="button" class="btn btn--neutral form__btn views__btn" data-action="viewActive">Active</button>
             <button type="button" class="btn btn--neutral form__btn views__btn" data-action="viewCompleted">Done</button>
           </div>
-          <button id="clearAllBtn" type="button" class="btn btn--neutral form__btn" data-action="clearAll">Clear All</button>
         </main>
         <!--/ todo-app__main-->
 
@@ -138,7 +138,7 @@
                 <input id="newListNameInput" class="form__input form__input--inline form__input--list-name" type="text" />
               </fieldset>
               <fieldset id="fieldsetFolders" class="form__fieldset form__fieldset--folders">
-                <p class="label--text">Folder:</p>
+                <p class="label--text"><i data-feather="folder"></i>Folder:</p>
                 <input type="radio" id="folderNone" name="folder" value="null" checked />
                 <label class="form__label--folder" for="folderNone">None</label>
                 <div class="custom-folders"></div>

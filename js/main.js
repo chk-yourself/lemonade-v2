@@ -33,7 +33,6 @@
   const ulInbox = $("#inbox");
   const ulSubtasks = $("#subtaskList");
   const divViews = $("#views");
-  const btnClearAll = $("#clearAllBtn");
   const colorPicker = $("#colorPicker");
   const formNewList = $("#newListForm");
   const fieldsetFolders = $('#fieldsetFolders');
@@ -1175,16 +1174,12 @@
       name: "folder",
       value: text
     });
-    const folderIcon = createNode("i", {
-      "data-feather": "folder"
-    });
     const folderLabel = createNode(
       "label",
       {
         class: "form__label--folder",
         for: `folder--${camelCased(text)}`
       },
-      folderIcon,
       text
     );
     const customFolders = $("#fieldsetFolders .custom-folders");
@@ -1771,6 +1766,8 @@
 function openBulkEditing(e) {
   // Hide add todo form
   $('#addTodoForm').classList.add('is-hidden');
+   // Uncheck master bulk editing checkbox
+   $('#masterCheckbox').checked = false;
    // Reveal bulk editing toolbar
    $('#bulkEditingToolbar').classList.add('is-active');
   // Add bulk-editing checkboxes and hide regular checkboxes for toggling completeness
@@ -1923,6 +1920,8 @@ $("#listActionsWrapper").addEventListener('click', (e) => {
     prepEditListForm(e);
   } else if (e.target === $('#btnOpenBulkEditing')) {
     openBulkEditing(e);
+  } else if (e.target === $("#clearAllBtn")) {
+    clearAll(e);
   }
     e.currentTarget.classList.remove('show-actions');
 });
@@ -1961,7 +1960,6 @@ searchBar.addEventListener('click', expandSearchBar);
   ulInbox.addEventListener("click", toggleDone);
   $("#filteredList").addEventListener("click", toggleDone);
   ulSubtasks.addEventListener("click", toggleComplete);
-  btnClearAll.addEventListener("click", clearAll);
   formEditTodo.addEventListener("submit", addSubtask);
   $('#btnAddSubtask').addEventListener("click", addSubtask);
   colorPicker.addEventListener("click", setTagColor);

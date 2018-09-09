@@ -106,6 +106,7 @@ input[type=text] {
   box-sizing: border-box;
   vertical-align: middle;
   opacity: 0;
+  display: none;
   cursor: pointer;
 }
 
@@ -141,7 +142,11 @@ label.todo-list__checkbox {
 }
 
 label.subtask-list__checkbox {
-  margin-right: 12px;
+  margin-right: 14px;
+  font-size: 18px;
+  line-height: 18px;
+  width: 18px;
+  height: 18px;
 }
 
 label.subtask-list__checkbox:before {
@@ -150,12 +155,12 @@ label.subtask-list__checkbox:before {
 
 [type="checkbox"]:checked + .todo-list__checkbox + .todo-item__title,
 [type="checkbox"]:checked + .subtask-list__checkbox + .edit-todo-form__input--edit-subtask {
-  color: lighten($dk-grey, 25%);
+  color: lighten($dk-grey, 40%);
   text-decoration: line-through;
 }
 
 // custom checkmark
-[type="checkbox"]:checked + label:after {
+[type="checkbox"]:checked + label::after {
   content: '';
   width: 6px;
   height: 11px;
@@ -166,6 +171,13 @@ label.subtask-list__checkbox:before {
   top: 2px;
   left: 6px;
   cursor: pointer;
+}
+
+[type="checkbox"]:checked + .subtask-list__checkbox::after {
+  width: 5.25px;
+  height: 9px;
+  top: 2.5px;
+  left: 5.5px;
 }
 
 [type="radio"]:checked + label {

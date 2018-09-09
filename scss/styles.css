@@ -316,6 +316,7 @@ input[type=text]:focus {
           box-sizing: border-box;
   vertical-align: middle;
   opacity: 0;
+  display: none;
   cursor: pointer;
 }
 
@@ -352,7 +353,11 @@ label.todo-list__checkbox.is-hidden {
 }
 
 label.subtask-list__checkbox {
-  margin-right: 12px;
+  margin-right: 14px;
+  font-size: 18px;
+  line-height: 18px;
+  width: 18px;
+  height: 18px;
 }
 
 label.subtask-list__checkbox:before {
@@ -361,11 +366,11 @@ label.subtask-list__checkbox:before {
 
 [type="checkbox"]:checked + .todo-list__checkbox + .todo-item__title,
 [type="checkbox"]:checked + .subtask-list__checkbox + .edit-todo-form__input--edit-subtask {
-  color: #7a8396;
+  color: #a5abb8;
   text-decoration: line-through;
 }
 
-[type="checkbox"]:checked + label:after {
+[type="checkbox"]:checked + label::after {
   content: '';
   width: 6px;
   height: 11px;
@@ -377,6 +382,13 @@ label.subtask-list__checkbox:before {
   top: 2px;
   left: 6px;
   cursor: pointer;
+}
+
+[type="checkbox"]:checked + .subtask-list__checkbox::after {
+  width: 5.25px;
+  height: 9px;
+  top: 2.5px;
+  left: 5.5px;
 }
 
 [type="radio"]:checked + label::after {
@@ -1671,19 +1683,19 @@ input[type="search"].search-form__input {
 .edit-todo-form__due-date-wrapper.has-due-date::before {
   content: 'Due Date';
   position: absolute;
-  font-family: "Montserrat", Helvetica, Arial, sans-serif;
-  font-size: 10px;
+  font-family: "Roboto", Arial, sans-serif;
+  font-size: 11px;
   display: block;
-  top: -5px;
-  height: 10px;
-  line-height: 10px;
+  top: -5.5px;
+  height: 11px;
+  line-height: 1;
   left: calc(50% - 28px);
   padding: 0;
   width: 56px;
   background-color: #fff;
   color: rgba(64, 69, 81, 0.6);
-  letter-spacing: 0.05em;
-  font-weight: 700;
+  letter-spacing: 0.02em;
+  font-weight: 500;
 }
 
 .edit-todo-form__due-date-wrapper.has-due-date .due-date-text {
@@ -2036,14 +2048,19 @@ input[type="search"].search-form__input {
 input[name="folder"] {
   position: absolute;
   visibility: hidden;
+  display: none;
 }
 
 input[name="folder"]:checked + label {
   font-weight: 700;
+  position: relative;
+  display: block;
 }
 
-input[name="folder"]:checked + label .feather {
-  fill: #60efb8;
+input[name="folder"]:checked + label::after {
+  border-color: #638eff;
+  left: 12px;
+  top: 30%;
 }
 
 .form__title {
@@ -2052,19 +2069,24 @@ input[name="folder"]:checked + label .feather {
 
 .form__label--folder {
   vertical-align: middle;
-  padding: 8px 0;
+  padding: 8px 0 8px 30px;
+  position: relative;
   width: calc(100% - 24px);
   font-size: 16px;
   display: inline-block;
   font-family: "Roboto", Arial, sans-serif;
 }
 
-.form__label--folder .feather {
-  margin-right: 10px;
-}
-
 .form__label--folder:focus {
   outline: none;
+}
+
+.form__fieldset--folders .feather {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  position: relative;
+  top: -2px;
 }
 
 [type="checkbox"] + .bulk-editing__checkbox-label {
