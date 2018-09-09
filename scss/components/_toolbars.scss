@@ -34,7 +34,9 @@
   text-align: center;
   .feather {
     margin-bottom: 2px;
-    stroke: $dk-grey;
+    width: 20px;
+    height: 20px;
+    stroke: $primary-color;
   }
 }
 
@@ -45,7 +47,7 @@
   line-height: 1.2;
   font-weight: 500;
   letter-spacing: 0.01em;
-  width: 65px;
+  width: 56px;
   vertical-align: middle;
   color: rgba($dk-grey, 0.8);
   pointer-events: none;
@@ -58,7 +60,7 @@
     -webkit-box-shadow: none;
             box-shadow: none;
     .feather {
-      stroke: $primary-color;
+      stroke: $dk-grey;
     }
   }
 }

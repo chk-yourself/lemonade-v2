@@ -1,4 +1,7 @@
 
+.bulk-editing-toolbar {
+  @include box-shadow(1);
+}
 
 [type="checkbox"] + .bulk-editing__checkbox-label {
   border-radius: 50%;
@@ -24,7 +27,9 @@ label.bulk-editing__checkbox-label {
 
 .bulk-editing-toolbar__item--check-all {
   text-align: left;
+  border-right: 1px solid rgba($dk-grey, 0.4);
+  height: 32px;
   .toolbar__item-label {
-    font-size: 12px;
+    font-size: 10px;
   }
 }

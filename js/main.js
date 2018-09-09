@@ -921,6 +921,17 @@
     }
   }
 
+  function createBreadcrumbs(listElement) {
+    $all('.todo-list__item', listElement).forEach(item => {
+      const list = getListByTaskId(item.id);
+      const folderName = list.folder !== "null" ? list.folder + " > ": "";
+      const listLink = createNode('a', {class: 'breadcrumbs__link', href: `#${list.id}`}, list.name);
+      listLink.addEventListener('click', openList);
+      const breadcrumbs = createNode('div', {class: 'breadcrumbs'}, folderName, listLink);
+      item.appendChild(breadcrumbs);
+    });
+  }
+
   /**
    * Filters and renders todo items that match the provided query string
    */
@@ -944,19 +955,13 @@
           })
         );
       }, []);
-      populateList(filteredArray, $("#filteredList"));
+      const ulfilteredList = $('#filteredList');
+      populateList(filteredArray, ulfilteredList);
 
-      $all('.todo-list__item', $('#filteredList')).forEach(item => {
-        const list = getListByTaskId(item.id);
-        const folderName = list.folder !== "null" ? list.folder + " > ": "";
-        const listLink = createNode('a', {class: 'breadcrumb__link', href: `#${list.id}`}, list.name);
-        listLink.addEventListener('click', openList);
-        const breadcrumb = createNode('div', {class: 'breadcrumb'}, folderName, listLink);
-        item.appendChild(breadcrumb);
-      });
+      createBreadcrumbs(ulfilteredList);
 
       $(".is-active-list").classList.remove("is-active-list");
-      $("#filteredList").classList.add("is-active-list");
+      ulfilteredList.classList.add("is-active-list");
       $("#activeListTitle").innerHTML = `${filteredArray.length} search results for <strong>${query}</strong>`;
       formAddTodo.classList.add("is-hidden");
       state.activeList = null;
@@ -976,19 +981,12 @@
         })
       );
     }, []);
-    populateList(filteredArray, $("#today"));
-
-    $all('.todo-list__item', $('#today')).forEach(item => {
-      const list = getListByTaskId(item.id);
-      const folderName = list.folder !== "null" ? list.folder + " > ": "";
-      const listLink = createNode('a', {class: 'breadcrumb__link', href: `#${list.id}`}, list.name);
-      listLink.addEventListener('click', openList);
-      const breadcrumb = createNode('div', {class: 'breadcrumb'}, folderName, listLink);
-      item.appendChild(breadcrumb);
-    });
+    const ulToday = $('#today');
+    populateList(filteredArray, ulToday);
+    createBreadcrumbs(ulToday);
 
     $(".is-active-list").classList.remove("is-active-list");
-    $("#today").classList.add("is-active-list");
+    ulToday.classList.add("is-active-list");
     $("#activeListTitle").innerHTML = `Due <strong>Today</strong>`;
     formAddTodo.classList.add("is-hidden");
     state.activeList = null;
@@ -1896,6 +1894,7 @@ function hideComponents(e) {
   // Hides searchBar input
   if (searchBar.classList.contains('is-expanded') && (searchInput.value === "" && e.target !== searchBar && !searchBar.contains(e.target) || e.target.classList.contains('sidebar__link') || e.target.classList.contains('breadcrumb__link'))) {
     formSearch.reset();
+    inputSearch.blur();
     searchBar.classList.remove('is-expanded');
   }
 
@@ -2049,14 +2048,15 @@ $('#todoItemNote').addEventListener('change', addNote);
 
   $all("[data-action='openListForm']").forEach(btn => {
     btn.addEventListener("click", e => {
+      e.preventDefault();
     if (!formNewList.contains(fieldsetFolders)) {
       formNewList.insertBefore(fieldsetFolders, $('#addListBtn'));
     }
-    $("#newListFormContainer").classList.add("is-active");
-    $('#newListNameInput').focus();
     if (document.documentElement.clientWidth < 768) {
       $('#siteWrapper').classList.remove('show-nav');
     };
+    $("#newListFormContainer").classList.add("is-active");
+    $('#newListNameInput').focus();
   });
 });
 
