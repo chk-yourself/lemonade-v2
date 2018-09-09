@@ -187,12 +187,6 @@
       font-size: 1.25rem;
       font-weight: 400;
     }
-    .todo-list__item {
-      margin: 26px 0 28px;
-    }
-    .todo-list {
-      padding-top: 2px;
-    }
   }
 }
 
@@ -206,7 +200,6 @@
   list-style-type: none;
 }
 .filtered-list__sub-list-name {
-  text-align: center;
   margin-top: 16px;
   font-family: $heading-font;
 }
@@ -215,4 +208,12 @@
   list-style-type: none;
   text-align: left;
   font-family: $body-font;
+}
+
+.filtered-list__link {
+  color: $dk-grey;
+  text-decoration: none;
+  &:hover, &:active {
+    color: $primary-color;
+  }
 }

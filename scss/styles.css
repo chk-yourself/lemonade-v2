@@ -2107,14 +2107,6 @@ input[type="search"].search-form__input {
   font-weight: 400;
 }
 
-.todo-app__main.show-filtered-tasks .todo-list__item {
-  margin: 26px 0 28px;
-}
-
-.todo-app__main.show-filtered-tasks .todo-list {
-  padding-top: 2px;
-}
-
 .add-todo-form.is-hidden {
   display: none;
 }
@@ -2124,7 +2116,6 @@ input[type="search"].search-form__input {
 }
 
 .filtered-list__sub-list-name {
-  text-align: center;
   margin-top: 16px;
   font-family: "Montserrat", Helvetica, Arial, sans-serif;
 }
@@ -2133,6 +2124,15 @@ input[type="search"].search-form__input {
   list-style-type: none;
   text-align: left;
   font-family: "Roboto", Arial, sans-serif;
+}
+
+.filtered-list__link {
+  color: #404551;
+  text-decoration: none;
+}
+
+.filtered-list__link:hover, .filtered-list__link:active {
+  color: #638eff;
 }
 
 .new-list-form__container {

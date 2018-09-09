@@ -259,12 +259,6 @@
       divTodoApp.appendChild(todoContent);
     }
 
-    if (itemsList === $('#filteredList') || itemsList === $('#today')) {
-      $('#main').classList.add('show-filtered-tasks');
-    } else {
-      $('#main').classList.remove('show-filtered-tasks');
-    }
-
     itemsList.innerHTML = itemsArray
       .map((item, i) => {
         return `<li class= ${
@@ -995,15 +989,18 @@ function renderList(itemsArray, itemsList) {
   } else {
     $('#main').classList.remove('show-filtered-tasks');
   }
-  
+
   if (Array.isArray(itemsArray[0])) {
     itemsList.innerHTML = '';
     itemsArray.forEach((list) => {
-    const listName = getListByTaskId(list[0].id).name;
+    const listObj = getListByTaskId(list[0].id);
     // Create sub-list
     const ulSubList = createNode('ul', {class: 'filtered-list__sub-list'});
+    // Create list link
+    const aSubListLink = createNode('a', {class: 'filtered-list__link', href: `#${listObj.id}`}, listObj.name);
+    aSubListLink.addEventListener('click', openList);
     // Create filtered list item
-    const liSubListName = createNode('li', {class: 'filtered-list__sub-list-name'}, listName, ulSubList);
+    const liSubListName = createNode('li', {class: 'filtered-list__sub-list-name'}, aSubListLink, ulSubList);
     // Populate tasks for each sub-list
     populateList(list, ulSubList);
     itemsList.appendChild(liSubListName);
@@ -1058,19 +1055,20 @@ function filterTasks(e) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const filteredArray = todoLists.reduce((acc, list) => {
-      return acc.concat(
-        list.tasks.filter(task => {
-          return new Date(task.dueDate).valueOf() === today.valueOf();
-        })
-      );
+      const filteredTasks = list.tasks.filter(task => {
+        return new Date(task.dueDate).valueOf() === today.valueOf();
+        });
+      if (filteredTasks.length > 0) {
+        acc.push(filteredTasks);
+      }
+      return acc;
     }, []);
     const ulToday = $('#today');
-    populateList(filteredArray, ulToday);
-    createBreadcrumbs(ulToday);
+    renderList(filteredArray, ulToday);
 
     $(".is-active-list").classList.remove("is-active-list");
     ulToday.classList.add("is-active-list");
-    $("#activeListTitle").innerHTML = `Due <strong>Today</strong>`;
+    $("#activeListTitle").innerHTML = `<strong>Due Today</strong>`;
     formAddTodo.classList.add("is-hidden");
     state.activeList = null;
     state.filteredList = filteredArray;
@@ -1996,7 +1994,7 @@ function hideComponents(e) {
   }
 
   // Hides searchBar input
-  if (searchBar.classList.contains('is-expanded') && (searchInput.value === "" && e.target !== searchBar && !searchBar.contains(e.target) || e.target.classList.contains('sidebar__link') || e.target.classList.contains('breadcrumb__link'))) {
+  if (searchBar.classList.contains('is-expanded') && (searchInput.value === "" && e.target !== searchBar && !searchBar.contains(e.target) || e.target.classList.contains('sidebar__link') || e.target.classList.contains('filtered-list__link'))) {
     formSearch.reset();
     inputSearch.blur();
     searchBar.classList.remove('is-expanded');
