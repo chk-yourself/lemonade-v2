@@ -423,6 +423,8 @@
     localStorage.setItem("todoLists", JSON.stringify(todoLists));
     todoContent.classList.remove("is-visible");
     divTodoApp.appendChild(todoContent);
+
+
     let currentTasksList =
       state.filteredList === null ? state.activeList.tasks : state.filteredList;
     const activeFilter = (task) => !task.done;
@@ -434,17 +436,26 @@
       }
       return acc;
     }, []);
+    
     let activeTodos = Array.isArray(currentTasksList[0]) ? filteredArray(currentTasksList, activeFilter) : currentTasksList.filter(task => !task.done);
     console.log(activeTodos);
     let completedTodos = Array.isArray(currentTasksList[0]) ? filteredArray(currentTasksList, completedFilter) : currentTasksList.filter(task => task.done);
     let action = divViews.querySelector(".is-selected").dataset.action;
     if (action === "viewActive") {
-      renderList(activeTodos, activeList_ul);
+      window.setTimeout(() => {
+        renderList(activeTodos, activeList_ul);
+      }, 100);
     } else if (action === "viewCompleted") {
-      renderList(completedTodos, activeList_ul);
+      window.setTimeout(() => {
+        renderList(completedTodos, activeList_ul);
+      }, 100);   
     } else {
-      renderList(currentTasksList, activeList_ul);
+      window.setTimeout(() => {
+        renderList(currentTasksList, activeList_ul);
+      }, 100);
+      
     }
+    
     console.table(todoLists);
   }
 
