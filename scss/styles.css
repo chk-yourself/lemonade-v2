@@ -900,10 +900,10 @@ input[type="search"].search-form__input {
 
 .breadcrumb {
   position: absolute;
-  top: -16px;
+  top: -18px;
   left: 0;
   display: block;
-  font-size: 10px;
+  font-size: 10.5px;
   padding: 0 6px;
   letter-spacing: .02em;
   color: rgba(86, 93, 109, 0.6);
@@ -2041,7 +2041,7 @@ input[type="search"].search-form__input {
 }
 
 .todo-app__main.show-search-results .todo-list__item {
-  margin: 24px 0;
+  margin: 26px 0 28px;
 }
 
 .filtered-list {
