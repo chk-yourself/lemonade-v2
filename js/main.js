@@ -990,6 +990,12 @@
 */
 
 function renderList(itemsArray, itemsList) {
+  if (itemsList === $('#filteredList') || itemsList === $('#today')) {
+    $('#main').classList.add('show-filtered-tasks');
+  } else {
+    $('#main').classList.remove('show-filtered-tasks');
+  }
+  
   if (Array.isArray(itemsArray[0])) {
     itemsList.innerHTML = '';
     itemsArray.forEach((list) => {
