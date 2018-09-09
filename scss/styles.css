@@ -940,6 +940,7 @@ input[type="search"].search-form__input {
   vertical-align: middle;
   border: 1px solid transparent;
   background-color: transparent;
+  padding: 0;
   cursor: pointer;
 }
 
