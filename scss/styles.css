@@ -1748,7 +1748,7 @@ input[type="search"].search-form__input {
 .sidebar__link {
   text-decoration: none;
   color: #404551;
-  font-weight: 400;
+  font-weight: 500;
   width: 100%;
   display: inline-block;
   padding: 8px 0 8px 16px;
@@ -1757,6 +1757,13 @@ input[type="search"].search-form__input {
 
 .sidebar__link:hover, .sidebar__link:active, .sidebar__link.is-active {
   background-color: rgba(99, 142, 255, 0.2);
+}
+
+@media (min-width: 768px) {
+  .sidebar__link {
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+  }
 }
 
 .sidebar__btn--create-list {

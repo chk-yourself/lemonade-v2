@@ -129,7 +129,7 @@
   .sidebar__link {
     text-decoration: none;
     color: $dk-grey;
-    font-weight: 400;
+    font-weight: 500;
     width: 100%;
     display: inline-block;
     padding: 8px 0 8px 16px;
@@ -138,6 +138,10 @@
     &:active,
     &.is-active {
       background-color: rgba($primary-color, 0.2);
+    }
+    @include md {
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
     }
   }
 
