@@ -566,6 +566,7 @@ label.subtask-list__checkbox:before {
 
 .alert__msg {
   margin-bottom: 16px;
+  line-height: 1.4;
 }
 
 .alert__msg .list-name {

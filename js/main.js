@@ -259,6 +259,7 @@
       divTodoApp.appendChild(todoContent);
     }
 
+
     itemsList.innerHTML = itemsArray
       .map((item, i) => {
         return `<li class= ${
@@ -1488,6 +1489,10 @@ function filterTasks(e) {
   function displayList(listObj) {
     if ($('#bulkEditingToolbar').classList.contains('is-active')) {
       $('#bulkEditingToolbar').classList.remove('is-active');
+    }
+
+    if ($('#main').classList.contains('show-filtered-tasks')) {
+      $('#main').classList.remove('show-filtered-tasks');
     }
 
     $("#activeListTitle").textContent = listObj.name;
