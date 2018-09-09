@@ -903,9 +903,9 @@ input[type="search"].search-form__input {
   top: -16px;
   left: 0;
   display: block;
-  font-size: 10.5px;
+  font-size: 10px;
   padding: 0 6px;
-  letter-spacing: .03em;
+  letter-spacing: .02em;
   color: rgba(86, 93, 109, 0.6);
   font-style: italic;
 }
