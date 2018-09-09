@@ -49,6 +49,10 @@
     filteredList: null
   };
 
+  const clickTouch = (function() {
+    return ('ontouchstart' in document === true) ? 'touchstart' : 'click';
+  })();
+
   let now = new Date();
   let currentDate = now.getDate();
   let currentYear = now.getFullYear();
@@ -1459,9 +1463,8 @@
     radio.checked = true;
     const selectedMonth = radio.value;
     if (selectedMonth !== prevSelectedMonth) {
-      btnToggleMonthDropdown.innerHTML =
-      selectedMonth + `<i data-feather="chevron-down"></i>`;
-      feather.replace();
+      $('#btnToggleMonthDropdown .btn-text').textContent =
+      selectedMonth;
       populateCalendarDays(selectedMonth);
       
       if (selectedMonth === dueMonth) {
@@ -1490,9 +1493,7 @@
     const selectedYear = radio.value;
 
     if (selectedYear !== prevSelectedYear) {
-      btnToggleYearDropdown.innerHTML =
-        `<i data-feather="chevron-down"></i>` + selectedYear;
-      feather.replace();
+      $('#btnToggleYearDropdown .btn-text').textContent = selectedYear;
       populateCalendarDays(dueMonth);
 
       // Length of February depends on leap year
@@ -1630,13 +1631,13 @@
     if (el.classList.contains("dp-calendar__btn--prev-month") || el.classList.contains("dp-calendar__btn--next-month")) {
       if ((el.classList.contains('dp-calendar__btn--prev-month') && selectedMonth === "December") || (el.classList.contains('dp-calendar__btn--next-month') && selectedMonth === "January")) {
         $(`input[name="year"][value="${selectedYear}"]`).checked = true;
-        $("#btnToggleYearDropdown").innerHTML =
-            selectedYear + `<i data-feather="chevron-down"></i>`;
+        $("#btnToggleYearDropdown .btn-text").textContent =
+            selectedYear;
       };
 
       $(`input[name="month"][value="${selectedMonth}"]`).checked = true;
-      btnToggleMonthDropdown.innerHTML =
-      selectedMonth + `<i data-feather="chevron-down"></i>`;
+      $('#btnToggleMonthDropdown .btn-text').textContent =
+      selectedMonth;
       populateCalendarDays(selectedMonth);
       $(`.dp-calendar__btn--select-day[value="${selectedDay}"][data-month="${selectedMonth}"]`).classList.add('is-selected');
     };
@@ -1725,11 +1726,11 @@
     updateDateInput('all', dueMonth, dueDay, dueYear);
 
     $(`input[name="year"][value="${dueYear}"]`).checked = true;
-    $("#btnToggleYearDropdown").innerHTML =
-        dueYear + `<i data-feather="chevron-down"></i>`;
+    $("#btnToggleYearDropdown .btn-text").textContent =
+        dueYear;
       $(`input[name="month"][value="${dueMonth}"]`).checked = true;
-      $("#btnToggleMonthDropdown").innerHTML =
-        dueMonth + `<i data-feather="chevron-down"></i>`;
+      $("#btnToggleMonthDropdown .btn-text").textContent =
+        dueMonth;
       populateCalendarDays(dueMonth);
       $(`.dp-calendar__btn--select-day[value="${dueDay}"][data-month="${dueMonth}"]`).classList.add('is-selected');
 
@@ -1745,13 +1746,12 @@
       $(
         `#dpCalendarMonthDropdown input[value="${currentMonth.name}"]`
       ).checked = true;
-      $("#btnToggleMonthDropdown").innerHTML =
-        currentMonth.name + `<i data-feather="chevron-down"></i>`;
+      $("#btnToggleMonthDropdown .btn-text").textContent =
+        currentMonth.name;
     
       // Sets default year to current year
       $(`#dpCalendarYearDropdown input[value="${currentYear}"]`).checked = true;
-      $("#btnToggleYearDropdown").innerHTML =
-        `<i data-feather="chevron-down"></i>` + currentYear;
+      $("#btnToggleYearDropdown .btn-text").textContent = currentYear;
       populateCalendarDays(currentMonth.name);
       $(`.dp-calendar__btn--select-day[value="${currentDay}"][data-month="${currentMonth.name}"]`).classList.add('is-selected');
     }
@@ -2020,11 +2020,7 @@ $('#todoItemNote').addEventListener('change', addNote);
 
   inputSearch.addEventListener("click", e => e.currentTarget.select());
 
-  const selectEvents = (function() {
-    return ('ontouchstart' in document === true) ? 'touchstart' : 'click';
-  })();
-
-  document.body.addEventListener(selectEvents, hideComponents);
+  document.body.addEventListener(clickTouch, hideComponents);
 
   $all("[data-action='openListForm']").forEach(btn => {
     btn.addEventListener("click", e => {
@@ -2083,12 +2079,12 @@ function selectPrevNext(e) {
         if (nextMonth === "January") {
           let nextYear = +selectedYear + 1;
           $(`input[value="${nextYear}"]`).checked = true;
-          $("#btnToggleYearDropdown").innerHTML =
-            nextYear + `<i data-feather="chevron-down"></i>`;
+          $("#btnToggleYearDropdown .btn-text").textContent =
+            nextYear;
         }
         $(`input[value="${nextMonth}"]`).checked = true;
-        $("#btnToggleMonthDropdown").innerHTML =
-          nextMonth + `<i data-feather="chevron-down"></i>`;
+        $("#btnToggleMonthDropdown .btn-text").textContent =
+          nextMonth;
         populateCalendarDays(nextMonth);
         if (nextMonth === dueMonth && selectedYear === dueYear) {
           $(`.dp-calendar__btn--select-day[value="${dueDay}"][data-month="${dueMonth}"]`).classList.add('is-selected');
@@ -2099,12 +2095,12 @@ function selectPrevNext(e) {
         if (prevMonth === "December") {
           let prevYear = +selectedYear - 1;
           $(`input[value="${prevYear}"]`).checked = true;
-          $("#btnToggleYearDropdown").innerHTML =
-            prevYear + `<i data-feather="chevron-down"></i>`;
+          $("#btnToggleYearDropdown .btn-text").textContent =
+            prevYear;
         }
         $(`input[value="${prevMonth}"]`).checked = true;
-        $("#btnToggleMonthDropdown").innerHTML =
-          prevMonth + `<i data-feather="chevron-down"></i>`;
+        $("#btnToggleMonthDropdown .btn-text").textContent =
+          prevMonth;
         populateCalendarDays(prevMonth);
         if (prevMonth === dueMonth && selectedYear === dueYear) {
           console.log({selectedYear});
@@ -2168,16 +2164,16 @@ function selectPrevNext(e) {
   
     if ($(`input[name="year"]:checked`).value !== year) {
       $(`input[value="${year}"]`).checked = true;
-      $("#btnToggleYearDropdown").innerHTML =
-        year + `<i data-feather="chevron-down"></i>`;
+      $("#btnToggleYearDropdown .btn-text").textContent =
+        year;
       populateCalendarDays(monthText);
       $(`.dp-calendar__btn--select-day[value="${day}"][data-month="${monthText}"]`).classList.add('is-selected');
     }
 
     if ($(`input[name="month"]:checked`).value !== monthText) {
       $(`input[value="${monthText}"]`).checked = true;
-      $("#btnToggleMonthDropdown").innerHTML =
-        monthText + `<i data-feather="chevron-down"></i>`;
+      $("#btnToggleMonthDropdown .btn-text").textContent =
+        monthText;
       populateCalendarDays(monthText);
     }
 

@@ -21,7 +21,6 @@ input[type=text] {
   outline: none;
   height: 50px;
   font-family: $body-font;
-  letter-spacing: -0.01em;
   &::placeholder {
     color: rgba($dk-grey, 0.6);
   }

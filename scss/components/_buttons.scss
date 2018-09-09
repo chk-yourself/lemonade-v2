@@ -3,6 +3,7 @@ button {
   border: none;
   background-color: transparent;
   -webkit-font-smoothing: antialiased;
+  font-family: $heading-font;
   &:active, &:focus {
     outline: none;
   }

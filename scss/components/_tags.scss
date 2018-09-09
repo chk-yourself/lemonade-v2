@@ -2,7 +2,7 @@
   display: inline-block;
   box-sizing: border-box;
   border: 1px solid $lt-grey;
-  border-radius: 500px; // allows for pill-shape, without set width or height
+  border-radius: 5000px; // allows for pill-shape, without set width or height
   color: $dk-grey;
   background-color: $off-white;
   width: auto;
@@ -56,9 +56,9 @@
   bottom: 2px;
   left: 42px;
   display: block;
-  font-size: 10px;
+  font-size: 10.5px;
   padding: 0 6px;
-  letter-spacing: .06em;
+  letter-spacing: .03em;
   color: rgba($dk-grey, 0.4);
   &.is-hidden {
     display: none;

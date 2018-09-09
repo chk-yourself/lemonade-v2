@@ -57,7 +57,6 @@
   }
 }
   .sidebar__item {
-    -webkit-font-smoothing: antialiased;
     margin-bottom: 8px;
     font-family: $heading-font;
     font-size: 16px;
@@ -71,6 +70,9 @@
       width: 20px;
       height: 20px;
       vertical-align: top;
+    }
+    @include md {
+      -webkit-font-smoothing: antialiased;
     }
   }
 

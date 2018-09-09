@@ -28,14 +28,11 @@ body {
 h1, h2, h3, h4 {
   font-family: "Montserrat", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
+  line-height: 1.2;
 }
 
 h1 {
   font-weight: 700;
-}
-
-a {
-  -webkit-font-smoothing: antialiased;
 }
 
 .feather {
@@ -54,6 +51,7 @@ button {
   border: none;
   background-color: transparent;
   -webkit-font-smoothing: antialiased;
+  font-family: "Montserrat", Helvetica, Arial, sans-serif;
 }
 
 button:active, button:focus {
@@ -196,7 +194,6 @@ input[type=text]:focus {
   outline: none;
   height: 50px;
   font-family: "Roboto", Arial, sans-serif;
-  letter-spacing: -0.01em;
 }
 
 .form__input::-webkit-input-placeholder {
@@ -692,7 +689,6 @@ input[type="search"].search-form__input {
 }
 
 .sidebar__item {
-  -webkit-font-smoothing: antialiased;
   margin-bottom: 8px;
   font-family: "Montserrat", Helvetica, Arial, sans-serif;
   font-size: 16px;
@@ -708,6 +704,12 @@ input[type="search"].search-form__input {
   width: 20px;
   height: 20px;
   vertical-align: top;
+}
+
+@media (min-width: 768px) {
+  .sidebar__item {
+    -webkit-font-smoothing: antialiased;
+  }
 }
 
 .sidebar__btn {
@@ -835,7 +837,7 @@ input[type="search"].search-form__input {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   border: 1px solid #d6dee2;
-  border-radius: 500px;
+  border-radius: 5000px;
   color: #404551;
   background-color: #f4f6f7;
   width: auto;
@@ -898,9 +900,9 @@ input[type="search"].search-form__input {
   bottom: 2px;
   left: 42px;
   display: block;
-  font-size: 10px;
+  font-size: 10.5px;
   padding: 0 6px;
-  letter-spacing: .06em;
+  letter-spacing: .03em;
   color: rgba(64, 69, 81, 0.4);
 }
 
@@ -1405,7 +1407,7 @@ input[type="search"].search-form__input {
 .dp-calendar__toggle-btn {
   margin: 0;
   display: block;
-  font-family: "Roboto", Arial, sans-serif;
+  font-family: "Montserrat", Helvetica, Arial, sans-serif;
   font-size: 14px;
   font-weight: 700;
   padding: 8px 4px;
@@ -1443,6 +1445,7 @@ input[type="search"].search-form__input {
 
 .dp-calendar__toggle-btn--year.is-active {
   padding-right: 27px;
+  left: 4px;
 }
 
 .dp-calendar__toggle-btn--month.is-active {
@@ -1475,6 +1478,7 @@ input[type="search"].search-form__input {
 
 .dp-calendar__dropdown--year {
   width: 100%;
+  left: 4px;
 }
 
 .dp-calendar__radio {
@@ -1507,7 +1511,7 @@ input[type="search"].search-form__input {
   font-family: "Roboto", Arial, sans-serif;
   display: block;
   line-height: 1.6;
-  padding: 3px 0 3px 28px;
+  padding: 3px 0 3px 27px;
   position: relative;
 }
 
@@ -1549,7 +1553,8 @@ input[type="search"].search-form__input {
 
 .dp-calendar__weekday-header {
   width: calc(100% / 7);
-  font-size: 11px;
+  font-size: 12px;
+  font-weight: 700;
   text-transform: uppercase;
   text-align: center;
 }
@@ -1573,6 +1578,7 @@ input[type="search"].search-form__input {
   left: calc(50% - 16px);
   vertical-align: middle;
   line-height: 33px;
+  font-size: 12px;
   color: inherit;
 }
 
@@ -1635,7 +1641,6 @@ input[type="search"].search-form__input {
 .edit-todo-form__due-date-wrapper .due-date-text {
   line-height: 40px;
   color: rgba(64, 69, 81, 0.6);
-  letter-spacing: -0.01em;
 }
 
 .edit-todo-form__due-date-wrapper.show-input .feather {
@@ -1665,6 +1670,7 @@ input[type="search"].search-form__input {
 .edit-todo-form__due-date-wrapper.has-due-date::before {
   content: 'Due Date';
   position: absolute;
+  font-family: "Montserrat", Helvetica, Arial, sans-serif;
   font-size: 10px;
   display: block;
   top: -5px;

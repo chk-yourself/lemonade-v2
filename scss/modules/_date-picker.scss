@@ -46,7 +46,7 @@
 .dp-calendar__toggle-btn {
   margin: 0;
   display: block;
-  font-family: $body-font;
+  font-family: $heading-font;
   font-size: 14px;
   font-weight: 700;
   padding: 8px 4px;
@@ -79,6 +79,7 @@
   &--year {
     &.is-active {
       padding-right: 27px;
+      left: 4px;
     }
   }
   &--month {
@@ -110,6 +111,7 @@
   }
   &--year {
     width: 100%;
+    left: 4px;
   }
 }
 
@@ -140,7 +142,7 @@
   font-family: $body-font;
   display: block;
   line-height: 1.6;
-  padding: 3px 0 3px 28px;
+  padding: 3px 0 3px 27px;
   position: relative;
   &:hover {
     background-color: $dk-grey;
@@ -172,7 +174,8 @@
 
 .dp-calendar__weekday-header {
   width: calc(100% / 7);
-  font-size: 11px;
+  font-size: 12px;
+  font-weight: 700;
   text-transform: uppercase;
   text-align: center;
 }
@@ -196,6 +199,7 @@
   left: calc(50% - 16px);
   vertical-align: middle;
   line-height: 33px;
+  font-size: 12px;
   color: inherit;
   &.is-selected {
     background-color: $green;
@@ -254,7 +258,6 @@
   .due-date-text {
     line-height: 40px;
     color: rgba($dk-grey, 0.6);
-    letter-spacing: -0.01em;
   }
   &.show-input {
     .feather {
@@ -281,6 +284,7 @@
     &::before {
       content: 'Due Date';
       position: absolute;
+      font-family: $heading-font;
       font-size: 10px;
       display: block;
       top: -5px;
