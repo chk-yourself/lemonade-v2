@@ -2042,16 +2042,16 @@ input[type="search"].search-form__input {
   }
 }
 
-.todo-app__main.show-search-results .active-list__title {
+.todo-app__main.show-filtered-tasks .active-list__title {
   font-size: 1.25rem;
   font-weight: 400;
 }
 
-.todo-app__main.show-search-results .todo-list__item {
+.todo-app__main.show-filtered-tasks .todo-list__item {
   margin: 26px 0 28px;
 }
 
-.filtered-list {
+.todo-app__main.show-filtered-tasks .todo-list {
   padding-top: 2px;
 }
 

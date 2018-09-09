@@ -259,10 +259,10 @@
       divTodoApp.appendChild(todoContent);
     }
 
-    if (itemsList === $('#filteredList')) {
-      $('#main').classList.add('show-search-results');
+    if (itemsList === $('#filteredList') || itemsList === $('#today')) {
+      $('#main').classList.add('show-filtered-tasks');
     } else {
-      $('#main').classList.remove('show-search-results');
+      $('#main').classList.remove('show-filtered-tasks');
     }
 
     itemsList.innerHTML = itemsArray
@@ -977,9 +977,19 @@
       );
     }, []);
     populateList(filteredArray, $("#today"));
+
+    $all('.todo-list__item', $('#today')).forEach(item => {
+      const list = getListByTaskId(item.id);
+      const folderName = list.folder !== "null" ? list.folder + " > ": "";
+      const listLink = createNode('a', {class: 'breadcrumb__link', href: `#${list.id}`}, list.name);
+      listLink.addEventListener('click', openList);
+      const breadcrumb = createNode('div', {class: 'breadcrumb'}, folderName, listLink);
+      item.appendChild(breadcrumb);
+    });
+
     $(".is-active-list").classList.remove("is-active-list");
     $("#today").classList.add("is-active-list");
-    $("#activeListTitle").textContent = "Due Today";
+    $("#activeListTitle").innerHTML = `Due <strong>Today</strong>`;
     formAddTodo.classList.add("is-hidden");
     state.activeList = null;
     state.filteredList = filteredArray;
