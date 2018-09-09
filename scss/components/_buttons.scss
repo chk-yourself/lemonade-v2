@@ -2,6 +2,7 @@ button {
   cursor: pointer;
   border: none;
   background-color: transparent;
+  -webkit-font-smoothing: antialiased;
   &:active, &:focus {
     outline: none;
   }

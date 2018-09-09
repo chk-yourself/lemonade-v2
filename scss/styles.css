@@ -1,10 +1,9 @@
-@import url("https://fonts.googleapis.com/css?family=Roboto:400,500,700");
 html {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   font-size: 16px;
   color: #404551;
-  font-family: "Open Sans", Arial, sans-serif;
+  font-family: "Roboto", Arial, sans-serif;
 }
 
 *, *:before, *:after {
@@ -15,6 +14,11 @@ html {
 body, h1, h2, h3, h4, p, ol, ul {
   margin: 0;
   padding: 0;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
 }
 
 body {
@@ -22,7 +26,16 @@ body {
 }
 
 h1, h2, h3, h4 {
-  font-family: "Roboto", Helvetica, Arial, sans-serif;
+  font-family: "Montserrat", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 {
+  font-weight: 700;
+}
+
+a {
+  -webkit-font-smoothing: antialiased;
 }
 
 .feather {
@@ -40,6 +53,7 @@ button {
   cursor: pointer;
   border: none;
   background-color: transparent;
+  -webkit-font-smoothing: antialiased;
 }
 
 button:active, button:focus {
@@ -55,7 +69,7 @@ button .feather {
           box-shadow: 0 2px 5px 1px rgba(0, 0, 0, 0.3);
   border: 1px solid transparent;
   letter-spacing: .03em;
-  font-family: "Roboto", Helvetica, Arial, sans-serif;
+  font-family: "Montserrat", Helvetica, Arial, sans-serif;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   padding: 8px 16px;
@@ -181,7 +195,7 @@ input[type=text]:focus {
   color: #000;
   outline: none;
   height: 50px;
-  font-family: "Open Sans", Arial, sans-serif;
+  font-family: "Roboto", Arial, sans-serif;
   letter-spacing: -0.01em;
 }
 
@@ -210,22 +224,22 @@ input[type=text]:focus {
 }
 
 .form__textarea::-webkit-input-placeholder {
-  font-family: "Open Sans", Arial, sans-serif;
+  font-family: "Roboto", Arial, sans-serif;
   color: rgba(64, 69, 81, 0.6);
 }
 
 .form__textarea:-ms-input-placeholder {
-  font-family: "Open Sans", Arial, sans-serif;
+  font-family: "Roboto", Arial, sans-serif;
   color: rgba(64, 69, 81, 0.6);
 }
 
 .form__textarea::-ms-input-placeholder {
-  font-family: "Open Sans", Arial, sans-serif;
+  font-family: "Roboto", Arial, sans-serif;
   color: rgba(64, 69, 81, 0.6);
 }
 
 .form__textarea::placeholder {
-  font-family: "Open Sans", Arial, sans-serif;
+  font-family: "Roboto", Arial, sans-serif;
   color: rgba(64, 69, 81, 0.6);
 }
 
@@ -390,7 +404,7 @@ label.subtask-list__checkbox:before {
 
 .label--text {
   display: block;
-  font-family: "Roboto", Helvetica, Arial, sans-serif;
+  font-family: "Montserrat", Helvetica, Arial, sans-serif;
   font-size: 14px;
   letter-spacing: .03em;
   font-weight: 700;
@@ -678,8 +692,9 @@ input[type="search"].search-form__input {
 }
 
 .sidebar__item {
+  -webkit-font-smoothing: antialiased;
   margin-bottom: 8px;
-  font-family: "Roboto", Helvetica, Arial, sans-serif;
+  font-family: "Montserrat", Helvetica, Arial, sans-serif;
   font-size: 16px;
   font-weight: 400;
   vertical-align: middle;
@@ -748,6 +763,7 @@ input[type="search"].search-form__input {
 .sidebar__link {
   text-decoration: none;
   color: #404551;
+  font-weight: 400;
   width: 100%;
   display: inline-block;
   padding: 8px 0 8px 16px;
@@ -951,20 +967,20 @@ input[type="search"].search-form__input {
 
 .toolbar {
   -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   padding: 8px 14px;
   font-size: 16px;
   border: 1px solid rgba(64, 69, 81, 0.4);
   border-radius: 4px;
   margin: 4px 0;
-  font-family: "Open Sans", Arial, sans-serif;
+  font-family: "Roboto", Arial, sans-serif;
   width: 100%;
   line-height: 16px;
   background-color: rgba(255, 255, 255, 0.75);
   display: none;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .toolbar.is-active {
@@ -978,11 +994,11 @@ input[type="search"].search-form__input {
   display: -ms-inline-flexbox;
   display: inline-flex;
   -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
   text-align: center;
 }
 
@@ -993,7 +1009,7 @@ input[type="search"].search-form__input {
 
 .toolbar__item-label {
   display: block;
-  font-family: "Roboto", Helvetica, Arial, sans-serif;
+  font-family: "Montserrat", Helvetica, Arial, sans-serif;
   font-size: 10px;
   line-height: 1.2;
   font-weight: 500;
@@ -1006,12 +1022,12 @@ input[type="search"].search-form__input {
 
 .toolbar__btn {
   -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
 
 .toolbar__btn:hover, .toolbar__btn:active {
   -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
 
 .toolbar__btn:hover .feather, .toolbar__btn:active .feather {
@@ -1251,7 +1267,7 @@ input[type="search"].search-form__input {
 }
 
 .todo-content__section-title {
-  font-family: "Roboto", Helvetica, Arial, sans-serif;
+  font-family: "Montserrat", Helvetica, Arial, sans-serif;
   font-size: 12px;
   text-transform: uppercase;
   font-weight: 700;
@@ -1342,13 +1358,13 @@ input[type="search"].search-form__input {
 }
 
 .date-picker__select {
-  font-family: "Open Sans", Arial, sans-serif;
+  font-family: "Roboto", Arial, sans-serif;
   font-size: 16px;
   border: 1px solid #d6dee2;
 }
 
 .date-picker__option {
-  font-family: "Open Sans", Arial, sans-serif;
+  font-family: "Roboto", Arial, sans-serif;
   font-size: 16px;
 }
 
@@ -1389,7 +1405,7 @@ input[type="search"].search-form__input {
 .dp-calendar__toggle-btn {
   margin: 0;
   display: block;
-  font-family: "Open Sans", Arial, sans-serif;
+  font-family: "Roboto", Arial, sans-serif;
   font-size: 14px;
   font-weight: 700;
   padding: 8px 4px;
@@ -1488,7 +1504,7 @@ input[type="search"].search-form__input {
 
 .dp-calendar__month,
 .dp-calendar__year {
-  font-family: "Open Sans", Arial, sans-serif;
+  font-family: "Roboto", Arial, sans-serif;
   display: block;
   line-height: 1.6;
   padding: 3px 0 3px 28px;
@@ -1746,9 +1762,10 @@ input[type="search"].search-form__input {
 .header__logo {
   font-size: 2.25rem;
   color: #404551;
-  font-family: "Roboto", Helvetica, Arial, sans-serif;
+  font-family: "Montserrat", Helvetica, Arial, sans-serif;
   font-weight: 700;
   width: 65%;
+  -webkit-font-smoothing: antialiased;
 }
 
 .header__logo--sm {
@@ -1845,7 +1862,7 @@ input[type="search"].search-form__input {
   font-size: 16px;
   border-radius: 4px;
   margin: 4px 0;
-  font-family: "Open Sans", Arial, sans-serif;
+  font-family: "Roboto", Arial, sans-serif;
   width: 100%;
   line-height: 16px;
   background-color: rgba(255, 255, 255, 0.75);
@@ -2032,7 +2049,7 @@ input[name="folder"]:checked + label .feather {
   width: calc(100% - 24px);
   font-size: 16px;
   display: inline-block;
-  font-family: "Open Sans", Arial, sans-serif;
+  font-family: "Roboto", Arial, sans-serif;
 }
 
 .form__label--folder .feather {
@@ -2079,7 +2096,7 @@ label.bulk-editing__checkbox-label {
   width: calc(100% - 24px);
   font-size: 16px;
   display: inline-block;
-  font-family: "Open Sans", Arial, sans-serif;
+  font-family: "Roboto", Arial, sans-serif;
 }
 
 .form__label--list .feather {

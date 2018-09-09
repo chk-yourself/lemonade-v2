@@ -1823,6 +1823,64 @@ function deleteSelected(e) {
   $('#bulkEditingToolbar').classList.remove('is-active');
 }
 
+// Hides certain elements if you click outside of them
+function hideComponents(e) {
+  if (
+    colorPicker.classList.contains("is-visible") 
+    && e.target !== $('#btnAddTag') 
+    && e.target !== colorPicker 
+    && !colorPicker.contains(e.target)
+  ) {
+    colorPicker.classList.remove("is-visible");
+    formEditTodo.appendChild(colorPicker);
+  }
+  
+  // Hides tooltip
+  if (
+    divTodoApp.contains($(".show-tooltip")) &&
+    e.target !== $(".show-tooltip")
+  ) {
+    $(".show-tooltip").classList.remove("show-tooltip");
+  }
+
+  const monthDropdown = $("#dpCalendarMonthDropdown");
+  const btnToggleMonthDropdown = $("#btnToggleMonthDropdown");
+  const yearDropdown = $("#dpCalendarYearDropdown");
+  const btnToggleYearDropdown = $("#btnToggleYearDropdown");
+
+  // Hides monthDropdown
+  if (
+    monthDropdown.classList.contains("is-active") &&
+    e.target !== monthDropdown &&
+    e.target !== btnToggleMonthDropdown &&
+    !monthDropdown.contains(e.target)
+  ) {
+    monthDropdown.classList.remove("is-active");
+    btnToggleMonthDropdown.classList.remove("is-active");
+  }
+
+  // Hides yearDropdown
+  if (
+    yearDropdown.classList.contains("is-active") &&
+    e.target !== yearDropdown &&
+    e.target !== btnToggleYearDropdown &&
+    !yearDropdown.contains(e.target)
+  ) {
+    yearDropdown.classList.remove("is-active");
+    btnToggleYearDropdown.classList.remove("is-active");
+  }
+
+  // Hides searchBar input
+  if (searchBar.classList.contains('is-expanded') && searchInput.value === "" && e.target !== searchBar && !searchBar.contains(e.target)) {
+    searchBar.classList.remove('is-expanded');
+  }
+
+  // Hides listActions
+  const listActionsWrapper = $('#listActionsWrapper');
+  if (listActionsWrapper.classList.contains('show-actions') && e.target !== listActionsWrapper && !listActionsWrapper.contains(e.target)) {
+    listActionsWrapper.classList.remove('show-actions');
+  }
+}
 
   // Event Listeners
 
@@ -1962,65 +2020,11 @@ $('#todoItemNote').addEventListener('change', addNote);
 
   inputSearch.addEventListener("click", e => e.currentTarget.select());
 
-// Hides certain elements if you click outside of them
-  document.body.addEventListener("click", e => {
-    // Hides colorPicker
-    if (
-      colorPicker.classList.contains("is-visible") 
-      && e.target !== $('#btnAddTag') 
-      && e.target !== colorPicker 
-      && !colorPicker.contains(e.target)
-    ) {
-      colorPicker.classList.remove("is-visible");
-      formEditTodo.appendChild(colorPicker);
-    }
-    
-    // Hides tooltip
-    if (
-      divTodoApp.contains($(".show-tooltip")) &&
-      e.target !== $(".show-tooltip")
-    ) {
-      $(".show-tooltip").classList.remove("show-tooltip");
-    }
+  const selectEvents = (function() {
+    return ('ontouchstart' in document === true) ? 'touchstart' : 'click';
+  })();
 
-    const monthDropdown = $("#dpCalendarMonthDropdown");
-    const btnToggleMonthDropdown = $("#btnToggleMonthDropdown");
-    const yearDropdown = $("#dpCalendarYearDropdown");
-    const btnToggleYearDropdown = $("#btnToggleYearDropdown");
-
-    // Hides monthDropdown
-    if (
-      monthDropdown.classList.contains("is-active") &&
-      e.target !== monthDropdown &&
-      e.target !== btnToggleMonthDropdown &&
-      !monthDropdown.contains(e.target)
-    ) {
-      monthDropdown.classList.remove("is-active");
-      btnToggleMonthDropdown.classList.remove("is-active");
-    }
-
-    // Hides yearDropdown
-    if (
-      yearDropdown.classList.contains("is-active") &&
-      e.target !== yearDropdown &&
-      e.target !== btnToggleYearDropdown &&
-      !yearDropdown.contains(e.target)
-    ) {
-      yearDropdown.classList.remove("is-active");
-      btnToggleYearDropdown.classList.remove("is-active");
-    }
-
-    // Hides searchBar input
-    if (searchBar.classList.contains('is-expanded') && searchInput.value === "" && e.target !== searchBar && !searchBar.contains(e.target)) {
-      searchBar.classList.remove('is-expanded');
-    }
-
-    // Hides listActions
-    const listActionsWrapper = $('#listActionsWrapper');
-    if (listActionsWrapper.classList.contains('show-actions') && e.target !== listActionsWrapper && !listActionsWrapper.contains(e.target)) {
-      listActionsWrapper.classList.remove('show-actions');
-    }
-  });
+  document.body.addEventListener(selectEvents, hideComponents);
 
   $all("[data-action='openListForm']").forEach(btn => {
     btn.addEventListener("click", e => {

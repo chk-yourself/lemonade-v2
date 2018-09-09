@@ -18,6 +18,7 @@
   font-family: $heading-font;
   font-weight: 700;
   width: 65%;
+  -webkit-font-smoothing: antialiased;
 }
 
 .header__logo--sm {
