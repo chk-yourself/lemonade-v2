@@ -282,7 +282,6 @@
   if (todoLists.find((list) => list.name === "Inbox") === undefined) {
     const initInbox = new List("Inbox", "null");
     todoLists.push(initInbox);
-    console.table(todoLists);
     saveToStorage();
   }
 
@@ -705,7 +704,7 @@
       if (todoItem.contains(tagLabels)) {
         tagLabels.classList.remove("is-hidden");
       }
-      if (todoItem.contains(dueDateLabel) && ulActiveList !== $('#upcoming')) {
+      if (todoItem.contains(dueDateLabel) && ulActiveList !== $('#upcoming') && ulActiveList !== $('#today')) {
         dueDateLabel.classList.remove("is-hidden");
       }
       const tags = todoContent.querySelectorAll("#tagsContainer .tag");
@@ -2122,9 +2121,7 @@
     if (e.currentTarget.classList.contains("show-input")) return;
 
     const id = $("#dpCalendar").parentNode.dataset.id;
-    console.log({ id });
     const currentTask = state.activeList.tasks.find((task) => task.id === id);
-    console.log({ currentTask });
 
     if (currentTask.dueDate !== null) {
       const dueDate = new Date(currentTask.dueDate);
