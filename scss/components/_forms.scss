@@ -74,7 +74,8 @@ input[type=text] {
 
 .form__btn--rt {
   float: right;
-  margin-right: 16px;
+  position: relative;
+  top: 16px;
   .feather {
     vertical-align: middle;
   }
@@ -147,6 +148,7 @@ label.subtask-list__checkbox {
   width: 18px;
   height: 18px;
   vertical-align: top;
+  margin-top: 1px;
 }
 
 label.subtask-list__checkbox:before {

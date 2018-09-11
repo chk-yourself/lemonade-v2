@@ -2447,7 +2447,7 @@
       $("#newListFormContainer").classList.add("is-active");
       window.setTimeout(() => {
         $("#newListNameInput").focus();
-      }, 100);
+      }, 200);
     });
   });
 

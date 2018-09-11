@@ -18,7 +18,8 @@
       <div id="todoApp" class="todo-app">
         <header class="todo-app__header">
           <nav class="sidebar" id="sideNav">
-            <button type="button" class="sidebar__btn--icon sidebar__btn--toggle sidebar__btn--toggle-open" id="toggleOpenBtn" data-action="toggleMenu">
+            <button type="button" class="sidebar__btn--icon sidebar__btn--toggle sidebar__btn--toggle-open" id="toggleOpenBtn"
+              data-action="toggleMenu">
               <i data-feather="menu"></i>
             </button>
             <div class="sidebar__menu-wrapper">
@@ -29,29 +30,28 @@
               <ul class="sidebar__menu accordion" id="sidebarMenu">
                 <li class="sidebar__item">
                   <a class="sidebar__link is-active" href="#inbox">
-                    <i data-feather="inbox"></i>
-                    Inbox</a>
+                    <i data-feather="inbox"></i>Inbox</a>
                 </li>
                 <li class="sidebar__item">
                   <a class="sidebar__link" id="todayNavLink" href="#today">
-                    <i data-feather="sun"></i>
-                    Today</a>
+                    <i data-feather="sun"></i>Today</a>
                 </li>
                 <li class="sidebar__item">
-                    <a class="sidebar__link" id="upcomingNavLink" href="#upcoming">
-                      <i data-feather="calendar"></i>
-                      Upcoming</a>
-                  </li>
+                  <a class="sidebar__link" id="upcomingNavLink" href="#upcoming">
+                    <i data-feather="calendar"></i>Upcoming</a>
+                </li>
               </ul>
               <!--/ #sidebarMenu -->
-              <button id="openListFormBtn" type="button" class="btn btn--neutral sidebar__btn sidebar__btn--create-list" data-action="openListForm">
+              <button id="openListFormBtn" type="button" class="btn btn--neutral sidebar__btn sidebar__btn--create-list"
+                data-action="openListForm">
                 <i data-feather="plus-circle"></i>Create List</button>
             </div>
             <!--/ .sidebar__menu-wrapper -->
             <div class="header__content-wrapper">
               <div id="searchBar" class="search-bar">
                 <form id="searchForm" class="search-form">
-                  <input id="searchInput" class="form__input form__input--inline search-form__input" type="text" placeholder="Search by keywords, tags, etc...">
+                  <input id="searchInput" class="form__input form__input--inline search-form__input" type="text"
+                    placeholder="Search by keywords, tags, etc...">
                   <input id="searchSubmit" class="search-form__submit" type="submit" value="">
                   <button id="searchBtn" type="button" class="btn form__btn btn--neutral search-form__btn" data-action="filterTodos">
                     <i data-feather="search"></i>
@@ -65,14 +65,15 @@
                   <i data-feather="more-vertical"></i>
                 </button>
                 <div class="more-actions list-actions" id="listActions">
-                  <button type="button" class="btn btn--neutral more-actions__item" id="btnEditList" data-required="custom-list" data-action="editList">
+                  <button type="button" class="btn btn--neutral more-actions__item" id="btnEditList" data-required="custom-list"
+                    data-action="editList">
                     Edit List
                   </button>
                   <button type="button" class="btn btn--neutral more-actions__item" id="btnOpenBulkEditing" data-action="openBulkEditing">
                     Bulk Actions
                   </button>
-                  <button type="button" class="btn btn--neutral more-actions__item" id="btnTriggerWarningDeleteList" data-required="custom-list"
-                    data-action="deleteList">
+                  <button type="button" class="btn btn--neutral more-actions__item" id="btnTriggerWarningDeleteList"
+                    data-required="custom-list" data-action="deleteList">
                     Delete List
                   </button>
                   <button type="button" class="btn btn--neutral more-actions__item" data-action="clearAll">Clear All</button>
@@ -91,8 +92,8 @@
             <div class="form__form-group--inline add-todo-form__form-group--inline">
               <button id="addTodoBtn" type="submit" class="btn form__btn form__btn--sm form__btn--neutral cross-icon cross-icon--dk btn--inline"
                 data-action="addTodo"></button>
-              <input id="todoInput" class="form__input form__input--inline add-todo-form__input" type="text" placeholder="What would you like to do?"
-              />
+              <input id="todoInput" class="form__input form__input--inline add-todo-form__input" type="text"
+                placeholder="What would you like to do?" />
             </div>
           </form>
           <div id="bulkActionsToolbar" class="toolbar bulk-actions-toolbar">
@@ -102,7 +103,8 @@
               <p class="toolbar__item-label">Select All/None</p>
             </div>
             <div class="toolbar__item flex-column">
-              <button class="btn btn--inline toolbar__btn" type="button" data-action="transferSelected" data-bulk-action="true">
+              <button class="btn btn--inline toolbar__btn" type="button" data-action="transferSelected"
+                data-bulk-action="true">
                 <i data-feather="arrow-right-circle"></i>
                 <span class="toolbar__item-label">Move</span>
               </button>
@@ -158,12 +160,14 @@
                 <div class="form__form-group--inline new-list-form__form-group--inline">
                   <button id="createFolderBtn" type="button" class="btn form__btn form__btn--sm form__btn--neutral cross-icon cross-icon--dk btn--inline"
                     data-action="createFolder"></button>
-                  <input id="newFolderInput" class="form__input form__input--inline new-list-form__input" type="text" placeholder="Create new folder"
-                  />
+                  <input id="newFolderInput" class="form__input form__input--inline new-list-form__input" type="text"
+                    placeholder="Create new folder" />
                 </div>
               </fieldset>
-              <button id="addListBtn" type="submit" class="btn btn--primary form__btn" data-action="addList">Create List</button>
-              <button type="button" class="btn btn--neutral form__btn modal__btn--close" id="closeListFormBtn" data-action="closeListForm">
+              <button id="addListBtn" type="submit" class="btn btn--primary form__btn" data-action="addList">Create
+                List</button>
+              <button type="button" class="btn btn--neutral form__btn modal__btn--close" id="closeListFormBtn"
+                data-action="closeListForm">
                 Cancel
               </button>
             </form>
@@ -210,8 +214,8 @@
                 <input type="radio" name="list" id="listNew" value="new" />
                 <button id="createListBtn" type="button" class="btn form__btn form__btn--sm form__btn--neutral cross-icon cross-icon--dk btn--inline"
                   data-action="createList"></button>
-                <input id="newListInput" class="form__input form__input--inline transfer-tasks-form__input" data-action="openListForm" type="text"
-                  placeholder="Create new list" />
+                <input id="newListInput" class="form__input form__input--inline transfer-tasks-form__input" data-action="openListForm"
+                  type="text" placeholder="Create new list" />
               </div>
               <button id="btnTransferTasks" type="submit" class="btn btn--primary form__btn" data-action="transferTasks">Done</button>
               <button type="button" class="btn btn--neutral form__btn modal__btn--close" data-action="closeForm">
@@ -226,7 +230,8 @@
           <div class="modal__content modal__content--sm clearfix">
             <h3 class="alert__title">Are you sure?</h3>
             <p class="alert__msg"><strong>ALL ITEMS</strong> will be deleted forever.</p>
-            <button type="button" class="btn modal__btn alert__btn alert-warning__btn form__btn" id="clearAllBtn" data-action="clearAll">Clear
+            <button type="button" class="btn modal__btn alert__btn alert-warning__btn form__btn" id="clearAllBtn"
+              data-action="clearAll">Clear
               All
             </button>
             <button type="button" class="btn form__btn alert__btn modal__btn modal__btn--close" data-action="closeModal">
@@ -239,7 +244,8 @@
           <div class="modal__content modal__content--sm clearfix">
             <h3 class="alert__title">Are you sure?</h3>
             <p class="alert__msg"><span class="list-name"></span> will be deleted forever.</p>
-            <button type="button" class="btn modal__btn alert__btn alert-warning__btn form__btn" id="btnDeleteList" data-action="deleteList">Delete
+            <button type="button" class="btn modal__btn alert__btn alert-warning__btn form__btn" id="btnDeleteList"
+              data-action="deleteList">Delete
               list
             </button>
             <button type="button" class="btn form__btn alert__btn modal__btn modal__btn--close" data-action="closeModal">
@@ -252,7 +258,8 @@
           <div class="modal__content modal__content--sm clearfix">
             <h3 class="alert__title">Are you sure?</h3>
             <p class="alert__msg"><span class="task-text"></span> will be deleted forever.</p>
-            <button type="button" class="btn modal__btn alert__btn alert-warning__btn form__btn" id="btnDeleteTask" data-action="deleteTask">Delete
+            <button type="button" class="btn modal__btn alert__btn alert-warning__btn form__btn" id="btnDeleteTask"
+              data-action="deleteTask">Delete
               Task
             </button>
             <button type="button" class="btn form__btn alert__btn modal__btn modal__btn--close" data-action="closeModal">
@@ -275,13 +282,14 @@
 
             <div class="dp-calendar clearfix" id="dpCalendar">
               <div class="dp-calendar__wrapper dp-calendar__main-header">
-                <button type="button" class="dp-calendar__btn-prevnext dp-calendar__btn-prevnext--prev" id="btnSelectPrevMonth" data-action="selectPrevMonth"><i
-                    data-feather="chevron-left"></i></button>
+                <button type="button" class="dp-calendar__btn-prevnext dp-calendar__btn-prevnext--prev" id="btnSelectPrevMonth"
+                  data-action="selectPrevMonth"><i data-feather="chevron-left"></i></button>
                 <div class="d-flex justify-content-center">
                   <div class="dp-calendar__month-picker" id="dpCalendarMonthPicker">
-                    <button type="button" class="dp-calendar__toggle-btn dp-calendar__toggle-btn--month" id="btnToggleMonthDropdown" data-action="toggleMonthDropdown"><span
-                        class="btn-text"></span><i data-feather="chevron-down"></i></button>
-                    <div class="dp-calendar__dropdown dp-calendar__dropdown--month" id="dpCalendarMonthDropdown" data-name="month">
+                    <button type="button" class="dp-calendar__toggle-btn dp-calendar__toggle-btn--month" id="btnToggleMonthDropdown"
+                      data-action="toggleMonthDropdown"><span class="btn-text"></span><i data-feather="chevron-down"></i></button>
+                    <div class="dp-calendar__dropdown dp-calendar__dropdown--month" id="dpCalendarMonthDropdown"
+                      data-name="month">
                       <input id="jan" type="radio" class="dp-calendar__radio" name="month" value="January">
                       <label for="jan" class="dp-calendar__month">
                         January
@@ -334,16 +342,17 @@
                   </div>
                   <!--/ #dpCalendarMonthPicker-->
                   <div class="dp-calendar__year-picker" id="dpCalendarYearPicker">
-                    <button type="button" class="dp-calendar__toggle-btn dp-calendar__toggle-btn--year" id="btnToggleYearDropdown" data-action="toggleYearDropdown"><span
-                        class="btn-text"></span><i data-feather="chevron-down"></i></button>
-                    <div class="dp-calendar__dropdown dp-calendar__dropdown--year" id="dpCalendarYearDropdown" data-name="year">
+                    <button type="button" class="dp-calendar__toggle-btn dp-calendar__toggle-btn--year" id="btnToggleYearDropdown"
+                      data-action="toggleYearDropdown"><span class="btn-text"></span><i data-feather="chevron-down"></i></button>
+                    <div class="dp-calendar__dropdown dp-calendar__dropdown--year" id="dpCalendarYearDropdown"
+                      data-name="year">
                     </div>
                   </div>
                   <!--/ #dpCalendarYearPicker-->
                 </div>
                 <!--/ .d-flex -->
-                <button type="button" class="dp-calendar__btn-prevnext dp-calendar__btn-prevnext--next" id="btnSelectNextMonth" data-action="selectNextMonth"><i
-                    data-feather="chevron-right"></i></button>
+                <button type="button" class="dp-calendar__btn-prevnext dp-calendar__btn-prevnext--next" id="btnSelectNextMonth"
+                  data-action="selectNextMonth"><i data-feather="chevron-right"></i></button>
 
               </div>
               <!--/ .dp-calendar__wrapper-->
@@ -366,10 +375,12 @@
               </div>
               <!--/ .dp-calendar__wrapper -->
 
-              <button class="btn btn--primary form__btn form__btn--rt dp-calendar__btn" type="button" id="btnSetDueDate" action="setDueDate">Set</button>
-              <button class="btn btn--neutral form__btn form__btn--rt dp-calendar__btn dp-calendar__btn--reset" type="button" id="btnResetDueDate"
-                data-action="resetDueDate">Cancel</button>
-              <button class="btn btn--neutral form__btn dp-calendar__btn dp-calendar__btn--clear" type="button" id="btnClearDueDate" data-action="clearDueDate">Clear</button>
+              <button class="btn btn--primary form__btn form__btn--rt dp-calendar__btn" type="button" id="btnSetDueDate"
+                action="setDueDate">Set</button>
+              <button class="btn btn--neutral form__btn form__btn--rt dp-calendar__btn dp-calendar__btn--reset" type="button"
+                id="btnResetDueDate" data-action="resetDueDate">Cancel</button>
+              <button class="btn btn--neutral form__btn dp-calendar__btn dp-calendar__btn--clear" type="button" id="btnClearDueDate"
+                data-action="clearDueDate">Clear</button>
             </div>
             <!--/ #datePickerCalendar-->
 
@@ -398,14 +409,15 @@
                 <i data-feather="tag"></i>
               </button>
               <div class="todo-content__tags form__form-group--inline edit-todo-form__form-group--inline" id="tagsContainer">
-                <input id="newTagInput" class="form__input form__input--inline edit-todo-form__input--add-tag" type="text" data-action="addTag"
-                  placeholder="Add a tag" />
+                <input id="newTagInput" class="form__input form__input--inline edit-todo-form__input--add-tag" type="text"
+                  data-action="addTag" placeholder="Add a tag" />
               </div>
             </div>
             <!--/ #tagsContainer -->
 
             <div class="color-picker" id="colorPicker">
-              <input type="radio" class="color-picker__radio" name="tagColor" id="colorDefault" value="bg--default" checked/>
+              <input type="radio" class="color-picker__radio" name="tagColor" id="colorDefault" value="bg--default"
+                checked />
               <label class="color-picker__swatch bg--default" for="colorDefault"></label>
               <input type="radio" class="color-picker__radio" name="tagColor" value="bg--dk-orange" id="colorOrange" />
               <label class="color-picker__swatch bg--dk-orange" for="colorOrange"></label>
@@ -419,8 +431,8 @@
               <label class="color-picker__swatch bg--dk-green" for="colorGreen"></label>
             </div>
             <!--/ #colorPicker-->
-            <button id="btnTriggerWarningDeleteTask" type="button" class="btn btn--neutral form__btn form__btn--rt" data-action="triggerWarningDeleteTask">
-              Delete Task</button>
+            <button id="btnTriggerWarningDeleteTask" type="button" class="btn btn--neutral form__btn form__btn--rt"
+              data-action="triggerWarningDeleteTask"><i data-feather="trash-2"></i></button>
           </form>
         </div>
 

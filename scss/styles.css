@@ -52,7 +52,7 @@ h1 {
   left: 42px;
   display: block;
   font-size: 10.5px;
-  margin-left: 4px;
+  margin-left: 5px;
   letter-spacing: .02em;
   color: rgba(64, 69, 81, 0.4);
 }
@@ -314,7 +314,8 @@ input[type=text]:focus {
 
 .form__btn--rt {
   float: right;
-  margin-right: 16px;
+  position: relative;
+  top: 16px;
 }
 
 .form__btn--rt .feather {
@@ -394,6 +395,7 @@ label.subtask-list__checkbox {
   width: 18px;
   height: 18px;
   vertical-align: top;
+  margin-top: 1px;
 }
 
 label.subtask-list__checkbox:before {
@@ -985,7 +987,7 @@ input[type="search"].search-form__input {
   left: 42px;
   display: block;
   font-size: 10.5px;
-  margin-left: 4px;
+  margin-left: 5px;
   letter-spacing: .02em;
   color: rgba(86, 93, 109, 0.6);
   font-style: italic;
@@ -2197,7 +2199,7 @@ input[name="folder"]:checked + label::after {
   height: 20px;
   margin-right: 12px;
   position: relative;
-  top: -3px;
+  top: -2.5px;
 }
 
 .bulk-actions-toolbar {
