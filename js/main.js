@@ -1054,10 +1054,10 @@
 
   function renderList(itemsArray, itemsList) {
     const ulActiveList = $(".is-active-list");
-    if (itemsList === $("#filteredList") || itemsList === $("#today") || itemsList === $('#upcoming')) {
-      $("#main").classList.add("show-filtered-tasks");
+    if (itemsList === $("#filteredList")) {
+      $("#main").classList.add("show-search-results");
     } else {
-      $("#main").classList.remove("show-filtered-tasks");
+      $("#main").classList.remove("show-search-results");
     }
 
     if ($("#bulkActionsToolbar").classList.contains("is-active")) {
@@ -1117,6 +1117,12 @@
           { class: "filtered-list__link", href: `#${listObj.id}` },
           listObj.name
         );
+
+        if (filterByDate && date.valueOf() === today.valueOf()) {
+          subListTitle.classList.add('filtered-list__date--today');
+        } else if (filterByDate && date.valueOf() === tomorrow.valueOf()) {
+          subListTitle.classList.add('filtered-list__date--tomorrow');
+        }
 
         if (!filterByDate) {
           subListTitle.addEventListener("click", openList);
@@ -1202,7 +1208,7 @@
     today.setHours(0, 0, 0, 0);
     if (timeFrame === 'today') {
     filteredArray = filterTasksByDueDate(today);
-    $("#activeListTitle").innerHTML = `<strong>Tasks Due Today</strong>`;
+    $("#activeListTitle").textContent = 'Today';
     } else if (timeFrame === 'upcoming') {
       const currentMonthIndex = today.getMonth();
       const currentYear = today.getFullYear();
@@ -1230,7 +1236,7 @@
         filteredArray.push(tasksDue);
       }
       };
-      $("#activeListTitle").innerHTML = `<strong>Upcoming Tasks</strong>`;
+      $("#activeListTitle").textContent = 'Upcoming';
     }
     renderList(filteredArray, listElem);
     createBreadcrumbs(listElem);
@@ -1687,8 +1693,8 @@
       ulActiveList.removeEventListener("click", enableBulkActions);
     }
 
-    if ($("#main").classList.contains("show-filtered-tasks")) {
-      $("#main").classList.remove("show-filtered-tasks");
+    if ($("#main").classList.contains("show-search-results")) {
+      $("#main").classList.remove("show-search-results");
     }
 
     $("#activeListTitle").textContent = listObj.name;
@@ -2153,6 +2159,7 @@
       x.insertBefore(frag, $('input[type="checkbox"]', x));
       $(".todo-list__checkbox", x).classList.add("is-hidden");
       $(".todo-item__toggle-btn", x).classList.add("is-hidden");
+      x.classList.add('bulk-editing-list__item');
     });
     // Disable bulk action buttons
     $all('.toolbar__btn[data-bulk-action="true"]').forEach(

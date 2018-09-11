@@ -144,8 +144,7 @@
   text-align: center;
   width: 100%;
   max-width: 280px;
-  margin-right: auto;
-  margin-left: auto;
+  margin: 24px auto 0;
   display: flex;
   justify-content: space-around;
 }
@@ -153,13 +152,11 @@
 .views__btn {
   width: 33.33%;
   height: auto;
-  padding: 0 8px 8px;
-  border-bottom: 3px solid transparent;
-  border-right: none;
-  border-left: none;
+  padding: 8px;
+  border: 2px solid transparent;
+  border-radius: 5000px;
   &.is-selected {
-    border-bottom: 3px solid $primary-color;
-    border-radius: 0;
+    border-color: $primary-color;
     color: $primary-color;
   }
 }
@@ -183,7 +180,7 @@
   @include lg {
     padding: 24px 32px 32px;
   }
-  &.show-filtered-tasks {
+  &.show-search-results {
     .active-list__title {
       font-size: 1.25rem;
       font-weight: 400;
@@ -223,6 +220,12 @@
 .filtered-list__date {
   font-size: 14px;
   font-weight: 500;
+  &--today {
+    color: $red;
+  }
+  &--tomorrow {
+    color: $primary-color;
+  }
 }
 
 .filtered-list__folder-name {

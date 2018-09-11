@@ -1,6 +1,7 @@
 
 .bulk-actions-toolbar {
   @include box-shadow(1);
+  margin-bottom: -4px;
 }
 
 [type="checkbox"] + .bulk-actions__checkbox-label {
@@ -32,4 +33,9 @@ label.bulk-actions__checkbox-label {
   .toolbar__item-label {
     font-size: 10px;
   }
+}
+
+.bulk-editing-list__item {
+  margin: 0;
+  border-radius: 0;
 }

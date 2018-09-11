@@ -911,6 +911,10 @@ input[type="search"].search-form__input {
   pointer-events: none;
 }
 
+.toolbar__btn:disabled .toolbar__item-label {
+  color: #d6dee2;
+}
+
 .toolbar__btn:disabled .feather {
   stroke: #d6dee2;
 }
@@ -1774,7 +1778,7 @@ input[type="search"].search-form__input {
   width: 100%;
   display: inline-block;
   padding: 8px 0 8px 16px;
-  border-radius: 14px;
+  border-radius: 5000px;
 }
 
 .sidebar__link:hover, .sidebar__link:active, .sidebar__link.is-active {
@@ -2017,8 +2021,7 @@ input[type="search"].search-form__input {
   text-align: center;
   width: 100%;
   max-width: 280px;
-  margin-right: auto;
-  margin-left: auto;
+  margin: 24px auto 0;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -2029,15 +2032,13 @@ input[type="search"].search-form__input {
 .views__btn {
   width: 33.33%;
   height: auto;
-  padding: 0 8px 8px;
-  border-bottom: 3px solid transparent;
-  border-right: none;
-  border-left: none;
+  padding: 8px;
+  border: 2px solid transparent;
+  border-radius: 5000px;
 }
 
 .views__btn.is-selected {
-  border-bottom: 3px solid #638eff;
-  border-radius: 0;
+  border-color: #638eff;
   color: #638eff;
 }
 
@@ -2068,7 +2069,7 @@ input[type="search"].search-form__input {
   }
 }
 
-.todo-app__main.show-filtered-tasks .active-list__title {
+.todo-app__main.show-search-results .active-list__title {
   font-size: 1.25rem;
   font-weight: 400;
 }
@@ -2105,6 +2106,14 @@ input[type="search"].search-form__input {
 .filtered-list__date {
   font-size: 14px;
   font-weight: 500;
+}
+
+.filtered-list__date--today {
+  color: #f2002e;
+}
+
+.filtered-list__date--tomorrow {
+  color: #638eff;
 }
 
 .filtered-list__folder-name {
@@ -2205,6 +2214,7 @@ input[name="folder"]:checked + label::after {
 .bulk-actions-toolbar {
   -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
           box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  margin-bottom: -4px;
 }
 
 [type="checkbox"] + .bulk-actions__checkbox-label {
@@ -2237,6 +2247,11 @@ label.bulk-actions__checkbox-label {
 
 .bulk-actions-toolbar__item--check-all .toolbar__item-label {
   font-size: 10px;
+}
+
+.bulk-editing-list__item {
+  margin: 0;
+  border-radius: 0;
 }
 
 .todo-content {
