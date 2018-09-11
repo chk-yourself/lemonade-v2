@@ -1052,45 +1052,6 @@
     });
   }
 
-  /**
-   * Filters and renders todo items that match the provided query string
-   
-  function filterTasks(e) {
-    e.preventDefault();
-    let query = inputSearch.value.toLowerCase();
-    if (query !== "") {
-      let filteredArray = todoLists.reduce((acc, list) => {
-        return acc.concat(
-          list.tasks.filter(todo => {
-            return Object.keys(todo).some(key => {
-              if (typeof todo[key] === "string") {
-                return todo[key].toLowerCase().includes(query);
-              }
-              if (Array.isArray(todo[key])) {
-                return todo[key].some(item => {
-                  return item.text.toLowerCase().includes(query);
-                });
-              }
-            });
-          })
-        );
-      }, []);
-      const ulfilteredList = $('#filteredList');
-      populateList(filteredArray, ulfilteredList);
-
-      createBreadcrumbs(ulfilteredList);
-
-      $(".is-active-list").classList.remove("is-active-list");
-      ulfilteredList.classList.add("is-active-list");
-      $("#activeListTitle").innerHTML = `${filteredArray.length} search results for <strong>${query}</strong>`;
-      formAddTodo.classList.add("is-hidden");
-      state.activeList = null;
-      state.filteredList = filteredArray;
-      inputSearch.blur();
-    }
-  }
-*/
-
   function renderList(itemsArray, itemsList) {
     const ulActiveList = $(".is-active-list");
     if (itemsList === $("#filteredList") || itemsList === $("#today") || itemsList === $('#upcoming')) {
@@ -1286,36 +1247,6 @@
     }
   }
 
-  /*
-  function filterTasksDueToday(e) {
-    e.preventDefault();
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const filteredArray = todoLists.reduce((acc, list) => {
-      const filteredTasks = list.tasks.filter(task => {
-        return new Date(task.dueDate).valueOf() === today.valueOf();
-        });
-      if (filteredTasks.length > 0) {
-        acc.push(filteredTasks);
-      }
-      return acc;
-    }, []);
-    const ulToday = $('#today');
-    renderList(filteredArray, ulToday);
-
-    $(".is-active-list").classList.remove("is-active-list");
-    ulToday.classList.add("is-active-list");
-    $("#activeListTitle").innerHTML = `<strong>Due Today</strong>`;
-    formAddTodo.classList.add("is-hidden");
-    state.activeList = null;
-    state.filteredList = filteredArray;
-
-    // Closes sidebar if viewport is < 768px
-    if (document.documentElement.clientWidth < 768) {
-      $('#siteWrapper').classList.remove('show-nav');
-    }
-  }
-*/
   function toggleMenu() {
     const siteWrapper = document.getElementById("siteWrapper");
 
