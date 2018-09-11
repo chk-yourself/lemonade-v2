@@ -48,7 +48,7 @@ h1 {
 
 .badge--due-date {
   position: absolute;
-  bottom: 1px;
+  bottom: 0;
   left: 42px;
   display: block;
   font-size: 10.5px;
@@ -981,7 +981,7 @@ input[type="search"].search-form__input {
 
 .breadcrumbs {
   position: absolute;
-  bottom: 1px;
+  bottom: 0;
   left: 42px;
   display: block;
   font-size: 10.5px;
