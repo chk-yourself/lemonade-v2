@@ -23,6 +23,70 @@
     return context.querySelectorAll(selector);
   }
 
+  // Classes
+
+  class List {
+    constructor(name, folder, obj = null) {
+      if (!obj) {
+        this.name = name;
+        this.folder = folder;
+        this.id = `${camelCased(name)}-${Date.now()}`;
+        this.tasks = [];
+      } else {
+        this.name = obj.name;
+        this.folder = obj.folder;
+        this.id = obj.id;
+        this.tasks = obj.tasks;
+      }
+    }
+    getTask(taskId) {
+      return this.tasks.find(task => task.id === taskId);
+    }
+    getTaskIndex(taskId) {
+      return this.tasks.findIndex(task => task.id === taskId);
+    }
+  }
+
+  function getTask(id) {
+    let currentTask = undefined;
+    for (let i = 0; i < todoLists.length; i++) {
+      currentTask = todoLists[i].tasks.find(task => task.id === id);
+      if (currentTask !== undefined) {
+        break;
+      }
+    }
+    return currentTask;
+  }
+
+  function getTaskIndex(id) {
+    let taskIndex = undefined;
+    for (let i = 0; i < todoLists.length; i++) {
+      taskIndex = todoLists[i].tasks.findIndex(task => task.id === id);
+      if (taskIndex !== undefined) {
+        break;
+      }
+    }
+    return taskIndex;
+  }
+
+  class Subtask {
+    constructor(text) {
+      this.text = text;
+      this.done = false;
+    }
+  }
+
+  class Task extends Subtask {
+    constructor(text) {
+      super(text);
+      this.subtasks = [];
+      this.note = "";
+      this.tags = [];
+      this.id = uniqueID();
+      this.dueDate = null;
+    }
+  }
+
   // Variables
   const divTodoApp = $("#todoApp");
   const formAddTodo = $("#addTodoForm");
@@ -39,7 +103,14 @@
   const formEditList = $('#editListForm');
   const inputNewFolder = $("#newFolderInput");
   const todoContent = $("#todoContent");
-  const todoLists = JSON.parse(localStorage.getItem("todoLists")) || [];
+  const todoLists = initLists(JSON.parse(localStorage.getItem("todoLists"))) || [];
+
+  // Converts JSON list objects back to instances of class List
+  function initLists(arr) {
+    return arr.map(item => new List(null, null, item));
+  }
+
+  const saveToStorage = () => localStorage.setItem("todoLists", JSON.stringify(todoLists));
 
   const BACKSPACE_KEY = 8;
   const ENTER_KEY = 13;
@@ -188,38 +259,12 @@
     return node;
   };
 
-  class List {
-    constructor(name, folder) {
-      this.name = name;
-      this.folder = folder;
-      this.id = `${camelCased(name)}-${Date.now()}`;
-      this.tasks = [];
-    }
-  }
-
-  class Subtask {
-    constructor(text) {
-      this.text = text;
-      this.done = false;
-    }
-  }
-
-  class Task extends Subtask {
-    constructor(text) {
-      super(text);
-      this.subtasks = [];
-      this.note = "";
-      this.tags = [];
-      this.id = uniqueID();
-      this.dueDate = null;
-    }
-  }
 
   if (todoLists.find(list => list.name === "Inbox") === undefined) {
     const initInbox = new List("Inbox", "null");
     todoLists.push(initInbox);
     console.table(todoLists);
-    localStorage.setItem("todoLists", JSON.stringify(todoLists));
+    saveToStorage();
   }
 
   const inbox = todoLists.find(list => list.name === "Inbox");
@@ -244,7 +289,7 @@
     if (text !== "") {
       let todo = new Task(text);
       state.activeList.tasks.unshift(todo); // Add new item to top of the list
-      localStorage.setItem("todoLists", JSON.stringify(todoLists));
+      saveToStorage();
       populateList(state.activeList.tasks, activeList_ul);
     }
     // Resets addTodoForm
@@ -269,9 +314,7 @@
           item.text
         }" ${item.done ? "checked" : ""} />
 <label for ="item-${i}" class="todo-list__checkbox"></label>
-<input type="text" class="form__input todo-item__title" data-index="${i}" data-id="${
-          item.id
-        }" value="${item.text}" />
+<textarea class="form__textarea todo-item__title" data-index="${i}" data-id="${item.id}">${item.text}</textarea>
 <button type="button" class="btn todo-item__btn--neutral todo-item__toggle-btn" data-action="toggleContent"></button>
 </li>`;
       })
@@ -297,7 +340,7 @@
         let id = e.currentTarget.dataset.id;
         state.activeList = getListByTaskId(id);
       });
-      itemTitle.addEventListener("input", renameTodo);
+      itemTitle.addEventListener("change", renameTodo);
 
       // Creates tag labels for each todo item, if any
       let id = itemsCollection[i].id;
@@ -421,7 +464,7 @@
       ); // Move task reverted to incomplete to the bottom of all unfinished tasks (and to  the top of the entire todo list, if there are none)
     }
 
-    localStorage.setItem("todoLists", JSON.stringify(todoLists));
+    saveToStorage();
     todoContent.classList.remove("is-visible");
     divTodoApp.appendChild(todoContent);
 
@@ -470,8 +513,8 @@
     currentTask.subtasks[subtaskIndex].done = !currentTask.subtasks[
       subtaskIndex
     ].done;
-    localStorage.setItem("todoLists", JSON.stringify(todoLists));
-    populateSubList(state.activeList.tasks, "subtasks", ulSubtasks, todoIndex);
+    saveToStorage();
+    populateSubtasks(state.activeList.tasks, "subtasks", ulSubtasks, todoIndex);
   }
 
   // Empties todos array and removes all rendered todo items
@@ -516,7 +559,7 @@
    * @param {Array} items
    * @param {Node} itemsList - the HTML <ul> element to contain the list items
    */
-  function populateSubList(itemsArray = [], prop, itemsList, k) {
+  function populateSubtasks(itemsArray = [], prop, itemsList, k) {
     itemsList.innerHTML = itemsArray[k][prop]
       .map((subitem, i) => {
         return `<li class="subtask-list__item">
@@ -524,13 +567,18 @@
           subitem.done ? "checked" : ""
         } />
 <label for="i${k}--${i}" class="subtask-list__checkbox" data-index="${k}" data-sub-index="${i}"></label>
-<input type="text" class="form__input edit-todo-form__input--edit-subtask" data-index="${k}" data-sub-index=${i} value="${
-          subitem.text
-        }" />
+<textarea class="form__textarea edit-todo-form__textarea--subtask" data-index="${k}" data-sub-index=${i}>${subitem.text}</textarea>
 </li>`;
       })
       .join("");
-  }
+
+    // Enable auto height resizing for each subtask textarea
+    $all('.edit-todo-form__textarea--subtask', itemsList).forEach((subtask) => {
+      subtask.addEventListener('input', (e) => {
+        autoHeightResize(e.currentTarget);
+      });
+    });
+}
 
   /**
    * Adds subtask
@@ -550,10 +598,14 @@
     if (text) {
       const newSubtask = new Subtask(text);
       currentTask.subtasks.push(newSubtask);
-      populateSubList(currentList.tasks, "subtasks", ulSubtasks, todoIndex);
-      localStorage.setItem("todoLists", JSON.stringify(todoLists));
+      populateSubtasks(currentList.tasks, "subtasks", ulSubtasks, todoIndex);
+      saveToStorage();
       $('#newSubtaskInput').value = "";
     }
+  }
+
+  function enableAutoHeightResize(e) {
+    autoHeightResize(e.currentTarget);
   }
 
   /**
@@ -563,41 +615,40 @@
     if (!e.target.classList.contains("todo-item__note")) return;
     const id = formEditTodo.dataset.id;
 
-    let currentTask = state.activeList.tasks.find(task => task.id === id);
-    let todoIndex = state.activeList.tasks.findIndex(task => task.id === id); // index of todo object with matching ID in TODOS array
+    const currentTask = state.activeList.getTask(id);
+    const todoIndex = state.activeList.getTaskIndex(id); // index of todo object with matching ID in TODOS array
 
     console.log(currentTask.note);
     let text = e.target.value;
     if (!/^\s+$/.test(text)) {
       currentTask.note = text;
-      localStorage.setItem("todoLists", JSON.stringify(todoLists));
+      saveToStorage();
     }
   }
 
-  function autoHeightResize() {
-    const todoItemNote = $('#todoItemNote');
-    todoItemNote.style.height = "0px";
-    todoItemNote.style.height = todoItemNote.scrollHeight + "px";
+  // Resizes text inputs and textareas to show all content within
+  function autoHeightResize(elem) {
+    elem.style.height = "0px";
+    elem.style.height = elem.scrollHeight + "px";
   }
 
   function renameTodo(e) {
     if (!e.target.classList.contains("todo-item__title")) return;
-    let id = e.target.dataset.id;
-
-    let currentTask = state.activeList.tasks.find(task => task.id === id);
-    currentTask.text = e.target.value;
-    localStorage.setItem("todoLists", JSON.stringify(todoLists));
+    const id = e.target.dataset.id;
+    const newText = e.target.value.trim();
+    const currentTask = state.activeList.getTask(id);
+    currentTask.text = newText;
+    saveToStorage();
   }
 
   function editSubtask(e) {
-    if (!e.target.classList.contains("edit-todo-form__input--edit-subtask"))
-      return;
+    if (!e.target.classList.contains("edit-todo-form__textarea--subtask")) return;
     let id = e.currentTarget.dataset.id;
-    let currentTask = state.activeList.tasks.find(task => task.id === id);
+    const currentTask = state.activeList.getTask(id);
     let newSubtaskText = e.target.value;
     let subtaskIndex = e.target.dataset.subIndex;
-    currentTask.subtasks[subtaskIndex].text = newSubtaskText;
-    localStorage.setItem("todoLists", JSON.stringify(todoLists));
+    currentTask.subtasks[subtaskIndex].text = newSubtaskText.trim();
+    saveToStorage();
   }
 
   function toggleContent(e) {
@@ -607,8 +658,11 @@
     let id = todoItem.id;
     let tagLabels = todoItem.querySelector(".todo-item__tag-labels");
     let dueDateLabel = todoItem.querySelector('.badge--due-date');
+    const todoItemTitle = $('.todo-item__title', todoItem);
 
-    if (!(window.getComputedStyle(todoContent).display === "none")) {
+    if (todoContent.classList.contains('is-visible')) {
+      todoItemTitle.removeEventListener('input', enableAutoHeightResize);
+      todoItemTitle.style.height = "0px";
       todoItem.classList.remove("is-expanded");
       todoContent.classList.remove("is-visible");
       if (todoItem.contains(tagLabels)) {
@@ -631,9 +685,9 @@
       if (todoItem.contains(dueDateLabel)) {
         dueDateLabel.classList.add("is-hidden");
       }
+      todoContent.classList.add("is-visible");
       populateContent(e);
       todoItem.classList.add("is-expanded");
-      todoContent.classList.add("is-visible");
     }
   }
 
@@ -646,7 +700,7 @@
     todoContent.classList.remove("is-visible");
     divTodoApp.appendChild(todoContent);
     state.activeList.tasks.splice(todoIndex, 1);
-    localStorage.setItem("todoLists", JSON.stringify(todoLists));
+    saveToStorage();
     let currentTasksList =
       state.filteredList === null ? state.activeList.tasks : state.filteredList;
     renderList(currentTasksList, activeList_ul);
@@ -702,7 +756,7 @@
       .querySelectorAll(".todo-item__tag-labels .tag-label")
       [tagIndex].remove();
     state.activeList.tasks[todoIndex].tags.splice(tagIndex, 1);
-    localStorage.setItem("todoLists", JSON.stringify(todoLists));
+    saveToStorage();
     let tagsTooltipBtn = todoItem.querySelector(".tooltip__btn--tags");
     tagsTooltipBtn.dataset.tooltip = state.activeList.tasks[todoIndex].tags
       .map(tag => tag.text)
@@ -751,7 +805,7 @@
           color: existingTag !== undefined ? existingTag.color : "bg--default"
         };
         state.activeList.tasks[todoIndex].tags.push(tag);
-        localStorage.setItem("todoLists", JSON.stringify(todoLists));
+        saveToStorage();
         let deleteTagBtn = createNode("button", {
           class: "close-icon",
           type: "button",
@@ -807,28 +861,6 @@
     }
   }
 
-  function getTask(id) {
-    let currentTask = undefined;
-    for (let i = 0; i < todoLists.length; i++) {
-      currentTask = todoLists[i].tasks.find(task => task.id === id);
-      if (currentTask !== undefined) {
-        break;
-      }
-    }
-    return currentTask;
-  }
-
-  function getTaskIndex(id) {
-    let taskIndex = undefined;
-    for (let i = 0; i < todoLists.length; i++) {
-      taskIndex = todoLists[i].tasks.findIndex(task => task.id === id);
-      if (taskIndex !== undefined) {
-        break;
-      }
-    }
-    return taskIndex;
-  }
-
   function getListByTaskId(todoId) {
     return todoLists.find(list => {
       return list.tasks.find(task => task.id === todoId);
@@ -836,16 +868,17 @@
   }
 
   function populateContent(e) {
-    let todoItem = e.currentTarget;
-    let id = todoItem.id;
+    const todoItem = e.currentTarget;
+    const id = todoItem.id;
+    // Change state to current list object
     state.activeList = getListByTaskId(id);
     const activeList_ul = $(".is-active-list");
-    let currentTask = state.activeList.tasks.find(task => task.id === id);
-    let todoIndex = state.activeList.tasks.findIndex(task => task.id === id); // index of todo object with matching ID in TODOS array
-    const todoItemTitle = todoItem.querySelector(".todo-item__title");
-    const todoItemNote = todoItem.querySelector(".todo-item__note");
-    const deleteTodoBtn = formEditTodo.querySelector("#deleteTodoBtn");
-    const newTagInput = todoItem.querySelector("#newTagInput");
+    const currentTask = state.activeList.getTask(id);
+    const todoIndex = state.activeList.getTaskIndex(id);
+    const todoItemTitle = $(".todo-item__title", todoItem);
+    const todoItemNote = $(".todo-item__note", todoItem);
+    const deleteTodoBtn = $("#deleteTodoBtn");
+    const newTagInput = $("#newTagInput");
     todoItemTitle.value = currentTask.text;
     todoItemNote.value = currentTask.note;
 
@@ -856,27 +889,34 @@
       const dueMonthAbbrev = monthsArr[dueMonthIndex].abbrev;
       const dueDay = dueDate.getDate();
       $('#dueDateWrapper').classList.add('has-due-date');
-    $("#dueDateWrapper .due-date-text").textContent = `${dueMonthAbbrev} ${dueDay}`;
+      $("#dueDateWrapper .due-date-text").textContent = `${dueMonthAbbrev} ${dueDay}`;
     } else {
       $('#dueDateWrapper').classList.remove('has-due-date');
       $("#dueDateWrapper .due-date-text").textContent = "Set due date";
     }
 
-    populateSubList(state.activeList.tasks, "subtasks", ulSubtasks, todoIndex);
+    populateSubtasks(state.activeList.tasks, "subtasks", ulSubtasks, todoIndex);
     formEditTodo.dataset.index = todoIndex;
     formEditTodo.dataset.id = id;
     colorPicker.dataset.index = todoIndex;
     colorPicker.dataset.id = id;
 
+    autoHeightResize(todoItemTitle);
+
+    todoItemTitle.addEventListener('input', enableAutoHeightResize);
+
     if (!todoItemNote.value) {
       todoItemNote.style.height = "0px";
     } else {
-      setTimeout(() => {
-        autoHeightResize();
-      }
-      , 10);
+       autoHeightResize(todoItemNote);
     }
-
+    
+    // Readjust heights of subtask textareas to display all content within
+    const subtasks = $all('.edit-todo-form__textarea--subtask', ulSubtasks);
+    if (currentTask.subtasks.length > 0) {
+        subtasks.forEach(subtask => autoHeightResize(subtask));
+    }
+    
     let tagsContainer = todoItem.querySelector("#tagsContainer");
 
     if (currentTask.tags.length > 0) {
@@ -1120,7 +1160,7 @@ function filterTasks(e) {
     todoItem.tags[tagIndex].color = currentColor.value;
     let tagLabel = $all('.tag-label', $(`#${id}`))[tagIndex];
     tagLabel.className = "tag tag-label " + currentColor.value;
-    localStorage.setItem("todoLists", JSON.stringify(todoLists));
+    saveToStorage();
   }
 
   function createList(listObj) {
@@ -1393,7 +1433,7 @@ function filterTasks(e) {
         feather.replace();
       }
       createNavItem(newList);
-      localStorage.setItem("todoLists", JSON.stringify(todoLists));
+      saveToStorage();
       const navLinksAll = $all(".sidebar__link");
       navLinksAll.forEach(link => {
         if (link.getAttribute('href') === `#${newList.id}`) {
@@ -1483,7 +1523,7 @@ function filterTasks(e) {
       }
     }
     // Save changes to storage
-    localStorage.setItem("todoLists", JSON.stringify(todoLists));
+    saveToStorage();
     e.currentTarget.reset();
     $("#editListFormContainer").classList.remove("is-active");
   }
@@ -1498,7 +1538,7 @@ function filterTasks(e) {
     const listIndex = todoLists.indexOf(listObj);
     console.log({listIndex});
     todoLists.splice(listIndex, 1);
-    localStorage.setItem("todoLists", JSON.stringify(todoLists));
+    saveToStorage();
 
     // Delete list nav item 
     listNavItem.remove();
@@ -1826,7 +1866,7 @@ function filterTasks(e) {
     
     if (new Date(currentTask.dueDate).valueOf() !== newDueDate.valueOf()) {
     currentTask.dueDate = newDueDate;
-    localStorage.setItem("todoLists", JSON.stringify(todoLists));
+    saveToStorage();
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -1992,7 +2032,7 @@ function transferTasks(e) {
     newListObj.tasks.unshift(task);
   });
 
-  localStorage.setItem("todoLists", JSON.stringify(todoLists));
+  saveToStorage();
 
   // Reload current list to reflect changes
   renderList(currentTasksList, ulActiveList);
@@ -2009,7 +2049,7 @@ function deleteSelected(e) {
     listObj = getListByTaskId(item.dataset.id);
     deleteTask(listObj, item.dataset.id);
   });
-  localStorage.setItem("todoLists", JSON.stringify(todoLists));
+  saveToStorage();
   renderList(currentTasksList, ulActiveList);
 }
 
@@ -2187,7 +2227,7 @@ searchBar.addEventListener('click', expandSearchBar);
   });
   
 $('#todoItemNote').addEventListener('change', addNote);
-  formEditTodo.addEventListener("input", editSubtask);
+  formEditTodo.addEventListener("change", editSubtask);
 
   // Delete tag on double backspace
   formEditTodo.addEventListener("keyup", e => {
@@ -2408,7 +2448,7 @@ function selectPrevNext(e) {
     const id = $("#dpCalendar").parentNode.dataset.id;
     const currentTask = state.activeList.tasks.find(task => task.id === id);
     currentTask.dueDate = null;
-    localStorage.setItem("todoLists", JSON.stringify(todoLists));
+    saveToStorage();
     $('#dueDateWrapper').classList.remove('has-due-date');
     $("#dueDateWrapper .due-date-text").textContent = 'Set due date';
     $("#dueDateWrapper").classList.remove("show-input");
@@ -2429,6 +2469,8 @@ $all('.form__input--inline').forEach(x => {
   });
 });
 
-$('#todoItemNote').addEventListener("input", autoHeightResize, false);
+$('#todoItemNote').addEventListener("input", () => {
+  autoHeightResize(e.currentTarget);
+});
 
 }());
