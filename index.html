@@ -85,27 +85,27 @@
               />
             </div>
           </form>
-          <div id="bulkEditingToolbar" class="toolbar bulk-editing-toolbar">
-            <div class="toolbar__item bulk-editing-toolbar__item--check-all" data-action="checkAll">
-                <input type="checkbox" id="masterCheckbox" class="bulk-editing__checkbox">
-                <label class="bulk-editing__checkbox-label" for="masterCheckbox" id="bulkEditingMasterCheckbox"></label>
+          <div id="bulkActionsToolbar" class="toolbar bulk-actions-toolbar">
+            <div class="toolbar__item bulk-actions-toolbar__item--check-all" data-action="checkAll">
+                <input type="checkbox" id="masterCheckbox" class="bulk-actions__checkbox">
+                <label class="bulk-actions__checkbox-label" for="masterCheckbox" id="bulkActionsMasterCheckbox"></label>
                 <p class="toolbar__item-label">Select All/None</p>
             </div>
             <div class="toolbar__item flex-column">
-                <button class="btn btn--inline toolbar__btn" type="button" data-action="transferSelected">
+                <button class="btn btn--inline toolbar__btn" type="button" data-action="transferSelected" data-bulk-action="true">
                     <i data-feather="arrow-right-circle"></i>
                     <span class="toolbar__item-label">Move</span>
                 </button>
                 
             </div>
             <div class="toolbar__item flex-column">
-                <button class="btn btn--inline toolbar__btn" type="button" data-action="deleteSelected">
+                <button class="btn btn--inline toolbar__btn" type="button" data-action="deleteSelected" data-bulk-action="true">
                     <i data-feather="trash-2"></i>
                     <span class="toolbar__item-label">Delete</span>
                 </button>
             </div>
             <div class="toolbar__item flex-column">
-                <button class="btn btn--inline toolbar__btn" type="button" data-action="closeBulkEditingToolbar">
+                <button class="btn btn--inline toolbar__btn" type="button" data-action="closeBulkActionsToolbar">
                   <i data-feather="x-circle"></i>
                     <span class="toolbar__item-label">Cancel</span>
                 </button>
@@ -134,7 +134,7 @@
             <h2 class="form__title">Create new list</h2>
             <form id="newListForm" class="form new-list-form">
               <fieldset class="form__fieldset">
-                <label for="newListNameInput" class="label--text">List Name:</label>
+                <label for="newListNameInput" class="label--text"><i data-feather="list"></i>List Name:</label>
                 <input id="newListNameInput" class="form__input form__input--inline form__input--list-name" type="text" />
               </fieldset>
               <fieldset id="fieldsetFolders" class="form__fieldset form__fieldset--folders">

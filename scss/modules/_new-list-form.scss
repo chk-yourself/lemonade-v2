@@ -13,9 +13,18 @@
 .new-list-form__form-group--inline {
   width: 100%;
   display: inline-block;
+  .cross-icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+  }
 }
 .new-list-form__input {
-  width: calc(100% - 30px)
+  width: calc(100% - 24px);
+  padding: 16px 8px;
+  &:focus {
+    border: 1px solid $lt-grey;
+  }
 }
 
 @media (max-width: 767px) {
@@ -46,7 +55,7 @@ input[name="folder"] {
 
 .form__label--folder {
   vertical-align: middle;
-  padding: 8px 0 8px 30px;
+  padding: 8px 0 8px 32px;
   position: relative;
   width: calc(100% - 24px);
   font-size: 16px;
@@ -57,12 +66,12 @@ input[name="folder"] {
   }
 }
 
-.form__fieldset--folders {
+.label--text {
   .feather {
     width: 20px;
     height: 20px;
-    margin-right: 10px;
+    margin-right: 12px;
     position: relative;
-    top: -2px;
+    top: -3px;
   }
 }

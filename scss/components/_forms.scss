@@ -61,7 +61,6 @@ input[type=text] {
   cursor: pointer;
   font-size: 14px;
   vertical-align: middle;
-  margin-top:4px;
   border-radius: 4px;
   border: 1px solid transparent;
   font-weight: 700;
@@ -203,7 +202,7 @@ z-index: 3;
 .label--text {
   display: block;
   font-family: $heading-font;
-  font-size: 14px;
+  font-size: 16px;
   letter-spacing: .03em;
   font-weight: 700;
   margin-bottom: 4px;

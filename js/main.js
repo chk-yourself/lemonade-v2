@@ -386,7 +386,7 @@
   function toggleDone(e) {
 
     let el = e.target;
-    if (!el.classList.contains("todo-list__checkbox") || el.classList.contains('bulk-editing__checkbox')) return;
+    if (!el.classList.contains("todo-list__checkbox") || el.classList.contains('bulk-actions__checkbox')) return;
 
     let id = el.parentNode.id; // ID of list item
 
@@ -996,10 +996,16 @@
 */
 
 function renderList(itemsArray, itemsList) {
+  const ulActiveList = $('.is-active-list');
   if (itemsList === $('#filteredList') || itemsList === $('#today')) {
     $('#main').classList.add('show-filtered-tasks');
   } else {
     $('#main').classList.remove('show-filtered-tasks');
+  }
+
+  if ($('#bulkActionsToolbar').classList.contains('is-active')) {
+    $('#bulkActionsToolbar').classList.remove('is-active');
+    ulActiveList.removeEventListener('click', enableBulkActions);
   }
 
   if (Array.isArray(itemsArray[0])) {
@@ -1143,16 +1149,21 @@ function filterTasks(e) {
   }
 
   const createNavItem = listObj => {
-    let aListLink = createNode(
+    const iListIcon = createNode(
+      "i", 
+      {
+      "data-feather": "list"
+      });
+    const aListLink = createNode(
       "a",
       {
         class: "sidebar__link",
         href: `#${listObj.id}`
       },
-      listObj.name
+      iListIcon, listObj.name
     );
     aListLink.addEventListener('click', openList);
-    let item_li =
+    const item_li =
       listObj.folder === "null"
         ? createNode(
             "li",
@@ -1173,6 +1184,8 @@ function filterTasks(e) {
     } else {
       $(`[data-folder="${listObj.folder}"]`).appendChild(item_li);
     }
+    // Render feather icons
+    feather.replace();
   };
 
   function renderNavItems() {
@@ -1193,13 +1206,19 @@ function filterTasks(e) {
       // Creates accordion panel for each folder, with links to children underneath
       const folderItems = todoLists.filter(list => list.folder === folder);
       folderItems.forEach(item => {
+        let iListIcon = createNode(
+          "i", 
+          {
+          "data-feather": "list"
+          }
+        );
         let aListLink = createNode(
           "a",
           {
             class: "sidebar__link",
             href: `#${item.id}`
           },
-          item.name
+          iListIcon, item.name
         );
         let liFolderItem = createNode(
           "li",
@@ -1214,31 +1233,42 @@ function filterTasks(e) {
       let iFolderIcon = createNode("i", {
         "data-feather": "folder"
       });
-      let folder_li = createNode(
+      let iChevronIcon = createNode("i", {
+        class: "chevron-icon",
+        "data-feather": "chevron-left"
+      });
+      let liFolder = createNode(
         "li",
         {
           class: "sidebar__item accordion__item"
         },
         iFolderIcon,
         folder,
+        iChevronIcon,
         ulFolderPanel
       );
 
-      folder_li.addEventListener("click", displayPanel);
-      frag.appendChild(folder_li);
+      liFolder.addEventListener("click", displayPanel);
+      frag.appendChild(liFolder);
     });
 
     // Creates regular nav items for miscellaneous lists
-    let miscLists = todoLists.filter(list => list.folder === "null");
+    const miscLists = todoLists.filter(list => list.folder === "null");
     miscLists.forEach(item => {
       if (item.id !== "inbox") {
+        let iListIcon = createNode(
+          "i", 
+          {
+          "data-feather": "list"
+          }
+        );
         let aListLink = createNode(
           "a",
           {
             class: "sidebar__link",
             href: `#${item.id}`
           },
-          item.name
+          iListIcon, item.name
         );
         let miscList_li = createNode(
           "li",
@@ -1342,6 +1372,10 @@ function filterTasks(e) {
         let iFolderIcon = createNode("i", {
           "data-feather": "folder"
         });
+        let iChevronIcon = createNode("i", {
+          class: "chevron-icon",
+          "data-feather": "chevron-left"
+        });
         let folder_li = createNode(
           "li",
           {
@@ -1349,6 +1383,7 @@ function filterTasks(e) {
           },
           iFolderIcon,
           selectedFolder,
+          iChevronIcon,
           ulFolderPanel
         );
         folder_li.addEventListener("click", displayPanel);
@@ -1455,7 +1490,6 @@ function filterTasks(e) {
 
   function deleteList(listObj) {
 
-// TODO: add alert msg
     const listNavLink = $(`a[href="#${listObj.id}"]`);
     const listNavItem = listNavLink.parentNode;
     const listElement = $(`#${listObj.id}`);
@@ -1468,6 +1502,17 @@ function filterTasks(e) {
 
     // Delete list nav item 
     listNavItem.remove();
+
+    // Delete folder elements if list is the only item in folder
+    const folder = listObj.folder;
+    if (folder !== "null" && todoLists.filter(list => list.folder === "folder").length === 0) {
+      // Delete nav folder item
+      $(`[data-folder="${listObj.folder}"]`).parentNode.remove();
+      // Delete folder radio
+      const folderRadio = $(`input[name="folder"][value="${folder}"]`);
+      folderRadio.remove();
+      $(`.form__label--folder[for=${folderRadio.id}]`).remove();
+    }
 
     // Delete list `ul` element
     listElement.remove();
@@ -1487,8 +1532,10 @@ function filterTasks(e) {
   }
 
   function displayList(listObj) {
-    if ($('#bulkEditingToolbar').classList.contains('is-active')) {
-      $('#bulkEditingToolbar').classList.remove('is-active');
+    const ulActiveList = $('.is-active-list');
+    if ($('#bulkActionsToolbar').classList.contains('is-active')) {
+      $('#bulkActionsToolbar').classList.remove('is-active');
+      ulActiveList.removeEventListener('click', enableBulkActions);
     }
 
     if ($('#main').classList.contains('show-filtered-tasks')) {
@@ -1891,11 +1938,16 @@ function filterTasks(e) {
     }
   }
 
+  // Disables/Enables bulk action buttons, depending on if items are checked
   function enableBulkActions(e) {
     const ulActiveList = $('.is-active-list');
-    const checkedItems = $all('.bulk-editing__checkbox:checked', ulActiveList);
+    const checkedItems = $all('.bulk-actions__checkbox:checked', ulActiveList);
+    const bulkActions = $all('.toolbar__btn[data-bulk-action="true"]');
     if (checkedItems.length === 0) {
-      // Disable bulk editing buttons
+      // Disable bulk actions buttons
+      bulkActions.forEach(btn => btn.disabled = true);
+    } else {
+      bulkActions.forEach(btn => btn.disabled = false);
     }
   }
 
@@ -1905,20 +1957,21 @@ function openBulkEditing(e) {
    // Uncheck master bulk editing checkbox
    $('#masterCheckbox').checked = false;
    // Reveal bulk editing toolbar
-   $('#bulkEditingToolbar').classList.add('is-active');
+   $('#bulkActionsToolbar').classList.add('is-active');
   // Add bulk-editing checkboxes and hide regular checkboxes for toggling completeness
   const ulActiveList = $('.is-active-list');
   $all('.todo-list__item', ulActiveList).forEach((x, i) => {
     const frag = document.createDocumentFragment();
-    const checkbox = createNode('input', {type: 'checkbox', id: `bulk-item-${i}`, 'data-index': i, 'data-id': x.id, class: 'bulk-editing__checkbox'});
-    const checkboxLabel = createNode('label', {class: 'bulk-editing__checkbox-label', for: `bulk-item-${i}`});
+    const checkbox = createNode('input', {type: 'checkbox', id: `bulk-item-${i}`, 'data-index': i, 'data-id': x.id, class: 'bulk-actions__checkbox'});
+    const checkboxLabel = createNode('label', {class: 'bulk-actions__checkbox-label', for: `bulk-item-${i}`});
     frag.appendChild(checkbox);
     frag.appendChild(checkboxLabel);
     x.insertBefore(frag, $('input[type="checkbox"]', x));
     $('.todo-list__checkbox', x).classList.add('is-hidden');
   });
+  // Disable bulk action buttons
+  $all('.toolbar__btn[data-bulk-action="true"]').forEach(btn => btn.disabled = true);
   ulActiveList.addEventListener('click', enableBulkActions);
-  // TODO: remove event listener!!!!!
 }
 
 function transferTasks(e) {
@@ -1926,7 +1979,7 @@ function transferTasks(e) {
   const ulActiveList = $('.is-active-list');
   let currentTasksList =
       state.filteredList === null ? state.activeList.tasks : state.filteredList;
-  const checkedItems = $all('.bulk-editing__checkbox:checked', ulActiveList);
+  const checkedItems = $all('.bulk-actions__checkbox:checked', ulActiveList);
   const newListId = $('input[name="list"]:checked').value;
   const newListObj = todoLists.find(list => list.id === newListId);
 
@@ -1943,7 +1996,6 @@ function transferTasks(e) {
 
   // Reload current list to reflect changes
   renderList(currentTasksList, ulActiveList);
-  $('#bulkEditingToolbar').classList.remove('is-active');
   $('#transferTasksFormContainer').classList.remove('is-active');
 }
 
@@ -1952,14 +2004,13 @@ function deleteSelected(e) {
   const ulActiveList = $('.is-active-list');
   let currentTasksList =
       state.filteredList === null ? state.activeList.tasks : state.filteredList;
-  const checkedItems = $all('.bulk-editing__checkbox:checked', ulActiveList);
+  const checkedItems = $all('.bulk-actions__checkbox:checked', ulActiveList);
   checkedItems.forEach(item => {
     listObj = getListByTaskId(item.dataset.id);
     deleteTask(listObj, item.dataset.id);
   });
   localStorage.setItem("todoLists", JSON.stringify(todoLists));
   renderList(currentTasksList, ulActiveList);
-  $('#bulkEditingToolbar').classList.remove('is-active');
 }
 
 // Hides certain elements if you click outside of them
@@ -2031,7 +2082,7 @@ function hideComponents(e) {
     $('input[id="listNew"]').checked = true;
   });
 
-  $('#bulkEditingToolbar').addEventListener('click', (e) => {
+  $('#bulkActionsToolbar').addEventListener('click', (e) => {
     let el = e.target;
     const ulActiveList = $('.is-active-list');
     const currentListObj = state.activeList;
@@ -2039,8 +2090,9 @@ function hideComponents(e) {
       $('#transferTasksFormContainer').classList.add('is-active');
     } else if (el.dataset.action === 'deleteSelected') {
       deleteSelected(e);
-    } else if (el.dataset.action === 'closeBulkEditingToolbar') {
-      $('#bulkEditingToolbar').classList.remove('is-active');
+    } else if (el.dataset.action === 'closeBulkActionsToolbar') {
+      $('#bulkActionsToolbar').classList.remove('is-active');
+      ulActiveList.removeEventListener('click', enableBulkActions);
       populateList(currentListObj.tasks, ulActiveList);
       $('#addTodoForm').classList.remove('is-hidden');
     }
@@ -2049,7 +2101,7 @@ function hideComponents(e) {
   $('#masterCheckbox').addEventListener('change', (e) => {
     const checkedState = e.currentTarget.checked;
     const ulActiveList = $('.is-active-list');
-    $all('.bulk-editing__checkbox', ulActiveList).forEach(x => x.checked = checkedState);
+    $all('.bulk-actions__checkbox', ulActiveList).forEach(x => x.checked = checkedState);
   });
 
 $('#btnDeleteList').addEventListener('click', (e) => {

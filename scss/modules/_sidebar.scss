@@ -43,8 +43,8 @@
   }
   & > .sidebar__btn--toggle {
     position: absolute;
-    top: 16px;
-    right: 16px;
+    top: 10px;
+    right: 10px;
     left: auto;
     cursor: pointer;
     width: 42px;
@@ -69,7 +69,8 @@
       margin-right: 10px;
       width: 20px;
       height: 20px;
-      vertical-align: top;
+      vertical-align: middle;
+      margin-top: -3px;
     }
     @include md {
       font-weight: 400;
@@ -89,7 +90,8 @@
       color: $white;
     }
     .feather {
-      margin-right: 8px;
+      margin-right: 10px;
+      margin-top: -3px;
       width: 20px;
       height: 20px;
       vertical-align: middle;
@@ -101,9 +103,25 @@
   .accordion__item {
     cursor: pointer;
     padding: 8px 0 8px 16px;
+    .chevron-icon {
+      float: right;
+      margin-right: 0;
+      transition: transform .2s ease-out;
+      position: relative;
+      top: 3px;
+      pointer-events: none;
+      &::after {
+        content: '';
+        clear: both;
+      }
+    }
     &.is-active {
       .accordion__panel {
         display: block;
+      }
+      .chevron-icon {
+        transition: transform .2s ease-out;
+        transform: rotate(-90deg);
       }
     }
     &:hover,
@@ -114,7 +132,7 @@
   .accordion__panel {
     display: none;
     list-style-type: none;
-    margin-top: 8px;
+    margin-top: 12px;
   }
   
   .accordion__sub-item {
@@ -128,6 +146,7 @@
 
   .sidebar__link {
     text-decoration: none;
+    vertical-align: middle;
     color: $dk-grey;
     font-weight: 500;
     width: 100%;
@@ -148,6 +167,7 @@
  .sidebar__btn--create-list {
     margin-top: 16px;
     padding: 8px 16px;
+    vertical-align: middle;
   }
 
 .more-actions__btn--toggle {
