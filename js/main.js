@@ -105,8 +105,7 @@
   const formEditList = $("#editListForm");
   const inputNewFolder = $("#newFolderInput");
   const todoContent = $("#todoContent");
-  const todoLists =
-    initLists(JSON.parse(localStorage.getItem("todoLists"))) || [];
+  const todoLists = JSON.parse(localStorage.getItem("todoLists")) ? initLists(JSON.parse(localStorage.getItem("todoLists"))) : [];
 
   // Converts JSON list objects back to instances of class List
   function initLists(arr) {
