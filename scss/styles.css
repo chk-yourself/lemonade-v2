@@ -85,6 +85,10 @@ button .feather {
   pointer-events: none;
 }
 
+button span {
+  pointer-events: none;
+}
+
 .btn {
   -webkit-box-shadow: 0 2px 5px 1px rgba(0, 0, 0, 0.3);
           box-shadow: 0 2px 5px 1px rgba(0, 0, 0, 0.3);

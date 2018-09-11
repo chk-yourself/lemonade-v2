@@ -119,9 +119,7 @@
     filteredList: null
   };
 
-  const clickTouch = (function() {
-    return ('ontouchstart' in document === true) ? 'touchstart' : 'click';
-  })();
+  const clickTouch = () => ('ontouchstart' in document === true) ? 'touchstart' : 'click';
 
   let now = new Date();
   let currentDate = now.getDate();
@@ -2268,7 +2266,7 @@ $('#todoItemNote').addEventListener('change', addNote);
 
   inputSearch.addEventListener("click", e => e.currentTarget.select());
 
-  document.body.addEventListener(clickTouch, hideComponents);
+  document.body.addEventListener(clickTouch(), hideComponents);
 
   $all("[data-action='openListForm']").forEach(btn => {
     btn.addEventListener("click", e => {
