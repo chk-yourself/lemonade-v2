@@ -2357,6 +2357,8 @@
     const el = e.target;
     const ulActiveList = $(".is-active-list");
     const currentListObj = state.activeList;
+    const currentTasksList =
+      state.filteredList === null ? state.activeList.tasks : state.filteredList;
     if (el.dataset.action === "transferSelected") {
       $("#transferTasksFormContainer").classList.add("is-active");
     } else if (el.dataset.action === "deleteSelected") {
@@ -2364,7 +2366,7 @@
     } else if (el.dataset.action === "closeBulkActionsToolbar") {
       $("#bulkActionsToolbar").classList.remove("is-active");
       ulActiveList.removeEventListener("click", enableBulkActions);
-      populateList(currentListObj.tasks, ulActiveList);
+      renderList(currentTasksList, ulActiveList);
       $("#addTodoForm").classList.remove("is-hidden");
     }
   });
