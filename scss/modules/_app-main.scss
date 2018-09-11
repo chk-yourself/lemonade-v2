@@ -31,6 +31,14 @@
       top: -4px;
       left: calc(50% + 11.7px);
     }
+    .breadcrumbs {
+      font-size: 16px;
+      bottom: 16px;
+      &::after {
+        content: "\2192";
+        margin-left: 4px;
+      }
+    }
   }
 }
 
@@ -126,6 +134,9 @@
 		transform: rotate(-45deg);
 		transition: transform .2s ease-out;
   }
+  &.is-hidden {
+    display: none;
+  }
 }
 
 .views {
@@ -188,9 +199,10 @@
 .filtered-list {
   list-style-type: none;
 }
-.filtered-list__sub-list-name {
+.filtered-list__item {
   margin-top: 16px;
   font-family: $heading-font;
+  font-size: 14px;
 }
 
 .filtered-list__sub-list {
@@ -204,5 +216,20 @@
   text-decoration: none;
   &:hover, &:active {
     color: $primary-color;
+  }
+}
+
+.filtered-list__date {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.filtered-list__folder-name {
+  font-weight: 300;
+  font-style: italic;
+  .feather {
+    width: 16px;
+    height: 16px;
+    margin: -3px 4px 0;
   }
 }

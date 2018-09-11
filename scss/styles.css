@@ -53,7 +53,7 @@ h1 {
   display: block;
   font-size: 10.5px;
   padding: 0 6px;
-  letter-spacing: .03em;
+  letter-spacing: .02em;
   color: rgba(64, 69, 81, 0.4);
 }
 
@@ -577,6 +577,10 @@ label.subtask-list__checkbox:before {
   font-weight: 700;
 }
 
+.alert__msg .task-text {
+  font-weight: 700;
+}
+
 .search-bar {
   position: relative;
   width: 0%;
@@ -977,8 +981,8 @@ input[type="search"].search-form__input {
 
 .breadcrumbs {
   position: absolute;
-  top: -18px;
-  left: 0;
+  bottom: 2px;
+  left: 42px;
   display: block;
   font-size: 10.5px;
   padding: 0 6px;
@@ -994,6 +998,10 @@ input[type="search"].search-form__input {
   font-weight: 500;
   text-decoration: none;
   cursor: pointer;
+}
+
+.breadcrumbs__link:hover, .breadcrumbs__link:active {
+  color: #638eff;
 }
 
 .site-wrapper {
@@ -1883,6 +1891,16 @@ input[type="search"].search-form__input {
   left: calc(50% + 11.7px);
 }
 
+.todo-list__item.is-expanded .breadcrumbs {
+  font-size: 16px;
+  bottom: 16px;
+}
+
+.todo-list__item.is-expanded .breadcrumbs::after {
+  content: "\2192";
+  margin-left: 4px;
+}
+
 .add-todo-form__form-group--inline {
   background-color: #fff;
   -webkit-box-shadow: 1px 1px 2px rgba(64, 69, 81, 0.3) inset;
@@ -1988,6 +2006,10 @@ input[type="search"].search-form__input {
   transition: transform .2s ease-out, -webkit-transform .2s ease-out;
 }
 
+.todo-item__toggle-btn.is-hidden {
+  display: none;
+}
+
 .views {
   text-align: center;
   width: 100%;
@@ -2056,9 +2078,10 @@ input[type="search"].search-form__input {
   list-style-type: none;
 }
 
-.filtered-list__sub-list-name {
+.filtered-list__item {
   margin-top: 16px;
   font-family: "Montserrat", Helvetica, Arial, sans-serif;
+  font-size: 14px;
 }
 
 .filtered-list__sub-list {
@@ -2074,6 +2097,22 @@ input[type="search"].search-form__input {
 
 .filtered-list__link:hover, .filtered-list__link:active {
   color: #638eff;
+}
+
+.filtered-list__date {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.filtered-list__folder-name {
+  font-weight: 300;
+  font-style: italic;
+}
+
+.filtered-list__folder-name .feather {
+  width: 16px;
+  height: 16px;
+  margin: -3px 4px 0;
 }
 
 .new-list-form__container {

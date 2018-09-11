@@ -7,7 +7,7 @@
   <title>Todo App</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700|Roboto:400,400i,500,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,500,700|Roboto:400,400i,500,700" rel="stylesheet">
   <link rel="stylesheet" href="scss/styles.css">
 </head>
 
@@ -34,9 +34,14 @@
                 </li>
                 <li class="sidebar__item">
                   <a class="sidebar__link" id="todayNavLink" href="#today">
-                    <i data-feather="star"></i>
+                    <i data-feather="sun"></i>
                     Today</a>
                 </li>
+                <li class="sidebar__item">
+                    <a class="sidebar__link" id="upcomingNavLink" href="#upcoming">
+                      <i data-feather="calendar"></i>
+                      Upcoming</a>
+                  </li>
               </ul>
               <!--/ #sidebarMenu -->
               <button id="openListFormBtn" type="button" class="btn btn--neutral sidebar__btn sidebar__btn--create-list" data-action="openListForm">
@@ -44,33 +49,38 @@
             </div>
             <!--/ .sidebar__menu-wrapper -->
             <div class="header__content-wrapper">
-            <div id="searchBar" class="search-bar">
-            <form id="searchForm" class="search-form">
-                <input id="searchInput" class="form__input form__input--inline search-form__input" type="text" placeholder="Search by keywords, tags, etc...">
-                <input id="searchSubmit" class="search-form__submit" type="submit" value="">
-                <button id="searchBtn" type="button" class="btn form__btn btn--neutral search-form__btn" data-action="filterTodos">
-                  <i data-feather="search"></i>
+              <div id="searchBar" class="search-bar">
+                <form id="searchForm" class="search-form">
+                  <input id="searchInput" class="form__input form__input--inline search-form__input" type="text" placeholder="Search by keywords, tags, etc...">
+                  <input id="searchSubmit" class="search-form__submit" type="submit" value="">
+                  <button id="searchBtn" type="button" class="btn form__btn btn--neutral search-form__btn" data-action="filterTodos">
+                    <i data-feather="search"></i>
+                  </button>
+                </form>
+              </div>
+              <!--/ #searchBar-->
+              <div class="more-actions__wrapper list-actions__wrapper" id="listActionsWrapper">
+                <button type="button" class="sidebar__btn--icon more-actions__btn--toggle list-actions__btn--toggle" id="btnToggleListActions"
+                  data-action="toggleListActions">
+                  <i data-feather="more-vertical"></i>
                 </button>
-            </form>
-            </div> <!--/ #searchBar-->
-            <div class="more-actions__wrapper list-actions__wrapper" id="listActionsWrapper">
-            <button type="button" class="sidebar__btn--icon more-actions__btn--toggle list-actions__btn--toggle" id="btnToggleListActions" data-action="toggleListActions">
-              <i data-feather="more-vertical"></i>
-            </button>
-            <div class="more-actions list-actions" id="listActions">
-              <button type="button" class="btn btn--neutral more-actions__item" id="btnEditList" data-required="custom-list" data-action="editList">
-                Edit List
-              </button>
-              <button type="button" class="btn btn--neutral more-actions__item" id="btnOpenBulkEditing" data-action="openBulkEditing">
-                Bulk Actions
-              </button>
-              <button type="button" class="btn btn--neutral more-actions__item" id="btnTriggerAlertWarningDeleteList" data-required="custom-list" data-action="deleteList">
-                Delete List
-              </button>
-              <button type="button" class="btn btn--neutral more-actions__item" data-action="clearAll">Clear All</button>
-              
-            </div> <!--/ #listActions -->
-            </div> <!--/ .list-actions__wrapper-->
+                <div class="more-actions list-actions" id="listActions">
+                  <button type="button" class="btn btn--neutral more-actions__item" id="btnEditList" data-required="custom-list" data-action="editList">
+                    Edit List
+                  </button>
+                  <button type="button" class="btn btn--neutral more-actions__item" id="btnOpenBulkEditing" data-action="openBulkEditing">
+                    Bulk Actions
+                  </button>
+                  <button type="button" class="btn btn--neutral more-actions__item" id="btnTriggerWarningDeleteList" data-required="custom-list"
+                    data-action="deleteList">
+                    Delete List
+                  </button>
+                  <button type="button" class="btn btn--neutral more-actions__item" data-action="clearAll">Clear All</button>
+
+                </div>
+                <!--/ #listActions -->
+              </div>
+              <!--/ .list-actions__wrapper-->
             </div>
           </nav>
         </header>
@@ -87,28 +97,28 @@
           </form>
           <div id="bulkActionsToolbar" class="toolbar bulk-actions-toolbar">
             <div class="toolbar__item bulk-actions-toolbar__item--check-all" data-action="checkAll">
-                <input type="checkbox" id="masterCheckbox" class="bulk-actions__checkbox">
-                <label class="bulk-actions__checkbox-label" for="masterCheckbox" id="bulkActionsMasterCheckbox"></label>
-                <p class="toolbar__item-label">Select All/None</p>
+              <input type="checkbox" id="masterCheckbox" class="bulk-actions__checkbox">
+              <label class="bulk-actions__checkbox-label" for="masterCheckbox" id="bulkActionsMasterCheckbox"></label>
+              <p class="toolbar__item-label">Select All/None</p>
             </div>
             <div class="toolbar__item flex-column">
-                <button class="btn btn--inline toolbar__btn" type="button" data-action="transferSelected" data-bulk-action="true">
-                    <i data-feather="arrow-right-circle"></i>
-                    <span class="toolbar__item-label">Move</span>
-                </button>
-                
+              <button class="btn btn--inline toolbar__btn" type="button" data-action="transferSelected" data-bulk-action="true">
+                <i data-feather="arrow-right-circle"></i>
+                <span class="toolbar__item-label">Move</span>
+              </button>
+
             </div>
             <div class="toolbar__item flex-column">
-                <button class="btn btn--inline toolbar__btn" type="button" data-action="deleteSelected" data-bulk-action="true">
-                    <i data-feather="trash-2"></i>
-                    <span class="toolbar__item-label">Delete</span>
-                </button>
+              <button class="btn btn--inline toolbar__btn" type="button" data-action="deleteSelected" data-bulk-action="true">
+                <i data-feather="trash-2"></i>
+                <span class="toolbar__item-label">Delete</span>
+              </button>
             </div>
             <div class="toolbar__item flex-column">
-                <button class="btn btn--inline toolbar__btn" type="button" data-action="closeBulkActionsToolbar">
-                  <i data-feather="x-circle"></i>
-                    <span class="toolbar__item-label">Cancel</span>
-                </button>
+              <button class="btn btn--inline toolbar__btn" type="button" data-action="closeBulkActionsToolbar">
+                <i data-feather="x-circle"></i>
+                <span class="toolbar__item-label">Cancel</span>
+              </button>
             </div>
           </div>
           <ul id="inbox" class="todo-list is-active-list" data-name="inbox">
@@ -116,7 +126,9 @@
           <ul id="filteredList" class="todo-list filtered-list" data-name="filteredList">
           </ul>
           <ul id="today" class="todo-list" data-name="today">
-            </ul>
+          </ul>
+          <ul id="upcoming" class="todo-list" data-name="upcoming">
+          </ul>
 
           <div id="views" class="views">
             <button type="button" class="btn btn--neutral form__btn views__btn is-selected" data-action="viewAll">All</button>
@@ -161,95 +173,114 @@
         <!--/ #newListFormContainer-->
 
         <div id="editListFormContainer" class="edit-list-form__container modal">
-            <div id="editListFormWrapper" class="edit-list-form__wrapper modal__content">
-              <button type="button" class="form__btn--icon modal__btn--close modal__icon-btn--close" data-action="closeModal">
-                <i data-feather="x"></i>
+          <div id="editListFormWrapper" class="edit-list-form__wrapper modal__content">
+            <button type="button" class="form__btn--icon modal__btn--close modal__icon-btn--close" data-action="closeModal">
+              <i data-feather="x"></i>
+            </button>
+            <h2 class="form__title">Edit list</h2>
+            <form id="editListForm" class="form edit-list-form">
+              <fieldset class="form__fieldset">
+                <label for="editListNameInput" class="label--text">List Name:</label>
+                <input id="editListNameInput" class="form__input form__input--inline form__input--list-name" type="text" />
+              </fieldset>
+              <button id="btnUpdateList" type="submit" class="btn btn--primary form__btn" data-action="updateList">Save</button>
+              <button type="button" class="btn btn--neutral form__btn modal__btn--close" data-action="closeForm">
+                Cancel
               </button>
-              <h2 class="form__title">Edit list</h2>
-              <form id="editListForm" class="form edit-list-form">
-                <fieldset class="form__fieldset">
-                  <label for="editListNameInput" class="label--text">List Name:</label>
-                  <input id="editListNameInput" class="form__input form__input--inline form__input--list-name" type="text" />
-                </fieldset>
-                <button id="btnUpdateList" type="submit" class="btn btn--primary form__btn" data-action="updateList">Save</button>
-                <button type="button" class="btn btn--neutral form__btn modal__btn--close" data-action="closeForm">
-                  Cancel
-                </button>
-              </form>
-            </div>
-            <!--/ #editListFormWrapper-->
+            </form>
           </div>
-          <!--/ #editListFormContainer-->
+          <!--/ #editListFormWrapper-->
+        </div>
+        <!--/ #editListFormContainer-->
 
-          <div id="transferTasksFormContainer" class="transfer-tasks-form__container modal">
-              <div id="transferTasksFormWrapper" class="transfer-tasks-form__wrapper modal__content">
-                <button type="button" class="form__btn--icon modal__btn--close modal__icon-btn--close" data-action="closeModal">
-                  <i data-feather="x"></i>
-                </button>
-                <h2 class="form__title">Move tasks to</h2>
-                <form id="transferTasksForm" class="form transfer-tasks-form">
+        <div id="transferTasksFormContainer" class="transfer-tasks-form__container modal">
+          <div id="transferTasksFormWrapper" class="transfer-tasks-form__wrapper modal__content">
+            <button type="button" class="form__btn--icon modal__btn--close modal__icon-btn--close" data-action="closeModal">
+              <i data-feather="x"></i>
+            </button>
+            <h2 class="form__title">Move tasks to</h2>
+            <form id="transferTasksForm" class="form transfer-tasks-form">
 
-                  <fieldset class="form__fieldset" id="fieldsetLists">
-                      <input type="radio" id="list--inbox" name="list" value="inbox">
-                      <label class="form__label--list" for="list--inbox">Inbox</label>
-                    </fieldset>
-                
-                <div class="form__form-group--inline transfer-tasks-form__form-group--inline">
-                  <input type="radio" name="list" id="listNew" value="new" />
-                  <button id="createListBtn" type="button" class="btn form__btn form__btn--sm form__btn--neutral cross-icon cross-icon--dk btn--inline"
-                    data-action="createList"></button>
-                  <input id="newListInput" class="form__input form__input--inline transfer-tasks-form__input" data-action="openListForm" type="text" placeholder="Create new list"
-                  />
-                </div>
-                  <button id="btnTransferTasks" type="submit" class="btn btn--primary form__btn" data-action="transferTasks">Done</button>
-                  <button type="button" class="btn btn--neutral form__btn modal__btn--close" data-action="closeForm">
-                    Cancel
-                  </button>
-                </form>
+              <fieldset class="form__fieldset" id="fieldsetLists">
+                <input type="radio" id="list--inbox" name="list" value="inbox">
+                <label class="form__label--list" for="list--inbox">Inbox</label>
+              </fieldset>
+
+              <div class="form__form-group--inline transfer-tasks-form__form-group--inline">
+                <input type="radio" name="list" id="listNew" value="new" />
+                <button id="createListBtn" type="button" class="btn form__btn form__btn--sm form__btn--neutral cross-icon cross-icon--dk btn--inline"
+                  data-action="createList"></button>
+                <input id="newListInput" class="form__input form__input--inline transfer-tasks-form__input" data-action="openListForm" type="text"
+                  placeholder="Create new list" />
               </div>
-              <!--/ #editListFormWrapper-->
-            </div>
-            <!--/ #editListFormContainer-->
+              <button id="btnTransferTasks" type="submit" class="btn btn--primary form__btn" data-action="transferTasks">Done</button>
+              <button type="button" class="btn btn--neutral form__btn modal__btn--close" data-action="closeForm">
+                Cancel
+              </button>
+            </form>
+          </div>
+          <!--/ #editListFormWrapper-->
+        </div>
+        <!--/ #editListFormContainer-->
         <div class="alert-warning modal" id="alertWarningClearAll">
           <div class="modal__content modal__content--sm clearfix">
             <h3 class="alert__title">Are you sure?</h3>
-            <p class="alert__msg">All items will be deleted forever.</p>
-            <button type="button" class="btn modal__btn alert__btn alert-warning__btn form__btn" id="clearAllBtn" data-action="clearAll">Clear All</button>
-            <button type="button" class="btn form__btn alert__btn modal__btn--close" data-action="closeModal">
-                Cancel
+            <p class="alert__msg"><strong>ALL ITEMS</strong> will be deleted forever.</p>
+            <button type="button" class="btn modal__btn alert__btn alert-warning__btn form__btn" id="clearAllBtn" data-action="clearAll">Clear
+              All
+            </button>
+            <button type="button" class="btn form__btn alert__btn modal__btn modal__btn--close" data-action="closeModal">
+              Cancel
             </button>
           </div>
         </div>
 
         <div class="alert-warning modal" id="alertWarningDeleteList">
-            <div class="modal__content modal__content--sm clearfix">
-              <h3 class="alert__title">Are you sure?</h3>
-              <p class="alert__msg"><span class="list-name"></span> will be deleted forever.</p>
-              <button type="button" class="btn modal__btn alert__btn alert-warning__btn form__btn" id="btnDeleteList" data-action="deleteList">Delete list</button>
-              <button type="button" class="btn form__btn alert__btn modal__btn modal__btn--close" data-action="closeModal">
-                  Cancel
-              </button>
-            </div>
+          <div class="modal__content modal__content--sm clearfix">
+            <h3 class="alert__title">Are you sure?</h3>
+            <p class="alert__msg"><span class="list-name"></span> will be deleted forever.</p>
+            <button type="button" class="btn modal__btn alert__btn alert-warning__btn form__btn" id="btnDeleteList" data-action="deleteList">Delete
+              list
+            </button>
+            <button type="button" class="btn form__btn alert__btn modal__btn modal__btn--close" data-action="closeModal">
+              Cancel
+            </button>
           </div>
+        </div>
+
+        <div class="alert-warning modal" id="alertWarningDeleteTask">
+          <div class="modal__content modal__content--sm clearfix">
+            <h3 class="alert__title">Are you sure?</h3>
+            <p class="alert__msg"><span class="task-text"></span> will be deleted forever.</p>
+            <button type="button" class="btn modal__btn alert__btn alert-warning__btn form__btn" id="btnDeleteTask" data-action="deleteTask">Delete
+              Task
+            </button>
+            <button type="button" class="btn form__btn alert__btn modal__btn modal__btn--close" data-action="closeModal">
+              Cancel
+            </button>
+          </div>
+        </div>
 
         <div id="todoContent" class="todo-content clearfix">
           <form id="editTodoForm" class="form edit-todo-form" data-index="">
-            
+
             <div class="todo-content__section">
               <div class="todo-content__section-icon"><i data-feather="calendar"></i></div>
               <div class="edit-todo-form__due-date-wrapper" id="dueDateWrapper">
                 <span class="due-date-text"></span>
-              <input class="edit-todo-form__input--due-date" id="inputDueDate" type="text" required pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
+                <input class="edit-todo-form__input--due-date" id="inputDueDate" type="text" required pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
               </div>
 
-              </div>
+            </div>
 
-              <div class="dp-calendar clearfix" id="dpCalendar">
-                  <div class="dp-calendar__wrapper dp-calendar__main-header">
-                  <button type="button" class="dp-calendar__btn-prevnext dp-calendar__btn-prevnext--prev" id="btnSelectPrevMonth" data-action="selectPrevMonth"><i data-feather="chevron-left"></i></button>
-                  <div class="d-flex justify-content-center">
+            <div class="dp-calendar clearfix" id="dpCalendar">
+              <div class="dp-calendar__wrapper dp-calendar__main-header">
+                <button type="button" class="dp-calendar__btn-prevnext dp-calendar__btn-prevnext--prev" id="btnSelectPrevMonth" data-action="selectPrevMonth"><i
+                    data-feather="chevron-left"></i></button>
+                <div class="d-flex justify-content-center">
                   <div class="dp-calendar__month-picker" id="dpCalendarMonthPicker">
-                    <button type="button" class="dp-calendar__toggle-btn dp-calendar__toggle-btn--month" id="btnToggleMonthDropdown" data-action="toggleMonthDropdown"><span class="btn-text"></span><i data-feather="chevron-down"></i></button>
+                    <button type="button" class="dp-calendar__toggle-btn dp-calendar__toggle-btn--month" id="btnToggleMonthDropdown" data-action="toggleMonthDropdown"><span
+                        class="btn-text"></span><i data-feather="chevron-down"></i></button>
                     <div class="dp-calendar__dropdown dp-calendar__dropdown--month" id="dpCalendarMonthDropdown" data-name="month">
                       <input id="jan" type="radio" class="dp-calendar__radio" name="month" value="January">
                       <label for="jan" class="dp-calendar__month">
@@ -303,67 +334,76 @@
                   </div>
                   <!--/ #dpCalendarMonthPicker-->
                   <div class="dp-calendar__year-picker" id="dpCalendarYearPicker">
-                    <button type="button" class="dp-calendar__toggle-btn dp-calendar__toggle-btn--year" id="btnToggleYearDropdown" data-action="toggleYearDropdown"><span class="btn-text"></span><i data-feather="chevron-down"></i></button>
+                    <button type="button" class="dp-calendar__toggle-btn dp-calendar__toggle-btn--year" id="btnToggleYearDropdown" data-action="toggleYearDropdown"><span
+                        class="btn-text"></span><i data-feather="chevron-down"></i></button>
                     <div class="dp-calendar__dropdown dp-calendar__dropdown--year" id="dpCalendarYearDropdown" data-name="year">
                     </div>
-                </div> <!--/ #dpCalendarYearPicker-->
-                </div> <!--/ .d-flex -->
-                  <button type="button" class="dp-calendar__btn-prevnext dp-calendar__btn-prevnext--next" id="btnSelectNextMonth" data-action="selectNextMonth"><i data-feather="chevron-right"></i></button>
-        
-                  </div> <!--/ .dp-calendar__wrapper-->
-        
-                  <div class="dp-calendar__wrapper dp-calendar__weekday-headers" id="dpCalendarWeekdayHeaders">
-                    <div class="dp-calendar__weekday-header">S</div>
-                    <div class="dp-calendar__weekday-header">M</div>
-                    <div class="dp-calendar__weekday-header">T</div>
-                    <div class="dp-calendar__weekday-header">W</div>
-                    <div class="dp-calendar__weekday-header">T</div>
-                    <div class="dp-calendar__weekday-header">F</div>
-                    <div class="dp-calendar__weekday-header">S</div>
                   </div>
-                  <!--/ #dpCalendarWeekdayHeaders-->
-        
-                  <div class="dp-calendar__wrapper">
-                    <div class="dp-calendar__day-picker" id="dpCalendarDayPicker">
-                    </div> <!--/ #dpCalendarDayPicker -->
-                  </div> <!--/ .dp-calendar__wrapper -->
-        
-                  <button class="btn btn--primary form__btn form__btn--rt dp-calendar__btn" type="button" id="btnSetDueDate" action="setDueDate">Set</button>
-                  <button class="btn btn--neutral form__btn form__btn--rt dp-calendar__btn dp-calendar__btn--reset" type="button" id="btnResetDueDate" data-action="resetDueDate">Cancel</button>
-                  <button class="btn btn--neutral form__btn dp-calendar__btn dp-calendar__btn--clear" type="button" id="btnClearDueDate" data-action="clearDueDate">Clear</button>
+                  <!--/ #dpCalendarYearPicker-->
                 </div>
-                <!--/ #datePickerCalendar-->
-            
+                <!--/ .d-flex -->
+                <button type="button" class="dp-calendar__btn-prevnext dp-calendar__btn-prevnext--next" id="btnSelectNextMonth" data-action="selectNextMonth"><i
+                    data-feather="chevron-right"></i></button>
+
+              </div>
+              <!--/ .dp-calendar__wrapper-->
+
+              <div class="dp-calendar__wrapper dp-calendar__weekday-headers" id="dpCalendarWeekdayHeaders">
+                <div class="dp-calendar__weekday-header">S</div>
+                <div class="dp-calendar__weekday-header">M</div>
+                <div class="dp-calendar__weekday-header">T</div>
+                <div class="dp-calendar__weekday-header">W</div>
+                <div class="dp-calendar__weekday-header">T</div>
+                <div class="dp-calendar__weekday-header">F</div>
+                <div class="dp-calendar__weekday-header">S</div>
+              </div>
+              <!--/ #dpCalendarWeekdayHeaders-->
+
+              <div class="dp-calendar__wrapper">
+                <div class="dp-calendar__day-picker" id="dpCalendarDayPicker">
+                </div>
+                <!--/ #dpCalendarDayPicker -->
+              </div>
+              <!--/ .dp-calendar__wrapper -->
+
+              <button class="btn btn--primary form__btn form__btn--rt dp-calendar__btn" type="button" id="btnSetDueDate" action="setDueDate">Set</button>
+              <button class="btn btn--neutral form__btn form__btn--rt dp-calendar__btn dp-calendar__btn--reset" type="button" id="btnResetDueDate"
+                data-action="resetDueDate">Cancel</button>
+              <button class="btn btn--neutral form__btn dp-calendar__btn dp-calendar__btn--clear" type="button" id="btnClearDueDate" data-action="clearDueDate">Clear</button>
+            </div>
+            <!--/ #datePickerCalendar-->
+
             <div class="todo-content__section">
-            <div class="todo-content__section-icon"><i data-feather="edit-3"></i></div>
-            <textarea id="todoItemNote" class="form__textarea todo-item__note" placeholder="Add a note..."></textarea>
+              <div class="todo-content__section-icon"><i data-feather="edit-3"></i></div>
+              <textarea id="todoItemNote" class="form__textarea todo-item__note" placeholder="Add a note..."></textarea>
             </div>
 
             <div class="todo-content__section">
-            <ul id="subtaskList" class="subtask-list">
-            </ul>
-            
-            <div class="form__form-group--inline edit-todo-form__form-group">
+              <ul id="subtaskList" class="subtask-list">
+              </ul>
+
+              <div class="form__form-group--inline edit-todo-form__form-group">
                 <button id="btnAddSubtask" type="submit" class="btn btn--neutral form__btn--sm form__btn--neutral btn--inline js-add-subtask-btn todo-content__section-icon"
-                data-action="addSubtask">
-                <i data-feather="plus-circle"></i>
-              </button>
-              <input id="newSubtaskInput" class="form__input form__input--inline edit-todo-form__input--subtask edit-todo-form__input" type="text" data-action="addSubtask"
-                placeholder="Add a subtask" />
-            </div>
+                  data-action="addSubtask">
+                  <i data-feather="plus-circle"></i>
+                </button>
+                <input id="newSubtaskInput" class="form__input form__input--inline edit-todo-form__input--subtask edit-todo-form__input"
+                  type="text" data-action="addSubtask" placeholder="Add a subtask" />
+              </div>
             </div>
 
             <div class="todo-content__section">
-                <button id="btnAddTag" type="button" class="btn btn--neutral form__btn--sm form__btn--neutral btn--inline todo-content__section-icon" data-action="addTag">
-                    <i data-feather="tag"></i>
-                  </button>
-            <div class="todo-content__tags form__form-group--inline edit-todo-form__form-group--inline" id="tagsContainer">
-              <input id="newTagInput" class="form__input form__input--inline edit-todo-form__input--add-tag" type="text" data-action="addTag"
-                placeholder="Add a tag" />
-            </div>
+              <button id="btnAddTag" type="button" class="btn btn--neutral form__btn--sm form__btn--neutral btn--inline todo-content__section-icon"
+                data-action="addTag">
+                <i data-feather="tag"></i>
+              </button>
+              <div class="todo-content__tags form__form-group--inline edit-todo-form__form-group--inline" id="tagsContainer">
+                <input id="newTagInput" class="form__input form__input--inline edit-todo-form__input--add-tag" type="text" data-action="addTag"
+                  placeholder="Add a tag" />
+              </div>
             </div>
             <!--/ #tagsContainer -->
-            
+
             <div class="color-picker" id="colorPicker">
               <input type="radio" class="color-picker__radio" name="tagColor" id="colorDefault" value="bg--default" checked/>
               <label class="color-picker__swatch bg--default" for="colorDefault"></label>
@@ -379,7 +419,7 @@
               <label class="color-picker__swatch bg--dk-green" for="colorGreen"></label>
             </div>
             <!--/ #colorPicker-->
-            <button id="deleteTodoBtn" type="button" class="btn btn--neutral form__btn form__btn--rt" data-action="deleteTodo">
+            <button id="btnTriggerWarningDeleteTask" type="button" class="btn btn--neutral form__btn form__btn--rt" data-action="triggerWarningDeleteTask">
               Delete Task</button>
           </form>
         </div>
