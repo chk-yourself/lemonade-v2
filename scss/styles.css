@@ -1894,6 +1894,7 @@ input[type="search"].search-form__input {
 .todo-list__item.is-expanded .breadcrumbs {
   font-size: 16px;
   bottom: 16px;
+  left: 14px;
 }
 
 .todo-list__item.is-expanded .breadcrumbs::after {
