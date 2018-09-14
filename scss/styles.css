@@ -2660,7 +2660,7 @@ input[name="list"]:checked + label::after {
 }
 
 .onboarding .modal__content {
-  top: 40%;
+  top: 20%;
 }
 
 .onboarding__stepper {
