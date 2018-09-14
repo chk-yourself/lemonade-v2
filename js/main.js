@@ -281,7 +281,7 @@
   };
 
   window.addEventListener('DOMContentLoaded', (e) => {
-    $('#alertOnboarding').classList.add('is-active');
+    $('#modalOnboarding').classList.add('is-active');
   });
 
   if (todoLists.find((list) => list.name === "Inbox") === undefined) {
@@ -2055,9 +2055,16 @@
   }
 
   function closeModal(e) {
-    console.log(e.target);
     if (!e.target.classList.contains("modal__btn--close")) return;
     e.currentTarget.classList.remove("is-active");
+  }
+
+  function closeTooltip(e) {
+    if (!e.target.classList.contains("tooltip__btn--close")) return;
+    e.currentTarget.classList.remove("show-tooltip");
+    if (e.currentTarget.classList.contains('onboarding-tooltip')) {
+      $('#modalOnboarding').classList.add('is-active');
+    }
   }
 
   function initDpCalendar(e) {
@@ -2326,9 +2333,38 @@
     }
   }
 
+  function navigateTour(e) {
+    const el = e.target;
+    if (!el.classList.contains('modal-onboarding__btn')) return;
+    const modal = e.currentTarget;
+    const action = el.dataset.action;
+
+    if (action === "beginTour") {
+      $('.modal-onboarding__footer', modal).classList.add('is-active');
+    }
+
+    if (action === "activateGuide") {
+      let activeStep = $('.modal-onboarding__step.is-active');
+      let stepNum = activeStep.dataset.onboardingStep;
+      $(`.onboarding-tooltip[data-onboarding-step="${stepNum}"`).classList.add('show-tooltip');
+      modal.classList.remove('is-active');
+    } else {
+      state.nextOnboardingStep++;
+      $all('.modal-onboarding__step').forEach(section => {
+        let step = +section.dataset.onboardingStep;
+        if (step === state.nextOnboardingStep) {
+          section.classList.add('is-active');
+        } else {
+          section.classList.remove('is-active');
+        }
+      });
+
+    }
+  }
+
   // Event Listeners
 
-  $all('.onboarding-step').forEach(item => {
+  $all('.onboarding-tooltip').forEach(item => {
     item.addEventListener('click', (e) => {
       if (!e.target.classList.contains('onboarding-step__btn')) return;
       const action = e.target.dataset.action;
@@ -2356,12 +2392,7 @@
   formAddTodo.addEventListener('input', continueTour);
   formAddTodo.addEventListener('submit', continueTour);
 
-  $('#btnBeginTour').addEventListener('click', (e) => {
-    $('#alertOnboarding').classList.remove('is-active');
-    // Update state
-    state.nextOnboardingStep++;
-    $('#onboardingStep1').classList.add('show-tooltip');
-  });
+  $('#modalOnboarding').addEventListener('click', navigateTour);
 
   $("#transferTasksForm").addEventListener("submit", transferTasks);
 
@@ -2549,6 +2580,8 @@
   $all(".modal").forEach((modal) =>
     modal.addEventListener("click", closeModal)
   );
+
+  $all('.tooltip').forEach(tooltip => tooltip.addEventListener('click', closeTooltip));
 
   $all(".dp-calendar__toggle-btn").forEach((btn) => {
     btn.addEventListener("click", (e) => {

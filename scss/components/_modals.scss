@@ -45,6 +45,16 @@
   }
 }
 
+.modal__content--md {
+  width: 400px;
+  top: 10%;
+  left: calc(50% - 200px);
+  @include box-shadow(5);
+  @include md {
+    left: calc(50% - 200px);
+  }
+}
+
 .modal__btn {
   background: transparent;
   color: $dk-grey;
@@ -66,6 +76,7 @@
   z-index: 99;
 }
 
+.modal__title,
 .alert__title {
   margin-bottom: 24px;
   font-weight: 700;
@@ -81,6 +92,7 @@
   }
 }
 
+.modal__msg,
 .alert__msg {
   margin-bottom: 16px;
   line-height: 1.4;
@@ -89,5 +101,15 @@
   }
   .task-text {
     font-weight: 700;
+  }
+}
+
+.modal__btn--primary {
+  background-color: $primary-color;
+  color: $white;
+  padding-left: 16px;
+  padding-right: 16px;
+  &:hover, &:active {
+    color: $white;
   }
 }

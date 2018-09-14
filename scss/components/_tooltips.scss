@@ -67,7 +67,6 @@
     .tooltip__inner {
       display: block;
       z-index: 98;
-      pointer-events: visible;
     }
   }
 }
@@ -76,10 +75,11 @@
   display: none;
   background-color: darken($dk-grey, 1);
   color: $white;
-  padding: 24px 16px 16px;
+  padding: 16px;
   border-radius: 14px;
-  width: 360px;
+  width: 320px;
   position: absolute;
+  pointer-events: visible;
   &::before {
     content: '';
     width: 0;
@@ -130,5 +130,20 @@
       left: 32px;
       border-bottom-color: $dk-grey;
     }
+  }
+}
+
+.tooltip__icon-btn--close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 8px;
+  z-index: 99;
+  color: $white;
+  pointer-events: visible;
+  .feather {
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
   }
 }

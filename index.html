@@ -96,12 +96,13 @@
                     data-action="addTodo"></button>
                   <input id="todoInput" class="form__input form__input--inline add-todo-form__input" type="text"
                     placeholder="What would you like to do?" />
-                    <div class="tooltip onboarding-step tooltip--bottom" id="onboardingStep1" data-onboarding-step="1">
+                    <div class="tooltip onboarding-tooltip tooltip--bottom" id="onboardingStep1" data-onboarding-step="1" data-order="1">
                       <div class="tooltip__inner clearfix">
-                        <h3 class="onboarding-step__title">Enter your first task</h3>
-                        <p class="tooltip__text onboarding-step__desc">This task will be added to your inbox, which is where you can keep general todo items. We'll show you how to create custom lists later.</p>
-                        <button type="button" class="btn btn--neutral onboarding-step__btn" data-action="continueTour">Got it!</button>
-                        <button type="button" class="btn btn--neutral onboarding-step__btn onboarding-step__btn--close" data-action="endTour">End tour</button>
+                          <button type="button" class="form__btn--icon tooltip__btn--close tooltip__icon-btn--close" data-action="closeTooltip">
+                              <i data-feather="x"></i>
+                            </button>
+                        <h3 class="onboarding-tooltip__title">Create a new task</h3>
+                        <p class="tooltip__text onboarding-step__desc">Type in whatever you need to do, then hit `enter`</p>
                       </div>
                     </div>
               </div>
@@ -278,34 +279,80 @@
           </div>
         </div>
 
-        <div class="alert-primary alert-onboarding modal" id="alertOnboarding">
-            <div class="modal__content modal__content--sm clearfix">
-              <h3 class="alert__title">Welcome!</h3>
-              <p class="alert__msg">Learn what this app can do for you.</p>
-              <button type="button" class="btn modal__btn alert__btn alert-primary__btn form__btn" id="btnBeginTour"
-                data-action="continueTour">Take tour
+        <div class="modal modal-onboarding" id="modalOnboarding">
+            <div class="modal__content modal__content--md clearfix">
+                <button type="button" class="form__btn--icon modal__btn--close modal__icon-btn--close" data-action="closeModal">
+                    <i data-feather="x"></i>
+                  </button>
+              <section class="modal-onboarding__step modal-onboarding__step--0 is-active" data-onboarding-step="0">
+                  <h3 class="modal__title">Welcome!</h3>
+                  <p class="modal__msg">Learn what this app can do for you.</p>
+                  <button type="button" class="btn modal__btn alert__btn modal__btn--primary form__btn modal-onboarding__btn" id="btnBeginTour"
+                    data-action="beginTour">Take tour
+                  </button>
+                  <button type="button" class="btn form__btn alert__btn modal__btn modal__btn--close" data-action="closeModal">
+                    No thanks
+                  </button>
+              </section>
+              <section class="modal-onboarding__step modal-onboarding__step--1" data-onboarding-step="1" data-step-complete="false">
+                  <h3 class="modal__title">Start by creating your first task</h3>
+                  <p class="modal-onboarding__desc">You can add notes and subtasks for additional context, set a due date, and/or tag your task with keywords for easy organization.</p>
+              </section>
+              <section class="modal-onboarding__step modal-onboarding__step--2" data-onboarding-step="2" data-step-complete="false">
+                  <h3 class="modal__title">Explore your list options</h3>
+                  <p class="modal-onboarding__desc">Here, you have access to:</p>
+              <ul class="modal-onboarding__list">
+                <li><strong>Inbox</strong> - a place to store general todo items</li>
+                <li><strong>Today</strong> - the tasks you're planning to work on today</li>
+                <li><strong>Upcoming</strong> - the tasks you're planning to work on this week</li>
+                <li><strong>your custom lists</strong> and <strong>folders</strong>, used to group related lists</li>
+              </ul>
+              <p class="modal-onboarding__desc">Click <span class="modal-onboarding__btn--ref btn btn--neutral sidebar__btn sidebar__btn--create-list"><i data-feather="plus-circle"></i>Create List</span> to build your first list!</p>
+              </section>
+              <section class="modal-onboarding__step modal-onboarding__step--3" data-onboarding-step="3" data-step-complete="false">
+                  <h3 class="modal__title">View additional actions</h3>
+                  <p class="modal-onboarding__desc">Here, you can access additional actions, including:</p>
+              <ul class="modal-onboarding__list">
+                <li><strong>Edit List</strong> - to rename your list, or to reassign it to a different folder</li>
+                <li><strong>Bulk Actions</strong> - to edit multiple tasks at once (i.e., discard them, or move them to another list)</li>
+                <li><strong>Delete List</strong> - to delete one specific list</li>
+                <li><strong>Clear all</strong> - to delete all the tasks, lists, and folders you ever created</li>
+              </ul>
+              </section>
+              <section class="modal-onboarding__step modal-onboarding__step--4" data-onboarding-step="4" data-step-complete="false">
+                  <h3 class="modal__title">Welcome!</h3>
+                  <p class="modal-onboarding__desc">Learn what this app can do for you.</p>
+              </section>
+              <div class="modal__footer modal-onboarding__footer">
+                <button type="button" class="btn modal__btn--primary modal__btn alert__btn form__btn modal-onboarding__btn" id="btnActivateGuide"
+                data-action="activateGuide">Try it now
               </button>
-              <button type="button" class="btn form__btn alert__btn modal__btn modal__btn--close" data-action="closeModal">
-                No thanks
+              <button type="button" class="btn form__btn alert__btn modal__btn modal-onboarding__btn" data-action="skipStep">
+                Skip this step
               </button>
+            </div>
             </div>
           </div>
 
 
         <!-- Onboarding: Step 2 -->
-        <div class="tooltip onboarding-step tooltip--left" id="onboardingStep2" data-onboarding-step="2">
-          <div class="tooltip__inner clearfix">
-            <h3 class="onboarding-step__title">View/edit task details</h3>
-            <p class="tooltip__text onboarding-step__desc">Add notes and subtasks for additional context, set a due date, and/or tag your task with keywords for easy organization.</p>
-            <button type="button" class="btn btn--neutral onboarding-step__btn" data-action="continueTour">Got it!</button>
-            <button type="button" class="btn btn--neutral onboarding-step__btn onboarding-step__btn--close" data-action="endTour">End tour</button>
+        <div class="tooltip onboarding-tooltip tooltip--left" id="onboardingStep2" data-onboarding-step="2">
+          <div class="tooltip__inner">
+              <button type="button" class="form__btn--icon tooltip__btn--close tooltip__icon-btn--close" data-action="closeTooltip">
+                  <i data-feather="x"></i>
+                </button>
+            <h3 class="onboarding-tooltip__title">Click here to edit your task</h3>
+            <p class="tooltip__text onboarding-step__desc">You can add notes, subtasks, tags, and set a due date.</p>
           </div>
         </div>
         
         <!-- Onboarding: Step 3 -->
-        <div class="tooltip onboarding-step tooltip--bottom onboarding-step-3" id="onboardingStep3" data-onboarding-step="3">
-            <div class="tooltip__inner clearfix">
-              <h3 class="onboarding-step__title">Explore the main menu</h3>
+        <div class="tooltip onboarding-tooltip tooltip--bottom onboarding-step-3" id="onboardingStep3" data-onboarding-step="3">
+            <div class="tooltip__inner">
+                <button type="button" class="form__btn--icon tooltip__btn--close tooltip__icon-btn--close" data-action="closeTooltip">
+                    <i data-feather="x"></i>
+                  </button>
+              <h3 class="onboarding-tooltip__title">Explore the main menu</h3>
               <p class="tooltip__text onboarding-step__desc">Here, you have access to:</p>
               <ul class="onboarding-step__list">
                 <li><strong>Inbox</strong> - a place to store general todo items</li>
@@ -314,24 +361,17 @@
                 <li><strong>your custom lists</strong> and <strong>folders</strong>, used to group related lists</li>
               </ul>
               <p class="onboarding-step__desc">Click <span class="onboarding-step__btn--ref btn btn--neutral sidebar__btn sidebar__btn--create-list"><i data-feather="plus-circle"></i>Create List</span> to build your first list!</p>
-              <button type="button" class="btn btn--neutral onboarding-step__btn" data-action="continueTour">Got it!</button>  
-              <button type="button" class="btn btn--neutral onboarding-step__btn onboarding-step__btn--close" data-action="endTour">End tour</button>
             </div>
           </div>
 
           <!-- Onboarding: Step 4 -->
-        <div class="tooltip onboarding-step tooltip--left" id="onboardingStep4" data-onboarding-step="4">
+        <div class="tooltip onboarding-tooltip tooltip--left" id="onboardingStep4" data-onboarding-step="4">
             <div class="tooltip__inner clearfix">
-              <h3 class="onboarding-step__title">View additional actions</h3>
+                <button type="button" class="form__btn--icon tooltip__btn--close tooltip__icon-btn--close" data-action="closeTooltip">
+                    <i data-feather="x"></i>
+                  </button>
+              <h3 class="onboarding-tooltip__title">View additional actions</h3>
               <p class="tooltip__text onboarding-step__desc">Here, you can access additional actions, including:</p>
-              <ul class="onboarding-step__list">
-                <li><strong>Edit List</strong> - to rename your list, or to reassign it to a different folder</li>
-                <li><strong>Bulk Actions</strong> - to edit multiple tasks at once (i.e., discard them, or move them to another list)</li>
-                <li><strong>Delete List</strong> - to delete one specific list</li>
-                <li><strong>Clear all</strong> - to delete all the tasks, lists, and folders you ever created</li>
-              </ul>
-              <button type="button" class="btn btn--neutral onboarding-step__btn" data-action="continueTour">Got it!</button>
-              <button type="button" class="btn btn--neutral onboarding-step__btn onboarding-step__btn--close" data-action="endTour">End tour</button>
             </div>
           </div>
 

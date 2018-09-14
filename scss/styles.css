@@ -535,6 +535,20 @@ label.subtask-list__checkbox:before {
   }
 }
 
+.modal__content--md {
+  width: 400px;
+  top: 10%;
+  left: calc(50% - 200px);
+  -webkit-box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
+          box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
+}
+
+@media (min-width: 768px) {
+  .modal__content--md {
+    left: calc(50% - 200px);
+  }
+}
+
 .modal__btn {
   background: transparent;
   color: #404551;
@@ -559,6 +573,7 @@ label.subtask-list__checkbox:before {
   z-index: 99;
 }
 
+.modal__title,
 .alert__title {
   margin-bottom: 24px;
   font-weight: 700;
@@ -572,17 +587,31 @@ label.subtask-list__checkbox:before {
   color: #f2002e;
 }
 
+.modal__msg,
 .alert__msg {
   margin-bottom: 16px;
   line-height: 1.4;
 }
 
+.modal__msg .list-name,
 .alert__msg .list-name {
   font-weight: 700;
 }
 
+.modal__msg .task-text,
 .alert__msg .task-text {
   font-weight: 700;
+}
+
+.modal__btn--primary {
+  background-color: #638eff;
+  color: #fff;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.modal__btn--primary:hover, .modal__btn--primary:active {
+  color: #fff;
 }
 
 .search-bar {
@@ -1002,17 +1031,17 @@ input[type="search"].search-form__input {
 .tooltip.show-tooltip .tooltip__inner {
   display: block;
   z-index: 98;
-  pointer-events: visible;
 }
 
 .tooltip__inner {
   display: none;
   background-color: #3e434e;
   color: #fff;
-  padding: 24px 16px 16px;
+  padding: 16px;
   border-radius: 14px;
-  width: 360px;
+  width: 320px;
   position: absolute;
+  pointer-events: visible;
 }
 
 .tooltip__inner::before {
@@ -1061,6 +1090,22 @@ input[type="search"].search-form__input {
   top: -24px;
   left: 32px;
   border-bottom-color: #404551;
+}
+
+.tooltip__icon-btn--close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 8px;
+  z-index: 99;
+  color: #fff;
+  pointer-events: visible;
+}
+
+.tooltip__icon-btn--close .feather {
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
 }
 
 .breadcrumbs {
@@ -2474,14 +2519,15 @@ input[name="list"]:checked + label::after {
   left: 0;
 }
 
-.onboarding-step__title {
+.onboarding-tooltip__title {
   margin-bottom: 16px;
   font-size: 16px;
   font-weight: 500;
+  padding-top: 4px;
 }
 
-.onboarding-step__desc,
-.onboarding-step__list {
+.modal-onboarding__desc,
+.modal-onboarding__list {
   font-size: 14px;
   -webkit-font-smoothing: antialiased;
   line-height: 1.4;
@@ -2489,24 +2535,25 @@ input[name="list"]:checked + label::after {
   margin: 8px 0;
 }
 
-.onboarding-step__list li {
+.modal-onboarding__list li {
   margin-left: 16px;
 }
 
-.onboarding-step__list li strong {
-  color: #60efb8;
+.modal-onboarding__list li strong {
+  color: #638eff;
 }
 
-.onboarding-step__btn--ref {
+.modal-onboarding__btn--ref {
   font-size: 14px;
   background-color: #fff;
   display: inline-block;
   margin: 0;
   padding: 4px 8px;
   border-radius: 4px;
+  border: 1px solid #d6dee2;
 }
 
-.onboarding-step__btn--ref .feather {
+.modal-onboarding__btn--ref .feather {
   width: 18px;
   height: 18px;
   margin-right: 8px;
@@ -2526,6 +2573,26 @@ input[name="list"]:checked + label::after {
 
 .onboarding-step-3.tooltip--right .tooltip__inner {
   left: 0;
+}
+
+.modal-onboarding__step {
+  display: none;
+}
+
+.modal-onboarding__step.is-active {
+  display: block;
+}
+
+.modal-onboarding__footer {
+  display: none;
+}
+
+.modal-onboarding__footer.is-active {
+  display: block;
+}
+
+.modal-onboarding .modal__content {
+  top: 40%;
 }
 
 .float-rt {
