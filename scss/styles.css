@@ -2526,6 +2526,7 @@ input[name="list"]:checked + label::after {
   padding-top: 4px;
 }
 
+.onboarding-tooltip__desc,
 .modal-onboarding__desc,
 .modal-onboarding__list {
   font-size: 14px;
