@@ -1,4 +1,4 @@
-.tag, .tooltip__btn--tags {
+.tag, .tag-labels__btn--tooltip {
   display: inline-block;
   box-sizing: border-box;
   border: 1px solid $lt-grey;
@@ -42,7 +42,7 @@
   }
 }
 .tag-label, 
-.tooltip__btn--tags {
+.tag-labels__btn--tooltip {
   font-size: 10px;
   padding: 0 6px;
   letter-spacing: .06em;

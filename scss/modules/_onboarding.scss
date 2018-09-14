@@ -1,0 +1,58 @@
+.onboarding-step__title {
+  margin-bottom: 16px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.onboarding-step__desc,
+.onboarding-step__list {
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.4;
+  font-family: $body-font;
+  margin: 8px 0;
+}
+
+.onboarding-step__list {
+  li {
+    margin-left: 16px;
+    strong {
+      color: $green;
+    }
+  }
+}
+
+.onboarding-step__btn--ref {
+  font-size: 14px;
+  background-color: $white;
+  display: inline-block;
+  margin: 0;
+  padding: 4px 8px;
+  border-radius: 4px;
+  .feather {
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+  }
+}
+
+.onboarding-step__btn {
+  color: $white;
+  -webkit-font-smoothing: antialiased;
+  float: right;
+  padding: 4px;
+  margin: 4px 12px 0;
+}
+
+.onboarding-step-3 {
+  &.tooltip--bottom {
+    .tooltip__inner {
+      top: 56px;
+    }
+  }
+  &.tooltip--right {
+    .tooltip__inner {
+      left: 0;
+    }
+  }
+}

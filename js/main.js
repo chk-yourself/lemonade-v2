@@ -119,7 +119,8 @@
   const ENTER_KEY = 13;
   const state = {
     activeList: null,
-    filteredList: null
+    filteredList: null,
+    nextOnboardingStep: 0
   };
 
   const clickTouch = () =>
@@ -279,6 +280,10 @@
     return node;
   };
 
+  window.addEventListener('DOMContentLoaded', (e) => {
+    $('#alertOnboarding').classList.add('is-active');
+  });
+
   if (todoLists.find((list) => list.name === "Inbox") === undefined) {
     const initInbox = new List("Inbox", "null");
     todoLists.push(initInbox);
@@ -411,11 +416,11 @@
               class: "todo-item__tag-labels"
             });
           const tagsTooltipBtn =
-            tagLabels.querySelector(".todo-item__tooltip-btn") ||
+            tagLabels.querySelector(".btn--tooltip") ||
             createNode(
               "button",
               {
-                class: "btn todo-item__tooltip-btn tooltip__btn--tags",
+                class: "btn btn--tooltip tag-labels__btn--tooltip",
                 "data-tooltip": "",
                 type: "button"
               },
@@ -791,7 +796,7 @@
       [tagIndex].remove();
     state.activeList.tasks[todoIndex].tags.splice(tagIndex, 1);
     saveToStorage();
-    const tagsTooltipBtn = todoItem.querySelector(".tooltip__btn--tags");
+    const tagsTooltipBtn = todoItem.querySelector(".tag-labels__btn--tooltip");
     tagsTooltipBtn.dataset.tooltip = state.activeList.tasks[todoIndex].tags
       .map((tag) => tag.text)
       .join(", ");
@@ -815,11 +820,11 @@
         class: "todo-item__tag-labels"
       });
     const tagsTooltipBtn =
-      tagLabels.querySelector(".todo-item__tooltip-btn") ||
+      tagLabels.querySelector(".btn--tooltip") ||
       createNode(
         "button",
         {
-          class: "btn todo-item__tooltip-btn tooltip__btn--tags",
+          class: "btn btn--tooltip tag-labels__btn--tooltip",
           "data-tooltip": "",
           type: "button"
         },
@@ -2050,6 +2055,7 @@
   }
 
   function closeModal(e) {
+    console.log(e.target);
     if (!e.target.classList.contains("modal__btn--close")) return;
     e.currentTarget.classList.remove("is-active");
   }
@@ -2220,10 +2226,10 @@
 
     // Hides tooltip
     if (
-      divTodoApp.contains($(".show-tooltip")) &&
-      e.target !== $(".show-tooltip")
+      divTodoApp.contains($(".tag-labels__btn--tooltip.show-tooltip")) &&
+      e.target !== $(".tag-labels__btn--tooltip.show-tooltip")
     ) {
-      $(".show-tooltip").classList.remove("show-tooltip");
+      $(".tag-labels__btn--tooltip.show-tooltip").classList.remove("show-tooltip");
     }
 
     const monthDropdown = $("#dpCalendarMonthDropdown");
@@ -2279,7 +2285,83 @@
     }
   }
 
+  function continueTour(e) {
+    console.log(state.nextOnboardingStep);
+    const stepOne = $('#onboardingStep1');
+    const stepTwo = $('#onboardingStep2');
+    const stepThree = $('#onboardingStep3');
+    const stepFour = $('#onboardingStep4');
+    const sideNav = $('#sideNav');
+    const btnOpenNav = $('#toggleOpenBtn');
+    switch (state.nextOnboardingStep) {
+      case 1:
+        if (stepOne.classList.contains('show-tooltip')) {
+          stepOne.classList.remove('show-tooltip');
+          state.nextOnboardingStep++;
+        };
+        formAddTodo.removeEventListener('input', continueTour);
+        break;
+      case 2:
+      setTimeout(() => {
+        const firstTask = $('.is-active-list .todo-list__item');
+        const btnToggleEditTask = $('.todo-item__toggle-btn', firstTask);
+        firstTask.insertBefore(stepTwo, btnToggleEditTask);
+        stepTwo.classList.add('show-tooltip');
+        }, 100);
+        formAddTodo.removeEventListener('submit', continueTour);
+        break;
+      case 3:
+          stepThree.classList.add('tooltip--right');
+          stepThree.classList.remove('tooltip--bottom');
+          $('#toggleOpenBtn').removeEventListener('click', continueTour);
+          $('#toggleCloseBtn').addEventListener('click', continueTour);
+          if (e.target.classList.contains('sidebar__btn--toggle-close')) {
+            if (stepThree.classList.contains('show-tooltip')) {
+              stepThree.classList.remove('show-tooltip');
+              state.nextOnboardingStep++;
+              $('#toggleCloseBtn').removeEventListener('click', continueTour);
+            }
+          }
+        break;
+    }
+  }
+
   // Event Listeners
+
+  $all('.onboarding-step').forEach(item => {
+    item.addEventListener('click', (e) => {
+      if (!e.target.classList.contains('onboarding-step__btn')) return;
+      const action = e.target.dataset.action;
+      const stepNum = e.currentTarget.dataset.onboardingStep;
+      if (action === "endTour" || stepNum === "4") {
+        state.nextOnboardingStep = null;
+        e.currentTarget.classList.remove('show-tooltip');
+        formAddTodo.removeEventListener('submit', continueTour);
+      } else if (action === "continueTour") {
+        state.nextOnboardingStep++;
+       e.currentTarget.classList.remove('show-tooltip');
+        console.log({stepNum});
+        if (stepNum === "2") {
+          const sideNav = $('#sideNav');
+        const btnOpenNav = $('#toggleOpenBtn');
+        const stepThree = $('#onboardingStep3');
+        sideNav.insertBefore(stepThree, btnOpenNav);
+        stepThree.classList.add('show-tooltip');
+        btnOpenNav.addEventListener('click', continueTour);
+        }
+      }
+    });
+  });
+
+  formAddTodo.addEventListener('input', continueTour);
+  formAddTodo.addEventListener('submit', continueTour);
+
+  $('#btnBeginTour').addEventListener('click', (e) => {
+    $('#alertOnboarding').classList.remove('is-active');
+    // Update state
+    state.nextOnboardingStep++;
+    $('#onboardingStep1').classList.add('show-tooltip');
+  });
 
   $("#transferTasksForm").addEventListener("submit", transferTasks);
 

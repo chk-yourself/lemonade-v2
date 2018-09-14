@@ -45,23 +45,25 @@
   }
 }
 
+.modal__btn {
+  background: transparent;
+  color: $dk-grey;
+  font-weight: 700;
+  box-shadow: none;
+  padding: 4px;
+  margin: 4px 12px;
+  &:hover, &:active {
+    box-shadow: none;
+    color: $primary-color;
+  }
+}
+
 .modal__icon-btn--close {
   position: absolute;
   top: 16px;
   right: 16px;
   padding: 8px;
   z-index: 99;
-}
-
-.modal__btn {
-    background: transparent;
-    color: $dk-grey;
-    font-weight: 700;
-    box-shadow: none;
-    &:hover, &:active {
-      box-shadow: none;
-      color: $primary-color;
-    }
 }
 
 .alert__title {
