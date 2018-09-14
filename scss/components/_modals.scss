@@ -9,13 +9,25 @@
   z-index: 98;
   background-color: $white;
   @include md {
-  padding: 0;
-  background-color: rgba(0,0,0,0.4);
+    padding: 0;
+    background-color: rgba(0, 0, 0, 0.4);
   }
   &.is-active {
     display: block;
   }
 }
+
+.modal--sm {
+  padding: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal--md {
+  padding: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+// Content
 
 .modal__content {
   background-color: $white;
@@ -39,6 +51,7 @@
   width: 300px;
   top: 10%;
   left: calc(50% - 150px);
+  padding: 24px 24px 16px;
   @include box-shadow(5);
   @include md {
     left: calc(50% - 150px);
@@ -46,34 +59,18 @@
 }
 
 .modal__content--md {
-  width: 400px;
+  max-width: 100%;
+  width: 100%;
   top: 10%;
-  left: calc(50% - 200px);
+  left: 0;
   @include box-shadow(5);
+  @include xs {
+    width: 400px;
+    left: calc(50% - 200px);
+  }
   @include md {
     left: calc(50% - 200px);
   }
-}
-
-.modal__btn {
-  background: transparent;
-  color: $dk-grey;
-  font-weight: 700;
-  box-shadow: none;
-  padding: 4px;
-  margin: 4px 12px;
-  &:hover, &:active {
-    box-shadow: none;
-    color: $primary-color;
-  }
-}
-
-.modal__icon-btn--close {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  padding: 8px;
-  z-index: 99;
 }
 
 .modal__title,
@@ -82,34 +79,68 @@
   font-weight: 700;
 }
 
-.alert__btn {
-  float: right;
-}
-
-.alert-warning__btn {
-  &:hover, &:active {
-    color: $red;
-  }
-}
-
 .modal__msg,
 .alert__msg {
   margin-bottom: 16px;
   line-height: 1.4;
-  .list-name {
+  color: $grey;
+  span {
     font-weight: 700;
+    color: $black;
   }
-  .task-text {
-    font-weight: 700;
+}
+
+// Buttons
+
+.modal__btn {
+  background: transparent;
+  color: $dk-grey;
+  font-weight: 700;
+  box-shadow: none;
+  &:hover,
+  &:active {
+    box-shadow: none;
+    color: $primary-color;
+  }
+}
+
+.modal__icon-btn--close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 8px;
+  z-index: 99;
+}
+
+.alert-warning__btn {
+  &:hover,
+  &:active {
+    color: $red;
   }
 }
 
 .modal__btn--primary {
   background-color: $primary-color;
   color: $white;
-  padding-left: 16px;
-  padding-right: 16px;
-  &:hover, &:active {
+  &:hover,
+  &:active {
     color: $white;
   }
+}
+
+.modal__btn--neutral {
+  background-color: transparent;
+  color: $black;
+  border: 1px solid $black;
+  &:focus,
+  &:hover,
+  &:active {
+    color: $grey;
+    border-color: $grey;
+  }
+}
+
+.modal__btn--rt {
+  float: right;
+  margin: 8px 0 0 8px;
 }

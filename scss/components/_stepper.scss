@@ -1,0 +1,17 @@
+.stepper {
+  text-align: center;
+}
+
+.stepper__btn {
+  width: 16px;
+  height: 16px;
+  box-shadow: none;
+  padding: 4px;
+  &:hover, &:active {
+    box-shadow: none;
+  }
+  .feather {
+    width: 8px;
+    height: 8px;
+  }
+}

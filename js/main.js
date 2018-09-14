@@ -281,7 +281,7 @@
   };
 
   window.addEventListener('DOMContentLoaded', (e) => {
-    $('#modalOnboarding').classList.add('is-active');
+    $('#onboarding').classList.add('is-active');
   });
 
   if (todoLists.find((list) => list.name === "Inbox") === undefined) {
@@ -2063,7 +2063,7 @@
     if (!e.target.classList.contains("tooltip__btn--close")) return;
     e.currentTarget.classList.remove("show-tooltip");
     if (e.currentTarget.classList.contains('onboarding-tooltip')) {
-      $('#modalOnboarding').classList.add('is-active');
+      $('#onboarding').classList.add('is-active');
     }
   }
 
@@ -2335,22 +2335,22 @@
 
   function navigateTour(e) {
     const el = e.target;
-    if (!el.classList.contains('modal-onboarding__btn')) return;
+    if (!el.classList.contains('onboarding__btn')) return;
     const modal = e.currentTarget;
     const action = el.dataset.action;
 
     if (action === "beginTour") {
-      $('.modal-onboarding__footer', modal).classList.add('is-active');
+      $('.onboarding__footer', modal).classList.add('is-active');
     }
 
     if (action === "activateGuide") {
-      let activeStep = $('.modal-onboarding__step.is-active');
+      let activeStep = $('.onboarding__step.is-active');
       let stepNum = activeStep.dataset.onboardingStep;
       $(`.onboarding-tooltip[data-onboarding-step="${stepNum}"`).classList.add('show-tooltip');
       modal.classList.remove('is-active');
     } else {
       state.nextOnboardingStep++;
-      $all('.modal-onboarding__step').forEach(section => {
+      $all('.onboarding__step').forEach(section => {
         let step = +section.dataset.onboardingStep;
         if (step === state.nextOnboardingStep) {
           section.classList.add('is-active');
@@ -2392,7 +2392,7 @@
   formAddTodo.addEventListener('input', continueTour);
   formAddTodo.addEventListener('submit', continueTour);
 
-  $('#modalOnboarding').addEventListener('click', navigateTour);
+  $('#onboarding').addEventListener('click', navigateTour);
 
   $("#transferTasksForm").addEventListener("submit", transferTasks);
 

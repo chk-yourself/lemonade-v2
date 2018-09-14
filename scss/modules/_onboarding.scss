@@ -5,17 +5,26 @@
   padding-top: 4px;
 }
 
-.onboarding-tooltip__desc,
-.modal-onboarding__desc,
-.modal-onboarding__list {
-  font-size: 14px;
+.onboarding-tooltip__desc {
   -webkit-font-smoothing: antialiased;
+}
+
+.onboarding-tooltip__desc,
+.onboarding__desc,
+.onboarding__list {
+  font-size: 14px;
   line-height: 1.4;
   font-family: $body-font;
   margin: 8px 0;
+  color: $grey;
 }
 
-.modal-onboarding__list {
+.onboarding__title {
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.onboarding__list {
   li {
     margin-left: 16px;
     strong {
@@ -24,7 +33,7 @@
   }
 }
 
-.modal-onboarding__btn--ref {
+.onboarding__btn--ref {
   font-size: 14px;
   background-color: $white;
   display: inline-block;
@@ -41,7 +50,6 @@
 
 .onboarding-step__btn {
   color: $white;
-  -webkit-font-smoothing: antialiased;
   float: right;
   padding: 4px;
   margin: 4px 12px 0;
@@ -60,22 +68,34 @@
   }
 }
 
-.modal-onboarding__step {
+.onboarding__step {
   display: none;
   &.is-active {
     display: block;
   }
 }
 
-.modal-onboarding__footer {
+.onboarding__footer {
   display: none;
+  flex-wrap: wrap;
+  justify-content: center;
   &.is-active {
-    display: block;
+    display: flex;
   }
 }
 
-.modal-onboarding {
+.onboarding {
   .modal__content {
     top: 40%;
   }
+}
+
+.onboarding__stepper {
+  width: 100%;
+}
+
+.onboarding__footer-btn {
+  margin: 16px 4px;
+  padding: 4px 8px;
+  width: 40%;
 }

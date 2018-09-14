@@ -4,7 +4,8 @@ button {
   background-color: transparent;
   -webkit-font-smoothing: antialiased;
   font-family: $heading-font;
-  &:active, &:focus {
+  &:active,
+  &:focus {
     outline: none;
   }
   .feather {
@@ -16,15 +17,15 @@ button {
 }
 
 .btn {
-  box-shadow: 0 2px 5px 1px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 5px 1px rgba(0, 0, 0, 0.3);
   border: 1px solid transparent;
-  letter-spacing: .03em;
+  letter-spacing: 0.03em;
   font-family: $heading-font;
   box-sizing: border-box;
   padding: 8px 16px;
   font-size: 14px;
   &:hover {
-    box-shadow: 0 4px 11px 0px rgba(0,0,0,0.375);
+    box-shadow: 0 4px 11px 0px rgba(0, 0, 0, 0.375);
   }
   &:disabled {
     color: $lt-grey;
@@ -45,21 +46,21 @@ button {
 .cross-icon {
   position: relative;
   &::before {
-  content: '';
-  width: 16px;
-  height: 2px;
-  position: absolute;
-  top: calc(50% - (2px/2));
-  left: calc(50% - (16px/2));
-}
+    content: "";
+    width: 16px;
+    height: 2px;
+    position: absolute;
+    top: calc(50% - (2px / 2));
+    left: calc(50% - (16px / 2));
+  }
   &::after {
-  content: '';
-  width: 2px;
-  height: 16px;
-  position: absolute;
-  left: calc(50% - (2px/2));
-  top: calc(50% - (16px/2));
-}
+    content: "";
+    width: 2px;
+    height: 16px;
+    position: absolute;
+    left: calc(50% - (2px / 2));
+    top: calc(50% - (16px / 2));
+  }
   &--lt::before,
   &--lt::after {
     background-color: $white;
@@ -71,13 +72,14 @@ button {
 }
 
 .btn--primary {
-  background: $primary-color; 
+  background: $primary-color;
   color: #fff;
   font-weight: 500;
   border-radius: 4px;
 }
 
-.btn--primary:hover, btn--primary:active {
+.btn--primary:hover,
+btn--primary:active {
   background: saturate($primary-color, 20%);
 }
 
@@ -86,10 +88,15 @@ button {
   color: rgba($dk-grey, 0.5);
   font-weight: 700;
   box-shadow: none;
+  &:hover,
+  &:active {
+    color: $black;
+    box-shadow: none;
+  }
 }
 
 .btn--warning {
-  background: transparent; 
+  background: transparent;
   color: $red;
   font-weight: 500;
   border-radius: 4px;
@@ -99,23 +106,23 @@ button {
 .todo-content .btn--primary {
   margin-right: 11px;
 }
-.btn--link {
-  border: 1px solid transparent;
-  background: transparent;
-  color: lighten($dk-grey, 30%);
-  font-weight: 700;
-  box-shadow: none;
-}
-
-.btn--neutral:hover,
-.btn--neutral:active,
-.btn--link:hover, 
-.btn--link:active {
-  color: rgba(15.7, 19.2, 28.6, 1);
-  box-shadow: none;
-}
 
 .btn--icon {
   position: relative;
   text-align: center;
+}
+
+.btn--link {
+  background: transparent;
+  border: 1px solid transparent;
+  color: $dk-grey;
+  font-weight: 700;
+  padding: 4px;
+  margin: 4px 12px;
+  box-shadow: none;
+  &:hover,
+  &:active {
+    box-shadow: none;
+    color: $primary-color;
+  }
 }
