@@ -2231,7 +2231,7 @@
       formEditTodo.appendChild(colorPicker);
     }
 
-    // Hides tooltip
+    // Hides tag labels tooltip
     if (
       divTodoApp.contains($(".tag-labels__btn--tooltip.show-tooltip")) &&
       e.target !== $(".tag-labels__btn--tooltip.show-tooltip")
@@ -2292,47 +2292,6 @@
     }
   }
 
-  function continueTour(e) {
-    console.log(state.nextOnboardingStep);
-    const stepOne = $('#onboardingStep1');
-    const stepTwo = $('#onboardingStep2');
-    const stepThree = $('#onboardingStep3');
-    const stepFour = $('#onboardingStep4');
-    const sideNav = $('#sideNav');
-    const btnOpenNav = $('#toggleOpenBtn');
-    switch (state.nextOnboardingStep) {
-      case 1:
-        if (stepOne.classList.contains('show-tooltip')) {
-          stepOne.classList.remove('show-tooltip');
-          state.nextOnboardingStep++;
-        };
-        formAddTodo.removeEventListener('input', continueTour);
-        break;
-      case 2:
-      setTimeout(() => {
-        const firstTask = $('.is-active-list .todo-list__item');
-        const btnToggleEditTask = $('.todo-item__toggle-btn', firstTask);
-        firstTask.insertBefore(stepTwo, btnToggleEditTask);
-        stepTwo.classList.add('show-tooltip');
-        }, 100);
-        formAddTodo.removeEventListener('submit', continueTour);
-        break;
-      case 3:
-          stepThree.classList.add('tooltip--right');
-          stepThree.classList.remove('tooltip--bottom');
-          $('#toggleOpenBtn').removeEventListener('click', continueTour);
-          $('#toggleCloseBtn').addEventListener('click', continueTour);
-          if (e.target.classList.contains('sidebar__btn--toggle-close')) {
-            if (stepThree.classList.contains('show-tooltip')) {
-              stepThree.classList.remove('show-tooltip');
-              state.nextOnboardingStep++;
-              $('#toggleCloseBtn').removeEventListener('click', continueTour);
-            }
-          }
-        break;
-    }
-  }
-
   function navigateTour(e) {
     const el = e.target;
     if (!el.classList.contains('onboarding__btn')) return;
@@ -2341,15 +2300,23 @@
 
     if (action === "beginTour") {
       $('.onboarding__footer', modal).classList.add('is-active');
+      formAddTodo.addEventListener('submit', trackTourProgress);
       state.nextOnboardingStep++;
     }
 
-    if (action === "activateGuide") {
-      let activeStep = $('.onboarding__step.is-active');
-      let stepNum = activeStep.dataset.onboardingStep;
-      $(`.onboarding-tooltip[data-onboarding-step="${stepNum}"]`).classList.add('show-tooltip');
+    if (action === "activateTooltips") {
+      const activeStep = $('.onboarding__step.is-active');
+      const stepNum = +activeStep.dataset.onboardingStep;
       modal.classList.remove('is-active');
-    } else {   
+      
+      const firstTask = $('.todo-list__item');
+      if (stepNum === 2 && !firstTask) {
+        // Since step 2 requires the completion of step 1, activate step 1 tooltip, if skipped
+        $('.onboarding-tooltip[data-onboarding-step="1"]').classList.add('show-tooltip');
+      } else {
+        $(`.onboarding-tooltip[data-onboarding-step="${stepNum}"]`).classList.add('show-tooltip');
+      }
+    } else {
       // Show next section
       $all('.onboarding__step').forEach(section => {
         let step = +section.dataset.onboardingStep;
@@ -2361,16 +2328,74 @@
       });
 
       // Set stepper btn to active
-      const stepper = $('.onboarding__stepper');
-      $all('.stepper__btn', stepper).forEach((btn, i) => {
-        if (i + 1 === state.nextOnboardingStep) {
+
+      $all('.onboarding__stepper .stepper__btn').forEach((btn, i) => {
+        if (i === state.nextOnboardingStep - 1) {
           btn.classList.add('is-active');
         } else {
           btn.classList.remove('is-active');
         }
       });
-      // Update state
-      state.nextOnboardingStep++;
+    }
+          // Updates state, looping the tour back to the beginning, if it reaches the end (step 4)
+          if (state.nextOnboardingStep === 4) {
+            state.nextOnboardingStep = 1;
+          } else {
+            state.nextOnboardingStep++;
+          }
+  }
+
+  function trackTourProgress(e) {
+    const target = e.currentTarget;
+    const tooltip = $('.onboarding-tooltip.show-tooltip');
+    const step = +tooltip.dataset.onboardingStep;
+    const nextStep = state.nextOnboardingStep === 4 ? 1 : step + 1;
+
+    // Close active tooltips
+    tooltip.classList.remove('show-tooltip');
+    
+    // Mark step as completed
+    $all('.onboarding__stepper .stepper__btn').forEach((btn, i) => {
+      if (i === step - 1) {
+        btn.classList.remove('is-active');
+        btn.classList.add('is-completed');
+      } else if (i === step) {
+        btn.classList.add('is-active');
+      }
+    });
+
+    // Proceed to next step of tour
+    $all('.onboarding__step').forEach((section, i) => {
+      if (i === nextStep) {
+        section.classList.add('is-active');
+      } else {
+        section.classList.remove('is-active');
+      }
+    });
+
+    if (state.nextOnboardingStep !== nextStep) {
+      $(`.onboarding-tooltip[data-onboarding-step="${nextStep}"]`).classList.add('show-tooltip');
+    } else {
+      // Reopen modal
+    $('#onboarding').classList.add('is-active');
+
+    // Update state
+    state.nextOnboardingStep = nextStep;
+    }
+
+    if (target === formAddTodo && e.type === 'submit') {
+      // Attach tooltip for Step 2 to first todo item
+      const firstTask = $('.is-active-list .todo-list__item');
+      firstTask.appendChild($('#onboardingTooltip2'));
+      // Attach onboarding event listeners to first task toggle button
+      $('.todo-item__toggle-btn', firstTask).addEventListener('click', trackTourProgress);
+
+      // Remove onboarding event listener from add todo form
+      formAddTodo.removeEventListener('submit', trackTourProgress);
+    }
+
+    if (target.classList.contains('todo-item__toggle-btn')) {
+      target.removeEventListener('click', trackTourProgress);
     }
   }
 
@@ -2398,34 +2423,6 @@
 
   const stepper = $('.onboarding__stepper');
     $all('.stepper__btn', stepper).forEach(btn => btn.addEventListener('click', selectStep));
-
-  $all('.onboarding-tooltip').forEach(item => {
-    item.addEventListener('click', (e) => {
-      if (!e.target.classList.contains('onboarding-step__btn')) return;
-      const action = e.target.dataset.action;
-      const stepNum = e.currentTarget.dataset.onboardingStep;
-      if (action === "endTour" || stepNum === "4") {
-        state.nextOnboardingStep = null;
-        e.currentTarget.classList.remove('show-tooltip');
-        formAddTodo.removeEventListener('submit', continueTour);
-      } else if (action === "continueTour") {
-        state.nextOnboardingStep++;
-       e.currentTarget.classList.remove('show-tooltip');
-        console.log({stepNum});
-        if (stepNum === "2") {
-          const sideNav = $('#sideNav');
-        const btnOpenNav = $('#toggleOpenBtn');
-        const stepThree = $('#onboardingStep3');
-        sideNav.insertBefore(stepThree, btnOpenNav);
-        stepThree.classList.add('show-tooltip');
-        btnOpenNav.addEventListener('click', continueTour);
-        }
-      }
-    });
-  });
-
-  formAddTodo.addEventListener('input', continueTour);
-  formAddTodo.addEventListener('submit', continueTour);
 
   $('#onboarding').addEventListener('click', navigateTour);
 

@@ -1084,7 +1084,7 @@ input[type="search"].search-form__input {
 }
 
 .tooltip--left .tooltip__inner {
-  top: -20px;
+  top: -18px;
   right: 60px;
 }
 
@@ -2658,14 +2658,6 @@ input[name="list"]:checked + label::after {
   margin: 4px 12px 0;
 }
 
-.onboarding-step-3.tooltip--bottom .tooltip__inner {
-  top: 56px;
-}
-
-.onboarding-step-3.tooltip--right .tooltip__inner {
-  left: 0;
-}
-
 .onboarding__step {
   display: none;
 }
@@ -2701,6 +2693,11 @@ input[name="list"]:checked + label::after {
   margin: 16px 4px;
   padding: 4px 8px;
   width: 40%;
+}
+
+.onboarding-tooltip--step4 .tooltip__inner {
+  top: 0;
+  right: 64px;
 }
 
 .clearfix::after {
