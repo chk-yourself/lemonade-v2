@@ -2336,13 +2336,14 @@
           btn.classList.remove('is-active');
         }
       });
+            // Updates state, looping the tour back to the beginning, if it reaches the end (step 4)
+            if (state.nextOnboardingStep === 4) {
+              state.nextOnboardingStep = 1;
+              } else {
+              state.nextOnboardingStep++;
+            }
     }
-          // Updates state, looping the tour back to the beginning, if it reaches the end (step 4)
-          if (state.nextOnboardingStep === 4) {
-            state.nextOnboardingStep = 1;
-          } else {
-            state.nextOnboardingStep++;
-          }
+      console.log(state.nextOnboardingStep);
   }
 
   function trackTourProgress(e) {
@@ -2372,7 +2373,7 @@
         section.classList.remove('is-active');
       }
     });
-
+    
     if (state.nextOnboardingStep !== nextStep) {
       $(`.onboarding-tooltip[data-onboarding-step="${nextStep}"]`).classList.add('show-tooltip');
     } else {
@@ -2380,7 +2381,12 @@
     $('#onboarding').classList.add('is-active');
 
     // Update state
-    state.nextOnboardingStep = nextStep;
+    if (state.nextOnboardingStep === 4) {
+      state.nextOnboardingStep = 1;
+      } else {
+      state.nextOnboardingStep++;
+    }
+    console.log(state.nextOnboardingStep);
     }
 
     if (target === formAddTodo && e.type === 'submit') {
