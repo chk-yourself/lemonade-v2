@@ -2136,12 +2136,24 @@
   function enableBulkActions(e) {
     const ulActiveList = $(".is-active-list");
     const checkedItems = $all(".bulk-actions__checkbox:checked", ulActiveList);
+    const allItems = $all('.bulk-actions__checkbox', ulActiveList);
     const bulkActions = $all('.toolbar__btn[data-bulk-action="true"]');
+    const masterCheckbox = $('#masterCheckbox');
+    // If no items are selected...
     if (checkedItems.length === 0) {
-      // Disable bulk actions buttons
+      // Disable bulk action buttons
       bulkActions.forEach((btn) => (btn.disabled = true));
+      // Uncheck master checkbox
+      if (masterCheckbox.checked === true) {
+        masterCheckbox.checked = false;
+      }
     } else {
+      // Enable bulk action buttons
       bulkActions.forEach((btn) => (btn.disabled = false));
+      // If all items are selected, change state of master checkbox to true if unchecked
+      if (checkedItems.length === allItems.length && masterCheckbox.checked === false) {
+        masterCheckbox.checked = true;
+      }
     }
   }
 
@@ -2473,9 +2485,16 @@
   $("#masterCheckbox").addEventListener("change", (e) => {
     const checkedState = e.currentTarget.checked;
     const ulActiveList = $(".is-active-list");
-    $all(".bulk-actions__checkbox", ulActiveList).forEach(
-      (x) => (x.checked = checkedState)
-    );
+    const checkedItems = $all(".bulk-actions__checkbox", ulActiveList);
+    checkedItems.forEach((x) => (x.checked = checkedState));
+    const bulkActions = $all('.toolbar__btn[data-bulk-action="true"]');
+    if (checkedState === true && checkedItems.length > 0) {
+      // Enable bulk action buttons
+      bulkActions.forEach((btn) => (btn.disabled = false));
+    } else {
+      // Disable bulk action buttons
+      bulkActions.forEach((btn) => (btn.disabled = true));
+    }
   });
 
   $("#btnDeleteList").addEventListener("click", (e) => {
