@@ -2350,7 +2350,7 @@
     const target = e.currentTarget;
     const tooltip = $('.onboarding-tooltip.show-tooltip');
     const step = +tooltip.dataset.onboardingStep;
-    const nextStep = state.nextOnboardingStep === 4 ? 1 : step + 1;
+    const nextStep = step === 4 ? 1 : step + 1;
 
     // Close active tooltips
     tooltip.classList.remove('show-tooltip');
@@ -2401,6 +2401,20 @@
     }
 
     if (target.classList.contains('todo-item__toggle-btn')) {
+      target.removeEventListener('click', trackTourProgress);
+      
+      // Add event listener to nav toggle btn
+      $('#toggleOpenBtn').addEventListener('click', trackTourProgress);
+    }
+
+    if (target.classList.contains('sidebar__btn--toggle-open')) {
+      target.removeEventListener('click', trackTourProgress);
+
+      // Add event listener to list actions btn
+      $('#btnToggleListActions').addEventListener('click', trackTourProgress);
+    }
+
+    if (target.classList.contains('list-actions__btn--toggle')) {
       target.removeEventListener('click', trackTourProgress);
     }
   }
