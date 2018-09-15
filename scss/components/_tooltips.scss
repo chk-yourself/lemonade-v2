@@ -73,13 +73,15 @@
 
 .tooltip__inner {
   display: none;
-  background-color: darken($dk-grey, 1);
-  color: $white;
+  // background-color: darken($dk-grey, 1);
+  background-color: $blue;
+  color: $dk-grey;
   padding: 16px;
   border-radius: 14px;
   width: 320px;
   position: absolute;
   pointer-events: visible;
+  @include box-shadow(1);
   &::before {
     content: '';
     width: 0;
@@ -95,7 +97,7 @@
     &::before {
       top: 32px;
     right: -24px;
-    border-left-color: $dk-grey;
+    border-left-color: $blue;
     }
   }
 }
@@ -106,7 +108,7 @@
     &::before {
       top: 32px;
     left: -24px;
-    border-right-color: $dk-grey;
+    border-right-color: $blue;
     }
   }
 }
@@ -117,7 +119,7 @@
     &::before {
       right: 32px;
     bottom: -24px;
-    border-top-color: $dk-grey;
+    border-top-color: $blue;
     }
   }
 }
@@ -128,7 +130,7 @@
     &::before {
       top: -24px;
       left: 32px;
-      border-bottom-color: $dk-grey;
+      border-bottom-color: $blue;
     }
   }
 }
@@ -139,11 +141,27 @@
   right: 8px;
   padding: 8px;
   z-index: 99;
-  color: $white;
+  color: $dk-grey;
   pointer-events: visible;
   .feather {
     width: 20px;
     height: 20px;
     pointer-events: none;
   }
+}
+
+.tooltip__text {
+  color: $dk-grey;
+  font-size: 14px;
+  line-height: 1.4;
+  font-family: $body-font;
+  margin: 8px 0;
+}
+
+.tooltip__title {
+  margin-bottom: 16px;
+  font-size: 16px;
+  font-weight: 500;
+  padding-top: 4px;
+  color: $black;
 }

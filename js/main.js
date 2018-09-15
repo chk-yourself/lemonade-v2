@@ -2341,15 +2341,16 @@
 
     if (action === "beginTour") {
       $('.onboarding__footer', modal).classList.add('is-active');
+      state.nextOnboardingStep++;
     }
 
     if (action === "activateGuide") {
       let activeStep = $('.onboarding__step.is-active');
       let stepNum = activeStep.dataset.onboardingStep;
-      $(`.onboarding-tooltip[data-onboarding-step="${stepNum}"`).classList.add('show-tooltip');
+      $(`.onboarding-tooltip[data-onboarding-step="${stepNum}"]`).classList.add('show-tooltip');
       modal.classList.remove('is-active');
-    } else {
-      state.nextOnboardingStep++;
+    } else {   
+      // Show next section
       $all('.onboarding__step').forEach(section => {
         let step = +section.dataset.onboardingStep;
         if (step === state.nextOnboardingStep) {
@@ -2359,10 +2360,44 @@
         }
       });
 
+      // Set stepper btn to active
+      const stepper = $('.onboarding__stepper');
+      $all('.stepper__btn', stepper).forEach((btn, i) => {
+        if (i + 1 === state.nextOnboardingStep) {
+          btn.classList.add('is-active');
+        } else {
+          btn.classList.remove('is-active');
+        }
+      });
+      // Update state
+      state.nextOnboardingStep++;
     }
   }
 
+  function selectStep(e) {
+    $all('.onboarding__stepper .stepper__btn').forEach((btn, i) => {
+    if (e.target === btn) {
+      state.nextOnboardingStep = i + 2;
+      
+      $all('.onboarding__step').forEach(section => {
+        let step = +section.dataset.onboardingStep;
+        if (step === i + 1) {
+          section.classList.add('is-active');
+          } else {
+            section.classList.remove('is-active');
+          }
+         });
+      btn.classList.add('is-active');
+    } else {
+      btn.classList.remove('is-active');
+    }
+  });
+  }
+
   // Event Listeners
+
+  const stepper = $('.onboarding__stepper');
+    $all('.stepper__btn', stepper).forEach(btn => btn.addEventListener('click', selectStep));
 
   $all('.onboarding-tooltip').forEach(item => {
     item.addEventListener('click', (e) => {

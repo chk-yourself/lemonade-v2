@@ -6,12 +6,36 @@
   width: 16px;
   height: 16px;
   box-shadow: none;
-  padding: 4px;
+  padding: 0;
+  text-align: center;
+  line-height: 10px;
   &:hover, &:active {
     box-shadow: none;
   }
   .feather {
-    width: 8px;
-    height: 8px;
+    width: 12px;
+    height: 12px;
+    stroke: $lt-grey;
+    fill: $lt-grey;
+  }
+  .feather-check-circle {
+    display: none;
+  }
+  &.is-active {
+    .feather-circle {
+      fill: $primary-color;
+      stroke: $primary-color;
+    }
+  }
+  &.is-completed {
+    .feather-circle {
+      display: none;
+    }
+    .feather-check-circle {
+      display: inline;
+      stroke: $primary-color;
+      fill: none;
+      stroke-width: 3;
+    }
   }
 }

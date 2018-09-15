@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Todo App</title>
+  <title>Check'd</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,500,700|Roboto:400,400i,500,700" rel="stylesheet">
@@ -27,7 +27,7 @@
                 data-action="toggleMenu">
                 <i data-feather="x"></i>
               </button>
-              <div class="header__logo header__logo--sm">Todo App</div>
+              <div class="header__logo header__logo--sm">Check'd</div>
               <ul class="sidebar__menu accordion" id="sidebarMenu">
                 <li class="sidebar__item">
                   <a class="sidebar__link is-active" href="#inbox">
@@ -104,8 +104,8 @@
                     data-action="closeTooltip">
                     <i data-feather="x"></i>
                   </button>
-                  <h3 class="onboarding-tooltip__title">Create a new task</h3>
-                  <p class="tooltip__text onboarding-tooltip__desc">Type in whatever you need to do, then hit `enter`</p>
+                  <h3 class="tooltip__title">Create a new task</h3>
+                  <p class="tooltip__text">Type in whatever you need to do, then hit ENTER</p>
                 </div>
               </div>
             </div>
@@ -282,7 +282,7 @@
           </div>
         </div>
 
-        <!-- #modalOnboarding -->
+        <!-- #onboarding -->
         <div class="modal modal--md onboarding" id="onboarding">
           <div class="modal__content modal__content--md clearfix">
             <button type="button" class="form__btn--icon modal__btn--close modal__icon-btn--close" data-action="closeModal">
@@ -290,7 +290,7 @@
             </button>
             <section class="onboarding__step onboarding__step--0 is-active" data-onboarding-step="0">
               <h3 class="modal__title onboarding__title">Welcome!</h3>
-              <p class="modal__msg">Learn what this app can do for you.</p>
+              <p class="modal__msg">Check'd is a task management app that helps you get things done. Learn how Check'd can help you organize your life.</p>
               <button type="button" class="btn modal__btn modal__btn--rt modal__btn--primary form__btn onboarding__btn"
                 id="btnBeginTour" data-action="beginTour">Take tour
               </button>
@@ -343,10 +343,10 @@
                 id="btnActivateGuide" data-action="activateGuide">Try it now
               </button>
               <div class="stepper onboarding__stepper">
-                <button type="button" class="btn stepper__btn"><i data-feather="circle"></i></button>
-                <button type="button" class="btn stepper__btn"><i data-feather="circle"></i></button>
-                <button type="button" class="btn stepper__btn"><i data-feather="circle"></i></button>
-                <button type="button" class="btn stepper__btn"><i data-feather="circle"></i></button>
+                <button type="button" class="btn stepper__btn"><i data-feather="circle"></i><i data-feather="check-circle"></i></button>
+                <button type="button" class="btn stepper__btn"><i data-feather="circle"></i><i data-feather="check-circle"></i></button>
+                <button type="button" class="btn stepper__btn"><i data-feather="circle"></i><i data-feather="check-circle"></i></button>
+                <button type="button" class="btn stepper__btn"><i data-feather="circle"></i><i data-feather="check-circle"></i></button>
                 </div>
 
               </div> <!--/ .modal__progress-tracker -->
@@ -355,7 +355,7 @@
           </div>
           <!--/ .modal__content -->
         </div>
-        <!--/ #modalOnboarding -->
+        <!--/ #onboarding -->
 
 
         <!-- Onboarding: Step 2 -->
@@ -364,8 +364,8 @@
             <button type="button" class="form__btn--icon tooltip__btn--close tooltip__icon-btn--close" data-action="closeTooltip">
               <i data-feather="x"></i>
             </button>
-            <h3 class="onboarding-tooltip__title">Click here to edit your task</h3>
-            <p class="tooltip__text onboarding-tooltip__desc">You can add notes, subtasks, tags, and set a due date.</p>
+            <h3 class="tooltip__title">Click here to edit your task</h3>
+            <p class="tooltip__text">You can add notes, subtasks, tags, and set a due date.</p>
           </div>
         </div>
 
@@ -376,8 +376,8 @@
             <button type="button" class="form__btn--icon tooltip__btn--close tooltip__icon-btn--close" data-action="closeTooltip">
               <i data-feather="x"></i>
             </button>
-            <h3 class="onboarding-tooltip__title">Explore the main menu</h3>
-            <p class="tooltip__text onboarding-tooltip__desc">Here, you have access to:</p>
+            <h3 class="tooltip__title">Explore the main menu</h3>
+            <p class="tooltip__text">Here, you have access to:</p>
             <ul class="onboarding-step__list">
               <li><strong>Inbox</strong> - a place to store general todo items</li>
               <li><strong>Today</strong> - the tasks you're planning to work on today</li>
@@ -395,8 +395,8 @@
             <button type="button" class="form__btn--icon tooltip__btn--close tooltip__icon-btn--close" data-action="closeTooltip">
               <i data-feather="x"></i>
             </button>
-            <h3 class="onboarding-tooltip__title">View additional actions</h3>
-            <p class="tooltip__text onboarding-tooltip__desc">Here, you can access additional actions, including:</p>
+            <h3 class="tooltip__title">View additional actions</h3>
+            <p class="tooltip__text">Here, you can access additional actions, including:</p>
           </div>
         </div>
 
