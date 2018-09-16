@@ -25,7 +25,7 @@
   font-size: 14px;
   background-color: $white;
   display: inline-block;
-  margin: 0;
+  margin: 0 4px;
   padding: 4px 8px;
   border-radius: 4px;
   border: 1px solid $lt-grey;
@@ -76,9 +76,23 @@
   width: 40%;
 }
 
-.onboarding-tooltip--step4 {
+.onboarding__tooltip--3 {
   .tooltip__inner {
     top: 0;
     right: 64px;
+  }
+}
+
+.onboarding__tooltip--1-2 {
+  .tooltip__inner {
+    bottom: calc(100% + 4px);
+    right: -12px;
+  }
+}
+
+.onboarding__tooltip--2-2 {
+  .tooltip__inner {
+    top: calc(100% - 16px);
+    left: 24px;
   }
 }

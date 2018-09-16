@@ -78,7 +78,7 @@
   color: $dk-grey;
   padding: 16px;
   border-radius: 14px;
-  width: 320px;
+  width: 240px;
   position: absolute;
   pointer-events: visible;
   @include box-shadow(1);
@@ -137,15 +137,15 @@
 
 .tooltip__icon-btn--close {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 4px;
+  right: 4px;
   padding: 8px;
   z-index: 99;
   color: $dk-grey;
   pointer-events: visible;
   .feather {
-    width: 20px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
     pointer-events: none;
   }
 }
@@ -155,12 +155,12 @@
   font-size: 14px;
   line-height: 1.4;
   font-family: $body-font;
-  margin: 8px 0;
+  margin: 0;
 }
 
 .tooltip__title {
-  margin-bottom: 16px;
-  font-size: 16px;
+  margin-bottom: 8px;
+  font-size: 14px;
   font-weight: 500;
   padding-top: 4px;
   color: $black;
