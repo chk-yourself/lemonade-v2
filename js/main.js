@@ -2400,6 +2400,7 @@
       $('#openListFormBtn').addEventListener('click', trackTourProgress);
     }
 
+    // FIXME: tooltips for step 2 are shifted out of order, so third tooltip is never displayed
     // Part 2
     if (target === $('#openListFormBtn')) {
       target.removeEventListener('click', trackTourProgress);
@@ -2447,6 +2448,13 @@
         btn.classList.add('is-active');
       }
     });
+
+    const tourIsCompleted = Array.prototype.slice.call($all('.onboarding__stepper .stepper__btn')).every(btn => btn.classList.contains('is-completed'));
+    
+    if (tourIsCompleted) {
+      state.nextOnboardingStep = null;
+      return;
+    }
 
     // Proceed to next step of tour
     $all('.onboarding__step').forEach((section, i) => {

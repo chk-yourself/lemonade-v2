@@ -2651,6 +2651,14 @@ input[name="list"]:checked + label::after {
   margin-right: 8px;
 }
 
+.onboarding__btn--ref.list-actions__btn--toggle {
+  background-color: #638eff;
+}
+
+.onboarding__btn--ref.list-actions__btn--toggle .feather {
+  margin: 0;
+}
+
 .onboarding-step__btn {
   color: #fff;
   float: right;
