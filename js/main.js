@@ -2310,6 +2310,7 @@
     if (!el.classList.contains('onboarding__btn')) return;
     const modal = e.currentTarget;
     const action = el.dataset.action;
+    const ulActiveList = $('.is-active-list');
 
     if (action === "beginTour") {
       $('.onboarding__footer', modal).classList.add('is-active');
@@ -2319,6 +2320,10 @@
     
     if (action === "endTour") {
       state.nextOnboardingStep = null;
+      // Delete dummy tasks created in Step 3
+      const noDummyTasks = state.activeList.tasks.filter(task => task.text !== "Delete Me!");
+      state.activeList.tasks = noDummyTasks;
+      renderList(state.activeList.tasks, ulActiveList);
     }
 
     if (action === "activateTooltips") {
@@ -2431,9 +2436,10 @@
     // Part 2
 
     if (target === $('#btnOpenBulkEditing')) {
+      // Create dummy tasks for user to delete
       for (let i = 0; i < 3; i++) {
-        let practiceTodo = new Task("Delete Me");
-        state.activeList.tasks.push(practiceTodo);
+        let dummyTask = new Task("Delete Me!");
+        state.activeList.tasks.push(dummyTask);
       }
       populateList(state.activeList.tasks, activeList_ul);
       $('#masterCheckbox').addEventListener('change', trackTourProgress);

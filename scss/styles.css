@@ -645,6 +645,17 @@ label.subtask-list__checkbox:before {
   margin: 8px 0 0 8px;
 }
 
+.modal__footer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
 .search-bar {
   position: relative;
   width: 0%;
@@ -2720,14 +2731,18 @@ input[name="list"]:checked + label::after {
   width: 40%;
 }
 
-.onboarding__tooltip--3-1 .tooltip__inner {
-  top: 0;
-  right: 64px;
-}
-
 .onboarding__tooltip--1-2 .tooltip__inner {
   bottom: calc(100% + 4px);
   right: -12px;
+}
+
+.onboarding__tooltip--2-1 .tooltip__inner {
+  left: 56px;
+  top: 4px;
+}
+
+.onboarding__tooltip--2-1 .tooltip__inner::before {
+  top: 16px;
 }
 
 .onboarding__tooltip--2-2 .tooltip__inner {
@@ -2740,13 +2755,13 @@ input[name="list"]:checked + label::after {
   top: calc(100% + 24px);
 }
 
-.onboarding__tooltip--2-1 .tooltip__inner {
-  left: 60px;
-  top: 4px;
+.onboarding__tooltip--3-1 .tooltip__inner {
+  top: 0;
+  right: 56px;
 }
 
-.onboarding__tooltip--2-1 .tooltip__inner::before {
-  top: 24px;
+.onboarding__tooltip--3-1 .tooltip__inner::before {
+  top: 16px;
 }
 
 .onboarding__tooltip--3-2 .tooltip__inner {

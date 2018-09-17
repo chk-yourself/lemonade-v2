@@ -285,19 +285,21 @@
         <!-- #onboarding -->
         <div class="modal modal--md onboarding" id="onboarding">
           <div class="modal__content modal__content--md clearfix">
-            <button type="button" class="form__btn--icon modal__btn--close modal__icon-btn--close" data-action="endTour">
+            <button type="button" class="form__btn--icon onboarding__btn modal__btn--close modal__icon-btn--close" data-action="endTour">
               <i data-feather="x"></i>
             </button>
             <section class="onboarding__step onboarding__step--0 is-active" data-onboarding-step="0">
               <h3 class="modal__title onboarding__title">Welcome!</h3>
               <p class="modal__msg">Check'd is a task management app that helps you get things done. Learn how Check'd
                 can help you organize your life.</p>
-              <button type="button" class="btn modal__btn modal__btn--rt modal__btn--primary form__btn onboarding__btn"
+              <div class="modal__footer">
+                  <button type="button" class="btn form__btn modal__btn modal__btn--close onboarding__btn onboarding__footer-btn" data-action="closeModal">
+                      No thanks
+                    </button>
+              <button type="button" class="btn modal__btn modal__btn--primary form__btn onboarding__btn onboarding__footer-btn"
                 id="btnBeginTour" data-action="beginTour">Take tour
               </button>
-              <button type="button" class="btn form__btn modal__btn--rt modal__btn modal__btn--close" data-action="closeModal">
-                No thanks
-              </button>
+              </div>
             </section>
             <section class="onboarding__step onboarding__step--1" data-onboarding-step="1" data-step-complete="false">
               <h3 class="modal__title onboarding__step-title">Start by creating a task</h3>
@@ -330,18 +332,19 @@
                 different list)</p>
             </section>
             <section class="onboarding__step onboarding__step--4" data-onboarding-step="4">
-              <h3 class="modal__title onboarding__step-title">Great job!</h3>
+              <h3 class="modal__title">Great job!</h3>
               <p class="onboarding__desc">You've learned how to create and edit a task, create a list, and edit
                 multiple tasks at once.</p>
-              <button type="button" class="btn modal__btn modal__btn--rt modal__btn--primary form__btn onboarding__btn modal__btn--close"
-                id="btnEndTour" data-action="endTour">Start planning
+                <div class="modal__footer">
+                    <button type="button" class="btn form__btn modal__btn modal__btn--neutral onboarding__btn onboarding__footer-btn" data-action="beginTour">
+                        Do it again
+                      </button>
+              <button type="button" class="btn modal__btn modal__btn--primary form__btn onboarding__btn modal__btn--close onboarding__footer-btn"
+                id="btnEndTour" data-action="endTour">Get movin'
               </button>
-              <button type="button" class="btn form__btn modal__btn--rt onboarding__btn" data-action="beginTour">
-                Do it again
-              </button>
+              </div>
             </section>
-
-            <div class="modal__footer onboarding__footer">
+            <div class="onboarding__footer">
               <button type="button" class="btn form__btn modal__btn modal__btn--neutral onboarding__btn onboarding__footer-btn"
                 data-action="skipStep">
                 Skip this
