@@ -1083,7 +1083,7 @@ input[type="search"].search-form__input {
 
 .tooltip.show-tooltip .tooltip__inner {
   display: block;
-  z-index: 98;
+  z-index: 100;
 }
 
 .tooltip__inner {
@@ -2731,7 +2731,8 @@ input[name="list"]:checked + label::after {
   width: 40%;
 }
 
-.onboarding__tooltip--1-2 .tooltip__inner {
+.onboarding__tooltip--1-2 .tooltip__inner,
+.onboarding__tooltip--1-3 .tooltip__inner {
   bottom: calc(100% + 4px);
   right: -12px;
 }

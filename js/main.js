@@ -120,7 +120,22 @@
   const state = {
     activeList: null,
     filteredList: null,
-    nextOnboardingStep: null
+    nextOnboardingStep: null,
+    onboarding: {
+      currentStep: null,
+      statusLog: [false, false, false],
+      get isCompleted() {
+        return this.statusLog.every(status => status === true);
+      },
+      get nextStep() {
+        return this.isCompleted ? 4 
+        : this.currentStep - 1 === this.statusLog.lastIndexOf(false) ? this.statusLog.indexOf(false) + 1 
+        : this.statusLog.indexOf(false, this.currentStep) + 1;
+      },
+      set updateStatus(val) {
+        this.statusLog[this.currentStep - 1] = val;
+      }
+    }
   };
 
   const clickTouch = () =>
@@ -2314,12 +2329,19 @@
 
     if (action === "beginTour") {
       $('.onboarding__footer', modal).classList.add('is-active');
-      formAddTodo.addEventListener('submit', trackTourProgress);
-      state.nextOnboardingStep = 1;
+      // Refresh completion status for all steps if tour is retaken
+      $all('.onboarding__stepper .stepper__btn').forEach(btn => btn.classList.remove('is-completed'));
+      state.onboarding.statusLog.forEach((status, i, arr) => arr[i] = false);
+      state.onboarding.currentStep = 0;
+      console.log(state.onboarding.statusLog);
+      console.log(state.onboarding.nextStep);
     }
+
+    const currentStep = state.onboarding.currentStep;
+    const nextStep = state.onboarding.nextStep;
     
     if (action === "endTour") {
-      state.nextOnboardingStep = null;
+      state.onboarding.currentStep = null;
       // Delete dummy tasks created in Step 3
       const noDummyTasks = state.activeList.tasks.filter(task => task.text !== "Delete Me!");
       state.activeList.tasks = noDummyTasks;
@@ -2327,17 +2349,24 @@
     }
 
     if (action === "activateTooltips") {
-      const activeStep = $('.onboarding__step.is-active');
-      const stepNum = +activeStep.dataset.onboardingStep;
       modal.classList.remove('is-active');
-      
-      const firstTask = $('.todo-list__item');
-        $(`.onboarding__tooltip[data-onboarding-step="${stepNum}"][data-order="0"]`).classList.add('show-tooltip');
+      if (currentStep === 1) {
+        formAddTodo.appendChild($('#onboardingTooltip_1-1'));
+      }
+        $(`.onboarding__tooltip[data-onboarding-step="${currentStep}"][data-order="0"]`).classList.add('show-tooltip');
+        const target = $(`[data-onboarding-target="${currentStep}"]`);
+      // Set up first interaction point for current onboarding step
+      if (target.tagName === 'FORM') {
+        target.addEventListener('submit', trackTourProgress);
+      } else {
+        target.addEventListener('click', trackTourProgress);
+      }
     } else {
+      console.log({nextStep});
       // Show next section
       $all('.onboarding__step').forEach(section => {
         let step = +section.dataset.onboardingStep;
-        if (step === state.nextOnboardingStep) {
+        if (step === nextStep) {
           section.classList.add('is-active');
         } else {
           section.classList.remove('is-active');
@@ -2347,35 +2376,29 @@
       // Set stepper btn to active
 
       $all('.onboarding__stepper .stepper__btn').forEach((btn, i) => {
-        if (i === state.nextOnboardingStep - 1) {
+        if (i === nextStep - 1) {
           btn.classList.add('is-active');
         } else {
           btn.classList.remove('is-active');
         }
       });
-            // Updates state, looping the tour back to the beginning, if it reaches the end (step 4)
-            if (state.nextOnboardingStep === 3) {
-              state.nextOnboardingStep = 1;
-              } else {
-              state.nextOnboardingStep++;
-            }
+        // Updates state, looping the tour back to the beginning, if it reaches the end (step 4)
+        state.onboarding.currentStep = state.onboarding.nextStep;
     }
-      console.log(state.nextOnboardingStep);
   }
 
   function trackTourProgress(e) {
     const target = e.currentTarget;
     const tooltip = $('.onboarding__tooltip.show-tooltip');
-    const step = state.nextOnboardingStep === 1 ? 3 : state.nextOnboardingStep - 1;
-    const nextStep = state.nextOnboardingStep;
+    const currentStep = state.onboarding.currentStep;
     const activeList_ul = $('.is-active-list');
-    const tooltipSet = Array.prototype.slice.call($all(`.onboarding__tooltip[data-onboarding-step="${step}"]`)).sort((a, b) => {
+    const tooltipSet = Array.prototype.slice.call($all(`.onboarding__tooltip[data-onboarding-step="${currentStep}"]`)).sort((a, b) => {
       return +a.dataset.order - +b.dataset.order;
     });
 
     target.removeEventListener(e.type, trackTourProgress);
 
-    if (state.nextOnboardingStep === null) return;
+    if (currentStep === null) return;
 
     // Set up interaction points
     /**
@@ -2392,13 +2415,8 @@
     // Part 2
     if (target.classList.contains('todo-item__toggle-btn')) {
       if (!todoContent.classList.contains('is-visible')) {
-        $('.tooltip__title', tooltip).textContent = "Click here to close details";
-        $('.tooltip__text', tooltip).textContent = "Any changes you make are updated in real time";
+        target.parentNode.appendChild($('#onboardingTooltip_1-3'));
         target.addEventListener('click', trackTourProgress);
-        return;
-      } else {
-        // Add event listener to nav toggle btn (interaction point for step 2, pt 1)
-        $('#toggleOpenBtn').addEventListener('click', trackTourProgress);
       }
     }
 
@@ -2421,7 +2439,6 @@
 
     if (target === $('#newListForm')) {
       $('.todo-app__header').appendChild($('#onboardingTooltip_3-1'));
-      $('#btnToggleListActions').addEventListener('click', trackTourProgress);
     }
 
     /**
@@ -2451,11 +2468,10 @@
       $('#btnDeleteSelected').addEventListener('click', trackTourProgress);
     }
 
-    if (target === $('#btnDeleteSelected')) {
-    }
-
       // Close active tooltip
       tooltip.classList.remove('show-tooltip');
+      // Ensure tooltip doesn't get deleted
+      divTodoApp.appendChild(tooltip);
 
       // If current tooltip is not the last one in the set, activate the next one
       if (tooltip !== tooltipSet[tooltipSet.length - 1]) {
@@ -2467,26 +2483,28 @@
         return;
       }
 
+    // Update step status
+    state.onboarding.updateStatus = true;
+
+    const nextStep = state.onboarding.nextStep;
+
     // Mark step as completed
     $all('.onboarding__stepper .stepper__btn').forEach((btn, i) => {
-      if (i === step - 1) {
+      if (i === currentStep - 1) {
         btn.classList.remove('is-active');
         btn.classList.add('is-completed');
-      } else if (i === step) {
+      } else if (i === nextStep - 1) {
         btn.classList.add('is-active');
       }
     });
-
-    const tourIsCompleted = Array.prototype.slice.call($all('.onboarding__stepper .stepper__btn')).every(btn => btn.classList.contains('is-completed'));
     
-    if (tourIsCompleted) {
-      state.nextOnboardingStep = 4;
+    if (state.onboarding.isCompleted) {
       $('.onboarding__footer').classList.remove('is-active');
     }
 
     // Proceed to next step of tour
     $all('.onboarding__step').forEach((section, i) => {
-      if (i === state.nextOnboardingStep) {
+      if (i === nextStep) {
         section.classList.add('is-active');
       } else {
         section.classList.remove('is-active');
@@ -2497,11 +2515,7 @@
     $('#onboarding').classList.add('is-active');
 
     // Update state
-    if (nextStep === 3) {
-      state.nextOnboardingStep = 1;
-      } else {
-      state.nextOnboardingStep++;
-    }
+    state.onboarding.currentStep = state.onboarding.nextStep;
   }
 
   function selectStep(e) {

@@ -81,7 +81,8 @@
   width: 40%;
 }
 
-.onboarding__tooltip--1-2 {
+.onboarding__tooltip--1-2,
+.onboarding__tooltip--1-3 {
   .tooltip__inner {
     bottom: calc(100% + 4px);
     right: -12px;
