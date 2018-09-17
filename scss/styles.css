@@ -468,6 +468,7 @@ label.subtask-list__checkbox:before {
 .form__fieldset {
   border: none;
   padding: 0;
+  position: relative;
 }
 
 .form__fieldset:not(:last-child) {
@@ -1138,6 +1139,10 @@ input[type="search"].search-form__input {
   width: 16px;
   height: 16px;
   pointer-events: none;
+}
+
+.tooltip--no-arrow .tooltip__inner::before {
+  display: none;
 }
 
 .tooltip__text {
@@ -2632,7 +2637,7 @@ input[name="list"]:checked + label::after {
 }
 
 .onboarding__list li strong {
-  color: #638eff;
+  color: #15161a;
 }
 
 .onboarding__btn--ref {
@@ -2716,6 +2721,11 @@ input[name="list"]:checked + label::after {
 .onboarding__tooltip--2-2 .tooltip__inner {
   top: calc(100% - 16px);
   left: 24px;
+}
+
+.onboarding__tooltip--2-3 .tooltip__inner {
+  left: calc(50% - 120px);
+  top: calc(100% + 24px);
 }
 
 .clearfix::after {

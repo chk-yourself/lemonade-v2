@@ -16,7 +16,7 @@
   li {
     margin-left: 16px;
     strong {
-      color: $primary-color;
+      color: $dark-grey;
     }
   }
 }
@@ -48,7 +48,6 @@
   padding: 4px;
   margin: 4px 12px 0;
 }
-
 
 .onboarding__step {
   display: none;
@@ -100,5 +99,19 @@
   .tooltip__inner {
     top: calc(100% - 16px);
     left: 24px;
+  }
+}
+
+.onboarding__tooltip--2-3 {
+  .tooltip__inner {
+    left: calc(50% - 120px);
+    top: calc(100% + 24px);
+  }
+}
+
+.onboarding__tooltip--2-1 {
+  .tooltip__inner {
+    left: 50px;
+    top: 4px;
   }
 }

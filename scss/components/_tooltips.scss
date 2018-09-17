@@ -150,6 +150,12 @@
   }
 }
 
+.tooltip--no-arrow {
+  .tooltip__inner::before {
+    display: none;
+  }
+}
+
 .tooltip__text {
   color: $dk-grey;
   font-size: 14px;

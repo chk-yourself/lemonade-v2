@@ -215,6 +215,7 @@ z-index: 3;
 .form__fieldset {
   border: none;
   padding: 0;
+  position: relative;
   &:not(:last-child) {
   margin-bottom: 24px;
   }

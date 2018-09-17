@@ -2323,7 +2323,7 @@
       modal.classList.remove('is-active');
       
       const firstTask = $('.todo-list__item');
-        $(`.onboarding__tooltip[data-onboarding-step="${stepNum}"]`).classList.add('show-tooltip');
+        $(`.onboarding__tooltip[data-onboarding-step="${stepNum}"][data-order="0"]`).classList.add('show-tooltip');
     } else {
       // Show next section
       $all('.onboarding__step').forEach(section => {
@@ -2357,9 +2357,11 @@
   function trackTourProgress(e) {
     const target = e.currentTarget;
     const tooltip = $('.onboarding__tooltip.show-tooltip');
-    const step = +tooltip.dataset.onboardingStep;
-    const nextStep = step === 3 ? 1 : step + 1;
-    const tooltipSet = $all(`.onboarding__tooltip[data-onboarding-step="${step}"]`);
+    const step = state.nextOnboardingStep - 1;
+    const nextStep = state.nextOnboardingStep;
+    const tooltipSet = Array.prototype.slice.call($all(`.onboarding__tooltip[data-onboarding-step="${step}"]`)).sort((a, b) => {
+      return +a.dataset.order - +b.dataset.order;
+    });
 
     // Set up interaction points
     /**
@@ -2400,8 +2402,6 @@
       $('#openListFormBtn').addEventListener('click', trackTourProgress);
     }
 
-    // FIXME: tooltips for step 2 are shifted out of order, so third tooltip is never displayed
-    // Part 2
     if (target === $('#openListFormBtn')) {
       target.removeEventListener('click', trackTourProgress);
       $('#newListForm').appendChild($("#onboardingTooltip_2-3"));
@@ -2412,7 +2412,7 @@
 
     if (target === $('#newListForm')) {
       $('#newListForm').removeEventListener('submit', trackTourProgress);
-      // Add event listener to list actions btn
+      $('.todo-app__header').appendChild($('#onboardingTooltip_3-1'));
       $('#btnToggleListActions').addEventListener('click', trackTourProgress);
     }
 
@@ -2423,22 +2423,21 @@
     if (target.classList.contains('list-actions__btn--toggle')) {
       target.removeEventListener('click', trackTourProgress);
     }
-        // Close active tooltip
-        tooltip.classList.remove('show-tooltip');
 
+    if (tooltip) {
+      // Close active tooltip
+      tooltip.classList.remove('show-tooltip');
 
-    // If current tooltip is not the last one in the set, activate the next one
-    if (tooltip !== tooltipSet[tooltipSet.length - 1]) {
-      tooltipSet.forEach((item, i, arr) => {
-        if (item === tooltip) {
-          console.log(i);
-          arr[i + 1].classList.add('show-tooltip');
-          console.log(arr[i + 1]);
-        }
-      });
-      return;
+      // If current tooltip is not the last one in the set, activate the next one
+      if (tooltip !== tooltipSet[tooltipSet.length - 1]) {
+        tooltipSet.forEach((item, i, arr) => {
+          if (item === tooltip) {
+            arr[i + 1].classList.add("show-tooltip");
+          }
+        });
+        return;
+      }
     }
-    
     // Mark step as completed
     $all('.onboarding__stepper .stepper__btn').forEach((btn, i) => {
       if (i === step - 1) {
@@ -2469,12 +2468,11 @@
     $('#onboarding').classList.add('is-active');
 
     // Update state
-    if (state.nextOnboardingStep === 3) {
+    if (nextStep === 3) {
       state.nextOnboardingStep = 1;
       } else {
       state.nextOnboardingStep++;
     }
-    console.log(state.nextOnboardingStep);
   }
 
   function selectStep(e) {
