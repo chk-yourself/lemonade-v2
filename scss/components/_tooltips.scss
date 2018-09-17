@@ -1,4 +1,5 @@
-.btn--tooltip, .tooltip-link {
+.btn--tooltip,
+.tooltip-link {
   position: relative;
   cursor: pointer;
   box-shadow: none;
@@ -20,7 +21,7 @@
     border-radius: 4px;
   }
   &::before {
-    content: '';
+    content: "";
     width: 0;
     left: 4px;
     bottom: -8px;
@@ -83,7 +84,7 @@
   pointer-events: visible;
   @include box-shadow(1);
   &::before {
-    content: '';
+    content: "";
     width: 0;
     border: 12px solid transparent;
     position: absolute;
@@ -96,8 +97,8 @@
     right: 60px;
     &::before {
       top: 32px;
-    right: -24px;
-    border-left-color: $blue;
+      right: -24px;
+      border-left-color: $blue;
     }
   }
 }
@@ -107,8 +108,8 @@
     left: 68px;
     &::before {
       top: 32px;
-    left: -24px;
-    border-right-color: $blue;
+      left: -24px;
+      border-right-color: $blue;
     }
   }
 }
@@ -118,8 +119,8 @@
     bottom: calc(100% + 12px);
     &::before {
       right: 32px;
-    bottom: -24px;
-    border-top-color: $blue;
+      bottom: -24px;
+      border-top-color: $blue;
     }
   }
 }

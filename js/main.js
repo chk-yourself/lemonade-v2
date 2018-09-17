@@ -2519,7 +2519,6 @@
     } else if (el.dataset.action === "deleteSelected") {
       deleteSelected(e);
     } else if (el.dataset.action === "closeBulkActionsToolbar") {
-      $("#bulkActionsToolbar").classList.remove("is-active");
       ulActiveList.removeEventListener("click", enableBulkActions);
       renderList(currentTasksList, ulActiveList);
     }
