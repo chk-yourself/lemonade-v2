@@ -65,12 +65,6 @@
   }
 }
 
-.onboarding {
-  .modal__content {
-    top: 20%;
-  }
-}
-
 .onboarding__stepper {
   width: 100%;
 }
@@ -108,8 +102,20 @@
 
 .onboarding__tooltip--2-3 {
   .tooltip__inner {
-    left: calc(50% - 120px);
+    background-color: $dk-grey;
+    left: calc(50% - 150px);
     top: calc(100% + 24px);
+    width: 300px;
+  }
+  .tooltip__title {
+    color: $white;
+  }
+  .tooltip__text {
+    color: $lt-grey;
+    -webkit-font-smoothing: antialiased;
+  }
+  .feather {
+    color: $white;
   }
 }
 

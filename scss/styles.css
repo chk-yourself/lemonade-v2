@@ -2717,10 +2717,6 @@ input[name="list"]:checked + label::after {
   display: flex;
 }
 
-.onboarding .modal__content {
-  top: 20%;
-}
-
 .onboarding__stepper {
   width: 100%;
 }
@@ -2752,8 +2748,23 @@ input[name="list"]:checked + label::after {
 }
 
 .onboarding__tooltip--2-3 .tooltip__inner {
-  left: calc(50% - 120px);
+  background-color: #404551;
+  left: calc(50% - 150px);
   top: calc(100% + 24px);
+  width: 300px;
+}
+
+.onboarding__tooltip--2-3 .tooltip__title {
+  color: #fff;
+}
+
+.onboarding__tooltip--2-3 .tooltip__text {
+  color: #d6dee2;
+  -webkit-font-smoothing: antialiased;
+}
+
+.onboarding__tooltip--2-3 .feather {
+  color: #fff;
 }
 
 .onboarding__tooltip--3-1 .tooltip__inner {

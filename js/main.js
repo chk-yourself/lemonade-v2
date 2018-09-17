@@ -2320,7 +2320,7 @@
     }
   }
 
-  function navigateTour(e) {
+  function continueTour(e) {
     const el = e.target;
     if (!el.classList.contains('onboarding__btn')) return;
     const modal = e.currentTarget;
@@ -2504,7 +2504,7 @@
 
     // Proceed to next step of tour
     $all('.onboarding__step').forEach((section, i) => {
-      if (i === nextStep) {
+      if (i === state.onboarding.nextStep) {
         section.classList.add('is-active');
       } else {
         section.classList.remove('is-active');
@@ -2521,11 +2521,13 @@
   function selectStep(e) {
     $all('.onboarding__stepper .stepper__btn').forEach((btn, i) => {
     if (e.target === btn) {
-      state.nextOnboardingStep = i + 2;
+      state.onboarding.currentStep = i + 1;
+      console.log(state.onboarding.currentStep);
+      console.log(state.onboarding.nextStep);
       
       $all('.onboarding__step').forEach(section => {
         let step = +section.dataset.onboardingStep;
-        if (step === i + 1) {
+        if (step === state.onboarding.currentStep) {
           section.classList.add('is-active');
           } else {
             section.classList.remove('is-active');
@@ -2543,7 +2545,7 @@
   const stepper = $('.onboarding__stepper');
     $all('.stepper__btn', stepper).forEach(btn => btn.addEventListener('click', selectStep));
 
-  $('#onboarding').addEventListener('click', navigateTour);
+  $('#onboarding').addEventListener('click', continueTour);
 
   $("#transferTasksForm").addEventListener("submit", transferTasks);
 

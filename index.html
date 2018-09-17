@@ -19,9 +19,8 @@
       <div id="todoApp" class="todo-app">
         <header class="todo-app__header">
           <nav class="sidebar" id="sideNav">
-            <button type="button" class="sidebar__btn--icon sidebar__btn--toggle sidebar__btn--toggle-open" data-onboarding-target="2"
-             id="toggleOpenBtn"
-              data-action="toggleMenu">
+            <button type="button" class="sidebar__btn--icon sidebar__btn--toggle sidebar__btn--toggle-open"
+              data-onboarding-target="2" id="toggleOpenBtn" data-action="toggleMenu">
               <i data-feather="menu"></i>
             </button>
             <div class="sidebar__menu-wrapper">
@@ -85,31 +84,19 @@
                 <!--/ #listActions -->
               </div>
               <!--/ .list-actions__wrapper-->
-            </div> <!--/ .header__content-wrapper -->
+            </div>
+            <!--/ .header__content-wrapper -->
           </nav>
         </header>
 
         <main class="todo-app__main" id="main">
           <h1 class="active-list__title" id="activeListTitle"></h1>
           <form id="addTodoForm" class="form add-todo-form" data-onboarding-target="1">
-
-            <!-- Onboarding: Step 1 -->
             <div class="form__form-group--inline add-todo-form__form-group--inline">
               <button id="addTodoBtn" type="submit" class="btn form__btn form__btn--sm form__btn--neutral cross-icon cross-icon--dk btn--inline"
                 data-action="addTodo"></button>
               <input id="todoInput" class="form__input form__input--inline add-todo-form__input" type="text"
                 placeholder="What would you like to do?" />
-              <div class="tooltip onboarding__tooltip tooltip--bottom" id="onboardingTooltip_1-1" data-onboarding-step="1"
-                data-order="0">
-                <div class="tooltip__inner clearfix">
-                  <button type="button" class="form__btn--icon tooltip__btn--close tooltip__icon-btn--close"
-                    data-action="closeTooltip">
-                    <i data-feather="x"></i>
-                  </button>
-                  <h3 class="tooltip__title">Create a new task</h3>
-                  <p class="tooltip__text">Type in whatever you need to do, then hit ENTER</p>
-                </div>
-              </div>
             </div>
           </form>
           <div id="bulkActionsToolbar" class="toolbar bulk-actions-toolbar">
@@ -127,7 +114,8 @@
 
             </div>
             <div class="toolbar__item flex-column">
-              <button class="btn btn--inline toolbar__btn" type="button" data-action="deleteSelected" data-bulk-action="true" id="btnDeleteSelected">
+              <button class="btn btn--inline toolbar__btn" type="button" data-action="deleteSelected" data-bulk-action="true"
+                id="btnDeleteSelected">
                 <i data-feather="trash-2"></i>
                 <span class="toolbar__item-label">Delete</span>
               </button>
@@ -287,7 +275,8 @@
         <!-- #onboarding -->
         <div class="modal modal--md onboarding" id="onboarding">
           <div class="modal__content modal__content--md clearfix">
-            <button type="button" class="form__btn--icon onboarding__btn modal__btn--close modal__icon-btn--close" data-action="endTour">
+            <button type="button" class="form__btn--icon onboarding__btn modal__btn--close modal__icon-btn--close"
+              data-action="endTour">
               <i data-feather="x"></i>
             </button>
             <section class="onboarding__step onboarding__step--0 is-active" data-onboarding-step="0">
@@ -295,12 +284,13 @@
               <p class="modal__msg">Check'd is a task management app that helps you get things done. Learn how Check'd
                 can help you organize your life.</p>
               <div class="modal__footer">
-                  <button type="button" class="btn form__btn modal__btn modal__btn--close onboarding__btn onboarding__footer-btn" data-action="closeModal">
-                      No thanks
-                    </button>
-              <button type="button" class="btn modal__btn modal__btn--primary form__btn onboarding__btn onboarding__footer-btn"
-                id="btnBeginTour" data-action="beginTour">Take tour
-              </button>
+                <button type="button" class="btn form__btn modal__btn modal__btn--close onboarding__btn onboarding__footer-btn"
+                  data-action="closeModal">
+                  No thanks
+                </button>
+                <button type="button" class="btn modal__btn modal__btn--primary form__btn onboarding__btn onboarding__footer-btn"
+                  id="btnBeginTour" data-action="beginTour">Take tour
+                </button>
               </div>
             </section>
             <section class="onboarding__step onboarding__step--1" data-onboarding-step="1" data-step-complete="false">
@@ -330,20 +320,24 @@
                 <li><strong>Clear All</strong> - to delete all the tasks, lists, and folders you ever created</li>
               </ul>
               <p class="onboarding__desc">Click <span class="onboarding__btn--ref btn btn--neutral more-actions__item">Bulk
-                  Actions</span> to perform an action against multiple tasks at once (i.e. discard them, move them to a
-                different list)</p>
+                  Actions</span> to perform an action against multiple tasks at once <em>(i.e. easily discard unwanted items, move them to a different list)</em>.</p>
             </section>
             <section class="onboarding__step onboarding__step--4" data-onboarding-step="4">
-              <h3 class="modal__title">Great job!</h3>
-              <p class="onboarding__desc">You've learned how to create and edit a task, create a list, and edit
-                multiple tasks at once.</p>
-                <div class="modal__footer">
-                    <button type="button" class="btn form__btn modal__btn modal__btn--neutral onboarding__btn onboarding__footer-btn" data-action="beginTour">
-                        Do it again
-                      </button>
-              <button type="button" class="btn modal__btn modal__btn--primary form__btn onboarding__btn modal__btn--close onboarding__footer-btn"
-                id="btnEndTour" data-action="endTour">Get movin'
-              </button>
+              <h3 class="modal__title onboarding__title">Great job!</h3>
+              <p class="onboarding__desc">You've learned how to:</p>
+                <ul class="onboarding__list">
+                <li><strong>Create a task</strong> and add details, like notes, subtasks, tags, and a due date</li>
+                <li><strong>Build custom lists</strong> and organize them into folders</li>
+                <li><strong>Edit multiple tasks at once</strong> using the bulk actions toolbar</li>
+                </ul>
+              <div class="modal__footer">
+                <button type="button" class="btn form__btn modal__btn modal__btn--neutral onboarding__btn onboarding__footer-btn"
+                  data-action="beginTour">
+                  Do it again
+                </button>
+                <button type="button" class="btn modal__btn modal__btn--primary form__btn onboarding__btn modal__btn--close onboarding__footer-btn"
+                  id="btnEndTour" data-action="endTour">Get goin'
+                </button>
               </div>
             </section>
             <div class="onboarding__footer">
@@ -358,283 +352,297 @@
                 <button type="button" class="btn stepper__btn"><i data-feather="circle"></i><i data-feather="check-circle"></i></button>
                 <button type="button" class="btn stepper__btn"><i data-feather="circle"></i><i data-feather="check-circle"></i></button>
                 <button type="button" class="btn stepper__btn"><i data-feather="circle"></i><i data-feather="check-circle"></i></button>
-              </div> <!--/ .onboarding__stepper -->
-          </div>
-          <!--/ .onboarding__footer -->
-        </div>
-        <!--/ .modal__content -->
-      </div>
-      <!--/ #onboarding -->
-
-
-      <!-- Onboarding: Step 1 / Part 2 -->
-      <div class="tooltip onboarding__tooltip tooltip--top onboarding__tooltip--1-2" id="onboardingTooltip_1-2"
-        data-onboarding-step="1" data-order="1">
-        <div class="tooltip__inner">
-          <button type="button" class="form__btn--icon tooltip__btn--close tooltip__icon-btn--close" data-action="closeTooltip">
-            <i data-feather="x"></i>
-          </button>
-          <h3 class="tooltip__title">Add task details</h3>
-          <p class="tooltip__text">Click here to add notes, subtasks, tags, and set a due date.</p>
-        </div>
-      </div>
-
-            <!-- Onboarding: Step 1 / Part 3 -->
-            <div class="tooltip onboarding__tooltip tooltip--top onboarding__tooltip--1-3" id="onboardingTooltip_1-3"
-            data-onboarding-step="1" data-order="2">
-            <div class="tooltip__inner">
-              <button type="button" class="form__btn--icon tooltip__btn--close tooltip__icon-btn--close" data-action="closeTooltip">
-                <i data-feather="x"></i>
-              </button>
-              <h3 class="tooltip__title">Click here to close details</h3>
-              <p class="tooltip__text">Any changes you make are updated in real time.</p>
-            </div>
-          </div>
-
-      <!-- Onboarding: Step 2 / Part 1 -->
-      <div class="tooltip onboarding__tooltip tooltip--right onboarding__tooltip--2-1" id="onboardingTooltip_2-1"
-        data-onboarding-step="2" data-order="0">
-        <div class="tooltip__inner">
-          <button type="button" class="form__btn--icon tooltip__btn--close tooltip__icon-btn--close" data-action="closeTooltip">
-            <i data-feather="x"></i>
-          </button>
-          <h3 class="tooltip__title">Open the main menu</h3>
-          <p class="tooltip__text">Here, you'll find all your lists, and the button for creating new ones.</p>
-        </div>
-      </div>
-
-      <!-- Onboarding: Step 2 / Part 2 -->
-      <div class="tooltip onboarding__tooltip tooltip--bottom onboarding__tooltip--2-2" id="onboardingTooltip_2-2"
-        data-onboarding-step="2" data-order="1">
-        <div class="tooltip__inner">
-          <button type="button" class="form__btn--icon tooltip__btn--close tooltip__icon-btn--close" data-action="closeTooltip">
-            <i data-feather="x"></i>
-          </button>
-          <h3 class="tooltip__title">Create a new list</h3>
-          <p class="tooltip__text">Click here to build a new list!</p>
-        </div>
-      </div>
-
-      <!-- Onboarding: Step 2 / Part 3 -->
-      <div class="tooltip onboarding__tooltip tooltip--bottom tooltip--no-arrow onboarding__tooltip--2-3" id="onboardingTooltip_2-3"
-        data-onboarding-step="2" data-order="2">
-        <div class="tooltip__inner">
-          <button type="button" class="form__btn--icon tooltip__btn--close tooltip__icon-btn--close" data-action="closeTooltip">
-            <i data-feather="x"></i>
-          </button>
-          <h3 class="tooltip__title">Tip: Assign a folder</h3>
-          <p class="tooltip__text">You can use folders to group related lists.</p>
-        </div>
-      </div>
-
-      <!-- Onboarding: Step 3 / Part 1 -->
-      <div class="tooltip onboarding__tooltip onboarding__tooltip--3-1 tooltip--left" id="onboardingTooltip_3-1"
-        data-onboarding-step="3" data-order="0">
-        <div class="tooltip__inner clearfix">
-          <button type="button" class="form__btn--icon tooltip__btn--close tooltip__icon-btn--close" data-action="closeTooltip">
-            <i data-feather="x"></i>
-          </button>
-          <h3 class="tooltip__title">Click to view more actions</h3>
-          <p class="tooltip__text">Then, select <strong>Bulk Actions</strong> to enable bulk editing</p>
-        </div>
-      </div>
-
-      <!-- Onboarding: Step 3 / Part 2 -->
-      <div class="tooltip onboarding__tooltip onboarding__tooltip--3-2 tooltip--top" id="onboardingTooltip_3-2"
-        data-onboarding-step="3" data-order="1">
-        <div class="tooltip__inner clearfix">
-          <button type="button" class="form__btn--icon tooltip__btn--close tooltip__icon-btn--close" data-action="closeTooltip">
-            <i data-feather="x"></i>
-          </button>
-          <h3 class="tooltip__title">Select all tasks</h3>
-          <p class="tooltip__text">Click the master checkbox to select all the items in your list.</p>
-        </div>
-      </div>
-
-      <!-- Onboarding: Step 3 / Part 3 -->
-      <div class="tooltip onboarding__tooltip onboarding__tooltip--3-3 tooltip--top" id="onboardingTooltip_3-3"
-        data-onboarding-step="3" data-order="2">
-        <div class="tooltip__inner clearfix">
-          <button type="button" class="form__btn--icon tooltip__btn--close tooltip__icon-btn--close" data-action="closeTooltip">
-            <i data-feather="x"></i>
-          </button>
-          <h3 class="tooltip__title">Delete selected tasks</h3>
-          <p class="tooltip__text">Click the trash icon to delete all the selected items with one click.</p>
-        </div>
-      </div>
-
-      <div id="todoContent" class="todo-content clearfix">
-        <form id="editTodoForm" class="form edit-todo-form" data-index="">
-
-          <div class="todo-content__section">
-            <div class="todo-content__section-icon"><i data-feather="calendar"></i></div>
-            <div class="edit-todo-form__due-date-wrapper" id="dueDateWrapper">
-              <span class="due-date-text"></span>
-              <input class="edit-todo-form__input--due-date" id="inputDueDate" type="text" required pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
-            </div>
-
-          </div>
-
-          <div class="dp-calendar clearfix" id="dpCalendar">
-            <div class="dp-calendar__wrapper dp-calendar__main-header">
-              <button type="button" class="dp-calendar__btn-prevnext dp-calendar__btn-prevnext--prev" id="btnSelectPrevMonth"
-                data-action="selectPrevMonth"><i data-feather="chevron-left"></i></button>
-              <div class="d-flex justify-content-center">
-                <div class="dp-calendar__month-picker" id="dpCalendarMonthPicker">
-                  <button type="button" class="dp-calendar__toggle-btn dp-calendar__toggle-btn--month" id="btnToggleMonthDropdown"
-                    data-action="toggleMonthDropdown"><span class="btn-text"></span><i data-feather="chevron-down"></i></button>
-                  <div class="dp-calendar__dropdown dp-calendar__dropdown--month" id="dpCalendarMonthDropdown"
-                    data-name="month">
-                    <input id="jan" type="radio" class="dp-calendar__radio" name="month" value="January">
-                    <label for="jan" class="dp-calendar__month">
-                      January
-                    </label>
-                    <input id="feb" type="radio" class="dp-calendar__radio" name="month" value="February">
-                    <label for="feb" class="dp-calendar__month">
-                      February
-                    </label>
-                    <input id="mar" type="radio" class="dp-calendar__radio" name="month" value="March">
-                    <label for="mar" class="dp-calendar__month">
-                      March
-                    </label>
-                    <input id="apr" type="radio" class="dp-calendar__radio" name="month" value="April">
-                    <label for="apr" class="dp-calendar__month">
-                      April
-                    </label>
-                    <input id="may" type="radio" class="dp-calendar__radio" name="month" value="May">
-                    <label for="may" class="dp-calendar__month">
-                      May
-                    </label>
-                    <input id="jun" type="radio" class="dp-calendar__radio" name="month" value="June">
-                    <label for="jun" class="dp-calendar__month">
-                      June
-                    </label>
-                    <input id="jul" type="radio" class="dp-calendar__radio" name="month" value="July">
-                    <label for="jul" class="dp-calendar__month">
-                      July
-                    </label>
-                    <input id="aug" type="radio" class="dp-calendar__radio" name="month" value="August">
-                    <label for="aug" class="dp-calendar__month">
-                      August
-                    </label>
-                    <input id="sep" type="radio" class="dp-calendar__radio" name="month" value="September">
-                    <label for="sep" class="dp-calendar__month">
-                      September
-                    </label>
-                    <input id="oct" type="radio" class="dp-calendar__radio" name="month" value="October">
-                    <label for="oct" class="dp-calendar__month">
-                      October
-                    </label>
-                    <input id="nov" type="radio" class="dp-calendar__radio" name="month" value="November">
-                    <label for="nov" class="dp-calendar__month">
-                      November
-                    </label>
-                    <input id="dec" type="radio" class="dp-calendar__radio" name="month" value="December">
-                    <label for="dec" class="dp-calendar__month">
-                      December
-                    </label>
-                  </div>
-                </div>
-                <!--/ #dpCalendarMonthPicker-->
-                <div class="dp-calendar__year-picker" id="dpCalendarYearPicker">
-                  <button type="button" class="dp-calendar__toggle-btn dp-calendar__toggle-btn--year" id="btnToggleYearDropdown"
-                    data-action="toggleYearDropdown"><span class="btn-text"></span><i data-feather="chevron-down"></i></button>
-                  <div class="dp-calendar__dropdown dp-calendar__dropdown--year" id="dpCalendarYearDropdown" data-name="year">
-                  </div>
-                </div>
-                <!--/ #dpCalendarYearPicker-->
               </div>
-              <!--/ .d-flex -->
-              <button type="button" class="dp-calendar__btn-prevnext dp-calendar__btn-prevnext--next" id="btnSelectNextMonth"
-                data-action="selectNextMonth"><i data-feather="chevron-right"></i></button>
-
+              <!--/ .onboarding__stepper -->
             </div>
-            <!--/ .dp-calendar__wrapper-->
-
-            <div class="dp-calendar__wrapper dp-calendar__weekday-headers" id="dpCalendarWeekdayHeaders">
-              <div class="dp-calendar__weekday-header">S</div>
-              <div class="dp-calendar__weekday-header">M</div>
-              <div class="dp-calendar__weekday-header">T</div>
-              <div class="dp-calendar__weekday-header">W</div>
-              <div class="dp-calendar__weekday-header">T</div>
-              <div class="dp-calendar__weekday-header">F</div>
-              <div class="dp-calendar__weekday-header">S</div>
-            </div>
-            <!--/ #dpCalendarWeekdayHeaders-->
-
-            <div class="dp-calendar__wrapper">
-              <div class="dp-calendar__day-picker" id="dpCalendarDayPicker">
-              </div>
-              <!--/ #dpCalendarDayPicker -->
-            </div>
-            <!--/ .dp-calendar__wrapper -->
-
-            <button class="btn btn--primary form__btn form__btn--rt dp-calendar__btn" type="button" id="btnSetDueDate"
-              action="setDueDate">Set</button>
-            <button class="btn btn--neutral form__btn form__btn--rt dp-calendar__btn dp-calendar__btn--reset" type="button"
-              id="btnResetDueDate" data-action="resetDueDate">Cancel</button>
-            <button class="btn btn--neutral form__btn dp-calendar__btn dp-calendar__btn--clear" type="button" id="btnClearDueDate"
-              data-action="clearDueDate">Clear</button>
+            <!--/ .onboarding__footer -->
           </div>
-          <!--/ #datePickerCalendar-->
+          <!--/ .modal__content -->
+        </div>
+        <!--/ #onboarding -->
 
-          <div class="todo-content__section">
-            <div class="todo-content__section-icon"><i data-feather="edit-3"></i></div>
-            <textarea id="todoItemNote" class="form__textarea todo-item__note" placeholder="Add a note..."></textarea>
-          </div>
-
-          <div class="todo-content__section">
-            <ul id="subtaskList" class="subtask-list">
-            </ul>
-
-            <div class="form__form-group--inline edit-todo-form__form-group">
-              <button id="btnAddSubtask" type="submit" class="btn btn--neutral form__btn--sm form__btn--neutral btn--inline js-add-subtask-btn todo-content__section-icon"
-                data-action="addSubtask">
-                <i data-feather="plus-circle"></i>
-              </button>
-              <input id="newSubtaskInput" class="form__input form__input--inline edit-todo-form__input--subtask edit-todo-form__input"
-                type="text" data-action="addSubtask" placeholder="Add a subtask" />
-            </div>
-          </div>
-
-          <div class="todo-content__section">
-            <button id="btnAddTag" type="button" class="btn btn--neutral form__btn--sm form__btn--neutral btn--inline todo-content__section-icon"
-              data-action="addTag">
-              <i data-feather="tag"></i>
+        <!-- Onboarding: Step 1 / Part 1 -->
+        <div class="tooltip onboarding__tooltip tooltip--bottom" id="onboardingTooltip_1-1" data-onboarding-step="1"
+          data-order="0">
+          <div class="tooltip__inner clearfix">
+            <button type="button" class="form__btn--icon tooltip__btn--close tooltip__icon-btn--close" data-action="closeTooltip">
+              <i data-feather="x"></i>
             </button>
-            <div class="todo-content__tags form__form-group--inline edit-todo-form__form-group--inline" id="tagsContainer">
-              <input id="newTagInput" class="form__input form__input--inline edit-todo-form__input--add-tag" type="text"
-                data-action="addTag" placeholder="Add a tag" />
+            <h3 class="tooltip__title">Create a new task</h3>
+            <p class="tooltip__text">Type in whatever you need to do, then hit ENTER</p>
+          </div>
+        </div>
+
+        <!-- Onboarding: Step 1 / Part 2 -->
+        <div class="tooltip onboarding__tooltip tooltip--top onboarding__tooltip--1-2" id="onboardingTooltip_1-2"
+          data-onboarding-step="1" data-order="1">
+          <div class="tooltip__inner">
+            <button type="button" class="form__btn--icon tooltip__btn--close tooltip__icon-btn--close" data-action="closeTooltip">
+              <i data-feather="x"></i>
+            </button>
+            <h3 class="tooltip__title">Add task details</h3>
+            <p class="tooltip__text">Click here to add notes, subtasks, tags, and set a due date.</p>
+          </div>
+        </div>
+
+        <!-- Onboarding: Step 1 / Part 3 -->
+        <div class="tooltip onboarding__tooltip tooltip--top onboarding__tooltip--1-3" id="onboardingTooltip_1-3"
+          data-onboarding-step="1" data-order="2">
+          <div class="tooltip__inner">
+            <button type="button" class="form__btn--icon tooltip__btn--close tooltip__icon-btn--close" data-action="closeTooltip">
+              <i data-feather="x"></i>
+            </button>
+            <h3 class="tooltip__title">Click here to close details</h3>
+            <p class="tooltip__text">Any changes you make are updated in real time.</p>
+          </div>
+        </div>
+
+        <!-- Onboarding: Step 2 / Part 1 -->
+        <div class="tooltip onboarding__tooltip tooltip--right onboarding__tooltip--2-1" id="onboardingTooltip_2-1"
+          data-onboarding-step="2" data-order="0">
+          <div class="tooltip__inner">
+            <button type="button" class="form__btn--icon tooltip__btn--close tooltip__icon-btn--close" data-action="closeTooltip">
+              <i data-feather="x"></i>
+            </button>
+            <h3 class="tooltip__title">Open the main menu</h3>
+            <p class="tooltip__text">Here, you'll find all your lists, and the button for creating new ones.</p>
+          </div>
+        </div>
+
+        <!-- Onboarding: Step 2 / Part 2 -->
+        <div class="tooltip onboarding__tooltip tooltip--bottom onboarding__tooltip--2-2" id="onboardingTooltip_2-2"
+          data-onboarding-step="2" data-order="1">
+          <div class="tooltip__inner">
+            <button type="button" class="form__btn--icon tooltip__btn--close tooltip__icon-btn--close" data-action="closeTooltip">
+              <i data-feather="x"></i>
+            </button>
+            <h3 class="tooltip__title">Create a new list</h3>
+            <p class="tooltip__text">Click here to build a new list!</p>
+          </div>
+        </div>
+
+        <!-- Onboarding: Step 2 / Part 3 -->
+        <div class="tooltip onboarding__tooltip tooltip--bottom tooltip--no-arrow onboarding__tooltip--2-3" id="onboardingTooltip_2-3"
+          data-onboarding-step="2" data-order="2">
+          <div class="tooltip__inner">
+            <button type="button" class="form__btn--icon tooltip__btn--close tooltip__icon-btn--close" data-action="closeTooltip">
+              <i data-feather="x"></i>
+            </button>
+            <h3 class="tooltip__title">Tip: Organize your lists into folders</h3>
+            <p class="tooltip__text">You can create folders to group related lists and make them easier to find.</p>
+          </div>
+        </div>
+
+        <!-- Onboarding: Step 3 / Part 1 -->
+        <div class="tooltip onboarding__tooltip onboarding__tooltip--3-1 tooltip--left" id="onboardingTooltip_3-1"
+          data-onboarding-step="3" data-order="0">
+          <div class="tooltip__inner clearfix">
+            <button type="button" class="form__btn--icon tooltip__btn--close tooltip__icon-btn--close" data-action="closeTooltip">
+              <i data-feather="x"></i>
+            </button>
+            <h3 class="tooltip__title">Click to view more actions</h3>
+            <p class="tooltip__text">Then, select <strong>Bulk Actions</strong> to enable bulk editing</p>
+          </div>
+        </div>
+
+        <!-- Onboarding: Step 3 / Part 2 -->
+        <div class="tooltip onboarding__tooltip onboarding__tooltip--3-2 tooltip--top" id="onboardingTooltip_3-2"
+          data-onboarding-step="3" data-order="1">
+          <div class="tooltip__inner clearfix">
+            <button type="button" class="form__btn--icon tooltip__btn--close tooltip__icon-btn--close" data-action="closeTooltip">
+              <i data-feather="x"></i>
+            </button>
+            <h3 class="tooltip__title">Select all tasks</h3>
+            <p class="tooltip__text">Click the master checkbox to select all items in your list.</p>
+          </div>
+        </div>
+
+        <!-- Onboarding: Step 3 / Part 3 -->
+        <div class="tooltip onboarding__tooltip onboarding__tooltip--3-3 tooltip--top" id="onboardingTooltip_3-3"
+          data-onboarding-step="3" data-order="2">
+          <div class="tooltip__inner clearfix">
+            <button type="button" class="form__btn--icon tooltip__btn--close tooltip__icon-btn--close" data-action="closeTooltip">
+              <i data-feather="x"></i>
+            </button>
+            <h3 class="tooltip__title">Delete selected tasks</h3>
+            <p class="tooltip__text">Click the trash icon to discard all selected items with one click.</p>
+          </div>
+        </div>
+
+        <div id="todoContent" class="todo-content clearfix">
+          <form id="editTodoForm" class="form edit-todo-form" data-index="">
+
+            <div class="todo-content__section">
+              <div class="todo-content__section-icon"><i data-feather="calendar"></i></div>
+              <div class="edit-todo-form__due-date-wrapper" id="dueDateWrapper">
+                <span class="due-date-text"></span>
+                <input class="edit-todo-form__input--due-date" id="inputDueDate" type="text" required pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
+              </div>
+
             </div>
-          </div>
-          <!--/ #tagsContainer -->
 
-          <div class="color-picker" id="colorPicker">
-            <input type="radio" class="color-picker__radio" name="tagColor" id="colorDefault" value="bg--default"
-              checked />
-            <label class="color-picker__swatch bg--default" for="colorDefault"></label>
-            <input type="radio" class="color-picker__radio" name="tagColor" value="bg--dk-orange" id="colorOrange" />
-            <label class="color-picker__swatch bg--dk-orange" for="colorOrange"></label>
-            <input type="radio" class="color-picker__radio" name="tagColor" value="bg--dk-pink" id="colorPink" />
-            <label class="color-picker__swatch bg--dk-pink" for="colorPink"></label>
-            <input type="radio" class="color-picker__radio" name="tagColor" value="bg--dk-blue" id="colorBlue">
-            <label class="color-picker__swatch bg--dk-blue" for="colorBlue"></label>
-            <input type="radio" class="color-picker__radio" name="tagColor" value="bg--dk-purple" id="colorPurple">
-            <label class="color-picker__swatch bg--dk-purple" for="colorPurple"></label>
-            <input type="radio" class="color-picker__radio" name="tagColor" id="colorGreen" value="bg--dk-green">
-            <label class="color-picker__swatch bg--dk-green" for="colorGreen"></label>
-          </div>
-          <!--/ #colorPicker-->
-          <button id="btnTriggerWarningDeleteTask" type="button" class="btn btn--neutral form__btn form__btn--rt"
-            data-action="triggerWarningDeleteTask"><i data-feather="trash-2"></i></button>
-        </form>
-      </div> <!--/ #todoContent -->
+            <div class="dp-calendar clearfix" id="dpCalendar">
+              <div class="dp-calendar__wrapper dp-calendar__main-header">
+                <button type="button" class="dp-calendar__btn-prevnext dp-calendar__btn-prevnext--prev" id="btnSelectPrevMonth"
+                  data-action="selectPrevMonth"><i data-feather="chevron-left"></i></button>
+                <div class="d-flex justify-content-center">
+                  <div class="dp-calendar__month-picker" id="dpCalendarMonthPicker">
+                    <button type="button" class="dp-calendar__toggle-btn dp-calendar__toggle-btn--month" id="btnToggleMonthDropdown"
+                      data-action="toggleMonthDropdown"><span class="btn-text"></span><i data-feather="chevron-down"></i></button>
+                    <div class="dp-calendar__dropdown dp-calendar__dropdown--month" id="dpCalendarMonthDropdown"
+                      data-name="month">
+                      <input id="jan" type="radio" class="dp-calendar__radio" name="month" value="January">
+                      <label for="jan" class="dp-calendar__month">
+                        January
+                      </label>
+                      <input id="feb" type="radio" class="dp-calendar__radio" name="month" value="February">
+                      <label for="feb" class="dp-calendar__month">
+                        February
+                      </label>
+                      <input id="mar" type="radio" class="dp-calendar__radio" name="month" value="March">
+                      <label for="mar" class="dp-calendar__month">
+                        March
+                      </label>
+                      <input id="apr" type="radio" class="dp-calendar__radio" name="month" value="April">
+                      <label for="apr" class="dp-calendar__month">
+                        April
+                      </label>
+                      <input id="may" type="radio" class="dp-calendar__radio" name="month" value="May">
+                      <label for="may" class="dp-calendar__month">
+                        May
+                      </label>
+                      <input id="jun" type="radio" class="dp-calendar__radio" name="month" value="June">
+                      <label for="jun" class="dp-calendar__month">
+                        June
+                      </label>
+                      <input id="jul" type="radio" class="dp-calendar__radio" name="month" value="July">
+                      <label for="jul" class="dp-calendar__month">
+                        July
+                      </label>
+                      <input id="aug" type="radio" class="dp-calendar__radio" name="month" value="August">
+                      <label for="aug" class="dp-calendar__month">
+                        August
+                      </label>
+                      <input id="sep" type="radio" class="dp-calendar__radio" name="month" value="September">
+                      <label for="sep" class="dp-calendar__month">
+                        September
+                      </label>
+                      <input id="oct" type="radio" class="dp-calendar__radio" name="month" value="October">
+                      <label for="oct" class="dp-calendar__month">
+                        October
+                      </label>
+                      <input id="nov" type="radio" class="dp-calendar__radio" name="month" value="November">
+                      <label for="nov" class="dp-calendar__month">
+                        November
+                      </label>
+                      <input id="dec" type="radio" class="dp-calendar__radio" name="month" value="December">
+                      <label for="dec" class="dp-calendar__month">
+                        December
+                      </label>
+                    </div>
+                  </div>
+                  <!--/ #dpCalendarMonthPicker-->
+                  <div class="dp-calendar__year-picker" id="dpCalendarYearPicker">
+                    <button type="button" class="dp-calendar__toggle-btn dp-calendar__toggle-btn--year" id="btnToggleYearDropdown"
+                      data-action="toggleYearDropdown"><span class="btn-text"></span><i data-feather="chevron-down"></i></button>
+                    <div class="dp-calendar__dropdown dp-calendar__dropdown--year" id="dpCalendarYearDropdown"
+                      data-name="year">
+                    </div>
+                  </div>
+                  <!--/ #dpCalendarYearPicker-->
+                </div>
+                <!--/ .d-flex -->
+                <button type="button" class="dp-calendar__btn-prevnext dp-calendar__btn-prevnext--next" id="btnSelectNextMonth"
+                  data-action="selectNextMonth"><i data-feather="chevron-right"></i></button>
+
+              </div>
+              <!--/ .dp-calendar__wrapper-->
+
+              <div class="dp-calendar__wrapper dp-calendar__weekday-headers" id="dpCalendarWeekdayHeaders">
+                <div class="dp-calendar__weekday-header">S</div>
+                <div class="dp-calendar__weekday-header">M</div>
+                <div class="dp-calendar__weekday-header">T</div>
+                <div class="dp-calendar__weekday-header">W</div>
+                <div class="dp-calendar__weekday-header">T</div>
+                <div class="dp-calendar__weekday-header">F</div>
+                <div class="dp-calendar__weekday-header">S</div>
+              </div>
+              <!--/ #dpCalendarWeekdayHeaders-->
+
+              <div class="dp-calendar__wrapper">
+                <div class="dp-calendar__day-picker" id="dpCalendarDayPicker">
+                </div>
+                <!--/ #dpCalendarDayPicker -->
+              </div>
+              <!--/ .dp-calendar__wrapper -->
+
+              <button class="btn btn--primary form__btn form__btn--rt dp-calendar__btn" type="button" id="btnSetDueDate"
+                action="setDueDate">Set</button>
+              <button class="btn btn--neutral form__btn form__btn--rt dp-calendar__btn dp-calendar__btn--reset" type="button"
+                id="btnResetDueDate" data-action="resetDueDate">Cancel</button>
+              <button class="btn btn--neutral form__btn dp-calendar__btn dp-calendar__btn--clear" type="button" id="btnClearDueDate"
+                data-action="clearDueDate">Clear</button>
+            </div>
+            <!--/ #datePickerCalendar-->
+
+            <div class="todo-content__section">
+              <div class="todo-content__section-icon"><i data-feather="edit-3"></i></div>
+              <textarea id="todoItemNote" class="form__textarea todo-item__note" placeholder="Add a note..."></textarea>
+            </div>
+
+            <div class="todo-content__section">
+              <ul id="subtaskList" class="subtask-list">
+              </ul>
+
+              <div class="form__form-group--inline edit-todo-form__form-group">
+                <button id="btnAddSubtask" type="submit" class="btn btn--neutral form__btn--sm form__btn--neutral btn--inline js-add-subtask-btn todo-content__section-icon"
+                  data-action="addSubtask">
+                  <i data-feather="plus-circle"></i>
+                </button>
+                <input id="newSubtaskInput" class="form__input form__input--inline edit-todo-form__input--subtask edit-todo-form__input"
+                  type="text" data-action="addSubtask" placeholder="Add a subtask" />
+              </div>
+            </div>
+
+            <div class="todo-content__section">
+              <button id="btnAddTag" type="button" class="btn btn--neutral form__btn--sm form__btn--neutral btn--inline todo-content__section-icon"
+                data-action="addTag">
+                <i data-feather="tag"></i>
+              </button>
+              <div class="todo-content__tags form__form-group--inline edit-todo-form__form-group--inline" id="tagsContainer">
+                <input id="newTagInput" class="form__input form__input--inline edit-todo-form__input--add-tag" type="text"
+                  data-action="addTag" placeholder="Add a tag" />
+              </div>
+            </div>
+            <!--/ #tagsContainer -->
+
+            <div class="color-picker" id="colorPicker">
+              <input type="radio" class="color-picker__radio" name="tagColor" id="colorDefault" value="bg--default"
+                checked />
+              <label class="color-picker__swatch bg--default" for="colorDefault"></label>
+              <input type="radio" class="color-picker__radio" name="tagColor" value="bg--dk-orange" id="colorOrange" />
+              <label class="color-picker__swatch bg--dk-orange" for="colorOrange"></label>
+              <input type="radio" class="color-picker__radio" name="tagColor" value="bg--dk-pink" id="colorPink" />
+              <label class="color-picker__swatch bg--dk-pink" for="colorPink"></label>
+              <input type="radio" class="color-picker__radio" name="tagColor" value="bg--dk-blue" id="colorBlue">
+              <label class="color-picker__swatch bg--dk-blue" for="colorBlue"></label>
+              <input type="radio" class="color-picker__radio" name="tagColor" value="bg--dk-purple" id="colorPurple">
+              <label class="color-picker__swatch bg--dk-purple" for="colorPurple"></label>
+              <input type="radio" class="color-picker__radio" name="tagColor" id="colorGreen" value="bg--dk-green">
+              <label class="color-picker__swatch bg--dk-green" for="colorGreen"></label>
+            </div>
+            <!--/ #colorPicker-->
+            <button id="btnTriggerWarningDeleteTask" type="button" class="btn btn--neutral form__btn form__btn--rt"
+              data-action="triggerWarningDeleteTask"><i data-feather="trash-2"></i></button>
+          </form>
+        </div>
+        <!--/ #todoContent -->
 
 
+      </div>
+      <!--/ #todoApp -->
     </div>
-    <!--/ #todoApp -->
-  </div>
-  <!--/ sidebarCanvas -->
+    <!--/ sidebarCanvas -->
   </div>
   <!--/ siteWrapper -->
 
