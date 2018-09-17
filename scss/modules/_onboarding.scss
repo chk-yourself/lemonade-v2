@@ -81,7 +81,7 @@
   width: 40%;
 }
 
-.onboarding__tooltip--3 {
+.onboarding__tooltip--3-1 {
   .tooltip__inner {
     top: 0;
     right: 64px;
@@ -115,6 +115,26 @@
     top: 4px;
     &::before {
       top: 24px;
+    }
+  }
+}
+
+.onboarding__tooltip--3-2 {
+  .tooltip__inner {
+    left: -12px;
+    bottom: calc(100% + 6px);
+    &::before {
+      left: 24px;
+    }
+  }
+}
+
+.onboarding__tooltip--3-3 {
+  .tooltip__inner {
+    left: -6px;
+    bottom: calc(100% + 6px);
+    &::before {
+      right: 32px;
     }
   }
 }

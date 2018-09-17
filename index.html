@@ -125,7 +125,7 @@
 
             </div>
             <div class="toolbar__item flex-column">
-              <button class="btn btn--inline toolbar__btn" type="button" data-action="deleteSelected" data-bulk-action="true">
+              <button class="btn btn--inline toolbar__btn" type="button" data-action="deleteSelected" data-bulk-action="true" id="btnDeleteSelected">
                 <i data-feather="trash-2"></i>
                 <span class="toolbar__item-label">Delete</span>
               </button>
@@ -285,7 +285,7 @@
         <!-- #onboarding -->
         <div class="modal modal--md onboarding" id="onboarding">
           <div class="modal__content modal__content--md clearfix">
-            <button type="button" class="form__btn--icon modal__btn--close modal__icon-btn--close" data-action="closeModal">
+            <button type="button" class="form__btn--icon modal__btn--close modal__icon-btn--close" data-action="endTour">
               <i data-feather="x"></i>
             </button>
             <section class="onboarding__step onboarding__step--0 is-active" data-onboarding-step="0">
@@ -333,10 +333,10 @@
               <h3 class="modal__title onboarding__step-title">Great job!</h3>
               <p class="onboarding__desc">You've learned how to create and edit a task, create a list, and edit
                 multiple tasks at once.</p>
-              <button type="button" class="btn modal__btn modal__btn--rt modal__btn--primary form__btn onboarding__btn"
+              <button type="button" class="btn modal__btn modal__btn--rt modal__btn--primary form__btn onboarding__btn modal__btn--close"
                 id="btnEndTour" data-action="endTour">Start planning
               </button>
-              <button type="button" class="btn form__btn modal__btn--rt" data-action="beginTour">
+              <button type="button" class="btn form__btn modal__btn--rt onboarding__btn" data-action="beginTour">
                 Do it again
               </button>
             </section>
@@ -413,15 +413,39 @@
         </div>
       </div>
 
-      <!-- Onboarding: Step 3 -->
-      <div class="tooltip onboarding__tooltip onboarding__tooltip--3 tooltip--left" id="onboardingTooltip_3-1"
+      <!-- Onboarding: Step 3 / Part 1 -->
+      <div class="tooltip onboarding__tooltip onboarding__tooltip--3-1 tooltip--left" id="onboardingTooltip_3-1"
         data-onboarding-step="3" data-order="0">
         <div class="tooltip__inner clearfix">
           <button type="button" class="form__btn--icon tooltip__btn--close tooltip__icon-btn--close" data-action="closeTooltip">
             <i data-feather="x"></i>
           </button>
           <h3 class="tooltip__title">Click to view more actions</h3>
-          <p class="tooltip__text">Then, select <strong>Bulk Actions</strong> to edit multiple items at once</p>
+          <p class="tooltip__text">Then, select <strong>Bulk Actions</strong> to enable bulk editing</p>
+        </div>
+      </div>
+
+      <!-- Onboarding: Step 3 / Part 2 -->
+      <div class="tooltip onboarding__tooltip onboarding__tooltip--3-2 tooltip--top" id="onboardingTooltip_3-2"
+        data-onboarding-step="3" data-order="1">
+        <div class="tooltip__inner clearfix">
+          <button type="button" class="form__btn--icon tooltip__btn--close tooltip__icon-btn--close" data-action="closeTooltip">
+            <i data-feather="x"></i>
+          </button>
+          <h3 class="tooltip__title">Select all tasks</h3>
+          <p class="tooltip__text">Click the master checkbox to select all the items in your list.</p>
+        </div>
+      </div>
+
+      <!-- Onboarding: Step 3 / Part 3 -->
+      <div class="tooltip onboarding__tooltip onboarding__tooltip--3-3 tooltip--top" id="onboardingTooltip_3-3"
+        data-onboarding-step="3" data-order="2">
+        <div class="tooltip__inner clearfix">
+          <button type="button" class="form__btn--icon tooltip__btn--close tooltip__icon-btn--close" data-action="closeTooltip">
+            <i data-feather="x"></i>
+          </button>
+          <h3 class="tooltip__title">Delete multiple tasks at once</h3>
+          <p class="tooltip__text">Click the trash icon to delete all the selected items with one click.</p>
         </div>
       </div>
 

@@ -120,7 +120,7 @@
   const state = {
     activeList: null,
     filteredList: null,
-    nextOnboardingStep: 0
+    nextOnboardingStep: null
   };
 
   const clickTouch = () =>
@@ -2314,7 +2314,11 @@
     if (action === "beginTour") {
       $('.onboarding__footer', modal).classList.add('is-active');
       formAddTodo.addEventListener('submit', trackTourProgress);
-      state.nextOnboardingStep++;
+      state.nextOnboardingStep = 1;
+    }
+    
+    if (action === "endTour") {
+      state.nextOnboardingStep = null;
     }
 
     if (action === "activateTooltips") {
@@ -2357,35 +2361,37 @@
   function trackTourProgress(e) {
     const target = e.currentTarget;
     const tooltip = $('.onboarding__tooltip.show-tooltip');
-    const step = state.nextOnboardingStep - 1;
+    const step = state.nextOnboardingStep === 1 ? 3 : state.nextOnboardingStep - 1;
     const nextStep = state.nextOnboardingStep;
+    const activeList_ul = $('.is-active-list');
     const tooltipSet = Array.prototype.slice.call($all(`.onboarding__tooltip[data-onboarding-step="${step}"]`)).sort((a, b) => {
       return +a.dataset.order - +b.dataset.order;
     });
+
+    target.removeEventListener(e.type, trackTourProgress);
+
+    if (state.nextOnboardingStep === null) return;
 
     // Set up interaction points
     /**
      * Step 1
      */
     // Part 1
-    if (target === formAddTodo && e.type === 'submit') {
+    if (target === formAddTodo) {
       // Attach tooltip for Step 2 to first todo item
       const firstTask = $('.is-active-list .todo-list__item');
       firstTask.appendChild($('#onboardingTooltip_1-2'));
       // Add event listener to first task toggle button (interaction point for step 1, pt 2)
       $('.todo-item__toggle-btn', firstTask).addEventListener('click', trackTourProgress);
-
-      // Remove onboarding event listener from add todo form
-      formAddTodo.removeEventListener('submit', trackTourProgress);
     }
     // Part 2
     if (target.classList.contains('todo-item__toggle-btn')) {
       if (!todoContent.classList.contains('is-visible')) {
         $('.tooltip__title', tooltip).textContent = "Click here to close details";
         $('.tooltip__text', tooltip).textContent = "Any changes you make are updated in real time";
+        target.addEventListener('click', trackTourProgress);
         return;
       } else {
-        target.removeEventListener('click', trackTourProgress);
         // Add event listener to nav toggle btn (interaction point for step 2, pt 1)
         $('#toggleOpenBtn').addEventListener('click', trackTourProgress);
       }
@@ -2396,14 +2402,12 @@
      */
     // Part 1
     if (target.classList.contains('sidebar__btn--toggle-open')) {
-      target.removeEventListener('click', trackTourProgress);
 
       $('.sidebar__menu-wrapper').appendChild($('#onboardingTooltip_2-2'));
       $('#openListFormBtn').addEventListener('click', trackTourProgress);
     }
 
     if (target === $('#openListFormBtn')) {
-      target.removeEventListener('click', trackTourProgress);
       $('#newListForm').appendChild($("#onboardingTooltip_2-3"));
       $('#newListForm').addEventListener('submit', trackTourProgress);
     }
@@ -2411,7 +2415,6 @@
     // Part 3
 
     if (target === $('#newListForm')) {
-      $('#newListForm').removeEventListener('submit', trackTourProgress);
       $('.todo-app__header').appendChild($('#onboardingTooltip_3-1'));
       $('#btnToggleListActions').addEventListener('click', trackTourProgress);
     }
@@ -2421,10 +2424,30 @@
      */
     // Part 1
     if (target.classList.contains('list-actions__btn--toggle')) {
-      target.removeEventListener('click', trackTourProgress);
+      $('#bulkActionsToolbar').appendChild($('#onboardingTooltip_3-2'));
+      $('#onboardingTooltip_3-2').classList.add('show-tooltip');
+      $('#btnOpenBulkEditing').addEventListener('click', trackTourProgress);
+    }
+    // Part 2
+
+    if (target === $('#btnOpenBulkEditing')) {
+      for (let i = 0; i < 3; i++) {
+        let practiceTodo = new Task("Delete Me");
+        state.activeList.tasks.push(practiceTodo);
+      }
+      populateList(state.activeList.tasks, activeList_ul);
+      $('#masterCheckbox').addEventListener('change', trackTourProgress);
+      return;
     }
 
-    if (tooltip) {
+    if (target === $('#masterCheckbox')) {
+      $('#bulkActionsToolbar').appendChild($('#onboardingTooltip_3-3'));
+      $('#btnDeleteSelected').addEventListener('click', trackTourProgress);
+    }
+
+    if (target === $('#btnDeleteSelected')) {
+    }
+
       // Close active tooltip
       tooltip.classList.remove('show-tooltip');
 
@@ -2437,7 +2460,7 @@
         });
         return;
       }
-    }
+
     // Mark step as completed
     $all('.onboarding__stepper .stepper__btn').forEach((btn, i) => {
       if (i === step - 1) {
@@ -2451,13 +2474,13 @@
     const tourIsCompleted = Array.prototype.slice.call($all('.onboarding__stepper .stepper__btn')).every(btn => btn.classList.contains('is-completed'));
     
     if (tourIsCompleted) {
-      state.nextOnboardingStep = null;
-      return;
+      state.nextOnboardingStep = 4;
+      $('.onboarding__footer').classList.remove('is-active');
     }
 
     // Proceed to next step of tour
     $all('.onboarding__step').forEach((section, i) => {
-      if (i === nextStep) {
+      if (i === state.nextOnboardingStep) {
         section.classList.add('is-active');
       } else {
         section.classList.remove('is-active');

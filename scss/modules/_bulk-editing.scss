@@ -2,6 +2,7 @@
 .bulk-actions-toolbar {
   @include box-shadow(1);
   margin-bottom: -4px;
+  position: relative;
 }
 
 [type="checkbox"] + .bulk-actions__checkbox-label {

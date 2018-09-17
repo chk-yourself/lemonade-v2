@@ -2448,6 +2448,7 @@ input[name="folder"]:checked + label::after {
   -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
           box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   margin-bottom: -4px;
+  position: relative;
 }
 
 [type="checkbox"] + .bulk-actions__checkbox-label {
@@ -2719,7 +2720,7 @@ input[name="list"]:checked + label::after {
   width: 40%;
 }
 
-.onboarding__tooltip--3 .tooltip__inner {
+.onboarding__tooltip--3-1 .tooltip__inner {
   top: 0;
   right: 64px;
 }
@@ -2746,6 +2747,24 @@ input[name="list"]:checked + label::after {
 
 .onboarding__tooltip--2-1 .tooltip__inner::before {
   top: 24px;
+}
+
+.onboarding__tooltip--3-2 .tooltip__inner {
+  left: -12px;
+  bottom: calc(100% + 6px);
+}
+
+.onboarding__tooltip--3-2 .tooltip__inner::before {
+  left: 24px;
+}
+
+.onboarding__tooltip--3-3 .tooltip__inner {
+  left: -6px;
+  bottom: calc(100% + 6px);
+}
+
+.onboarding__tooltip--3-3 .tooltip__inner::before {
+  right: 32px;
 }
 
 .clearfix::after {
