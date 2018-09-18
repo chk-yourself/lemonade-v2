@@ -2737,7 +2737,8 @@
     const newFolderRadio = $('input[id="folderNew"]');
     newFolderRadio.checked = true;
   });
-  
+
+  // Prevents empty folder names from being created
   inputNewFolder.addEventListener("blur", (e) => {
     const noFolderRadio = $('input[id="folderNone"]');
     if (e.currentTarget.value === "") {
