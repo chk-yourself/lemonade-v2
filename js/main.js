@@ -129,7 +129,7 @@
       },
       get nextStep() {
         return this.isCompleted ? 4 
-        : this.currentStep - 1 === this.statusLog.lastIndexOf(false) ? this.statusLog.indexOf(false) + 1 
+        : this.currentStep === 3 ? this.statusLog.indexOf(false) + 1 
         : this.statusLog.indexOf(false, this.currentStep) + 1;
       },
       set updateStatus(val) {
@@ -548,8 +548,6 @@
         renderList(currentTasksList, activeList_ul);
       }, 100);
     }
-
-    console.table(todoLists);
   }
 
   // Updates subtask object's `done` property to reflect current `checked` state
@@ -2388,6 +2386,8 @@
   }
 
   function trackTourProgress(e) {
+
+    console.log(state.onboarding.nextStep);
     const target = e.currentTarget;
     const tooltip = $('.onboarding__tooltip.show-tooltip');
     const currentStep = state.onboarding.currentStep;
@@ -2483,9 +2483,6 @@
         return;
       }
 
-    // Update step status
-    state.onboarding.updateStatus = true;
-
     const nextStep = state.onboarding.nextStep;
 
     // Mark step as completed
@@ -2498,6 +2495,8 @@
       }
     });
     
+        // Update step status
+        state.onboarding.updateStatus = true;
     if (state.onboarding.isCompleted) {
       $('.onboarding__footer').classList.remove('is-active');
     }
@@ -2510,6 +2509,9 @@
         section.classList.remove('is-active');
       }
     });
+
+    console.log(state.onboarding.currentStep);
+    console.log(state.onboarding.nextStep);
     
       // Reopen modal
     $('#onboarding').classList.add('is-active');
