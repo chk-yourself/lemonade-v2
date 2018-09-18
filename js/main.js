@@ -1528,13 +1528,14 @@
     const newListName = $("#newListNameInput").value;
     if (newListName !== "") {
       const checkedRadio = $('input[name="folder"]:checked').value;
+      const newFolder = $("#newFolderInput").value;
       const selectedFolder =
-        checkedRadio === "new" ? $("#newFolderInput").value : checkedRadio;
+        checkedRadio !== "new" ? checkedRadio : newFolder !== "" ? newFolder : "null";
       const newList = new List(newListName, selectedFolder);
       todoLists.push(newList);
       createList(newList);
       // Creates new folder accordion element
-      if (checkedRadio === "new") {
+      if (newFolder) {
         const ulFolderPanel = createNode("ul", {
           class: "accordion__panel",
           "data-folder": selectedFolder
@@ -2735,6 +2736,13 @@
   inputNewFolder.addEventListener("click", (e) => {
     const newFolderRadio = $('input[id="folderNew"]');
     newFolderRadio.checked = true;
+  });
+  
+  inputNewFolder.addEventListener("blur", (e) => {
+    const noFolderRadio = $('input[id="folderNone"]');
+    if (e.currentTarget.value === "") {
+      noFolderRadio.checked = true;
+    }
   });
 
   $all(".modal").forEach((modal) =>
