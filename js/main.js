@@ -295,11 +295,8 @@
     return node;
   };
 
-  window.addEventListener('DOMContentLoaded', (e) => {
-    $('#onboarding').classList.add('is-active');
-  });
-
   if (todoLists.find((list) => list.name === "Inbox") === undefined) {
+    $('#onboarding').classList.add('is-active');
     const initInbox = new List("Inbox", "null");
     todoLists.push(initInbox);
     saveToStorage();
