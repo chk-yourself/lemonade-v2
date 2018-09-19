@@ -163,15 +163,24 @@
     }
   }
 
- .sidebar__btn--create-list {
+  .sidebar__buttons {
     margin-top: 16px;
+    position: relative;
+  }
+
+ .sidebar__btn--create-list,
+ .sidebar__btn--help {
     padding: 8px 16px;
     vertical-align: middle;
+    display: block;
   }
 
 .more-actions__btn--toggle {
-  color: $white;
   position: relative;
+}
+
+.list-actions__btn--toggle {
+  color: $white;
 }
 
 .header__content-wrapper {
@@ -211,4 +220,8 @@ position: relative;
   &:hover {
     color: $primary-color;
   }
+}
+
+.help-actions {
+  left: 40px;
 }

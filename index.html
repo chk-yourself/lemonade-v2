@@ -44,9 +44,21 @@
                 </li>
               </ul>
               <!--/ #sidebarMenu -->
+              <div class="sidebar__buttons">
               <button id="openListFormBtn" type="button" class="btn btn--neutral sidebar__btn sidebar__btn--create-list"
                 data-action="openListForm">
                 <i data-feather="plus-circle"></i>Create List</button>
+                <div class="more-actions__wrapper help-actions__wrapper" id="helpActionsWrapper">
+                  <button id="btnHelp" type="button" class="btn btn--neutral sidebar__btn sidebar__btn--help more-actions__btn--toggle"
+                data-action="toggleHelpActions">
+                <i data-feather="help-circle"></i>Help</button>
+                  <div class="more-actions help-actions" id="helpActions">
+                      <button type="button" class="btn btn--neutral more-actions__item" id="btnOpenTour" data-action="openTour">
+                          Take Tour
+                        </button>
+                    </div>
+                    </div>
+                </div> <!--/ .sidebar__buttons -->
             </div>
             <!--/ .sidebar__menu-wrapper -->
             <div class="header__content-wrapper">
@@ -421,14 +433,14 @@
         </div>
 
         <!-- Onboarding: Step 2 / Part 3 -->
-        <div class="tooltip onboarding__tooltip tooltip--bottom tooltip--no-arrow onboarding__tooltip--2-3" id="onboardingTooltip_2-3"
+        <div class="tooltip onboarding__tooltip tooltip--bottom onboarding__tooltip--2-3" id="onboardingTooltip_2-3"
           data-onboarding-step="2" data-order="2">
           <div class="tooltip__inner">
             <button type="button" class="form__btn--icon tooltip__btn--close tooltip__icon-btn--close" data-action="closeTooltip">
               <i data-feather="x"></i>
             </button>
-            <h3 class="tooltip__title">Tip: Organize your lists into folders</h3>
-            <p class="tooltip__text">You can create folders to group related lists and make them easier to find.</p>
+            <h3 class="tooltip__title">Assign your list to a folder</h3>
+            <p class="tooltip__text">Use folders to group related lists and make them easier to find.</p>
           </div>
         </div>
 

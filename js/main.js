@@ -2308,15 +2308,14 @@
       searchBar.classList.remove("is-expanded");
     }
 
-    // Hides listActions
-    const listActionsWrapper = $("#listActionsWrapper");
-    if (
-      listActionsWrapper.classList.contains("show-actions") &&
-      e.target !== listActionsWrapper &&
-      !listActionsWrapper.contains(e.target)
-    ) {
-      listActionsWrapper.classList.remove("show-actions");
-    }
+    // Hides dropdown menus
+    $all('.more-actions__wrapper').forEach(item => {
+      if (item.classList.contains("show-actions") &&
+      e.target !== item &&
+      !item.contains(e.target)) {
+        item.classList.remove('show-actions');
+      }
+    });
   }
 
   function continueTour(e) {
@@ -2332,8 +2331,6 @@
       $all('.onboarding__stepper .stepper__btn').forEach(btn => btn.classList.remove('is-completed'));
       state.onboarding.statusLog.forEach((status, i, arr) => arr[i] = false);
       state.onboarding.currentStep = 0;
-      console.log(state.onboarding.statusLog);
-      console.log(state.onboarding.nextStep);
     }
 
     const currentStep = state.onboarding.currentStep;
@@ -2345,7 +2342,16 @@
       const noDummyTasks = state.activeList.tasks.filter(task => task.text !== "Delete Me!");
       state.activeList.tasks = noDummyTasks;
       renderList(state.activeList.tasks, ulActiveList);
-    }
+      $all('.onboarding__step').forEach(section => {
+        let step = +section.dataset.onboardingStep;
+        if (step === 0) {
+          section.classList.add('is-active');
+        } else {
+          section.classList.remove('is-active');
+        }
+      });
+      $('.onboarding__footer', modal).classList.remove('is-active');
+    } else {
 
     if (action === "activateTooltips") {
       modal.classList.remove('is-active');
@@ -2384,6 +2390,7 @@
         // Updates state, looping the tour back to the beginning, if it reaches the end (step 4)
         state.onboarding.currentStep = state.onboarding.nextStep;
     }
+  }
   }
 
   function trackTourProgress(e) {
@@ -2427,12 +2434,12 @@
     // Part 1
     if (target.classList.contains('sidebar__btn--toggle-open')) {
 
-      $('.sidebar__menu-wrapper').appendChild($('#onboardingTooltip_2-2'));
+      $('.sidebar__buttons').insertBefore($('#onboardingTooltip_2-2'), $('#helpActionsWrapper'));
       $('#openListFormBtn').addEventListener('click', trackTourProgress);
     }
 
     if (target === $('#openListFormBtn')) {
-      $('#newListForm').appendChild($("#onboardingTooltip_2-3"));
+      $('#fieldsetFolders').appendChild($("#onboardingTooltip_2-3"));
       $('#newListForm').addEventListener('submit', trackTourProgress);
     }
 
@@ -2611,6 +2618,18 @@
         $("#alertWarningDeleteList .list-name").textContent =
           state.activeList.name;
         $("#alertWarningDeleteList").classList.add("is-active");
+        break;
+    }
+    e.currentTarget.classList.remove("show-actions");
+  });
+
+  $('#helpActionsWrapper').addEventListener('click', (e) => {
+    if (!e.target.classList.contains("more-actions__item")) return;
+    const action = e.target.dataset.action;
+    switch (action) {
+      case "openTour":
+      $("#siteWrapper").classList.remove("show-nav");
+        $('#onboarding').classList.add('is-active');
         break;
     }
     e.currentTarget.classList.remove("show-actions");
