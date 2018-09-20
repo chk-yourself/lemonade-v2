@@ -335,8 +335,8 @@
     e.currentTarget.reset();
     $('#todoInput').blur();
     setTimeout(() => {
-      $('#todoInput').focus();
       $('#todoInput').scrollIntoView(true);
+      $('#todoInput').focus();
     }, 10);
   }
 
