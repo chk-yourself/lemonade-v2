@@ -333,7 +333,6 @@
     }
     // Resets addTodoForm
     e.currentTarget.reset();
-    $('#todoInput').blur();
     setTimeout(() => {
       $('#todoInput').scrollIntoView(true);
       $('#todoInput').focus();
