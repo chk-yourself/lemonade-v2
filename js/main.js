@@ -1152,9 +1152,6 @@
           subListTitle.classList.add('filtered-list__date--tomorrow');
         }
 
-        if (!filterByDate) {
-          subListTitle.addEventListener("click", openList);
-        }
         // Create filtered list item
         const liFilteredListItem = createNode(
           "li",
@@ -1168,8 +1165,16 @@
         itemsList.appendChild(liFilteredListItem);
         feather.replace();
       });
+      if (!filterByDate) {
+        subListTitle.addEventListener("click", openList);
+      } else {
+        createBreadcrumbs(itemsList);
+      }
     } else {
       populateList(itemsArray, itemsList);
+      if (itemsList === $('#today')) {
+        createBreadcrumbs(itemsList);
+      }
     }
   }
 
@@ -1267,7 +1272,6 @@
       $("#activeListTitle").textContent = 'Upcoming';
     }
     renderList(filteredArray, listElem);
-    createBreadcrumbs(listElem);
 
     $(".is-active-list").classList.remove("is-active-list");
     listElem.classList.add("is-active-list");
@@ -1287,6 +1291,8 @@
     if (state.filteredList !== null) {
       state.activeList = getListByTaskId(id);
     }
+    const currentTasksList =
+      state.filteredList === null ? state.activeList.tasks : state.filteredList;
     const ulActiveList = $('.is-active-list');
     const currentTask = state.activeList.getTask(id);
     const taskIndex = state.activeList.findTaskIndex(id);
@@ -1300,7 +1306,7 @@
       state.activeList.tasks.push(state.activeList.tasks.splice(taskIndex, 1)[0]);
     }
     saveToStorage();
-    populateList(state.activeList.tasks, ulActiveList);
+    renderList(currentTasksList, ulActiveList);
   }
 
   function toggleMenu() {
