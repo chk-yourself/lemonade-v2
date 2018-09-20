@@ -86,6 +86,7 @@
       this.tags = [];
       this.id = uniqueID();
       this.dueDate = null;
+      this.isPriority = false;
     }
   }
 
@@ -352,6 +353,8 @@
           item.id
         }">${item.text}</textarea>
 <button type="button" class="btn todo-item__btn--neutral todo-item__toggle-btn" data-action="toggleContent"></button>
+<div class="todo-item__tag-labels"><span class="lemon" data-id="${
+  item.id}"></span></div>
 </li>`
       )
       .join("");
@@ -361,6 +364,7 @@
     // Adds event listeners to each list item
     for (let i = 0; i < itemsCollection.length; i++) {
       itemsCollection[i].addEventListener("click", toggleContent);
+      /*
       if (state.filteredList !== null) {
         itemsCollection[i].addEventListener(
           "click",
@@ -368,9 +372,12 @@
             const id = e.currentTarget.id;
             state.activeList = getListByTaskId(id);
           },
-          false
+          true
         );
       }
+      */
+      const lemon = $('.lemon', itemsCollection[i]);
+      lemon.addEventListener('click', setPriority);
       const itemTitle = $(".todo-item__title", itemsCollection[i]);
       itemTitle.addEventListener("click", (e) => {
         const id = e.currentTarget.dataset.id;
@@ -378,10 +385,19 @@
       });
       itemTitle.addEventListener("change", renameTodo);
 
-      // Creates tag labels for each todo item, if any
+      // Creates tag labels and badges for each todo item, if any
       const id = itemsCollection[i].id;
       for (let j = 0; j < itemsArray.length; j++) {
-        if (id === itemsArray[j].id && itemsArray[j].dueDate !== null) {
+
+        if (id === itemsArray[j].id) {
+        
+        // Reflects priority
+        if (itemsArray[j].isPriority === true) {
+          itemsCollection[i].classList.add('is-priority');
+        }
+
+        // Renders due date badge
+        if (itemsArray[j].dueDate !== null) {
           const dueDate = new Date(itemsArray[j].dueDate);
           const dueMonthIndex = dueDate.getMonth();
           const dueMonthAbbrev = monthsArr[dueMonthIndex].abbrev;
@@ -421,12 +437,11 @@
           }
           itemsCollection[i].appendChild(dueDateLabel);
         }
-        if (id === itemsArray[j].id && itemsArray[j].tags.length > 0) {
+
+        // Renders tag labels
+        if (itemsArray[j].tags.length > 0) {
           const tagLabels =
-            $(".todo-item__tag-labels", itemsCollection[i]) ||
-            createNode("div", {
-              class: "todo-item__tag-labels"
-            });
+            $(".todo-item__tag-labels", itemsCollection[i]);
           const tagsTooltipBtn =
             tagLabels.querySelector(".btn--tooltip") ||
             createNode(
@@ -459,8 +474,8 @@
             );
             tagLabels.insertBefore(tagLabel, tagsTooltipBtn);
           });
-          itemsCollection[i].appendChild(tagLabels);
         }
+      }
       }
     }
   }
@@ -825,10 +840,7 @@
     const currentTask = state.activeList.tasks.find((task) => task.id === id);
     const todoItem = document.getElementById(id);
     const tagLabels =
-      $(".todo-item__tag-labels", todoItem) ||
-      createNode("div", {
-        class: "todo-item__tag-labels"
-      });
+      $(".todo-item__tag-labels", todoItem);
     const tagsTooltipBtn =
       tagLabels.querySelector(".btn--tooltip") ||
       createNode(
@@ -899,7 +911,6 @@
           .join(", ");
         console.log(tagsTooltipBtn.dataset.tooltip);
         tagLabels.insertBefore(tagLabel, tagsTooltipBtn);
-        todoItem.appendChild(tagLabels);
         newTagInput.value = "";
 
         // Appends color picker to tag node if there are no existing tags that matches text
@@ -1269,6 +1280,19 @@
     }
   }
 
+  function setPriority(e) {
+    e.stopPropagation();
+    if (!e.target.classList.contains('lemon')) return;
+    const id = e.currentTarget.dataset.id;
+    if (state.filteredList !== null) {
+      state.activeList = getListByTaskId(id);
+    }
+    const currentTask = state.activeList.getTask(id);
+    currentTask.isPriority = !currentTask.isPriority;
+    $(`#${id}`).classList.toggle('is-priority');
+    saveToStorage();
+  }
+
   function toggleMenu() {
     const siteWrapper = document.getElementById("siteWrapper");
 
@@ -1461,7 +1485,7 @@
   renderNavItems();
 
   function openList(e) {
-    e.preventDefault();
+    // e.preventDefault();
     const navLinksAll = $all(".sidebar__link");
     navLinksAll.forEach((link) => {
       if (link === e.target) {
@@ -2671,6 +2695,8 @@
   formAddTodo.addEventListener("submit", addTodo);
   ulInbox.addEventListener("click", toggleDone);
   $("#filteredList").addEventListener("click", toggleDone);
+  $("#today").addEventListener("click", toggleDone);
+  $("#upcoming").addEventListener("click", toggleDone);
   ulSubtasks.addEventListener("click", toggleComplete);
   formEditTodo.addEventListener("submit", addSubtask);
   $("#btnAddSubtask").addEventListener("click", addSubtask);
@@ -2923,12 +2949,10 @@
   });
 
   $("#todayNavLink").addEventListener("click", (e) => {
-    e.preventDefault(); 
     displayTaskSchedule('today', $("#today"));
   });
 
   $("#upcomingNavLink").addEventListener("click", (e) => {
-    e.preventDefault();
     displayTaskSchedule('upcoming', $('#upcoming'));
   });
 

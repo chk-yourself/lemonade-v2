@@ -909,6 +909,27 @@ input[type="search"].search-form__input {
   display: none;
 }
 
+.lemon {
+  pointer-events: visible;
+  z-index: 98;
+  display: inline-block;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border: 1px solid #d6dee2;
+  background-color: transparent;
+  width: 18px;
+  height: 18px;
+  margin: 2px 0.5em;
+  vertical-align: middle;
+  position: relative;
+  font-size: 10px;
+  padding: 0 6px;
+  letter-spacing: .06em;
+  border-radius: 50% 15%;
+  -webkit-transform: rotate(225deg);
+          transform: rotate(225deg);
+}
+
 .toolbar {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -2163,6 +2184,13 @@ input[type="search"].search-form__input {
 .todo-list__item.is-expanded .breadcrumbs::after {
   content: "\2192";
   margin-left: 4px;
+}
+
+.todo-list__item.is-priority .lemon {
+  background-color: #ffe163;
+  -webkit-box-shadow: inset 0.2em 0.2em #ccb42a;
+          box-shadow: inset 0.2em 0.2em #ccb42a;
+  border-color: #15161a;
 }
 
 .add-todo-form__form-group--inline {

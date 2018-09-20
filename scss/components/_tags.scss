@@ -91,3 +91,22 @@
 .is-hidden {
   display: none;
 }
+
+.lemon {
+  pointer-events: visible;
+  z-index: 98;
+  display: inline-block;
+  box-sizing: border-box;
+  border: 1px solid $lt-grey;
+  background-color: transparent;
+  width: 18px;
+  height: 18px;
+  margin: 2px 0.5em;
+  vertical-align: middle;
+  position: relative;
+  font-size: 10px;
+  padding: 0 6px;
+  letter-spacing: .06em;
+  border-radius: 50% 15%;
+  transform: rotate(225deg);
+}
