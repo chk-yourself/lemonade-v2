@@ -2357,6 +2357,7 @@ input[type="search"].search-form__input {
   padding: 16px;
   max-width: 960px;
   margin: 0 auto;
+  overflow-y: scroll;
 }
 
 @media (min-width: 768px) {

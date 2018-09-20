@@ -345,6 +345,7 @@
   // Adds new task object to current list array
   function addTodo(e) {
     e.preventDefault();
+    const target = e.currentTarget;
 
     const activeList_ul = $(".is-active-list");
 
@@ -355,12 +356,11 @@
       saveToStorage();
       populateList(state.activeList.tasks, activeList_ul);
     }
-    // Resets addTodoForm
-    e.currentTarget.reset();
-    setTimeout(() => {
+    target.reset();
+    if (target.offsetTop >= window.innerHeight) {
       $('#todoInput').scrollIntoView(true);
       $('#todoInput').focus();
-    }, 10);
+    }
   }
 
   // Renders todo objects as list items
