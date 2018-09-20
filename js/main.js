@@ -49,28 +49,6 @@
     }
   }
 
-  function getTask(id) {
-    let currentTask;
-    for (let i = 0; i < todoLists.length; i++) {
-      currentTask = todoLists[i].tasks.find((task) => task.id === id);
-      if (currentTask !== undefined) {
-        break;
-      }
-    }
-    return currentTask;
-  }
-
-  function findTaskIndex(id) {
-    let taskIndex;
-    for (let i = 0; i < todoLists.length; i++) {
-      taskIndex = todoLists[i].tasks.findIndex((task) => task.id === id);
-      if (taskIndex !== undefined) {
-        break;
-      }
-    }
-    return taskIndex;
-  }
-
   class Subtask {
     constructor(text) {
       this.text = text;
@@ -79,14 +57,56 @@
   }
 
   class Task extends Subtask {
-    constructor(text) {
+    constructor(text, obj = null) {
       super(text);
-      this.subtasks = [];
-      this.note = "";
-      this.tags = [];
-      this.id = uniqueID();
-      this.dueDate = null;
-      this.isPriority = false;
+      if (!obj) {
+        this.subtasks = [];
+        this.note = "";
+        this.tags = [];
+        this.id = uniqueID();
+        this.dueDate = null;
+        this.isPriority = false;
+      } else {
+        this.text = obj.text;
+        this.done = obj.done;
+        this.subtasks = obj.subtasks;
+        this.note = obj.note;
+        this.tags = obj.tags;
+        this.id = obj.id;
+        this.dueDate = obj.dueDate;
+        this.isPriority = obj.isPriority;
+      }
+    }
+    get isDueToday() {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      return new Date(this.dueDate).valueOf() === today.valueOf();
+    }
+    get isDueTomorrow() {
+      const today = new Date();
+      const currentDay = today.getDate();
+      const currentMonthIndex = today.getMonth();
+      const currentYear = today.getFullYear();
+      const nextYear = currentYear + 1;
+      const currentMonth = monthsArr[currentMonthIndex];
+      const nextMonthIndex = currentMonth.name !== "December" ? currentMonthIndex + 1 : 0;
+      
+      if (currentMonth.name === "February") {
+            currentMonth.daysTotal = isLeapYear(currentYear) ? 29 : 28;
+          }
+      const tomorrow = currentDay < currentMonth.daysTotal
+              ? new Date(currentYear, currentMonthIndex, currentDay + 1)
+              : nextMonthIndex !== 0
+                ? new Date(currentYear, nextMonthIndex, 1)
+                : new Date(nextYear, nextMonthIndex, 1);
+      return new Date(this.dueDate).valueOf() === tomorrow.valueOf();
+    }
+    get dueDateText() {
+      const dueDate = new Date(this.dueDate);
+      const dueMonthIndex = dueDate.getMonth();
+      const dueMonthAbbrev = monthsArr[dueMonthIndex].abbrev;
+      const dueDay = dueDate.getDate();
+      return `${dueMonthAbbrev} ${dueDay}`
     }
   }
 
@@ -106,11 +126,15 @@
   const formEditList = $("#editListForm");
   const inputNewFolder = $("#newFolderInput");
   const todoContent = $("#todoContent");
-  const todoLists = JSON.parse(localStorage.getItem("todoLists")) ? initLists(JSON.parse(localStorage.getItem("todoLists"))) : [];
+  const todoLists = JSON.parse(localStorage.getItem("todoLists")) ? initClasses(JSON.parse(localStorage.getItem("todoLists"))) : [];
 
-  // Converts JSON list objects back to instances of class List
-  function initLists(arr) {
-    return arr.map((item) => new List(null, null, item));
+  // Converts JSON list and task objects back to instances of original classes
+  function initClasses(arr) {
+    return arr.map((item) => {
+      const list = new List(null, null, item);
+      list.tasks = item.tasks.map(task => new Task(null, task));
+      return list;
+    });
   }
 
   const saveToStorage = () =>
@@ -296,7 +320,7 @@
     return node;
   };
 
-  if (todoLists.find((list) => list.name === "Inbox") === undefined) {
+  if (!todoLists.find((list) => list.name === "Inbox")) {
     $('#onboarding').classList.add('is-active');
     const initInbox = new List("Inbox", "null");
     todoLists.push(initInbox);
@@ -349,9 +373,8 @@
 
     itemsList.innerHTML = itemsArray
       .map(
-        (item, i) => `<li class= ${
-          item.done ? "todo-list__item is-done" : "todo-list__item"
-        } data-index="${i}" id="${item.id}">
+        (item, i) => `<li class= "todo-list__item${
+          item.done ? ' is-done' : ''}${item.isPriority ? ' is-priority' : ''}" data-index="${i}" id="${item.id}">
 <input type="checkbox" id="item-${i}" data-index="${i}" value="${item.text}" ${
           item.done ? "checked" : ""
         } />
@@ -361,19 +384,20 @@
         }">${item.text}</textarea>
 <button type="button" class="btn todo-item__btn--neutral todo-item__toggle-btn" data-action="toggleContent"></button>
 <div class="todo-item__tag-labels"><span class="lemon" data-id="${
-  item.id}"></span></div>
+  item.id}"></span></div>${item.dueDate !== null ? `<span class="badge--due-date${item.isDueToday ? ' badge--today' : item.isDueTomorrow ? ' badge--tomorrow' : ''}">${item.isDueToday ? 'Today' : item.isDueTomorrow ? 'Tomorrow' : item.dueDateText}</span>` : ''}
 </li>`
       )
       .join("");
 
-    const itemsCollection = itemsList.getElementsByTagName("li");
+    const itemsCollection = $all('.todo-list__item', itemsList);
 
     // Adds event listeners to each list item
     for (let i = 0; i < itemsCollection.length; i++) {
-      itemsCollection[i].addEventListener("click", toggleContent);
+      let todoItem = itemsCollection[i];
+      todoItem.addEventListener("click", toggleContent);
       
       if (state.filteredList !== null) {
-        itemsCollection[i].addEventListener(
+        todoItem.addEventListener(
           "click",
           (e) => {
             const id = e.currentTarget.id;
@@ -382,10 +406,10 @@
           true
         );
       }
-      
-      const lemon = $('.lemon', itemsCollection[i]);
+
+      const lemon = $('.lemon', todoItem);
       lemon.addEventListener('click', setPriority);
-      const itemTitle = $(".todo-item__title", itemsCollection[i]);
+      const itemTitle = $(".todo-item__title", todoItem);
       itemTitle.addEventListener("click", (e) => {
         const id = e.currentTarget.dataset.id;
         state.activeList = getListByTaskId(id);
@@ -393,62 +417,17 @@
       itemTitle.addEventListener("change", renameTodo);
 
       // Creates tag labels and badges for each todo item, if any
-      const id = itemsCollection[i].id;
+      const id = todoItem.id;
+      
       for (let j = 0; j < itemsArray.length; j++) {
 
-        if (id === itemsArray[j].id) {
-        
-        // Reflects priority
-        if (itemsArray[j].isPriority === true) {
-          itemsCollection[i].classList.add('is-priority');
-        }
-
-        // Renders due date badge
-        if (itemsArray[j].dueDate !== null) {
-          const dueDate = new Date(itemsArray[j].dueDate);
-          const dueMonthIndex = dueDate.getMonth();
-          const dueMonthAbbrev = monthsArr[dueMonthIndex].abbrev;
-          const dueDay = dueDate.getDate();
-          const today = new Date();
-          today.setHours(0, 0, 0, 0);
-          const currentDay = today.getDate();
-          const currentMonthIndex = today.getMonth();
-          const currentYear = today.getFullYear();
-          const nextYear = currentYear + 1;
-          const currentMonth = monthsArr[currentMonthIndex];
-          const nextMonthIndex =
-            currentMonth.name !== "December" ? currentMonthIndex + 1 : 0;
-          if (currentMonth.name === "February") {
-            currentMonth.daysTotal = isLeapYear(currentYear) ? 29 : 28;
-          }
-          if (currentDay === currentMonth.daysTotal) {
-          }
-          const tomorrow =
-            currentDay < currentMonth.daysTotal
-              ? new Date(currentYear, currentMonthIndex, currentDay + 1)
-              : nextMonthIndex !== 0
-                ? new Date(currentYear, nextMonthIndex, 1)
-                : new Date(nextYear, nextMonthIndex, 1);
-          tomorrow.setHours(0, 0, 0, 0);
-
-          const dueDateLabel = createNode("span", { class: "badge--due-date" });
-
-          if (dueDate.valueOf() === today.valueOf()) {
-            dueDateLabel.textContent = "Today";
-            dueDateLabel.classList.add("badge--today");
-          } else if (dueDate.valueOf() === tomorrow.valueOf()) {
-            dueDateLabel.textContent = "Tomorrow";
-            dueDateLabel.classList.add("badge--tomorrow");
-          } else {
-            dueDateLabel.textContent = `${dueMonthAbbrev} ${dueDay}`;
-          }
-          itemsCollection[i].appendChild(dueDateLabel);
-        }
+        if (itemsArray[j].id === id) {
+        let taskObj = itemsArray[j];
 
         // Renders tag labels
-        if (itemsArray[j].tags.length > 0) {
+        if (taskObj.tags.length > 0) {
           const tagLabels =
-            $(".todo-item__tag-labels", itemsCollection[i]);
+            $(".todo-item__tag-labels", todoItem);
           const tagsTooltipBtn =
             createNode(
               "button",
@@ -468,7 +447,7 @@
           tagLabels.insertBefore(tagsTooltipBtn, lemon);
 
           // Renders tag labels
-          itemsArray[j].tags.forEach((tag, i) => {
+          taskObj.tags.forEach((tag, i) => {
             const tagLabel = createNode(
               "span",
               {
@@ -683,11 +662,8 @@
   function addNote(e) {
     if (!e.target.classList.contains("todo-item__note")) return;
     const id = formEditTodo.dataset.id;
-
     const currentTask = state.activeList.getTask(id);
     const todoIndex = state.activeList.findTaskIndex(id); // index of todo object with matching ID in TODOS array
-
-    console.log(currentTask.note);
     const text = e.target.value;
     if (!/^\s+$/.test(text)) {
       currentTask.note = text;
@@ -832,6 +808,7 @@
   }
 
   function addTag(e) {
+
     if (e.target.dataset.action !== "addTag" && $("#newTagInput").value === "")
       return;
     e.preventDefault();
@@ -918,9 +895,8 @@
 
         // Appends color picker to tag node if there are no existing tags that matches text
         if (existingTag === undefined) {
-          console.log({ newTagNode });
           newTagNode.appendChild(colorPicker);
-          console.log({ colorPicker });
+          $('#colorDefault', colorPicker).checked = true;
           colorPicker.classList.add("is-visible");
         }
       }
