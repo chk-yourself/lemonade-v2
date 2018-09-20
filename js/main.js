@@ -340,9 +340,6 @@
       divTodoApp.appendChild(todoContent);
     }
 
-    // Clear all lists to prevent duplicate list items
-    $all('.todo-list').forEach(list => list.innerHTML = "");
-
     itemsList.innerHTML = itemsArray
       .map(
         (item, i) => `<li class= ${
@@ -1285,15 +1282,15 @@
   }
 
   function setPriority(e) {
-    e.stopPropagation();
     if (!e.target.classList.contains('lemon')) return;
     const id = e.currentTarget.dataset.id;
     if (state.filteredList !== null) {
       state.activeList = getListByTaskId(id);
     }
+    const ulActiveList = $('.is-active-list');
     const currentTask = state.activeList.getTask(id);
     currentTask.isPriority = !currentTask.isPriority;
-    $(`#${id}`).classList.toggle('is-priority');
+    $(`#${id}`, ulActiveList).classList.toggle('is-priority');
     saveToStorage();
   }
 
