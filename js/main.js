@@ -719,7 +719,6 @@
 
   function toggleContent(e) {
     if (!(e.target.dataset.action === "toggleContent")) return;
-    e.preventDefault();
     const todoItem = e.currentTarget;
     const id = todoItem.id;
     const tagLabels = todoItem.querySelector(".todo-item__tag-labels");
@@ -1486,7 +1485,7 @@
   renderNavItems();
 
   function openList(e) {
-    // e.preventDefault();
+    e.preventDefault();
     const navLinksAll = $all(".sidebar__link");
     navLinksAll.forEach((link) => {
       if (link === e.target) {
