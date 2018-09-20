@@ -448,7 +448,6 @@
           const tagLabels =
             $(".todo-item__tag-labels", itemsCollection[i]);
           const tagsTooltipBtn =
-            tagLabels.querySelector(".btn--tooltip") ||
             createNode(
               "button",
               {
@@ -464,9 +463,7 @@
           tagsTooltipBtn.addEventListener("click", (e) => {
             e.currentTarget.classList.toggle("show-tooltip");
           });
-          if (!tagLabels.contains(tagsTooltipBtn)) {
-            tagLabels.appendChild(tagsTooltipBtn);
-          }
+          tagLabels.insertBefore(tagsTooltipBtn, lemon);
 
           // Renders tag labels
           itemsArray[j].tags.forEach((tag, i) => {
@@ -814,18 +811,22 @@
   }
 
   function removeTag(todoIndex, tagIndex) {
-    const id = state.activeList.tasks[todoIndex].id;
-    const todoItem = document.getElementById(id);
-    formEditTodo.querySelectorAll("#tagsContainer .tag")[tagIndex].remove();
-    todoItem
-      .querySelectorAll(".todo-item__tag-labels .tag-label")
-      [tagIndex].remove();
-    state.activeList.tasks[todoIndex].tags.splice(tagIndex, 1);
+    const currentTask = state.activeList.tasks[todoIndex];
+    const id = currentTask.id;
+    const todoItem = $(`#${id}`);
+    $all("#tagsContainer .tag", formEditTodo)[tagIndex].remove();
+    $all(".todo-item__tag-labels .tag-label", todoItem)[tagIndex].remove();
+    currentTask.tags.splice(tagIndex, 1);
     saveToStorage();
     const tagsTooltipBtn = todoItem.querySelector(".tag-labels__btn--tooltip");
-    tagsTooltipBtn.dataset.tooltip = state.activeList.tasks[todoIndex].tags
+    if (currentTask.tags.length > 0) {
+      // Update tags tooltip
+      tagsTooltipBtn.dataset.tooltip = state.activeList.tasks[todoIndex].tags
       .map((tag) => tag.text)
       .join(", ");
+    } else {
+      tagsTooltipBtn.remove();
+    }
   }
 
   function addTag(e) {
@@ -835,11 +836,9 @@
     const tagsContainer = $("#tagsContainer");
     const newTagInput = $("#newTagInput");
     const id = formEditTodo.dataset.id;
-    const todoIndex = state.activeList.tasks.findIndex(
-      (task) => task.id === id
-    );
-    const currentTask = state.activeList.tasks.find((task) => task.id === id);
-    const todoItem = document.getElementById(id);
+    const todoIndex = state.activeList.findTaskIndex(id);
+    const currentTask = state.activeList.getTask(id);
+    const todoItem = $(`#${id}`);
     const tagLabels =
       $(".todo-item__tag-labels", todoItem);
     const tagsTooltipBtn =
@@ -853,8 +852,9 @@
         },
         "..."
       );
+    const lemon = $('.lemon', todoItem);
     if (!tagLabels.contains(tagsTooltipBtn)) {
-      tagLabels.appendChild(tagsTooltipBtn);
+      tagLabels.insertBefore(tagsTooltipBtn, lemon);
     }
     if (newTagInput.value !== "") {
       const text = filterTag(newTagInput.value);

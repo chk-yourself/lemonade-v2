@@ -847,6 +847,10 @@ input[type="search"].search-form__input {
   display: none;
 }
 
+.todo-item__tag-labels.hide-tags .tag-labels__btn--tooltip {
+  display: none;
+}
+
 .tag-label,
 .tag-labels__btn--tooltip {
   font-size: 10px;
