@@ -333,6 +333,7 @@
     }
     // Resets addTodoForm
     e.currentTarget.reset();
+    $('#todoInput').blur();
     setTimeout(() => {
       $('#todoInput').focus();
     }, 0);
