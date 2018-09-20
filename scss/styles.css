@@ -2345,6 +2345,8 @@ input[type="search"].search-form__input {
 .todo-app__main {
   position: relative;
   padding: 16px;
+  max-width: 960px;
+  margin: 0 auto;
 }
 
 @media (min-width: 768px) {
