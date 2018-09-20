@@ -336,7 +336,8 @@
     $('#todoInput').blur();
     setTimeout(() => {
       $('#todoInput').focus();
-    }, 0);
+      $('#todoInput').scrollIntoView(true);
+    }, 10);
   }
 
   // Renders todo objects as list items
