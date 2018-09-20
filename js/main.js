@@ -340,6 +340,8 @@
       divTodoApp.appendChild(todoContent);
     }
 
+    $all('.todo-list').forEach(list => list.innerHTML = "");
+
     itemsList.innerHTML = itemsArray
       .map(
         (item, i) => `<li class= ${
@@ -1286,10 +1288,9 @@
     if (state.filteredList !== null) {
       state.activeList = getListByTaskId(id);
     }
-    const ulActiveList = $('.is-active-list');
     const currentTask = state.activeList.getTask(id);
     currentTask.isPriority = !currentTask.isPriority;
-    $(`#${id}`, ulActiveList).classList.toggle('is-priority');
+    $(`#${id}`).classList.toggle('is-priority');
     saveToStorage();
   }
 
