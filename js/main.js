@@ -327,7 +327,7 @@
     const text = $("#todoInput").value;
     if (text !== "") {
       const todo = new Task(text);
-      state.activeList.tasks.unshift(todo); // Add new item to top of the list
+      state.activeList.tasks.push(todo); // Add new item to bottom of the list
       saveToStorage();
       populateList(state.activeList.tasks, activeList_ul);
     }
@@ -587,15 +587,15 @@
     while (todoLists.length > 1) {
       todoLists.pop(); // Remove all lists, except inbox
     }
-    localStorage.removeItem("todoLists");
     while (inbox.tasks.length > 0) {
       inbox.tasks.pop();
     }
+    saveToStorage();
     // Remove saved data of objects in TODOS array from local storage
     ulInbox.innerHTML = ""; // Deletes all list items from DOM
     const allLists = $all(".todo-list");
     allLists.forEach((list) => {
-      if (list.id !== "inbox") {
+      if (list.classList.contains('custom-list')) {
         list.remove();
       }
     });
@@ -1337,12 +1337,12 @@
 
   function createList(listObj) {
     const list_ul = createNode("ul", {
-      class: "todo-list",
+      class: "todo-list custom-list",
       id: listObj.id,
       "data-name": listObj.name
     });
     list_ul.addEventListener("click", toggleDone);
-    $("#main").insertBefore(list_ul, $("#views"));
+    $("#main").insertBefore(list_ul, formAddTodo);
     renderListOption(listObj);
   }
 
@@ -2709,6 +2709,9 @@
   });
   divViews.addEventListener("click", updateView);
   formAddTodo.addEventListener("submit", addTodo);
+  $('#todoInput').addEventListener('focus', (e) => {
+    e.currentTarget.parentNode.classList.add('is-focused');
+  });
   ulSubtasks.addEventListener("click", toggleComplete);
   formEditTodo.addEventListener("submit", addSubtask);
   $("#btnAddSubtask").addEventListener("click", addSubtask);

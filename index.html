@@ -103,14 +103,6 @@
 
         <main class="todo-app__main" id="main">
           <h1 class="active-list__title" id="activeListTitle"></h1>
-          <form id="addTodoForm" class="form add-todo-form" data-onboarding-target="1">
-            <div class="form__form-group--inline add-todo-form__form-group--inline">
-              <button id="addTodoBtn" type="submit" class="btn form__btn form__btn--sm form__btn--neutral cross-icon cross-icon--dk btn--inline"
-                data-action="addTodo"></button>
-              <input id="todoInput" class="form__input form__input--inline add-todo-form__input" type="text"
-                placeholder="What would you like to do?" />
-            </div>
-          </form>
           <div id="bulkActionsToolbar" class="toolbar bulk-actions-toolbar">
             <div class="toolbar__item bulk-actions-toolbar__item--check-all" data-action="checkAll">
               <input type="checkbox" id="masterCheckbox" class="bulk-actions__checkbox">
@@ -147,6 +139,17 @@
           </ul>
           <ul id="upcoming" class="todo-list" data-name="upcoming">
           </ul>
+
+          <!-- #addTodoForm -->
+          <form id="addTodoForm" class="form add-todo-form" data-onboarding-target="1">
+              <div class="form__form-group--inline add-todo-form__form-group--inline">
+                <button id="addTodoBtn" type="submit" class="btn form__btn form__btn--sm form__btn--neutral cross-icon cross-icon--dk btn--inline"
+                  data-action="addTodo"></button>
+                <input id="todoInput" class="form__input form__input--inline add-todo-form__input" type="text"
+                  placeholder="Add a todo" />
+              </div>
+            </form>
+            <!--/ #addTodoForm -->
 
           <div id="views" class="views">
             <button type="button" class="btn btn--neutral form__btn views__btn is-selected" data-action="viewAll">All</button>
