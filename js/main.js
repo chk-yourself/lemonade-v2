@@ -333,6 +333,9 @@
     }
     // Resets addTodoForm
     e.currentTarget.reset();
+    setTimeout(() => {
+      $('#todoInput').focus();
+    }, 0);
   }
 
   // Renders todo objects as list items
