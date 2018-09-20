@@ -340,6 +340,9 @@
       divTodoApp.appendChild(todoContent);
     }
 
+    // Clear all lists to prevent duplicate list items
+    $all('.todo-list').forEach(list => list.innerHTML = "");
+
     itemsList.innerHTML = itemsArray
       .map(
         (item, i) => `<li class= ${
@@ -538,6 +541,7 @@
         }
         return acc;
       }, []);
+      
 
     const activeTodos = Array.isArray(currentTasksList[0])
       ? filteredArray(currentTasksList, activeFilter)
