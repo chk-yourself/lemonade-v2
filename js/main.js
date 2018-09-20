@@ -1151,12 +1151,6 @@
           subListTitle.classList.add('filtered-list__date--tomorrow');
         }
 
-        if (!filterByDate) {
-          subListTitle.addEventListener("click", openList);
-        } else {
-         // createBreadcrumbs(itemsList);
-        }
-
         // Create filtered list item
         const liFilteredListItem = createNode(
           "li",
@@ -1167,6 +1161,11 @@
         );
         // Populate tasks for each sub-list
         populateList(list, ulSubList);
+        if (!filterByDate) {
+          subListTitle.addEventListener("click", openList);
+        } else {
+         createBreadcrumbs(ulSubList);
+        }
         itemsList.appendChild(liFilteredListItem);
         feather.replace();
       });
