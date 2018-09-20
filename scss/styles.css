@@ -843,7 +843,7 @@ input[type="search"].search-form__input {
   display: block;
 }
 
-.todo-item__tag-labels.is-hidden {
+.todo-item__tag-labels.hide-tags .tag-label {
   display: none;
 }
 
@@ -928,6 +928,7 @@ input[type="search"].search-form__input {
   border-radius: 50% 15%;
   -webkit-transform: rotate(225deg);
           transform: rotate(225deg);
+  cursor: pointer;
 }
 
 .toolbar {

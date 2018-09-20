@@ -37,8 +37,10 @@
   top: 4px;
   right: 48px;
   display: block;
-    &.is-hidden {
-    display: none;
+    &.hide-tags {
+    .tag-label {
+      display: none;
+    }
   }
 }
 .tag-label, 
@@ -109,4 +111,5 @@
   letter-spacing: .06em;
   border-radius: 50% 15%;
   transform: rotate(225deg);
+  cursor: pointer;
 }

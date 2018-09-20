@@ -308,6 +308,9 @@
   // Populates inbox tasks on load
   displayList(inbox);
 
+  // Add toggleDone functionality to all prebuilt lists
+  $all('.todo-list').forEach(list => list.addEventListener('click', toggleDone));
+
   // Creates list node for each list object, except for the inbox list
   todoLists.forEach((list, i) => {
     if (i !== 0) {
@@ -366,7 +369,7 @@
     // Adds event listeners to each list item
     for (let i = 0; i < itemsCollection.length; i++) {
       itemsCollection[i].addEventListener("click", toggleContent);
-      /*
+      
       if (state.filteredList !== null) {
         itemsCollection[i].addEventListener(
           "click",
@@ -377,7 +380,7 @@
           true
         );
       }
-      */
+      
       const lemon = $('.lemon', itemsCollection[i]);
       lemon.addEventListener('click', setPriority);
       const itemTitle = $(".todo-item__title", itemsCollection[i]);
@@ -498,8 +501,8 @@
     }
 
     const activeList_ul = $(".is-active-list");
-    const index = state.activeList.tasks.findIndex((task) => task.id === id);
-    const currentTask = state.activeList.tasks.find((task) => task.id === id);
+    const index = state.activeList.findTaskIndex(id);
+    const currentTask = state.activeList.getTask(id);
     const indexLastCompleted = state.activeList.tasks.findIndex(
       (item) => item.done === true
     ); // Represents index of most recently completed task
@@ -545,7 +548,6 @@
     const activeTodos = Array.isArray(currentTasksList[0])
       ? filteredArray(currentTasksList, activeFilter)
       : currentTasksList.filter((task) => !task.done);
-    console.log(activeTodos);
     const completedTodos = Array.isArray(currentTasksList[0])
       ? filteredArray(currentTasksList, completedFilter)
       : currentTasksList.filter((task) => task.done);
@@ -563,6 +565,7 @@
         renderList(currentTasksList, activeList_ul);
       }, 100);
     }
+    
   }
 
   // Updates subtask object's `done` property to reflect current `checked` state
@@ -733,9 +736,7 @@
       todoItemTitle.style.height = "0px";
       todoItem.classList.remove("is-expanded");
       todoContent.classList.remove("is-visible");
-      if (todoItem.contains(tagLabels)) {
-        tagLabels.classList.remove("is-hidden");
-      }
+        tagLabels.classList.remove("hide-tags");
       if (todoItem.contains(dueDateLabel) && ulActiveList !== $('#upcoming') && ulActiveList !== $('#today')) {
         dueDateLabel.classList.remove("is-hidden");
       }
@@ -747,9 +748,7 @@
       $("#dueDateWrapper").classList.remove("has-due-date");
       $("#dueDateWrapper").classList.remove("show-input");
       $("#dpCalendar").classList.remove("is-active");
-      if (todoItem.contains(tagLabels)) {
-        tagLabels.classList.add("is-hidden");
-      }
+      tagLabels.classList.add('hide-tags')
       if (todoItem.contains(dueDateLabel)) {
         dueDateLabel.classList.add("is-hidden");
       }
@@ -1288,10 +1287,20 @@
     if (state.filteredList !== null) {
       state.activeList = getListByTaskId(id);
     }
+    const ulActiveList = $('.is-active-list');
     const currentTask = state.activeList.getTask(id);
+    const taskIndex = state.activeList.findTaskIndex(id);
     currentTask.isPriority = !currentTask.isPriority;
     $(`#${id}`).classList.toggle('is-priority');
+
+    // Move priority items to top of list
+    if (currentTask.isPriority === true) {
+      state.activeList.tasks.unshift(state.activeList.tasks.splice(taskIndex, 1)[0]);
+    } else {
+      state.activeList.tasks.push(state.activeList.tasks.splice(taskIndex, 1)[0]);
+    }
     saveToStorage();
+    populateList(state.activeList.tasks, ulActiveList);
   }
 
   function toggleMenu() {
@@ -2694,10 +2703,6 @@
   });
   divViews.addEventListener("click", updateView);
   formAddTodo.addEventListener("submit", addTodo);
-  ulInbox.addEventListener("click", toggleDone);
-  $("#filteredList").addEventListener("click", toggleDone);
-  $("#today").addEventListener("click", toggleDone);
-  $("#upcoming").addEventListener("click", toggleDone);
   ulSubtasks.addEventListener("click", toggleComplete);
   formEditTodo.addEventListener("submit", addSubtask);
   $("#btnAddSubtask").addEventListener("click", addSubtask);
