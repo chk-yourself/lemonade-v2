@@ -343,8 +343,6 @@
       divTodoApp.appendChild(todoContent);
     }
 
-    $all('.todo-list').forEach(list => list.innerHTML = "");
-
     itemsList.innerHTML = itemsArray
       .map(
         (item, i) => `<li class= ${
@@ -1094,9 +1092,10 @@
     }
 
     if (Array.isArray(itemsArray[0])) {
-      itemsList.innerHTML = "";
-      const filterByDate = itemsList === $('#upcoming');
 
+      $all('.todo-list').forEach(list => list.innerHTML = "");
+
+      const filterByDate = itemsList === $('#upcoming');
       itemsArray.forEach((list) => {
 
         const listObj = getListByTaskId(list[0].id);
@@ -1152,6 +1151,12 @@
           subListTitle.classList.add('filtered-list__date--tomorrow');
         }
 
+        if (!filterByDate) {
+          subListTitle.addEventListener("click", openList);
+        } else {
+         // createBreadcrumbs(itemsList);
+        }
+
         // Create filtered list item
         const liFilteredListItem = createNode(
           "li",
@@ -1165,11 +1170,6 @@
         itemsList.appendChild(liFilteredListItem);
         feather.replace();
       });
-      if (!filterByDate) {
-        subListTitle.addEventListener("click", openList);
-      } else {
-        createBreadcrumbs(itemsList);
-      }
     } else {
       populateList(itemsArray, itemsList);
       if (itemsList === $('#today')) {
