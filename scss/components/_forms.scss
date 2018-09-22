@@ -3,7 +3,8 @@
   width: 100%;
 }
 
-input[type=text] {
+input[type=text],
+textarea {
   &:focus {
     box-shadow: none;
   }

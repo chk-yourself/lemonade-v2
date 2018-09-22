@@ -379,8 +379,8 @@
 <textarea class="form__textarea todo-item__title" data-index="${i}" data-id="${
           item.id
         }">${item.text}</textarea>
-<div class="todo-item__tag-labels"><span class="lemon" data-id="${
-  item.id}"></span></div>${item.dueDate !== null ? `<span class="badge--due-date${item.isDueToday ? ' badge--today' : item.isDueTomorrow ? ' badge--tomorrow' : ''}">${item.isDueToday ? 'Today' : item.isDueTomorrow ? 'Tomorrow' : item.dueDateText}</span>` : ''}
+<div class="todo-item__tag-labels"></div><span class="lemon" data-id="${
+  item.id}"></span>${item.dueDate !== null ? `<span class="badge--due-date${item.isDueToday ? ' badge--today' : item.isDueTomorrow ? ' badge--tomorrow' : ''}">${item.isDueToday ? 'Today' : item.isDueTomorrow ? 'Tomorrow' : item.dueDateText}</span>` : ''}
 </li>`
       )
       .join("");
@@ -701,8 +701,7 @@
 
   function toggleContent(e) {
 
-    if (e.target.classList.contains('lemon') || e.target.classList.contains('todo-list__checkbox') || e.target.getAttribute('type') === 'checkbox') return;
-    
+    if (e.target.classList.contains('lemon') || e.target.classList.contains('todo-list__checkbox') || e.target.getAttribute('type') === 'checkbox' || e.target.classList.contains('bulk-actions__checkbox-label')) return;
     let todoItem = e.currentTarget;
     const id = todoItem.id;
     const dueDateLabel = todoItem.querySelector(".badge--due-date");
@@ -839,9 +838,8 @@
         },
         "..."
       );
-    const lemon = $('.lemon', todoItem);
     if (!tagLabels.contains(tagsTooltipBtn)) {
-      tagLabels.insertBefore(tagsTooltipBtn, lemon);
+      tagLabels.appendChild(tagsTooltipBtn);
     }
     if (newTagInput.value !== "") {
       const text = filterTag(newTagInput.value);
@@ -952,8 +950,6 @@
     colorPicker.dataset.id = id;
 
     autoHeightResize(todoItemTitle);
-
-    todoItemTitle.addEventListener("input", enableAutoHeightResize);
 
     if (!todoItemNote.value) {
       todoItemNote.style.height = "0px";
@@ -2573,6 +2569,9 @@
   }
 
   // Event Listeners
+
+  $('#taskName').addEventListener("input", enableAutoHeightResize);
+    $('#todoItemNote').addEventListener("input", enableAutoHeightResize);
 
   $('#btnCloseTaskDetails').addEventListener('click', toggleContent);
 

@@ -222,7 +222,8 @@ btn--primary:active {
   width: 100%;
 }
 
-input[type=text]:focus {
+input[type=text]:focus,
+textarea:focus {
   -webkit-box-shadow: none;
           box-shadow: none;
 }
@@ -925,8 +926,8 @@ input[type="search"].search-form__input {
           box-sizing: border-box;
   border: 1px solid #d6dee2;
   background-color: transparent;
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   margin: 2px 0.5em;
   vertical-align: middle;
   position: relative;
@@ -937,12 +938,13 @@ input[type="search"].search-form__input {
   -webkit-transform: rotate(225deg);
           transform: rotate(225deg);
   cursor: pointer;
+  top: calc(50% - 12px);
 }
 
 .toolbar {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  padding: 8px 14px;
+  padding: 8px;
   font-size: 16px;
   border: 1px solid rgba(64, 69, 81, 0.4);
   border-radius: 4px;
@@ -1375,25 +1377,26 @@ input[type="search"].search-form__input {
 
 .todo-app__main {
   position: relative;
-  padding: 16px;
+  padding: 8px;
   width: 100%;
   max-width: 960px;
   overflow-y: visible;
   background-color: rgba(255, 255, 255, 0.8);
   -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.15);
           box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.15);
+  height: 100%;
 }
 
 @media (min-width: 768px) {
   .todo-app__main {
     height: auto;
-    padding: 24px;
+    padding: 16px;
   }
 }
 
 @media (min-width: 992px) {
   .todo-app__main {
-    padding: 24px 32px 32px;
+    padding: 24px;
   }
 }
 
@@ -2286,7 +2289,7 @@ input[type="search"].search-form__input {
 .form__textarea {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
-  padding: 16px 14px;
+  padding: 16px 8px;
   font-size: 16px;
   margin: 0;
   font-family: "Roboto", Arial, sans-serif;
@@ -2355,7 +2358,8 @@ input[type="search"].search-form__input {
 
 .active-list__title {
   margin-bottom: 24px;
-  font-size: 1.75rem;
+  font-size: 1.5rem;
+  padding: 8px;
 }
 
 .filtered-list {
@@ -2414,7 +2418,6 @@ input[type="search"].search-form__input {
 .add-todo-form__form-group--inline {
   background-color: rgba(255, 255, 255, 0.8);
   border: 1px solid transparent;
-  padding-left: 8px;
   border-radius: 0;
 }
 
@@ -2424,6 +2427,10 @@ input[type="search"].search-form__input {
 
 .add-todo-form__form-group--inline.is-focused {
   background-color: #fff;
+}
+
+.add-todo-form__input {
+  width: calc(100% - 34px);
 }
 
 .add-todo-form__input::-webkit-input-placeholder {
@@ -2460,6 +2467,10 @@ input[type="search"].search-form__input {
 
 .add-todo-form__input:focus::placeholder {
   color: rgba(64, 69, 81, 0.6);
+}
+
+.add-todo-form__btn {
+  margin-left: 4px;
 }
 
 .new-list-form__container {
@@ -2755,6 +2766,7 @@ label.bulk-actions__checkbox-label {
   margin-top: 0;
   padding: 8px;
   width: calc(100% - 32px);
+  border-radius: 4px;
 }
 
 .todo-item__note:focus {

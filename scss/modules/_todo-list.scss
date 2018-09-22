@@ -62,7 +62,7 @@
 .todo-list__item,
 .form__textarea {
   box-sizing: border-box;
-  padding: 16px 14px;
+  padding: 16px 8px;
   font-size: 16px;
   margin: 0;
   font-family: $body-font;
@@ -121,7 +121,8 @@
 
 .active-list__title {
   margin-bottom: 24px;
-  font-size: 1.75rem;
+  font-size: 1.5rem;
+  padding: 8px;
 }
 
 // Filtered Lists
