@@ -30,15 +30,6 @@
       top: -4px;
       left: calc(50% + 11.7px);
     }
-    .breadcrumbs {
-      font-size: 16px;
-      bottom: 16px;
-      left: 14px;
-      &::after {
-        content: "\2192";
-        margin-left: 4px;
-      }
-    }
   }
   &.is-priority {
     .lemon {
@@ -68,7 +59,7 @@
   font-family: $body-font;
   width: 100%;
   line-height: 16px;
-  background-color: rgba($white, 0.8);
+  background-color: $white;
 }
 
 .is-done {

@@ -704,7 +704,7 @@
     if (e.target.classList.contains('lemon') || e.target.classList.contains('todo-list__checkbox') || e.target.getAttribute('type') === 'checkbox' || e.target.classList.contains('bulk-actions__checkbox-label')) return;
     let todoItem = e.currentTarget;
     const id = todoItem.id;
-    const dueDateLabel = todoItem.querySelector(".badge--due-date");
+    const dueDateLabel = $(".badge--due-date", todoItem);
     const todoItemTitle = $(".todo-item__title", todoItem);
     const ulActiveList = $('.is-active-list');
 
@@ -715,9 +715,6 @@
     if (todoAppContainer.classList.contains("show-task-details")) {
       todoItem.classList.remove("is-expanded");
       todoAppContainer.classList.remove("show-task-details");
-      if (todoItem.contains(dueDateLabel) && ulActiveList !== $('#upcoming') && ulActiveList !== $('#today')) {
-        dueDateLabel.classList.remove("is-hidden");
-      }
       const tags = $all("#tagsContainer .tag", taskDetails);
       tags.forEach((x) => x.remove());
     } else {
@@ -725,9 +722,6 @@
       $("#dueDateWrapper").classList.remove("has-due-date");
       $("#dueDateWrapper").classList.remove("show-input");
       $("#dpCalendar").classList.remove("is-active");
-      if (todoItem.contains(dueDateLabel)) {
-        dueDateLabel.classList.add("is-hidden");
-      }
       todoAppContainer.classList.add('show-task-details');
       populateContent(id);
       todoItem.classList.add("is-expanded");
@@ -1281,7 +1275,7 @@
     $(`#${id}`).classList.toggle('is-priority');
 
     // Move priority items to top of list
-    if (currentTask.isPriority === true) {
+    if (currentTask.isPriority === true && !currentTask.done) {
       state.activeList.tasks.unshift(state.activeList.tasks.splice(taskIndex, 1)[0]);
     } else {
       state.activeList.tasks.push(state.activeList.tasks.splice(taskIndex, 1)[0]);
