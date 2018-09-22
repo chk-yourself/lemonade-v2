@@ -2447,6 +2447,7 @@
     // Part 2
     if (target.classList.contains('todo-list__item')) {
         $('.task-details__header').appendChild($('#onboardingTooltip_1-3'));
+        $('#btnCloseTaskDetails').addEventListener('click', trackTourProgress);
     }
 
     /**
