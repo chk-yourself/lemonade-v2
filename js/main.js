@@ -2086,6 +2086,7 @@
       "#dueDateWrapper .due-date-text"
     ).textContent = `${dueMonthAbbrev} ${dueDay}`;
     $("#dueDateWrapper").classList.remove("show-input");
+    $('#dueDateWrapper').parentNode.classList.remove('is-focused');
     $("#dpCalendar").classList.remove("is-active");
   }
 
@@ -2877,6 +2878,7 @@
 
   $("#dueDateWrapper").addEventListener("click", (e) => {
     initDpCalendar(e);
+    e.currentTarget.parentNode.classList.add('is-focused');
     e.currentTarget.classList.add("show-input");
     $("#dpCalendar").classList.add("is-active");
   });
@@ -2960,27 +2962,42 @@
   });
 
   $("#btnClearDueDate").addEventListener("click", (e) => {
-    const id = $("#dpCalendar").parentNode.dataset.id;
-    const currentTask = state.activeList.tasks.find((task) => task.id === id);
+    const id = hiddenTaskId.value;
+    const currentTask = state.activeList.getTask(id);
     currentTask.dueDate = null;
     saveToStorage();
-    $("#dueDateWrapper").classList.remove("has-due-date");
-    $("#dueDateWrapper .due-date-text").textContent = "Set due date";
-    $("#dueDateWrapper").classList.remove("show-input");
+    const dueDateWrapper = $("#dueDateWrapper");
+    dueDateWrapper.classList.remove("has-due-date");
+    $(".due-date-text", dueDateWrapper).textContent = "Set due date";
+    dueDateWrapper.classList.remove("show-input");
+    dueDateWrapper.parentNode.classList.remove('is-focused');
     $("#dpCalendar").classList.remove("is-active");
   });
 
   $("#btnResetDueDate").addEventListener("click", (e) => {
     $("#dueDateWrapper").classList.remove("show-input");
+    $("#dueDateWrapper").parentNode.classList.remove('is-focused');
     $("#dpCalendar").classList.remove("is-active");
   });
 
-  $all(".form__input--inline").forEach((x) => {
+  $all(".edit-todo-form__control").forEach((x) => {
     x.addEventListener("focus", (e) => {
-      e.currentTarget.parentNode.classList.add("is-focused");
+      const parent = e.currentTarget.parentNode;
+      const grandparent = parent.parentNode;
+      if (grandparent.classList.contains('edit-todo-form__form-group')) {
+        grandparent.classList.add('is-focused');
+      } else {
+        parent.classList.add('is-focused');
+      }
     });
     x.addEventListener("focusout", (e) => {
-      e.currentTarget.parentNode.classList.remove("is-focused");
+      const parent = e.currentTarget.parentNode;
+      const grandparent = parent.parentNode;
+      if (grandparent.classList.contains('edit-todo-form__form-group')) {
+        grandparent.classList.remove('is-focused');
+      } else {
+        parent.classList.remove('is-focused');
+      }
     });
   });
 

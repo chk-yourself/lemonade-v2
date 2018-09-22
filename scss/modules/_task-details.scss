@@ -73,13 +73,10 @@
   padding-bottom: 0;
 }
 
-.edit-todo-form__form-group--inline {
+.edit-todo-form__tags-container {
   padding: 2px 0;
   width: calc(100% - 32px);
-  &.is-focused {
-    border:1px solid $lt-grey;
-    border-radius: 4px;
-  }
+  display: inline-block;
   .form__input--inline {
     height: 25px;
   }
@@ -104,7 +101,7 @@
 }
 
 .task-details__header {
-  padding: 16px 8px;
+  padding: 16px 8px 8px;
   margin-bottom: 8px;
   position: relative;
   font-weight: 500;
@@ -116,19 +113,40 @@
 
 .task-details__name {
   margin: 0;
-  padding: 0 16px;
+  padding: 0;
   width: 100%;
   font-weight: 700;
+  color: $dk-grey;
+  font-size: 18px;
+}
+
+.task-details__name-wrapper {
+  margin: 0 16px;
+  border-bottom: 2px solid $grey;
+  padding-bottom: 4px;
+  &.is-focused {
+    border-bottom-color: $primary-color;
+  }
 }
 
 .edit-todo-form__form-group {
   width: 100%;
   border: none;
+  font-size: 0;
+  &.is-focused {
+    .feather {
+      color: $primary-color;
+    }
+    .edit-todo-form__tags-container {
+      border:1px solid $lt-grey;
+      border-radius: 4px;
+    }
+  }
 }
 
 .edit-todo-form__input--add-tag {
   display: inline-block;
-  width: auto;
+  width: 100%;
 }
 
 .task-details__section-icon {
@@ -151,7 +169,9 @@
   margin-top: 0;
   padding: 8px;
   width: calc(100% - 32px);
+  border: 1px solid transparent;
   border-radius: 4px;
+  vertical-align: top;
   &:focus {
     border: 1px solid $lt-grey;
   }
