@@ -1395,7 +1395,7 @@ input[type="search"].search-form__input {
 
 @media (min-width: 992px) {
   .todo-app__main {
-    padding: 24px;
+    padding: 16px 24px 24px;
   }
 }
 
@@ -2228,7 +2228,7 @@ input[type="search"].search-form__input {
   -webkit-transition: all .2s ease-in-out;
   transition: all .2s ease-in-out;
   border: 1px solid transparent;
-  border-bottom-color: #d6dee2;
+  border-bottom-color: rgba(214, 222, 226, 0.8);
 }
 
 .todo-list__item:hover, .todo-list__item:focus {
@@ -2357,7 +2357,7 @@ input[type="search"].search-form__input {
 }
 
 .active-list__title {
-  margin-bottom: 24px;
+  margin-bottom: 16px;
   font-size: 1.5rem;
   padding: 8px;
 }
@@ -3006,25 +3006,28 @@ input[name="list"]:checked + label::after {
 .views {
   text-align: center;
   width: 100%;
-  max-width: 280px;
-  margin: 24px auto 0;
+  max-width: 170px;
+  margin-left: auto;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -ms-flex-pack: distribute;
-      justify-content: space-around;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
 }
 
 .views__btn {
-  width: 33.33%;
   height: auto;
-  padding: 8px;
-  border: 2px solid transparent;
-  border-radius: 5000px;
+  padding: 0px 8px 8px;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  border-right: none;
+  border-left: none;
+  font-size: 12px;
 }
 
 .views__btn.is-selected {
-  border-color: #6381ff;
+  border-bottom-color: #6381ff;
   color: #6381ff;
 }
 

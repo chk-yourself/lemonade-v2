@@ -103,6 +103,11 @@
         </header>
         <div id="todoAppContainer" class="todo-app__container">
           <main class="todo-app__main" id="main">
+              <div id="views" class="views">
+                  <button type="button" class="btn btn--neutral form__btn views__btn is-selected" data-action="viewAll">All</button>
+                  <button type="button" class="btn btn--neutral form__btn views__btn" data-action="viewActive">Active</button>
+                  <button type="button" class="btn btn--neutral form__btn views__btn" data-action="viewCompleted">Done</button>
+                </div>
             <h1 class="active-list__title" id="activeListTitle"></h1>
             <div id="bulkActionsToolbar" class="toolbar bulk-actions-toolbar">
               <div class="toolbar__item bulk-actions-toolbar__item--check-all" data-action="checkAll">
@@ -151,12 +156,6 @@
               </div>
             </form>
             <!--/ #addTodoForm -->
-
-            <div id="views" class="views">
-              <button type="button" class="btn btn--neutral form__btn views__btn is-selected" data-action="viewAll">All</button>
-              <button type="button" class="btn btn--neutral form__btn views__btn" data-action="viewActive">Active</button>
-              <button type="button" class="btn btn--neutral form__btn views__btn" data-action="viewCompleted">Done</button>
-            </div>
           </main>
           <!--/ todo-app__main-->
 

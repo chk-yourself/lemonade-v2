@@ -340,9 +340,7 @@
   // Add toggleDone functionality to all prebuilt lists
   $all('.todo-list').forEach(list => {
     list.addEventListener('click', toggleDone);
-    if (list.id !== 'upcoming' && list.id !== 'filteredList') {
-      updateTaskCount(list.id);
-    }
+    updateTaskCount(list.id);
   });
 
   // Creates list node for each list object, except for the inbox list
@@ -762,6 +760,7 @@
           : state.filteredList;
       todoAppContainer.classList.remove('show-task-details');
       renderList(currentTasksList, activeList_ul);
+      updateTaskCount(listObj.id);
       $("#alertWarningDeleteTask").classList.remove("is-active");
     }
   }
@@ -1353,7 +1352,7 @@
     }
   }
 
-  const createNavItem = (listObj) => {
+  const createNavItem = (listObj, parentNode = $("#sidebarMenu")) => {
     const iListIcon = createNode("i", {
       "data-feather": "list"
     });
@@ -1364,7 +1363,7 @@
     const spanTaskCount = createNode('span', {
       class: 'sidebar__task-count'
     },
-    item.activeTaskCount > 0 ? '' + item.activeTaskCount : '');
+    ''+listObj.activeTaskCount);
     const aListLink = createNode(
       "a",
       {
@@ -1376,26 +1375,17 @@
       spanTaskCount
     );
     aListLink.addEventListener("click", openList);
-    const item_li =
-      listObj.folder === "null"
-        ? createNode(
+    const liItem = createNode(
             "li",
             {
-              class: "sidebar__item"
-            },
-            aListLink
-          )
-        : createNode(
-            "li",
-            {
-              class: "accordion__sub-item"
+              class: `${listObj.folder === "null" ? 'sidebar__item' : 'accordion__sub-item'}`
             },
             aListLink
           );
     if (listObj.folder === "null") {
-      $("#sidebarMenu").appendChild(item_li);
+      parentNode.appendChild(liItem);
     } else {
-      $(`[data-folder="${listObj.folder}"]`).appendChild(item_li);
+      $(`[data-folder="${listObj.folder}"]`, parentNode).appendChild(liItem);
     }
     // Render feather icons
     feather.replace();
@@ -1415,42 +1405,6 @@
         "data-folder": folder
       });
       renderFolderOption(folder);
-
-      // Creates accordion panel for each folder, with links to children underneath
-      const folderItems = todoLists.filter((list) => list.folder === folder);
-      folderItems.forEach((item) => {
-        const iListIcon = createNode("i", {
-          "data-feather": "list"
-        });
-        const spanListName = createNode('span', {
-          class: "sidebar__list-name"
-        },
-        item.name);
-        const activeTaskCount = +item.activeTaskCount;
-        const spanTaskCount = createNode('span', {
-          class: 'sidebar__task-count'
-        },
-        item.activeTaskCount > 0 ? '' + item.activeTaskCount : '');
-        const aListLink = createNode(
-          "a",
-          {
-            class: "sidebar__link",
-            href: `#${item.id}`
-          },
-          iListIcon,
-          spanListName,
-          spanTaskCount
-        );
-        const liFolderItem = createNode(
-          "li",
-          {
-            class: "accordion__sub-item"
-          },
-          aListLink
-        );
-        ulFolderPanel.appendChild(liFolderItem);
-      });
-
       const iFolderIcon = createNode("i", {
         "data-feather": "folder"
       });
@@ -1471,44 +1425,17 @@
 
       liFolder.addEventListener("click", displayPanel);
       frag.appendChild(liFolder);
+
+      // Creates accordion panel for each folder, with links to children underneath
+      const folderItems = todoLists.filter((list) => list.folder === folder);
+      folderItems.forEach((item) => createNavItem(item, frag));
     });
 
     // Creates regular nav items for miscellaneous lists
     const miscLists = todoLists.filter((list) => list.folder === "null");
     miscLists.forEach((item) => {
       if (item.id !== "inbox") {
-        const iListIcon = createNode("i", {
-          "data-feather": "list"
-        });
-        const spanListName = createNode('span', {
-          class: "sidebar__list-name"
-        },
-        item.name);
-        const spanTaskCount = createNode('span', {
-          class: 'sidebar__task-count'
-        },
-        item.activeTaskCount > 0 ? '' + item.activeTaskCount : '');
-        const aListLink = createNode(
-          "a",
-          {
-            class: "sidebar__link",
-            href: `#${item.id}`
-          },
-          iListIcon,
-          spanListName,
-          spanTaskCount
-        );
-        const miscList_li = createNode(
-          "li",
-          {
-            class: "sidebar__item",
-            "data-folder": "null"
-          },
-          aListLink
-        );
-        frag.appendChild(miscList_li);
-      } else {
-        $('#inboxNavLink .sidebar__task-count').textContent = item.activeTaskCount > 0 ? '' + item.activeTaskCount : '';
+        createNavItem(item, frag);
       }
     });
     $("#sidebarMenu").appendChild(frag);
@@ -1531,6 +1458,12 @@
         today.setHours(0, 0, 0, 0);
         const taskCountDueToday = filterTasksByDueDate(today).length;
         $('.sidebar__task-count', navLink).textContent = taskCountDueToday > 0 ? ''+filterTasksByDueDate(today).length : '';
+        break;
+      case 'upcoming':
+        return;
+        break;
+      case 'filteredList':
+        return;
         break;
       default:
         const listObj = todoLists.find(list => list.id === listId);
@@ -2125,6 +2058,7 @@
       if (newDueDate.valueOf() === today.valueOf()) {
         dueDateLabel.textContent = "Today";
         dueDateLabel.classList.add("badge--today");
+        updateTaskCount('today');
       } else if (newDueDate.valueOf() === tomorrow.valueOf()) {
         dueDateLabel.textContent = "Tomorrow";
         dueDateLabel.classList.add("badge--tomorrow");
@@ -2303,6 +2237,9 @@
 
     saveToStorage();
 
+    // Update task count
+    updateTaskCount(newListObj.id);
+    updateTaskCount(ulActiveList.id);
     // Reload current list to reflect changes
     renderList(currentTasksList, ulActiveList);
     $("#transferTasksFormContainer").classList.remove("is-active");

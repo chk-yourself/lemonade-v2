@@ -3,7 +3,7 @@
   position: relative;
   transition: all .2s ease-in-out;
   border: 1px solid transparent;
-  border-bottom-color: $lt-grey;
+  border-bottom-color: rgba($lt-grey, 0.8);
   &:hover, &:focus {
     background-color: $white;
     .todo-item__btn--neutral {
@@ -111,7 +111,7 @@
 }
 
 .active-list__title {
-  margin-bottom: 24px;
+  margin-bottom: 16px;
   font-size: 1.5rem;
   padding: 8px;
 }
