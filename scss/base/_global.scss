@@ -3,6 +3,9 @@ html {
   font-size: 16px;
   color: $dk-grey;
   font-family: $body-font;
+  height: 100%;
+  padding: 0;
+  margin: 0;
 }
 
 *, *:before, *:after {
@@ -21,6 +24,7 @@ body, h1, h2, h3, h4, p, ol, ul {
 
 body {
   background-color: #fff;
+  height: 100%;
 }
 
 // Fonts

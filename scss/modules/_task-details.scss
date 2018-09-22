@@ -7,6 +7,10 @@
   width: 100%;
   box-shadow: 0 1px 2px 0 rgba(0,0,0,.15);
   overflow-y: visible;
+  height: 100%;
+  @include md {
+    height: auto;
+  }
 }
 
 .task-details__section-title {
@@ -40,6 +44,7 @@
 .task-details__btn--rt {
   float: right;
   position: relative;
+  right: 8px;
 }
 
 .is-visible {
@@ -100,6 +105,7 @@
   padding: 16px 8px;
   margin-bottom: 8px;
   position: relative;
+  font-weight: 500;
 }
 
 .task-details__footer {

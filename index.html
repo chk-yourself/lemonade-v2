@@ -45,20 +45,21 @@
               </ul>
               <!--/ #sidebarMenu -->
               <div class="sidebar__buttons">
-              <button id="openListFormBtn" type="button" class="btn btn--neutral sidebar__btn sidebar__btn--create-list"
-                data-action="openListForm">
-                <i data-feather="plus-circle"></i>Create List</button>
+                <button id="openListFormBtn" type="button" class="btn btn--neutral sidebar__btn sidebar__btn--create-list"
+                  data-action="openListForm">
+                  <i data-feather="plus-circle"></i>Create List</button>
                 <div class="more-actions__wrapper help-actions__wrapper" id="helpActionsWrapper">
                   <button id="btnHelp" type="button" class="btn btn--neutral sidebar__btn sidebar__btn--help more-actions__btn--toggle"
-                data-action="toggleHelpActions">
-                <i data-feather="help-circle"></i>Help</button>
+                    data-action="toggleHelpActions">
+                    <i data-feather="help-circle"></i>Help</button>
                   <div class="more-actions help-actions" id="helpActions">
-                      <button type="button" class="btn btn--neutral more-actions__item" id="btnOpenTour" data-action="openTour">
-                          Take Tour
-                        </button>
-                    </div>
-                    </div>
-                </div> <!--/ .sidebar__buttons -->
+                    <button type="button" class="btn btn--neutral more-actions__item" id="btnOpenTour" data-action="openTour">
+                      Take Tour
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <!--/ .sidebar__buttons -->
             </div>
             <!--/ .sidebar__menu-wrapper -->
             <div class="header__content-wrapper">
@@ -101,47 +102,47 @@
           </nav>
         </header>
         <div id="todoAppContainer" class="todo-app__container">
-        <main class="todo-app__main" id="main">
-          <h1 class="active-list__title" id="activeListTitle"></h1>
-          <div id="bulkActionsToolbar" class="toolbar bulk-actions-toolbar">
-            <div class="toolbar__item bulk-actions-toolbar__item--check-all" data-action="checkAll">
-              <input type="checkbox" id="masterCheckbox" class="bulk-actions__checkbox">
-              <label class="bulk-actions__checkbox-label" for="masterCheckbox" id="masterCheckboxLabel"></label>
-              <p class="toolbar__item-label">Select All/None</p>
-            </div>
-            <div class="toolbar__item flex-column">
-              <button class="btn btn--inline toolbar__btn" type="button" data-action="transferSelected"
-                data-bulk-action="true">
-                <i data-feather="arrow-right-circle"></i>
-                <span class="toolbar__item-label">Move</span>
-              </button>
+          <main class="todo-app__main" id="main">
+            <h1 class="active-list__title" id="activeListTitle"></h1>
+            <div id="bulkActionsToolbar" class="toolbar bulk-actions-toolbar">
+              <div class="toolbar__item bulk-actions-toolbar__item--check-all" data-action="checkAll">
+                <input type="checkbox" id="masterCheckbox" class="bulk-actions__checkbox">
+                <label class="bulk-actions__checkbox-label" for="masterCheckbox" id="masterCheckboxLabel"></label>
+                <p class="toolbar__item-label">Select All/None</p>
+              </div>
+              <div class="toolbar__item flex-column">
+                <button class="btn btn--inline toolbar__btn" type="button" data-action="transferSelected"
+                  data-bulk-action="true">
+                  <i data-feather="arrow-right-circle"></i>
+                  <span class="toolbar__item-label">Move</span>
+                </button>
 
+              </div>
+              <div class="toolbar__item flex-column">
+                <button class="btn btn--inline toolbar__btn" type="button" data-action="deleteSelected"
+                  data-bulk-action="true" id="btnDeleteSelected">
+                  <i data-feather="trash-2"></i>
+                  <span class="toolbar__item-label">Delete</span>
+                </button>
+              </div>
+              <div class="toolbar__item flex-column">
+                <button class="btn btn--inline toolbar__btn" type="button" data-action="closeBulkActionsToolbar">
+                  <i data-feather="x-circle"></i>
+                  <span class="toolbar__item-label">Cancel</span>
+                </button>
+              </div>
             </div>
-            <div class="toolbar__item flex-column">
-              <button class="btn btn--inline toolbar__btn" type="button" data-action="deleteSelected" data-bulk-action="true"
-                id="btnDeleteSelected">
-                <i data-feather="trash-2"></i>
-                <span class="toolbar__item-label">Delete</span>
-              </button>
-            </div>
-            <div class="toolbar__item flex-column">
-              <button class="btn btn--inline toolbar__btn" type="button" data-action="closeBulkActionsToolbar">
-                <i data-feather="x-circle"></i>
-                <span class="toolbar__item-label">Cancel</span>
-              </button>
-            </div>
-          </div>
-          <ul id="inbox" class="todo-list is-active-list" data-name="inbox">
-          </ul>
-          <ul id="filteredList" class="todo-list filtered-list" data-name="filteredList">
-          </ul>
-          <ul id="today" class="todo-list" data-name="today">
-          </ul>
-          <ul id="upcoming" class="todo-list" data-name="upcoming">
-          </ul>
+            <ul id="inbox" class="todo-list is-active-list" data-name="inbox">
+            </ul>
+            <ul id="filteredList" class="todo-list filtered-list" data-name="filteredList">
+            </ul>
+            <ul id="today" class="todo-list" data-name="today">
+            </ul>
+            <ul id="upcoming" class="todo-list" data-name="upcoming">
+            </ul>
 
-          <!-- #addTodoForm -->
-          <form id="addTodoForm" class="form add-todo-form" data-onboarding-target="1">
+            <!-- #addTodoForm -->
+            <form id="addTodoForm" class="form add-todo-form" data-onboarding-target="1">
               <div class="form__form-group--inline add-todo-form__form-group--inline">
                 <button id="addTodoBtn" type="submit" class="btn form__btn form__btn--sm form__btn--neutral btn--inline"
                   data-action="addTodo"><i data-feather="plus-circle"></i></button>
@@ -152,18 +153,19 @@
             <!--/ #addTodoForm -->
 
             <div id="views" class="views">
-                <button type="button" class="btn btn--neutral form__btn views__btn is-selected" data-action="viewAll">All</button>
-                <button type="button" class="btn btn--neutral form__btn views__btn" data-action="viewActive">Active</button>
-                <button type="button" class="btn btn--neutral form__btn views__btn" data-action="viewCompleted">Done</button>
-              </div>
-        </main>
-        <!--/ todo-app__main-->
+              <button type="button" class="btn btn--neutral form__btn views__btn is-selected" data-action="viewAll">All</button>
+              <button type="button" class="btn btn--neutral form__btn views__btn" data-action="viewActive">Active</button>
+              <button type="button" class="btn btn--neutral form__btn views__btn" data-action="viewCompleted">Done</button>
+            </div>
+          </main>
+          <!--/ todo-app__main-->
 
-        <div id="taskDetails" class="task-details">
-          <div class="task-details__header">
-            <button id="btnCloseTaskDetails" type="button" class="form__btn--icon task-details__btn task-details__btn--close" data-action="toggleContent">
-              <i data-feather="arrow-left"></i><span class="list-name"></span>
-            </button></div>
+          <div id="taskDetails" class="task-details">
+            <div class="task-details__header">
+              <button id="btnCloseTaskDetails" type="button" class="form__btn--icon task-details__btn task-details__btn--close"
+                data-action="toggleContent">
+                <i data-feather="arrow-left"></i><span class="list-name"></span>
+              </button></div>
             <form id="editTodoForm" class="form edit-todo-form" data-index="">
               <textarea id="taskName" class="form__textarea todo-item__title task-details__name" data-index="" data-id=""></textarea>
               <input id="taskId" name="taskId" type="hidden" value="">
@@ -173,9 +175,9 @@
                   <span class="due-date-text"></span>
                   <input class="edit-todo-form__input--due-date" id="inputDueDate" type="text" required pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
                 </div>
-  
+
               </div>
-  
+
               <div class="dp-calendar clearfix" id="dpCalendar">
                 <div class="dp-calendar__wrapper dp-calendar__main-header">
                   <button type="button" class="dp-calendar__btn-prevnext dp-calendar__btn-prevnext--prev" id="btnSelectPrevMonth"
@@ -249,10 +251,10 @@
                   <!--/ .d-flex -->
                   <button type="button" class="dp-calendar__btn-prevnext dp-calendar__btn-prevnext--next" id="btnSelectNextMonth"
                     data-action="selectNextMonth"><i data-feather="chevron-right"></i></button>
-  
+
                 </div>
                 <!--/ .dp-calendar__wrapper-->
-  
+
                 <div class="dp-calendar__wrapper dp-calendar__weekday-headers" id="dpCalendarWeekdayHeaders">
                   <div class="dp-calendar__weekday-header">S</div>
                   <div class="dp-calendar__weekday-header">M</div>
@@ -263,14 +265,14 @@
                   <div class="dp-calendar__weekday-header">S</div>
                 </div>
                 <!--/ #dpCalendarWeekdayHeaders-->
-  
+
                 <div class="dp-calendar__wrapper">
                   <div class="dp-calendar__day-picker" id="dpCalendarDayPicker">
                   </div>
                   <!--/ #dpCalendarDayPicker -->
                 </div>
                 <!--/ .dp-calendar__wrapper -->
-  
+
                 <button class="btn btn--primary form__btn form__btn--rt dp-calendar__btn" type="button" id="btnSetDueDate"
                   action="setDueDate">Set</button>
                 <button class="btn btn--neutral form__btn form__btn--rt dp-calendar__btn dp-calendar__btn--reset" type="button"
@@ -279,16 +281,16 @@
                   data-action="clearDueDate">Clear</button>
               </div>
               <!--/ #datePickerCalendar-->
-  
+
               <div class="task-details__section">
                 <div class="task-details__section-icon"><i data-feather="edit-3"></i></div>
                 <textarea id="todoItemNote" class="form__textarea todo-item__note" placeholder="Add a note..."></textarea>
               </div>
-  
+
               <div class="task-details__section">
                 <ul id="subtaskList" class="subtask-list">
                 </ul>
-  
+
                 <div class="form__form-group--inline edit-todo-form__form-group">
                   <button id="btnAddSubtask" type="submit" class="btn btn--neutral form__btn--sm form__btn--neutral btn--inline js-add-subtask-btn task-details__section-icon"
                     data-action="addSubtask">
@@ -298,7 +300,7 @@
                     type="text" data-action="addSubtask" placeholder="Add a subtask" />
                 </div>
               </div>
-  
+
               <div class="task-details__section">
                 <button id="btnAddTag" type="button" class="btn btn--neutral form__btn--sm form__btn--neutral btn--inline task-details__section-icon"
                   data-action="addTag">
@@ -310,7 +312,7 @@
                 </div>
               </div>
               <!--/ #tagsContainer -->
-  
+
               <div class="color-picker" id="colorPicker">
                 <input type="radio" class="color-picker__radio" name="tagColor" id="colorDefault" value="bg--default"
                   checked />
@@ -329,12 +331,12 @@
               <!--/ #colorPicker-->
             </form>
             <div class="task-details__footer clearfix">
-                <button id="btnTriggerWarningDeleteTask" type="button" class="btn btn--neutral form__btn task-details__btn--rt"
+              <button id="btnTriggerWarningDeleteTask" type="button" class="btn btn--neutral form__btn task-details__btn--rt"
                 data-action="triggerWarningDeleteTask"><i data-feather="trash-2"></i></button>
-            </div>
-          </div>
-
-        </div> <!--/ .container -->
+            </div> <!--/ .task-details__footer -->
+          </div> <!--/ #taskDetails -->
+        </div>
+        <!--/ #todoAppContainer -->
 
         <div id="newListFormContainer" class="new-list-form__container modal">
           <div id="newListFormWrapper" class="new-list-form__wrapper modal__content">
@@ -473,7 +475,8 @@
             </button>
             <section class="onboarding__step onboarding__step--0 is-active" data-onboarding-step="0">
               <h3 class="modal__title onboarding__title">Welcome!</h3>
-              <p class="modal__msg">Lemonade is a task management app that helps you get things done. Learn how Lemonade can help you stay on track with any goal you set for yourself.</p>
+              <p class="modal__msg">Lemonade is a task management app that helps you get things done. Learn how
+                Lemonade can help you stay on track with any goal you set for yourself.</p>
               <div class="modal__footer">
                 <button type="button" class="btn form__btn modal__btn modal__btn--close onboarding__btn onboarding__footer-btn"
                   data-action="closeModal">
@@ -511,16 +514,17 @@
                 <li><strong>Clear All</strong> - to delete all the tasks, lists, and folders you ever created</li>
               </ul>
               <p class="onboarding__desc">Click <span class="onboarding__btn--ref btn btn--neutral more-actions__item">Bulk
-                  Actions</span> to perform an action against multiple tasks at once <em>(i.e. discard them, move them to a different list)</em>.</p>
+                  Actions</span> to perform an action against multiple tasks at once <em>(i.e. discard them, move them
+                  to a different list)</em>.</p>
             </section>
             <section class="onboarding__step onboarding__step--4" data-onboarding-step="4">
               <h3 class="modal__title onboarding__title">Great job!</h3>
               <p class="onboarding__desc">You've learned how to:</p>
-                <ul class="onboarding__list">
+              <ul class="onboarding__list">
                 <li><strong>Create a task</strong> and add details, like notes, subtasks, tags, and a due date</li>
                 <li><strong>Build custom lists</strong> and organize them into folders</li>
                 <li><strong>Edit multiple tasks at once</strong> using the bulk actions toolbar</li>
-                </ul>
+              </ul>
               <div class="modal__footer">
                 <button type="button" class="btn form__btn modal__btn modal__btn--neutral onboarding__btn onboarding__footer-btn"
                   data-action="beginTour">
@@ -553,8 +557,8 @@
         <!--/ #onboarding -->
 
         <!-- Onboarding: Step 1 / Part 1 -->
-        <div class="tooltip onboarding__tooltip tooltip--bottom onboarding__tooltip--1-1" id="onboardingTooltip_1-1" data-onboarding-step="1"
-          data-order="0">
+        <div class="tooltip onboarding__tooltip tooltip--bottom onboarding__tooltip--1-1" id="onboardingTooltip_1-1"
+          data-onboarding-step="1" data-order="0">
           <div class="tooltip__inner clearfix">
             <button type="button" class="form__btn--icon tooltip__btn--close tooltip__icon-btn--close" data-action="closeTooltip">
               <i data-feather="x"></i>
