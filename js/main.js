@@ -1701,7 +1701,7 @@
     const folder = listObj.folder;
     if (
       folder !== "null" &&
-      todoLists.filter((list) => list.folder === "folder").length === 0
+      todoLists.filter((list) => list.folder === folder).length === 0
     ) {
       // Delete nav folder item
       $(`[data-folder="${listObj.folder}"]`).parentNode.remove();
