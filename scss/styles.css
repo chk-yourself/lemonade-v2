@@ -4,7 +4,7 @@ html {
   font-size: 16px;
   color: #404551;
   font-family: "Roboto", Arial, sans-serif;
-  height: 100%;
+  min-height: 100%;
   padding: 0;
   margin: 0;
 }
@@ -26,7 +26,7 @@ body, h1, h2, h3, h4, p, ol, ul {
 
 body {
   background-color: #fff;
-  height: 100%;
+  min-height: 100%;
 }
 
 h1, h2, h3, h4 {
@@ -1384,7 +1384,7 @@ input[type="search"].search-form__input {
   background-color: rgba(255, 255, 255, 0.8);
   -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.15);
           box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.15);
-  height: 100%;
+  min-height: 100%;
 }
 
 @media (min-width: 768px) {
@@ -1413,8 +1413,7 @@ input[type="search"].search-form__input {
       -ms-flex-pack: center;
           justify-content: center;
   position: relative;
-  height: 100%;
-  max-height: calc(100% - 58px);
+  min-height: calc(100% - 58px);
 }
 
 @media (min-width: 768px) {
@@ -2617,11 +2616,15 @@ label.bulk-actions__checkbox-label {
           box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.15);
   overflow-y: visible;
   height: 100%;
+  min-height: 100vh;
 }
 
 @media (min-width: 768px) {
   .task-details {
     height: auto;
+    min-height: auto;
+    -ms-flex-item-align: start;
+        align-self: flex-start;
   }
 }
 

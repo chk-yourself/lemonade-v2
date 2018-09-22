@@ -84,7 +84,7 @@
   overflow-y: visible;
   background-color: rgba($white, 0.8);
   box-shadow: 0 1px 2px 0 rgba(0,0,0,.15);
-  height: 100%;
+  min-height: 100%;
   @include md {
     height: auto;
     padding: 16px;
@@ -104,8 +104,7 @@
   display: flex;
   justify-content: center;
   position: relative;
-  height: 100%;
-  max-height: calc(100% - 58px);
+  min-height: calc(100% - 58px);
   @include md {
     padding: 16px;
     height: auto;
