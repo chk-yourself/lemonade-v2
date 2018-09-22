@@ -1349,6 +1349,10 @@
     const iListIcon = createNode("i", {
       "data-feather": "list"
     });
+    const spanListName = createNode('span', {
+      class: "sidebar__list-name"
+    },
+    listObj.name);
     const aListLink = createNode(
       "a",
       {
@@ -1356,7 +1360,7 @@
         href: `#${listObj.id}`
       },
       iListIcon,
-      listObj.name
+      spanListName
     );
     aListLink.addEventListener("click", openList);
     const item_li =
@@ -1405,6 +1409,10 @@
         const iListIcon = createNode("i", {
           "data-feather": "list"
         });
+        const spanListName = createNode('span', {
+          class: "sidebar__list-name"
+        },
+        item.name);
         const aListLink = createNode(
           "a",
           {
@@ -1412,7 +1420,7 @@
             href: `#${item.id}`
           },
           iListIcon,
-          item.name
+          spanListName
         );
         const liFolderItem = createNode(
           "li",
@@ -1453,6 +1461,10 @@
         const iListIcon = createNode("i", {
           "data-feather": "list"
         });
+        const spanListName = createNode('span', {
+          class: "sidebar__list-name"
+        },
+        item.name);
         const aListLink = createNode(
           "a",
           {
@@ -1460,7 +1472,7 @@
             href: `#${item.id}`
           },
           iListIcon,
-          item.name
+          spanListName
         );
         const miscList_li = createNode(
           "li",
@@ -1632,7 +1644,7 @@
       state.activeList.name = newListName;
 
       // Update list nav link
-      listNavLink.textContent = newListName;
+      $('.sidebar__list-name', listNavLink).textContent = newListName;
       $("#activeListTitle").textContent = newListName;
     }
     // Create new folder

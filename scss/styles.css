@@ -2141,6 +2141,10 @@ input[type="search"].search-form__input {
   }
 }
 
+.sidebar__list-name {
+  pointer-events: none;
+}
+
 .sidebar__buttons {
   margin-top: 16px;
   position: relative;
