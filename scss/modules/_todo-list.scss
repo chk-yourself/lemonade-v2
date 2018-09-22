@@ -16,8 +16,8 @@
       border-color: $dk-grey;
     }
   }
-  &.is-expanded {
-    background-color: rgba($primary-color, 0.2);
+  &.is-selected {
+    background-color: rgba($primary-color, 0.15);
     .todo-item__btn--neutral {
       border-color: $dk-grey;
     }

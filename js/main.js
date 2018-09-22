@@ -47,6 +47,9 @@
     findTaskIndex(taskId) {
       return this.tasks.findIndex((task) => task.id === taskId);
     }
+    get activeTaskCount() {
+      return this.tasks.filter(task => !task.done).length;
+    }
   }
 
   class Subtask {
@@ -335,7 +338,12 @@
   displayList(inbox);
 
   // Add toggleDone functionality to all prebuilt lists
-  $all('.todo-list').forEach(list => list.addEventListener('click', toggleDone));
+  $all('.todo-list').forEach(list => {
+    list.addEventListener('click', toggleDone);
+    if (list.id !== 'upcoming' && list.id !== 'filteredList') {
+      updateTaskCount(list.id);
+    }
+  });
 
   // Creates list node for each list object, except for the inbox list
   todoLists.forEach((list, i) => {
@@ -343,6 +351,8 @@
       createList(list);
     }
   });
+
+
 
   // Adds new task object to current list array
   function addTodo(e) {
@@ -357,6 +367,7 @@
       state.activeList.tasks.push(todo); // Add new item to bottom of the list
       saveToStorage();
       populateList(state.activeList.tasks, activeList_ul);
+      updateTaskCount(state.activeList.id);
     }
     target.reset();
     if (target.offsetTop >= window.innerHeight) {
@@ -502,6 +513,9 @@
     }
 
     saveToStorage();
+
+    // Update active task count in sidebar
+    updateTaskCount(state.activeList.id);
 
     const currentTasksList =
       state.filteredList === null ? state.activeList.tasks : state.filteredList;
@@ -713,7 +727,7 @@
     }
 
     if (todoAppContainer.classList.contains("show-task-details")) {
-      todoItem.classList.remove("is-expanded");
+      todoItem.classList.remove("is-selected");
       todoAppContainer.classList.remove("show-task-details");
       const tags = $all("#tagsContainer .tag", taskDetails);
       tags.forEach((x) => x.remove());
@@ -724,12 +738,12 @@
       $("#dpCalendar").classList.remove("is-active");
       todoAppContainer.classList.add('show-task-details');
       populateContent(id);
-      todoItem.classList.add("is-expanded");
+      todoItem.classList.add("is-selected");
       $all('.todo-list__item', ulActiveList).forEach(item => {
         if (item === todoItem) {
-          item.classList.add('is-expanded');
+          item.classList.add('is-selected');
         } else {
-          item.classList.remove('is-expanded');
+          item.classList.remove('is-selected');
         }
       });
     }
@@ -1284,7 +1298,7 @@
     renderList(currentTasksList, ulActiveList);
     if (todoAppContainer.classList.contains('show-task-details')) {
       const activeTask = $(`#${hiddenTaskId.value}`);
-      activeTask.classList.add('is-expanded');
+      activeTask.classList.add('is-selected');
     }
   }
 
@@ -1347,6 +1361,10 @@
       class: "sidebar__list-name"
     },
     listObj.name);
+    const spanTaskCount = createNode('span', {
+      class: 'sidebar__task-count'
+    },
+    item.activeTaskCount > 0 ? '' + item.activeTaskCount : '');
     const aListLink = createNode(
       "a",
       {
@@ -1354,7 +1372,8 @@
         href: `#${listObj.id}`
       },
       iListIcon,
-      spanListName
+      spanListName,
+      spanTaskCount
     );
     aListLink.addEventListener("click", openList);
     const item_li =
@@ -1407,6 +1426,11 @@
           class: "sidebar__list-name"
         },
         item.name);
+        const activeTaskCount = +item.activeTaskCount;
+        const spanTaskCount = createNode('span', {
+          class: 'sidebar__task-count'
+        },
+        item.activeTaskCount > 0 ? '' + item.activeTaskCount : '');
         const aListLink = createNode(
           "a",
           {
@@ -1414,7 +1438,8 @@
             href: `#${item.id}`
           },
           iListIcon,
-          spanListName
+          spanListName,
+          spanTaskCount
         );
         const liFolderItem = createNode(
           "li",
@@ -1459,6 +1484,10 @@
           class: "sidebar__list-name"
         },
         item.name);
+        const spanTaskCount = createNode('span', {
+          class: 'sidebar__task-count'
+        },
+        item.activeTaskCount > 0 ? '' + item.activeTaskCount : '');
         const aListLink = createNode(
           "a",
           {
@@ -1466,7 +1495,8 @@
             href: `#${item.id}`
           },
           iListIcon,
-          spanListName
+          spanListName,
+          spanTaskCount
         );
         const miscList_li = createNode(
           "li",
@@ -1477,6 +1507,8 @@
           aListLink
         );
         frag.appendChild(miscList_li);
+      } else {
+        $('#inboxNavLink .sidebar__task-count').textContent = item.activeTaskCount > 0 ? '' + item.activeTaskCount : '';
       }
     });
     $("#sidebarMenu").appendChild(frag);
@@ -1490,6 +1522,22 @@
   }
 
   renderNavItems();
+
+  function updateTaskCount(listId) {
+    const navLink = $(`.sidebar__link[href="#${listId}"]`);
+    switch (listId) {
+      case 'today':
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const taskCountDueToday = filterTasksByDueDate(today).length;
+        $('.sidebar__task-count', navLink).textContent = taskCountDueToday > 0 ? ''+filterTasksByDueDate(today).length : '';
+        break;
+      default:
+        const listObj = todoLists.find(list => list.id === listId);
+        $('.sidebar__task-count', navLink).textContent = listObj.activeTaskCount > 0 ? ''+listObj.activeTaskCount : '';
+        break;
+    }
+  }
 
   function openList(e) {
     e.preventDefault();

@@ -152,10 +152,11 @@
     display: inline-block;
     padding: 8px 0 8px 16px;
     border-radius: 5000px;
+    position: relative;
     &:hover,
     &:active,
     &.is-active {
-      background-color: rgba($primary-color, 0.2);
+      background-color: rgba($primary-color, 0.15);
     }
     @include md {
       font-weight: 400;
@@ -229,4 +230,11 @@ position: relative;
 
 .help-actions {
   left: 40px;
+}
+
+.sidebar__task-count {
+  position: absolute;
+  top: calc(50% - 8px);
+  right: 16px;
+  font-size: 12px;
 }
