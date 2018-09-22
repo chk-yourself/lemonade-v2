@@ -1,0 +1,20 @@
+.views {
+  text-align: center;
+  width: 100%;
+  max-width: 280px;
+  margin: 24px auto 0;
+  display: flex;
+  justify-content: space-around;
+}
+
+.views__btn {
+  width: 33.33%;
+  height: auto;
+  padding: 8px;
+  border: 2px solid transparent;
+  border-radius: 5000px;
+  &.is-selected {
+    border-color: $primary-color;
+    color: $primary-color;
+  }
+}

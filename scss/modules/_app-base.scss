@@ -71,3 +71,31 @@
     margin: 0;
   }
 }
+
+.todo-app__main {
+  position: relative;
+  padding: 16px;
+  max-width: 960px;
+  margin: 16px auto 0;
+  overflow-y: scroll;
+  background-color: rgba($white, 0.8);
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,.15);
+  @include md {
+    padding: 24px;
+  }
+  @include lg {
+    padding: 24px 32px 32px;
+  }
+  &.show-search-results {
+    .active-list__title {
+      font-size: 1.25rem;
+      font-weight: 400;
+    }
+  }
+}
+
+@media (min-width: 960px) {
+  .todo-app__main {
+    margin-top: 24px;
+  }
+}

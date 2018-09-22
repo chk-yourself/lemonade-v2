@@ -72,6 +72,11 @@
   border: none;
 }
 
+.edit-todo-form__input--add-tag {
+  display: inline-block;
+  width: auto;
+}
+
 .todo-content__section-icon {
   width: 32px;
   height: 40px;
@@ -95,4 +100,17 @@
   &:focus {
     border: 1px solid $lt-grey;
   }
+}
+
+// Subtasks
+
+.subtask-list {
+  margin: 0 0 4px 0;
+  width: 100%;
+  list-style-type: none;
+}
+
+.subtask-list__item {
+  margin: 0 0 4px 0;
+  padding: 4px 7px;
 }

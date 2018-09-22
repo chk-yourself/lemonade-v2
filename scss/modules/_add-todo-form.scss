@@ -1,0 +1,30 @@
+.add-todo-form {
+  &.is-hidden {
+    display: none;
+  }
+}
+
+.add-todo-form__form-group--inline {
+  background-color: rgba($white, 0.8);
+  border: 1px solid transparent;
+  padding-left: 8px;
+  border-radius: 0;
+  .feather {
+    color: $primary-color;
+  }
+  &.is-focused {
+    background-color: $white;
+  }
+}
+
+.add-todo-form__input {
+  &::placeholder {
+    color: $primary-color;
+  }
+  &:focus {
+    outline: none;
+    &::placeholder {
+      color: rgba($dk-grey, 0.6);
+    }
+  }
+}

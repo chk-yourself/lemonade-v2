@@ -143,21 +143,21 @@
           <!-- #addTodoForm -->
           <form id="addTodoForm" class="form add-todo-form" data-onboarding-target="1">
               <div class="form__form-group--inline add-todo-form__form-group--inline">
-                <button id="addTodoBtn" type="submit" class="btn form__btn form__btn--sm form__btn--neutral cross-icon cross-icon--dk btn--inline"
-                  data-action="addTodo"></button>
+                <button id="addTodoBtn" type="submit" class="btn form__btn form__btn--sm form__btn--neutral btn--inline"
+                  data-action="addTodo"><i data-feather="plus-circle"></i></button>
                 <input id="todoInput" class="form__input form__input--inline add-todo-form__input" type="text"
-                  placeholder="Add a todo" />
+                  placeholder="Add a task" />
               </div>
             </form>
             <!--/ #addTodoForm -->
+        </main>
+        <!--/ todo-app__main-->
 
-          <div id="views" class="views">
+        <div id="views" class="views">
             <button type="button" class="btn btn--neutral form__btn views__btn is-selected" data-action="viewAll">All</button>
             <button type="button" class="btn btn--neutral form__btn views__btn" data-action="viewActive">Active</button>
             <button type="button" class="btn btn--neutral form__btn views__btn" data-action="viewCompleted">Done</button>
           </div>
-        </main>
-        <!--/ todo-app__main-->
 
         <div id="newListFormContainer" class="new-list-form__container modal">
           <div id="newListFormWrapper" class="new-list-form__wrapper modal__content">

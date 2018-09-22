@@ -1,5 +1,4 @@
 .todo-list__item {
-  box-shadow: 0 1px 2px 0 rgba(0,0,0,.15);
   color: $black;
   position: relative;
   transition: all .2s ease-in-out;
@@ -51,43 +50,14 @@
   }
 }
 
-
-.add-todo-form__form-group--inline {
-  background-color: $white;
-  border: 1px solid transparent;
-  padding-left: 8px;
-  border-radius: 0;
-  box-shadow: 0 1px 2px 0 rgba(0,0,0,.15);
-  &.is-focused {
-    border-color: rgba($primary-color, 0.4);
-    .cross-icon--dk::before,
-    .cross-icon--dk::after {
-      background-color: $primary-color;
-    }
-  }
-}
-
-#todoInput:focus {
-  outline: none;
-}
-
-.todo-list,
-.subtask-list{
-  list-style-type: none;
-}
-
 .todo-list {
   margin: 16px 0 0;
   display: none;
+  list-style-type: none;
   &.is-active-list {
     display: block;
     position: relative;
   }
-}
-
-.subtask-list {
-  margin: 0 0 4px 0;
-  width: 100%;
 }
 
 .todo-list__item,
@@ -99,16 +69,11 @@
   font-family: $body-font;
   width: 100%;
   line-height: 16px;
-  background-color: rgba($white, 0.75);
+  background-color: rgba($white, 0.8);
 }
 
 .is-done {
   background-color: transparent;
-}
-
-.subtask-list__item {
-  margin: 0 0 4px 0;
-  padding: 4px 7px;
 }
 
 .todo-item__toggle-btn {
@@ -155,62 +120,12 @@
   }
 }
 
-.views {
-  text-align: center;
-  width: 100%;
-  max-width: 280px;
-  margin: 24px auto 0;
-  display: flex;
-  justify-content: space-around;
-}
-
-.views__btn {
-  width: 33.33%;
-  height: auto;
-  padding: 8px;
-  border: 2px solid transparent;
-  border-radius: 5000px;
-  &.is-selected {
-    border-color: $primary-color;
-    color: $primary-color;
-  }
-}
-
-.edit-todo-form__input--add-tag {
-  display: inline-block;
-  width: auto;
-}
-
 .active-list__title {
   margin-bottom: 24px;
   font-size: 1.75rem;
 }
 
-.todo-app__main {
-  position: relative;
-  padding: 16px;
-  max-width: 960px;
-  margin: 0 auto;
-  overflow-y: scroll;
-  @include md {
-    padding: 24px;
-  }
-  @include lg {
-    padding: 24px 32px 32px;
-  }
-  &.show-search-results {
-    .active-list__title {
-      font-size: 1.25rem;
-      font-weight: 400;
-    }
-  }
-}
-
-.add-todo-form {
-  &.is-hidden {
-    display: none;
-  }
-}
+// Filtered Lists
 
 .filtered-list {
   list-style-type: none;
