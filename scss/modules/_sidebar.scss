@@ -40,6 +40,10 @@
     width: 250px;
     left: -250px;
   }
+  @include lg {
+    width: 300px;
+    left: -300px;
+  }
   & > .sidebar__btn--toggle {
     position: absolute;
     top: 10px;

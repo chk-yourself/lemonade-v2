@@ -5,12 +5,20 @@
   height: 100%;
   overflow-x: hidden;
   &.show-nav {
+    @include sm {
+      .todo-app {
+        width: calc(100% - 250px);
+      }
+    }
     @include md {
       .tag-label {
         display: none;
       }
       .tooltip__btn--tags {
         display: inline-block;
+      }
+      .todo-app {
+        width: calc(100% - 300px);
       }
     }
     @include lg {
@@ -32,12 +40,15 @@
         -webkit-transform: translate3d(250px, 0, 0);
         transform: translate3d(250px, 0, 0);
       }
+      @include lg {
+        -webkit-transform: translateX(300px);
+        transform: translateX(300px);
+        -webkit-transform: translate3d(300px, 0, 0);
+        transform: translate3d(300px, 0, 0);
+      }
     }
     .sidebar__btn--toggle-open {
       visibility: hidden;
-    }
-    .todo-app {
-      width: calc(100% - 250px);
     }
   }
 }
