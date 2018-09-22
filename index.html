@@ -100,7 +100,7 @@
             <!--/ .header__content-wrapper -->
           </nav>
         </header>
-
+        <div id="todoAppContainer" class="todo-app__container">
         <main class="todo-app__main" id="main">
           <h1 class="active-list__title" id="activeListTitle"></h1>
           <div id="bulkActionsToolbar" class="toolbar bulk-actions-toolbar">
@@ -150,14 +150,191 @@
               </div>
             </form>
             <!--/ #addTodoForm -->
+
+            <div id="views" class="views">
+                <button type="button" class="btn btn--neutral form__btn views__btn is-selected" data-action="viewAll">All</button>
+                <button type="button" class="btn btn--neutral form__btn views__btn" data-action="viewActive">Active</button>
+                <button type="button" class="btn btn--neutral form__btn views__btn" data-action="viewCompleted">Done</button>
+              </div>
         </main>
         <!--/ todo-app__main-->
 
-        <div id="views" class="views">
-            <button type="button" class="btn btn--neutral form__btn views__btn is-selected" data-action="viewAll">All</button>
-            <button type="button" class="btn btn--neutral form__btn views__btn" data-action="viewActive">Active</button>
-            <button type="button" class="btn btn--neutral form__btn views__btn" data-action="viewCompleted">Done</button>
+        <div id="taskDetails" class="task-details">
+          <div class="task-details__header">
+            <button id="btnCloseTaskDetails" type="button" class="form__btn--icon task-details__btn task-details__btn--close" data-action="toggleContent">
+              <i data-feather="arrow-left"></i><span class="list-name"></span>
+            </button></div>
+            <form id="editTodoForm" class="form edit-todo-form" data-index="">
+              <textarea id="taskName" class="form__textarea todo-item__title task-details__name" data-index="" data-id=""></textarea>
+              <input id="taskId" name="taskId" type="hidden" value="">
+              <div class="task-details__section">
+                <div class="task-details__section-icon"><i data-feather="calendar"></i></div>
+                <div class="edit-todo-form__due-date-wrapper" id="dueDateWrapper">
+                  <span class="due-date-text"></span>
+                  <input class="edit-todo-form__input--due-date" id="inputDueDate" type="text" required pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
+                </div>
+  
+              </div>
+  
+              <div class="dp-calendar clearfix" id="dpCalendar">
+                <div class="dp-calendar__wrapper dp-calendar__main-header">
+                  <button type="button" class="dp-calendar__btn-prevnext dp-calendar__btn-prevnext--prev" id="btnSelectPrevMonth"
+                    data-action="selectPrevMonth"><i data-feather="chevron-left"></i></button>
+                  <div class="d-flex justify-content-center">
+                    <div class="dp-calendar__month-picker" id="dpCalendarMonthPicker">
+                      <button type="button" class="dp-calendar__toggle-btn dp-calendar__toggle-btn--month" id="btnToggleMonthDropdown"
+                        data-action="toggleMonthDropdown"><span class="btn-text"></span><i data-feather="chevron-down"></i></button>
+                      <div class="dp-calendar__dropdown dp-calendar__dropdown--month" id="dpCalendarMonthDropdown"
+                        data-name="month">
+                        <input id="jan" type="radio" class="dp-calendar__radio" name="month" value="January">
+                        <label for="jan" class="dp-calendar__month">
+                          January
+                        </label>
+                        <input id="feb" type="radio" class="dp-calendar__radio" name="month" value="February">
+                        <label for="feb" class="dp-calendar__month">
+                          February
+                        </label>
+                        <input id="mar" type="radio" class="dp-calendar__radio" name="month" value="March">
+                        <label for="mar" class="dp-calendar__month">
+                          March
+                        </label>
+                        <input id="apr" type="radio" class="dp-calendar__radio" name="month" value="April">
+                        <label for="apr" class="dp-calendar__month">
+                          April
+                        </label>
+                        <input id="may" type="radio" class="dp-calendar__radio" name="month" value="May">
+                        <label for="may" class="dp-calendar__month">
+                          May
+                        </label>
+                        <input id="jun" type="radio" class="dp-calendar__radio" name="month" value="June">
+                        <label for="jun" class="dp-calendar__month">
+                          June
+                        </label>
+                        <input id="jul" type="radio" class="dp-calendar__radio" name="month" value="July">
+                        <label for="jul" class="dp-calendar__month">
+                          July
+                        </label>
+                        <input id="aug" type="radio" class="dp-calendar__radio" name="month" value="August">
+                        <label for="aug" class="dp-calendar__month">
+                          August
+                        </label>
+                        <input id="sep" type="radio" class="dp-calendar__radio" name="month" value="September">
+                        <label for="sep" class="dp-calendar__month">
+                          September
+                        </label>
+                        <input id="oct" type="radio" class="dp-calendar__radio" name="month" value="October">
+                        <label for="oct" class="dp-calendar__month">
+                          October
+                        </label>
+                        <input id="nov" type="radio" class="dp-calendar__radio" name="month" value="November">
+                        <label for="nov" class="dp-calendar__month">
+                          November
+                        </label>
+                        <input id="dec" type="radio" class="dp-calendar__radio" name="month" value="December">
+                        <label for="dec" class="dp-calendar__month">
+                          December
+                        </label>
+                      </div>
+                    </div>
+                    <!--/ #dpCalendarMonthPicker-->
+                    <div class="dp-calendar__year-picker" id="dpCalendarYearPicker">
+                      <button type="button" class="dp-calendar__toggle-btn dp-calendar__toggle-btn--year" id="btnToggleYearDropdown"
+                        data-action="toggleYearDropdown"><span class="btn-text"></span><i data-feather="chevron-down"></i></button>
+                      <div class="dp-calendar__dropdown dp-calendar__dropdown--year" id="dpCalendarYearDropdown"
+                        data-name="year">
+                      </div>
+                    </div>
+                    <!--/ #dpCalendarYearPicker-->
+                  </div>
+                  <!--/ .d-flex -->
+                  <button type="button" class="dp-calendar__btn-prevnext dp-calendar__btn-prevnext--next" id="btnSelectNextMonth"
+                    data-action="selectNextMonth"><i data-feather="chevron-right"></i></button>
+  
+                </div>
+                <!--/ .dp-calendar__wrapper-->
+  
+                <div class="dp-calendar__wrapper dp-calendar__weekday-headers" id="dpCalendarWeekdayHeaders">
+                  <div class="dp-calendar__weekday-header">S</div>
+                  <div class="dp-calendar__weekday-header">M</div>
+                  <div class="dp-calendar__weekday-header">T</div>
+                  <div class="dp-calendar__weekday-header">W</div>
+                  <div class="dp-calendar__weekday-header">T</div>
+                  <div class="dp-calendar__weekday-header">F</div>
+                  <div class="dp-calendar__weekday-header">S</div>
+                </div>
+                <!--/ #dpCalendarWeekdayHeaders-->
+  
+                <div class="dp-calendar__wrapper">
+                  <div class="dp-calendar__day-picker" id="dpCalendarDayPicker">
+                  </div>
+                  <!--/ #dpCalendarDayPicker -->
+                </div>
+                <!--/ .dp-calendar__wrapper -->
+  
+                <button class="btn btn--primary form__btn form__btn--rt dp-calendar__btn" type="button" id="btnSetDueDate"
+                  action="setDueDate">Set</button>
+                <button class="btn btn--neutral form__btn form__btn--rt dp-calendar__btn dp-calendar__btn--reset" type="button"
+                  id="btnResetDueDate" data-action="resetDueDate">Cancel</button>
+                <button class="btn btn--neutral form__btn dp-calendar__btn dp-calendar__btn--clear" type="button" id="btnClearDueDate"
+                  data-action="clearDueDate">Clear</button>
+              </div>
+              <!--/ #datePickerCalendar-->
+  
+              <div class="task-details__section">
+                <div class="task-details__section-icon"><i data-feather="edit-3"></i></div>
+                <textarea id="todoItemNote" class="form__textarea todo-item__note" placeholder="Add a note..."></textarea>
+              </div>
+  
+              <div class="task-details__section">
+                <ul id="subtaskList" class="subtask-list">
+                </ul>
+  
+                <div class="form__form-group--inline edit-todo-form__form-group">
+                  <button id="btnAddSubtask" type="submit" class="btn btn--neutral form__btn--sm form__btn--neutral btn--inline js-add-subtask-btn task-details__section-icon"
+                    data-action="addSubtask">
+                    <i data-feather="plus-circle"></i>
+                  </button>
+                  <input id="newSubtaskInput" class="form__input form__input--inline edit-todo-form__input--subtask edit-todo-form__input"
+                    type="text" data-action="addSubtask" placeholder="Add a subtask" />
+                </div>
+              </div>
+  
+              <div class="task-details__section">
+                <button id="btnAddTag" type="button" class="btn btn--neutral form__btn--sm form__btn--neutral btn--inline task-details__section-icon"
+                  data-action="addTag">
+                  <i data-feather="tag"></i>
+                </button>
+                <div class="todo-content__tags form__form-group--inline edit-todo-form__form-group--inline" id="tagsContainer">
+                  <input id="newTagInput" class="form__input form__input--inline edit-todo-form__input--add-tag" type="text"
+                    data-action="addTag" placeholder="Add a tag" />
+                </div>
+              </div>
+              <!--/ #tagsContainer -->
+  
+              <div class="color-picker" id="colorPicker">
+                <input type="radio" class="color-picker__radio" name="tagColor" id="colorDefault" value="bg--default"
+                  checked />
+                <label class="color-picker__swatch bg--default" for="colorDefault"></label>
+                <input type="radio" class="color-picker__radio" name="tagColor" value="bg--dk-orange" id="colorOrange" />
+                <label class="color-picker__swatch bg--dk-orange" for="colorOrange"></label>
+                <input type="radio" class="color-picker__radio" name="tagColor" value="bg--dk-pink" id="colorPink" />
+                <label class="color-picker__swatch bg--dk-pink" for="colorPink"></label>
+                <input type="radio" class="color-picker__radio" name="tagColor" value="bg--dk-blue" id="colorBlue">
+                <label class="color-picker__swatch bg--dk-blue" for="colorBlue"></label>
+                <input type="radio" class="color-picker__radio" name="tagColor" value="bg--dk-purple" id="colorPurple">
+                <label class="color-picker__swatch bg--dk-purple" for="colorPurple"></label>
+                <input type="radio" class="color-picker__radio" name="tagColor" id="colorGreen" value="bg--dk-green">
+                <label class="color-picker__swatch bg--dk-green" for="colorGreen"></label>
+              </div>
+              <!--/ #colorPicker-->
+            </form>
+            <div class="task-details__footer clearfix">
+                <button id="btnTriggerWarningDeleteTask" type="button" class="btn btn--neutral form__btn task-details__btn--rt"
+                data-action="triggerWarningDeleteTask"><i data-feather="trash-2"></i></button>
+            </div>
           </div>
+
+        </div> <!--/ .container -->
 
         <div id="newListFormContainer" class="new-list-form__container modal">
           <div id="newListFormWrapper" class="new-list-form__wrapper modal__content">
@@ -395,7 +572,7 @@
               <i data-feather="x"></i>
             </button>
             <h3 class="tooltip__title">Add task details</h3>
-            <p class="tooltip__text">Click here to add notes, subtasks, tags, and set a due date.</p>
+            <p class="tooltip__text">Click your task to add notes, subtasks, tags, and set a due date.</p>
           </div>
         </div>
 
@@ -482,176 +659,6 @@
             <p class="tooltip__text">Click the trash icon to discard all selected items with one click.</p>
           </div>
         </div>
-
-        <div id="todoContent" class="todo-content clearfix">
-          <form id="editTodoForm" class="form edit-todo-form" data-index="">
-
-            <div class="todo-content__section">
-              <div class="todo-content__section-icon"><i data-feather="calendar"></i></div>
-              <div class="edit-todo-form__due-date-wrapper" id="dueDateWrapper">
-                <span class="due-date-text"></span>
-                <input class="edit-todo-form__input--due-date" id="inputDueDate" type="text" required pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
-              </div>
-
-            </div>
-
-            <div class="dp-calendar clearfix" id="dpCalendar">
-              <div class="dp-calendar__wrapper dp-calendar__main-header">
-                <button type="button" class="dp-calendar__btn-prevnext dp-calendar__btn-prevnext--prev" id="btnSelectPrevMonth"
-                  data-action="selectPrevMonth"><i data-feather="chevron-left"></i></button>
-                <div class="d-flex justify-content-center">
-                  <div class="dp-calendar__month-picker" id="dpCalendarMonthPicker">
-                    <button type="button" class="dp-calendar__toggle-btn dp-calendar__toggle-btn--month" id="btnToggleMonthDropdown"
-                      data-action="toggleMonthDropdown"><span class="btn-text"></span><i data-feather="chevron-down"></i></button>
-                    <div class="dp-calendar__dropdown dp-calendar__dropdown--month" id="dpCalendarMonthDropdown"
-                      data-name="month">
-                      <input id="jan" type="radio" class="dp-calendar__radio" name="month" value="January">
-                      <label for="jan" class="dp-calendar__month">
-                        January
-                      </label>
-                      <input id="feb" type="radio" class="dp-calendar__radio" name="month" value="February">
-                      <label for="feb" class="dp-calendar__month">
-                        February
-                      </label>
-                      <input id="mar" type="radio" class="dp-calendar__radio" name="month" value="March">
-                      <label for="mar" class="dp-calendar__month">
-                        March
-                      </label>
-                      <input id="apr" type="radio" class="dp-calendar__radio" name="month" value="April">
-                      <label for="apr" class="dp-calendar__month">
-                        April
-                      </label>
-                      <input id="may" type="radio" class="dp-calendar__radio" name="month" value="May">
-                      <label for="may" class="dp-calendar__month">
-                        May
-                      </label>
-                      <input id="jun" type="radio" class="dp-calendar__radio" name="month" value="June">
-                      <label for="jun" class="dp-calendar__month">
-                        June
-                      </label>
-                      <input id="jul" type="radio" class="dp-calendar__radio" name="month" value="July">
-                      <label for="jul" class="dp-calendar__month">
-                        July
-                      </label>
-                      <input id="aug" type="radio" class="dp-calendar__radio" name="month" value="August">
-                      <label for="aug" class="dp-calendar__month">
-                        August
-                      </label>
-                      <input id="sep" type="radio" class="dp-calendar__radio" name="month" value="September">
-                      <label for="sep" class="dp-calendar__month">
-                        September
-                      </label>
-                      <input id="oct" type="radio" class="dp-calendar__radio" name="month" value="October">
-                      <label for="oct" class="dp-calendar__month">
-                        October
-                      </label>
-                      <input id="nov" type="radio" class="dp-calendar__radio" name="month" value="November">
-                      <label for="nov" class="dp-calendar__month">
-                        November
-                      </label>
-                      <input id="dec" type="radio" class="dp-calendar__radio" name="month" value="December">
-                      <label for="dec" class="dp-calendar__month">
-                        December
-                      </label>
-                    </div>
-                  </div>
-                  <!--/ #dpCalendarMonthPicker-->
-                  <div class="dp-calendar__year-picker" id="dpCalendarYearPicker">
-                    <button type="button" class="dp-calendar__toggle-btn dp-calendar__toggle-btn--year" id="btnToggleYearDropdown"
-                      data-action="toggleYearDropdown"><span class="btn-text"></span><i data-feather="chevron-down"></i></button>
-                    <div class="dp-calendar__dropdown dp-calendar__dropdown--year" id="dpCalendarYearDropdown"
-                      data-name="year">
-                    </div>
-                  </div>
-                  <!--/ #dpCalendarYearPicker-->
-                </div>
-                <!--/ .d-flex -->
-                <button type="button" class="dp-calendar__btn-prevnext dp-calendar__btn-prevnext--next" id="btnSelectNextMonth"
-                  data-action="selectNextMonth"><i data-feather="chevron-right"></i></button>
-
-              </div>
-              <!--/ .dp-calendar__wrapper-->
-
-              <div class="dp-calendar__wrapper dp-calendar__weekday-headers" id="dpCalendarWeekdayHeaders">
-                <div class="dp-calendar__weekday-header">S</div>
-                <div class="dp-calendar__weekday-header">M</div>
-                <div class="dp-calendar__weekday-header">T</div>
-                <div class="dp-calendar__weekday-header">W</div>
-                <div class="dp-calendar__weekday-header">T</div>
-                <div class="dp-calendar__weekday-header">F</div>
-                <div class="dp-calendar__weekday-header">S</div>
-              </div>
-              <!--/ #dpCalendarWeekdayHeaders-->
-
-              <div class="dp-calendar__wrapper">
-                <div class="dp-calendar__day-picker" id="dpCalendarDayPicker">
-                </div>
-                <!--/ #dpCalendarDayPicker -->
-              </div>
-              <!--/ .dp-calendar__wrapper -->
-
-              <button class="btn btn--primary form__btn form__btn--rt dp-calendar__btn" type="button" id="btnSetDueDate"
-                action="setDueDate">Set</button>
-              <button class="btn btn--neutral form__btn form__btn--rt dp-calendar__btn dp-calendar__btn--reset" type="button"
-                id="btnResetDueDate" data-action="resetDueDate">Cancel</button>
-              <button class="btn btn--neutral form__btn dp-calendar__btn dp-calendar__btn--clear" type="button" id="btnClearDueDate"
-                data-action="clearDueDate">Clear</button>
-            </div>
-            <!--/ #datePickerCalendar-->
-
-            <div class="todo-content__section">
-              <div class="todo-content__section-icon"><i data-feather="edit-3"></i></div>
-              <textarea id="todoItemNote" class="form__textarea todo-item__note" placeholder="Add a note..."></textarea>
-            </div>
-
-            <div class="todo-content__section">
-              <ul id="subtaskList" class="subtask-list">
-              </ul>
-
-              <div class="form__form-group--inline edit-todo-form__form-group">
-                <button id="btnAddSubtask" type="submit" class="btn btn--neutral form__btn--sm form__btn--neutral btn--inline js-add-subtask-btn todo-content__section-icon"
-                  data-action="addSubtask">
-                  <i data-feather="plus-circle"></i>
-                </button>
-                <input id="newSubtaskInput" class="form__input form__input--inline edit-todo-form__input--subtask edit-todo-form__input"
-                  type="text" data-action="addSubtask" placeholder="Add a subtask" />
-              </div>
-            </div>
-
-            <div class="todo-content__section">
-              <button id="btnAddTag" type="button" class="btn btn--neutral form__btn--sm form__btn--neutral btn--inline todo-content__section-icon"
-                data-action="addTag">
-                <i data-feather="tag"></i>
-              </button>
-              <div class="todo-content__tags form__form-group--inline edit-todo-form__form-group--inline" id="tagsContainer">
-                <input id="newTagInput" class="form__input form__input--inline edit-todo-form__input--add-tag" type="text"
-                  data-action="addTag" placeholder="Add a tag" />
-              </div>
-            </div>
-            <!--/ #tagsContainer -->
-
-            <div class="color-picker" id="colorPicker">
-              <input type="radio" class="color-picker__radio" name="tagColor" id="colorDefault" value="bg--default"
-                checked />
-              <label class="color-picker__swatch bg--default" for="colorDefault"></label>
-              <input type="radio" class="color-picker__radio" name="tagColor" value="bg--dk-orange" id="colorOrange" />
-              <label class="color-picker__swatch bg--dk-orange" for="colorOrange"></label>
-              <input type="radio" class="color-picker__radio" name="tagColor" value="bg--dk-pink" id="colorPink" />
-              <label class="color-picker__swatch bg--dk-pink" for="colorPink"></label>
-              <input type="radio" class="color-picker__radio" name="tagColor" value="bg--dk-blue" id="colorBlue">
-              <label class="color-picker__swatch bg--dk-blue" for="colorBlue"></label>
-              <input type="radio" class="color-picker__radio" name="tagColor" value="bg--dk-purple" id="colorPurple">
-              <label class="color-picker__swatch bg--dk-purple" for="colorPurple"></label>
-              <input type="radio" class="color-picker__radio" name="tagColor" id="colorGreen" value="bg--dk-green">
-              <label class="color-picker__swatch bg--dk-green" for="colorGreen"></label>
-            </div>
-            <!--/ #colorPicker-->
-            <button id="btnTriggerWarningDeleteTask" type="button" class="btn btn--neutral form__btn form__btn--rt"
-              data-action="triggerWarningDeleteTask"><i data-feather="trash-2"></i></button>
-          </form>
-        </div>
-        <!--/ #todoContent -->
-
 
       </div>
       <!--/ #todoApp -->

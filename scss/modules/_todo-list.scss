@@ -5,7 +5,6 @@
   border: 1px solid transparent;
   border-bottom-color: $lt-grey;
   &:hover, &:focus {
-    box-shadow: 1px 3px 6px rgba(0,0,0,.2);
     background-color: $white;
     .todo-item__btn--neutral {
       border-color: $dk-grey;
@@ -18,7 +17,7 @@
     }
   }
   &.is-expanded {
-    background-color: $white;
+    background-color: rgba($primary-color, 0.2);
     .todo-item__btn--neutral {
       border-color: $dk-grey;
     }

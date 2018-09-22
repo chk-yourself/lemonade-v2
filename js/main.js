@@ -125,7 +125,9 @@
   const fieldsetFolders = $("#fieldsetFolders");
   const formEditList = $("#editListForm");
   const inputNewFolder = $("#newFolderInput");
-  const todoContent = $("#todoContent");
+  const todoAppContainer = $('#todoAppContainer');
+  const taskDetails = $("#taskDetails");
+  const hiddenTaskId = $('#taskId');
   const todoLists = JSON.parse(localStorage.getItem("todoLists")) ? initClasses(JSON.parse(localStorage.getItem("todoLists"))) : [];
 
   // Converts JSON list and task objects back to instances of original classes
@@ -365,11 +367,6 @@
 
   // Renders todo objects as list items
   function populateList(itemsArray = [], itemsList) {
-    // Prevents todoContent from being deleted if attached to list item
-    if (todoContent.classList.contains("is-visible")) {
-      todoContent.classList.remove("is-visible");
-      divTodoApp.appendChild(todoContent);
-    }
 
     itemsList.innerHTML = itemsArray
       .map(
@@ -382,7 +379,6 @@
 <textarea class="form__textarea todo-item__title" data-index="${i}" data-id="${
           item.id
         }">${item.text}</textarea>
-<button type="button" class="btn todo-item__btn--neutral todo-item__toggle-btn" data-action="toggleContent"></button>
 <div class="todo-item__tag-labels"><span class="lemon" data-id="${
   item.id}"></span></div>${item.dueDate !== null ? `<span class="badge--due-date${item.isDueToday ? ' badge--today' : item.isDueTomorrow ? ' badge--tomorrow' : ''}">${item.isDueToday ? 'Today' : item.isDueTomorrow ? 'Tomorrow' : item.dueDateText}</span>` : ''}
 </li>`
@@ -394,7 +390,7 @@
     // Adds event listeners to each list item
     for (let i = 0; i < itemsCollection.length; i++) {
       let todoItem = itemsCollection[i];
-      todoItem.addEventListener("click", toggleContent);
+      todoItem.addEventListener("click", toggleContent, true);
       
       if (state.filteredList !== null) {
         todoItem.addEventListener(
@@ -506,8 +502,6 @@
     }
 
     saveToStorage();
-    todoContent.classList.remove("is-visible");
-    divTodoApp.appendChild(todoContent);
 
     const currentTasksList =
       state.filteredList === null ? state.activeList.tasks : state.filteredList;
@@ -564,7 +558,6 @@
 
   // Empties todos array and removes all rendered todo items
   function clearAll(e) {
-    divTodoApp.appendChild(todoContent);
     while (todoLists.length > 1) {
       todoLists.pop(); // Remove all lists, except inbox
     }
@@ -682,8 +675,17 @@
     const id = e.target.dataset.id;
     const newText = e.target.value.trim();
     const currentTask = state.activeList.getTask(id);
+    const todoItem = $(`#${id}`);
     currentTask.text = newText;
     saveToStorage();
+
+    if (e.currentTarget === $('#taskName')) {
+      $('.todo-item__title', todoItem).value = newText;
+    } else {
+      if (todoAppContainer.classList.contains('show-task-details')) {
+        $('#taskName').value = newText;
+      }
+    }
   }
 
   function editSubtask(e) {
@@ -698,38 +700,45 @@
   }
 
   function toggleContent(e) {
-    if (!(e.target.dataset.action === "toggleContent")) return;
-    const todoItem = e.currentTarget;
+
+    if (e.target.classList.contains('lemon') || e.target.classList.contains('todo-list__checkbox') || e.target.getAttribute('type') === 'checkbox') return;
+    
+    let todoItem = e.currentTarget;
     const id = todoItem.id;
-    const tagLabels = todoItem.querySelector(".todo-item__tag-labels");
     const dueDateLabel = todoItem.querySelector(".badge--due-date");
     const todoItemTitle = $(".todo-item__title", todoItem);
     const ulActiveList = $('.is-active-list');
 
-    if (todoContent.classList.contains("is-visible")) {
-      todoItemTitle.removeEventListener("input", enableAutoHeightResize);
-      todoItemTitle.style.height = "0px";
+    if (e.currentTarget.id === "btnCloseTaskDetails") {
+      todoItem = $(`#${hiddenTaskId.value}`);
+    }
+
+    if (todoAppContainer.classList.contains("show-task-details")) {
       todoItem.classList.remove("is-expanded");
-      todoContent.classList.remove("is-visible");
-        tagLabels.classList.remove("hide-tags");
+      todoAppContainer.classList.remove("show-task-details");
       if (todoItem.contains(dueDateLabel) && ulActiveList !== $('#upcoming') && ulActiveList !== $('#today')) {
         dueDateLabel.classList.remove("is-hidden");
       }
-      const tags = todoContent.querySelectorAll("#tagsContainer .tag");
+      const tags = $all("#tagsContainer .tag", taskDetails);
       tags.forEach((x) => x.remove());
-      divTodoApp.appendChild(todoContent); // Detaches edit form from list item
     } else {
-      todoItem.appendChild(todoContent);
+      hiddenTaskId.value = id;
       $("#dueDateWrapper").classList.remove("has-due-date");
       $("#dueDateWrapper").classList.remove("show-input");
       $("#dpCalendar").classList.remove("is-active");
-      tagLabels.classList.add('hide-tags')
       if (todoItem.contains(dueDateLabel)) {
         dueDateLabel.classList.add("is-hidden");
       }
-      todoContent.classList.add("is-visible");
-      populateContent(e);
+      todoAppContainer.classList.add('show-task-details');
+      populateContent(id);
       todoItem.classList.add("is-expanded");
+      $all('.todo-list__item', ulActiveList).forEach(item => {
+        if (item === todoItem) {
+          item.classList.add('is-expanded');
+        } else {
+          item.classList.remove('is-expanded');
+        }
+      });
     }
   }
 
@@ -738,14 +747,13 @@
     listObj.tasks.splice(taskIndex, 1);
     saveToStorage();
 
-    if (todoContent.classList.contains("is-visible")) {
+    if (todoAppContainer.classList.contains("show-task-details")) {
       const activeList_ul = $(".is-active-list");
       const currentTasksList =
         state.filteredList === null
           ? state.activeList.tasks
           : state.filteredList;
-      todoContent.classList.remove("is-visible");
-      divTodoApp.appendChild(todoContent);
+      todoAppContainer.classList.remove('show-task-details');
       renderList(currentTasksList, activeList_ul);
       $("#alertWarningDeleteTask").classList.remove("is-active");
     }
@@ -909,31 +917,29 @@
     );
   }
 
-  function populateContent(e) {
-    const todoItem = e.currentTarget;
-    const id = todoItem.id;
+  function populateContent(id) {
+    const todoItem = $(`#${id}`);
     // Change state to current list object
     state.activeList = getListByTaskId(id);
     const activeList_ul = $(".is-active-list");
     const currentTask = state.activeList.getTask(id);
     const todoIndex = state.activeList.findTaskIndex(id);
-    const todoItemTitle = $(".todo-item__title", todoItem);
-    const todoItemNote = $(".todo-item__note", todoItem);
+    const todoItemTitle = $('#taskName');
+    const todoItemNote = $(".todo-item__note", formEditTodo);
     const deleteTodoBtn = $("#deleteTodoBtn");
     const newTagInput = $("#newTagInput");
     todoItemTitle.value = currentTask.text;
+    todoItemTitle.dataset.id = id;
+    todoItemTitle.dataset.index = todoIndex;
     todoItemNote.value = currentTask.note;
 
+    $('#btnCloseTaskDetails .list-name').textContent = state.activeList.name;
+
     if (currentTask.dueDate !== null) {
-      const dueDate = new Date(currentTask.dueDate);
-      // month index starts at 0
-      const dueMonthIndex = dueDate.getMonth();
-      const dueMonthAbbrev = monthsArr[dueMonthIndex].abbrev;
-      const dueDay = dueDate.getDate();
       $("#dueDateWrapper").classList.add("has-due-date");
       $(
         "#dueDateWrapper .due-date-text"
-      ).textContent = `${dueMonthAbbrev} ${dueDay}`;
+      ).textContent = currentTask.dueDateText;
     } else {
       $("#dueDateWrapper").classList.remove("has-due-date");
       $("#dueDateWrapper .due-date-text").textContent = "Set due date";
@@ -961,7 +967,7 @@
       subtasks.forEach((subtask) => autoHeightResize(subtask));
     }
 
-    const tagsContainer = todoItem.querySelector("#tagsContainer");
+    const tagsContainer = $("#tagsContainer");
 
     if (currentTask.tags.length > 0) {
       currentTask.tags.forEach((tag, i) => {
@@ -1286,6 +1292,10 @@
     }
     saveToStorage();
     renderList(currentTasksList, ulActiveList);
+    if (todoAppContainer.classList.contains('show-task-details')) {
+      const activeTask = $(`#${hiddenTaskId.value}`);
+      activeTask.classList.add('is-expanded');
+    }
   }
 
   function toggleMenu() {
@@ -2020,7 +2030,7 @@
   }
 
   function setDueDate(e) {
-    const id = $("#dpCalendar").parentNode.dataset.id;
+    const id = hiddenTaskId.value;
     const currentTask = state.activeList.tasks.find((task) => task.id === id);
 
     const dueDate = $("#inputDueDate").value; // `mm/dd/yy`
@@ -2214,7 +2224,6 @@
       frag.appendChild(checkboxLabel);
       x.insertBefore(frag, $('input[type="checkbox"]', x));
       $(".todo-list__checkbox", x).classList.add("is-hidden");
-      $(".todo-item__toggle-btn", x).classList.add("is-hidden");
       x.classList.add('bulk-editing-list__item');
     });
     // Disable bulk action buttons
@@ -2433,15 +2442,11 @@
       // Attach tooltip for Step 2 to first todo item
       const firstTask = $('.is-active-list .todo-list__item');
       firstTask.appendChild($('#onboardingTooltip_1-2'));
-      // Add event listener to first task toggle button (interaction point for step 1, pt 2)
-      $('.todo-item__toggle-btn', firstTask).addEventListener('click', trackTourProgress);
+      firstTask.addEventListener('click', trackTourProgress);
     }
     // Part 2
-    if (target.classList.contains('todo-item__toggle-btn')) {
-      if (!todoContent.classList.contains('is-visible')) {
-        target.parentNode.appendChild($('#onboardingTooltip_1-3'));
-        target.addEventListener('click', trackTourProgress);
-      }
+    if (target.classList.contains('todo-list__item')) {
+        $('.task-details__header').appendChild($('#onboardingTooltip_1-3'));
     }
 
     /**
@@ -2568,6 +2573,10 @@
 
   // Event Listeners
 
+  $('#btnCloseTaskDetails').addEventListener('click', toggleContent);
+
+  $('#taskName').addEventListener('change', renameTodo);
+
   const stepper = $('.onboarding__stepper');
     $all('.stepper__btn', stepper).forEach(btn => btn.addEventListener('click', selectStep));
 
@@ -2657,10 +2666,9 @@
     btn.addEventListener("click", (e) => {
       const moreActionsWrapper = e.currentTarget.parentNode;
       if (btn.classList.contains("list-actions__btn--toggle")) {
-        // Prevents todoContent from being deleted if attached to list item
-        if (todoContent.classList.contains("is-visible")) {
-          todoContent.classList.remove("is-visible");
-          divTodoApp.appendChild(todoContent);
+
+        if (todoAppContainer.classList.contains("show-task-details")) {
+          todoAppContainer.classList.remove("show-task-details");
         }
 
         $all('button[data-required="custom-list"]', moreActionsWrapper).forEach((item) => {
@@ -2980,14 +2988,14 @@
   });
 
   $("#btnTriggerWarningDeleteTask").addEventListener("click", (e) => {
-    const taskId = e.currentTarget.parentNode.dataset.id;
+    const taskId = hiddenTaskId.value;
     const currentTask = state.activeList.getTask(taskId);
     $("#alertWarningDeleteTask .task-text").textContent = currentTask.text;
     $("#alertWarningDeleteTask").classList.add("is-active");
   });
 
   $("#btnDeleteTask").addEventListener("click", (e) => {
-    const taskId = formEditTodo.dataset.id;
+    const taskId = hiddenTaskId.value;
     deleteTask(state.activeList, taskId);
   });
 })();

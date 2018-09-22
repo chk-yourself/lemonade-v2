@@ -1,17 +1,44 @@
-.todo-content {
-  background: transparent;
+.task-details {
+  background-color: $white;
   display: none;
   transition: .2s ease-out;
-  padding: 16px 0;
+  padding: 0;
+  max-width: 100%;
+  width: 100%;
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,.15);
+  overflow-y: visible;
 }
 
-.todo-content__section-title {
+.task-details__section-title {
   font-family: $heading-font;
   font-size: 12px;
   text-transform: uppercase;
   font-weight: 700;
   margin: 16px 0 4px;
   letter-spacing: .05em;
+}
+
+.task-details__btn {
+  padding: 0;
+  .feather {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.task-details__btn--close {
+  color: $primary-color;
+  .list-name {
+    font-size: 14px;
+    vertical-align: middle;
+    line-height: 20px;
+    margin-left: 4px;
+  }
+}
+
+.task-details__btn--rt {
+  float: right;
+  position: relative;
 }
 
 .is-visible {
@@ -61,10 +88,28 @@
   }
 }
 
-.todo-content__section {
+.task-details__section {
   display: flex;
   flex-wrap: wrap;
   margin-top: 24px;
+  padding: 0 16px;
+}
+
+.task-details__header {
+  padding: 8px;
+  margin-bottom: 8px;
+  position: relative;
+}
+
+.task-details__footer {
+  padding: 16px 0 8px;
+}
+
+.task-details__name {
+  margin: 0;
+  padding: 0 16px;
+  width: 100%;
+  font-weight: 700;
 }
 
 .edit-todo-form__form-group {
@@ -77,7 +122,7 @@
   width: auto;
 }
 
-.todo-content__section-icon {
+.task-details__section-icon {
   width: 32px;
   height: 40px;
   line-height: 38px;
