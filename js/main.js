@@ -1242,15 +1242,15 @@
         currentMonth.daysTotal = isLeapYear(currentYear) ? 29 : 28;
       }
       const daysInMonth = currentMonth.daysTotal;
+      
       let currentDay = today.getDate();
-      for (let i = 0; i <= 7; i++) {
+      for (let i = 0; i < 7; i++) {
         let day =
         currentDay < daysInMonth
           ? new Date(currentYear, currentMonthIndex, currentDay)
           : nextMonthIndex !== 0
             ? new Date(currentYear, nextMonthIndex, currentDay - daysInMonth)
             : new Date(nextYear, nextMonthIndex, currentDay - daysInMonth);
-      day.setHours(0, 0, 0, 0);
       currentDay++;
       let tasksDue = filterTasksByDueDate(day);
       if (tasksDue.length > 0) {
@@ -1259,6 +1259,11 @@
       };
       $("#activeListTitle").textContent = 'Upcoming';
     }
+
+    if (todoAppContainer.classList.contains('show-task-details')) {
+      todoAppContainer.classList.remove('show-task-details');
+    }
+
     renderList(filteredArray, listElem);
 
     $(".is-active-list").classList.remove("is-active-list");
@@ -1717,6 +1722,7 @@
 
   function displayList(listObj) {
     const ulActiveList = $(".is-active-list");
+    const list_ul = $(`#${listObj.id}`);
     if ($("#bulkActionsToolbar").classList.contains("is-active")) {
       $("#bulkActionsToolbar").classList.remove("is-active");
       ulActiveList.removeEventListener("click", enableBulkActions);
@@ -1726,8 +1732,13 @@
       $("#main").classList.remove("show-search-results");
     }
 
+    if (todoAppContainer.classList.contains('show-task-details')) {
+      todoAppContainer.classList.remove('show-task-details');
+    }
+
     $("#activeListTitle").textContent = listObj.name;
-    const list_ul = $(`#${listObj.id}`);
+    populateList(listObj.tasks, list_ul);
+    
     $all(".todo-list").forEach((x) => {
       if (x !== list_ul) {
         x.classList.remove("is-active-list");
@@ -1736,7 +1747,6 @@
       }
     });
     formAddTodo.classList.remove("is-hidden");
-    populateList(listObj.tasks, list_ul);
 
     // Updates state
     state.activeList = listObj;

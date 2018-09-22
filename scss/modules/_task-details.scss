@@ -7,8 +7,6 @@
   width: 100%;
   box-shadow: 0 1px 2px 0 rgba(0,0,0,.15);
   overflow-y: visible;
-  height: 100%;
-  min-height: 100vh;
   @include md {
     height: auto;
     min-height: auto;
@@ -41,6 +39,7 @@
     line-height: 20px;
     margin-left: 4px;
     pointer-events: none;
+    -webkit-font-smoothing: subpixel-antialiased;
   }
 }
 

@@ -67,8 +67,7 @@
   position: relative;
   width: 100%;
   max-width: 100%;
-  min-height: 100vh;
-  height: 100%;
+  min-height: 100%;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   padding: 0;
   @include lg {
@@ -104,7 +103,7 @@
   display: flex;
   justify-content: center;
   position: relative;
-  min-height: calc(100% - 58px);
+  min-height: calc(100vh - 58px);
   @include md {
     padding: 16px;
     height: auto;
