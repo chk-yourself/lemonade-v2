@@ -733,6 +733,7 @@
       hiddenTaskId.value = id;
       $("#dueDateWrapper").classList.remove("has-due-date");
       $("#dueDateWrapper").classList.remove("show-input");
+      $("#dueDateWrapper").parentNode.classList.remove('is-focused');
       $("#dpCalendar").classList.remove("is-active");
       todoAppContainer.classList.add('show-task-details');
       populateContent(id);
@@ -933,10 +934,18 @@
     const todoItemNote = $(".todo-item__note", formEditTodo);
     const deleteTodoBtn = $("#deleteTodoBtn");
     const newTagInput = $("#newTagInput");
+    const lemon = $('.task-details__lemon', taskDetails);
     todoItemTitle.value = currentTask.text;
     todoItemTitle.dataset.id = id;
     todoItemTitle.dataset.index = todoIndex;
     todoItemNote.value = currentTask.note;
+    lemon.dataset.id = id;
+    
+    if (currentTask.isPriority) {
+      taskDetails.classList.add('is-priority');
+    } else {
+      taskDetails.classList.remove('is-priority');
+    }
 
     $('#btnCloseTaskDetails .list-name').textContent = state.activeList.name;
 
@@ -1291,6 +1300,10 @@
     const taskIndex = state.activeList.findTaskIndex(id);
     currentTask.isPriority = !currentTask.isPriority;
     $(`#${id}`).classList.toggle('is-priority');
+
+    if (e.currentTarget.id === 'taskDetailsLemon') {
+      taskDetails.classList.toggle('is-priority');
+    }
 
     // Move priority items to top of list
     if (currentTask.isPriority === true && !currentTask.done) {
@@ -2024,7 +2037,7 @@
 
   function setDueDate(e) {
     const id = hiddenTaskId.value;
-    const currentTask = state.activeList.tasks.find((task) => task.id === id);
+    const currentTask = state.activeList.getTask(id);
 
     const dueDate = $("#inputDueDate").value; // `mm/dd/yy`
     const dueYear = +`20${dueDate.slice(6)}`;
@@ -2038,42 +2051,20 @@
       currentTask.dueDate = newDueDate;
       saveToStorage();
 
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      const currentDay = today.getDate();
-      const currentMonthIndex = today.getMonth();
-      const currentYear = today.getFullYear();
-      const nextYear = currentYear + 1;
-      const currentMonth = monthsArr[currentMonthIndex];
-      const nextMonthIndex =
-        currentMonth.name !== "December" ? currentMonthIndex + 1 : 0;
-
-      if (currentMonth.name === "February") {
-        currentMonth.daysTotal = isLeapYear(currentYear) ? 29 : 28;
-      }
-
-      const tomorrow =
-        currentDay < currentMonth.daysTotal
-          ? new Date(currentYear, currentMonthIndex, currentDay + 1)
-          : nextMonthIndex !== 0
-            ? new Date(currentYear, nextMonthIndex, 1)
-            : new Date(nextYear, nextMonthIndex, 1);
-      tomorrow.setHours(0, 0, 0, 0);
-
       const todoItem = $(`#${id}`);
-      const dueDateLabel = todoItem.contains($(".badge--due-date"))
-        ? $(".badge--due-date", todoItem)
-        : createNode("span", { class: "badge--due-date is-hidden" });
+      const dueDateLabel = todoItem.contains($(".badge--due-date")) ? $(".badge--due-date", todoItem)
+        : createNode("span", { class: "badge--due-date" });
 
-      if (newDueDate.valueOf() === today.valueOf()) {
+      if (currentTask.isDueToday) {
         dueDateLabel.textContent = "Today";
-        dueDateLabel.classList.add("badge--today");
+        dueDateLabel.className = "badge--due-date badge--today";
         updateTaskCount('today');
-      } else if (newDueDate.valueOf() === tomorrow.valueOf()) {
+      } else if (currentTask.isDueTomorrow) {
         dueDateLabel.textContent = "Tomorrow";
-        dueDateLabel.classList.add("badge--tomorrow");
+        dueDateLabel.className = "badge--due-date badge--tomorrow";
       } else {
-        dueDateLabel.textContent = `${dueMonthAbbrev} ${dueDay}`;
+        dueDateLabel.className = "badge--due-date";
+        dueDateLabel.textContent = currentTask.dueDateText;
       }
 
       if (!todoItem.contains($(".badge--due-date"))) {
@@ -2084,7 +2075,7 @@
     $("#dueDateWrapper").classList.add("has-due-date");
     $(
       "#dueDateWrapper .due-date-text"
-    ).textContent = `${dueMonthAbbrev} ${dueDay}`;
+    ).textContent = currentTask.dueDateText;
     $("#dueDateWrapper").classList.remove("show-input");
     $('#dueDateWrapper').parentNode.classList.remove('is-focused');
     $("#dpCalendar").classList.remove("is-active");
@@ -2572,6 +2563,8 @@
 
   // Event Listeners
 
+  $('#taskDetailsLemon').addEventListener('click', setPriority);
+
   $('#taskName').addEventListener("input", enableAutoHeightResize);
     $('#todoItemNote').addEventListener("input", enableAutoHeightResize);
 
@@ -2964,6 +2957,7 @@
   $("#btnClearDueDate").addEventListener("click", (e) => {
     const id = hiddenTaskId.value;
     const currentTask = state.activeList.getTask(id);
+    const todoItem = $(`#${id}`);
     currentTask.dueDate = null;
     saveToStorage();
     const dueDateWrapper = $("#dueDateWrapper");
@@ -2972,6 +2966,7 @@
     dueDateWrapper.classList.remove("show-input");
     dueDateWrapper.parentNode.classList.remove('is-focused');
     $("#dpCalendar").classList.remove("is-active");
+    $('.badge--due-date', todoItem).remove();
   });
 
   $("#btnResetDueDate").addEventListener("click", (e) => {

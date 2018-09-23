@@ -31,13 +31,6 @@
       left: calc(50% + 11.7px);
     }
   }
-  &.is-priority {
-    .lemon {
-      background-color: $lemon;
-      box-shadow: inset 0.2em 0.2em $lemon-shadow;
-      border-color: $black;
-    }
-  }
 }
 
 .todo-list {

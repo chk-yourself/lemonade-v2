@@ -74,6 +74,36 @@ h1 {
   color: #6381ff;
 }
 
+.lemon {
+  pointer-events: visible;
+  z-index: 98;
+  display: inline-block;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border: 1px solid #d6dee2;
+  background-color: transparent;
+  width: 20px;
+  height: 20px;
+  margin: 2px 0.5em;
+  vertical-align: middle;
+  position: relative;
+  font-size: 10px;
+  padding: 0 6px;
+  letter-spacing: .06em;
+  border-radius: 50% 15%;
+  -webkit-transform: rotate(225deg);
+          transform: rotate(225deg);
+  cursor: pointer;
+  top: calc(50% - 12px);
+}
+
+.is-priority .lemon {
+  background-color: #ffe163;
+  -webkit-box-shadow: inset 0.2em 0.2em #ccb42a;
+          box-shadow: inset 0.2em 0.2em #ccb42a;
+  border-color: #15161a;
+}
+
 button {
   cursor: pointer;
   border: none;
@@ -921,29 +951,6 @@ input[type="search"].search-form__input {
   display: none;
 }
 
-.lemon {
-  pointer-events: visible;
-  z-index: 98;
-  display: inline-block;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  border: 1px solid #d6dee2;
-  background-color: transparent;
-  width: 20px;
-  height: 20px;
-  margin: 2px 0.5em;
-  vertical-align: middle;
-  position: relative;
-  font-size: 10px;
-  padding: 0 6px;
-  letter-spacing: .06em;
-  border-radius: 50% 15%;
-  -webkit-transform: rotate(225deg);
-          transform: rotate(225deg);
-  cursor: pointer;
-  top: calc(50% - 12px);
-}
-
 .toolbar {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -1070,7 +1077,7 @@ input[type="search"].search-form__input {
 .btn--tooltip:hover, .btn--tooltip.show-tooltip,
 .tooltip-link:hover,
 .tooltip-link.show-tooltip {
-  background-color: #60efb8;
+  background-color: #00f2af;
   -webkit-box-shadow: none;
           box-shadow: none;
 }
@@ -1666,7 +1673,7 @@ input[type="search"].search-form__input {
 }
 
 .dp-calendar__radio:checked + label:hover::after {
-  border-color: #60efb8;
+  border-color: #00f2af;
 }
 
 .dp-calendar__month,
@@ -1746,7 +1753,7 @@ input[type="search"].search-form__input {
 }
 
 .dp-calendar__btn--select-day.is-selected {
-  background-color: #60efb8;
+  background-color: #00f2af;
   font-weight: 700;
 }
 
@@ -1851,7 +1858,7 @@ input[type="search"].search-form__input {
 }
 
 .edit-todo-form__due-date-wrapper.has-due-date .due-date-text {
-  color: #11a56c;
+  color: #00a376;
 }
 
 .edit-todo-form__input--due-date {
@@ -2268,13 +2275,6 @@ input[type="search"].search-form__input {
           transform: rotate(45deg);
   top: -4px;
   left: calc(50% + 11.7px);
-}
-
-.todo-list__item.is-priority .lemon {
-  background-color: #ffe163;
-  -webkit-box-shadow: inset 0.2em 0.2em #ccb42a;
-          box-shadow: inset 0.2em 0.2em #ccb42a;
-  border-color: #15161a;
 }
 
 .todo-list {
@@ -2732,17 +2732,23 @@ label.bulk-actions__checkbox-label {
 
 .task-details__name {
   margin: 0;
-  padding: 0;
+  padding: 0 0 0 4px;
   width: 100%;
   font-weight: 700;
   color: #404551;
   font-size: 18px;
+  width: calc(100% - 34px);
+}
+
+.task-details__lemon {
+  float: right;
 }
 
 .task-details__name-wrapper {
-  margin: 0 16px;
+  margin: 0 20px 32px;
   border-bottom: 2px solid #565d6d;
-  padding-bottom: 4px;
+  padding-bottom: 8px;
+  position: relative;
 }
 
 .task-details__name-wrapper.is-focused {
@@ -3079,7 +3085,7 @@ input[name="list"]:checked + label::after {
 }
 
 .bg--dk-green {
-  background-color: #11a56c;
+  background-color: #00a376;
   color: #fff;
   border-color: transparent;
 }

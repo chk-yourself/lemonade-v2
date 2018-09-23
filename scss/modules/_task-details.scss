@@ -113,17 +113,23 @@
 
 .task-details__name {
   margin: 0;
-  padding: 0;
+  padding: 0 0 0 4px;
   width: 100%;
   font-weight: 700;
   color: $dk-grey;
   font-size: 18px;
+  width: calc(100% - 34px);
+}
+
+.task-details__lemon {
+  float: right;
 }
 
 .task-details__name-wrapper {
-  margin: 0 16px;
+  margin: 0 20px 32px;
   border-bottom: 2px solid $grey;
-  padding-bottom: 4px;
+  padding-bottom: 8px;
+  position: relative;
   &.is-focused {
     border-bottom-color: $primary-color;
   }
