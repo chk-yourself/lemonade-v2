@@ -2044,15 +2044,15 @@
     const dueMonthIndex = +dueDate.slice(0, 2) - 1;
     const dueDay = +dueDate.slice(3, 5);
     const dueMonthAbbrev = monthsArr[dueMonthIndex].abbrev;
-
+    const currentDueDate = new Date(currentTask.dueDate);
     const newDueDate = new Date(dueYear, dueMonthIndex, dueDay);
 
-    if (new Date(currentTask.dueDate).valueOf() !== newDueDate.valueOf()) {
+    if (currentDueDate.valueOf() !== newDueDate.valueOf()) {
       currentTask.dueDate = newDueDate;
       saveToStorage();
 
       const todoItem = $(`#${id}`);
-      const dueDateLabel = todoItem.contains($(".badge--due-date")) ? $(".badge--due-date", todoItem)
+      const dueDateLabel = $(".badge--due-date", todoItem) ? $(".badge--due-date", todoItem)
         : createNode("span", { class: "badge--due-date" });
 
       if (currentTask.isDueToday) {
@@ -2067,7 +2067,7 @@
         dueDateLabel.textContent = currentTask.dueDateText;
       }
 
-      if (!todoItem.contains($(".badge--due-date"))) {
+      if (!$(".badge--due-date", todoItem)) {
         todoItem.appendChild(dueDateLabel);
       }
     }
