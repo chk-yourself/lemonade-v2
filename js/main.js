@@ -1055,7 +1055,7 @@
   function createBreadcrumbs(listElement) {
     $all(".todo-list__item", listElement).forEach((item) => {
       const list = getListByTaskId(item.id);
-      const folderName = list.folder !== "null" ? `${list.folder} > ` : "";
+      const folderName = list.folder !== "null" ? createNode('span', {class: "breadcrumbs__folder"}, list.folder, createNode('i', {"data-feather": "chevron-right"})) : "";
       const listLink = createNode(
         "a",
         { class: "breadcrumbs__link", href: `#${list.id}` },

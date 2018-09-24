@@ -1,7 +1,7 @@
 .breadcrumbs {
   position: absolute;
   bottom: 0;
-  left: 40px;
+  left: 41px;
   display: block;
   font-size: 10.5px;
   letter-spacing: .02em;
@@ -19,5 +19,15 @@
   cursor: pointer;
   &:hover, &:active {
     color: $primary-color;
+  }
+}
+
+.breadcrumbs__folder {
+  vertical-align: middle;
+  color: $grey;
+  .feather-chevron-right {
+    margin: 0 4px;
+    width: 12px;
+    height: 12px;
   }
 }

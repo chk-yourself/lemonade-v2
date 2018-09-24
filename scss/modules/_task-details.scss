@@ -75,29 +75,25 @@
       pointer-events: none;
     }
   }
+  .breadcrumbs__folder {
+    display: none;
+    .feather-chevron-right {
+      width: 14px;
+      height: 14px;
+    }
+    .folder-name {
+      vertical-align: middle;
+      font-weight: 400;
+      font-style: italic;
+    }
+    .feather-folder {
+      margin-top: -1px;
+    }
+  }
   &.show-folder {
     .breadcrumbs__folder {
       display: inline-block;
     }
-  }
-}
-
-.breadcrumbs__folder {
-  display: none;
-  vertical-align: middle;
-  color: $grey;
-  .feather-chevron-right {
-    margin: 0 4px;
-    width: 14px;
-    height: 14px;
-  }
-  .folder-name {
-    vertical-align: middle;
-    font-weight: 400;
-    font-style: italic;
-  }
-  .feather-folder {
-    margin-top: -1px;
   }
 }
 

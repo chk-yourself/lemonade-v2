@@ -1230,7 +1230,7 @@ input[type="search"].search-form__input {
 .breadcrumbs {
   position: absolute;
   bottom: 0;
-  left: 40px;
+  left: 41px;
   display: block;
   font-size: 10.5px;
   letter-spacing: .02em;
@@ -1250,6 +1250,17 @@ input[type="search"].search-form__input {
 
 .breadcrumbs__link:hover, .breadcrumbs__link:active {
   color: #6381ff;
+}
+
+.breadcrumbs__folder {
+  vertical-align: middle;
+  color: #565d6d;
+}
+
+.breadcrumbs__folder .feather-chevron-right {
+  margin: 0 4px;
+  width: 12px;
+  height: 12px;
 }
 
 .stepper {
@@ -2705,30 +2716,27 @@ label.bulk-actions__checkbox-label {
   pointer-events: none;
 }
 
-.task-details__breadcrumbs.show-folder .breadcrumbs__folder {
-  display: inline-block;
-}
-
-.breadcrumbs__folder {
+.task-details__breadcrumbs .breadcrumbs__folder {
   display: none;
-  vertical-align: middle;
-  color: #565d6d;
 }
 
-.breadcrumbs__folder .feather-chevron-right {
-  margin: 0 4px;
+.task-details__breadcrumbs .breadcrumbs__folder .feather-chevron-right {
   width: 14px;
   height: 14px;
 }
 
-.breadcrumbs__folder .folder-name {
+.task-details__breadcrumbs .breadcrumbs__folder .folder-name {
   vertical-align: middle;
   font-weight: 400;
   font-style: italic;
 }
 
-.breadcrumbs__folder .feather-folder {
+.task-details__breadcrumbs .breadcrumbs__folder .feather-folder {
   margin-top: -1px;
+}
+
+.task-details__breadcrumbs.show-folder .breadcrumbs__folder {
+  display: inline-block;
 }
 
 .breadcrumbs__list {
