@@ -25,6 +25,7 @@
 
 .task-details__btn {
   padding: 0;
+  vertical-align: middle;
   .feather {
     width: 20px;
     height: 20px;
@@ -48,6 +49,63 @@
   float: right;
   position: relative;
   right: 8px;
+}
+
+.task-details__breadcrumbs {
+  position: relative;
+  color: $dk-grey;
+  text-align: center;
+  font-family: $heading-font;
+  font-size: 12px;
+  font-weight: 400;
+  margin: -8px 0 16px 0;
+  .feather {
+    margin: -1.5px 6px 0 0;
+    width: 15px;
+    height: 15px;
+    &.is-hidden {
+      display: none;
+    }
+  }
+  .breadcrumbs__link {
+    vertical-align: middle;
+    position: relative;
+    font-weight: 400;
+    .feather, 
+    span {
+      pointer-events: none;
+    }
+  }
+  &.show-folder {
+    .breadcrumbs__folder {
+      display: inline-block;
+    }
+  }
+}
+
+.breadcrumbs__folder {
+  display: none;
+  vertical-align: middle;
+  color: $grey;
+  .feather-chevron-right {
+    margin: 0 4px;
+    width: 14px;
+    height: 14px;
+  }
+  .folder-name {
+    vertical-align: middle;
+    font-weight: 400;
+    font-style: italic;
+  }
+  .feather-folder {
+    margin-top: -1px;
+  }
+}
+
+.breadcrumbs__list {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .is-visible {

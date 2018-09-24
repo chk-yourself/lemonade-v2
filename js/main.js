@@ -912,12 +912,11 @@
     const todoItem = $(`#${id}`);
     // Change state to current list object
     state.activeList = getListByTaskId(id);
-    const activeList_ul = $(".is-active-list");
+    const ulActiveList = $(".is-active-list");
     const currentTask = state.activeList.getTask(id);
     const todoIndex = state.activeList.findTaskIndex(id);
     const todoItemTitle = $('#taskName');
     const todoItemNote = $(".todo-item__note", formEditTodo);
-    const deleteTodoBtn = $("#deleteTodoBtn");
     const newTagInput = $("#newTagInput");
     const lemon = $('.task-details__lemon', taskDetails);
     todoItemTitle.value = currentTask.text;
@@ -932,7 +931,24 @@
       taskDetails.classList.remove('is-priority');
     }
 
-    $('#btnCloseTaskDetails .list-name').textContent = state.activeList.name;
+    $('#btnCloseTaskDetails .list-name').textContent = ulActiveList.dataset.name;
+    $('#taskDetailsBreadcrumbs .list-name').textContent = state.activeList.name;
+    $('#taskDetailsBreadcrumbs .breadcrumbs__link').setAttribute('href', `#${state.activeList.id}`);
+
+    if (state.activeList.folder !== "null") {
+      $('#taskDetailsBreadcrumbs .folder-name').textContent = state.activeList.folder;
+      $('#taskDetailsBreadcrumbs').classList.add('show-folder');
+    } else {
+      $('#taskDetailsBreadcrumbs').classList.remove('show-folder');
+    }
+    
+    if (state.activeList.id === "inbox") {
+      $('#taskDetailsBreadcrumbs .feather-list').classList.add('is-hidden');
+      $('#taskDetailsBreadcrumbs .feather-inbox').classList.remove('is-hidden');
+    } else {
+      $('#taskDetailsBreadcrumbs .feather-inbox').classList.add('is-hidden');
+      $('#taskDetailsBreadcrumbs .feather-list').classList.remove('is-hidden');
+    }
 
     if (currentTask.dueDate !== null) {
       $("#dueDateWrapper").classList.add("has-due-date");
@@ -2544,6 +2560,8 @@
   }
 
   // Event Listeners
+
+  $('#taskDetailsBreadcrumbs .breadcrumbs__link').addEventListener('click', openList);
 
   $('#taskDetailsLemon').addEventListener('click', setPriority);
 
