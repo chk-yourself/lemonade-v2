@@ -727,18 +727,18 @@
     if (todoAppContainer.classList.contains("show-task-details")) {
       todoItem.classList.remove("is-selected");
       todoAppContainer.classList.remove("show-task-details");
+      // Reset task details pane
       const tags = $all("#tagsContainer .tag", taskDetails);
       tags.forEach((x) => x.remove());
-    } else {
-
-      hiddenTaskId.value = id;
       $("#dueDateWrapper").classList.remove("has-due-date");
       $("#dueDateWrapper").classList.remove("show-input");
       $("#dueDateWrapper").parentNode.classList.remove('is-focused');
       $("#dpCalendar").classList.remove("is-active");
-      todoAppContainer.classList.add('show-task-details');
+    } 
+    
+    if (!todoAppContainer.classList.contains("show-task-details") && e.currentTarget.id !== "btnCloseTaskDetails") {
+      hiddenTaskId.value = id;
       populateContent(id);
-      todoItem.classList.add("is-selected");
       $all('.todo-list__item', ulActiveList).forEach(item => {
         if (item === todoItem) {
           item.classList.add('is-selected');
@@ -746,6 +746,7 @@
           item.classList.remove('is-selected');
         }
       });
+      todoAppContainer.classList.add('show-task-details');
     }
   }
 
