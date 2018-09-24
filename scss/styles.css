@@ -1236,6 +1236,7 @@ input[type="search"].search-form__input {
   letter-spacing: .02em;
   color: rgba(86, 93, 109, 0.6);
   font-style: italic;
+  font-family: "Montserrat", Helvetica, Arial, sans-serif;
 }
 
 .breadcrumbs__link {
@@ -2677,11 +2678,10 @@ label.bulk-actions__checkbox-label {
 .task-details__breadcrumbs {
   position: relative;
   color: #404551;
-  text-align: center;
   font-family: "Montserrat", Helvetica, Arial, sans-serif;
   font-size: 12px;
   font-weight: 400;
-  margin: -8px 0 16px 0;
+  margin: 0 24px 32px;
 }
 
 .task-details__breadcrumbs .feather {
@@ -2820,7 +2820,7 @@ label.bulk-actions__checkbox-label {
 }
 
 .task-details__name-wrapper {
-  margin: 0 20px 32px;
+  margin: 0 20px 8px;
   border-bottom: 2px solid #565d6d;
   padding-bottom: 8px;
   position: relative;

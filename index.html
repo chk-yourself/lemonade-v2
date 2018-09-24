@@ -162,11 +162,6 @@
           <!-- #taskDetails -->
           <div id="taskDetails" class="task-details">
             <div class="task-details__header">
-                <div id="taskDetailsBreadcrumbs" class="task-details__btn task-details__breadcrumbs"
-                data-action="openList">
-                <div class="breadcrumbs__folder"><i data-feather="folder"></i><span class="folder-name"></span><i data-feather="chevron-right"></i></div>
-                <div class="breadcrumbs__list"><a class="breadcrumbs__link" href=""><i data-feather="list"></i><i data-feather="inbox"></i><span class="list-name"></span></a></div>
-            </div>
               <button id="btnCloseTaskDetails" type="button" class="form__btn--icon task-details__btn task-details__btn--close"
                 data-action="toggleContent">
                 <i data-feather="arrow-left"></i><span class="list-name"></span>
@@ -177,6 +172,11 @@
                   data-index="" data-id=""></textarea>
                 <span class="lemon task-details__lemon" data-id="" id="taskDetailsLemon"></span>
               </div>
+              <div id="taskDetailsBreadcrumbs" class="task-details__btn task-details__breadcrumbs"
+                data-action="openList">
+                <div class="breadcrumbs__folder"><i data-feather="folder"></i><span class="folder-name"></span><i data-feather="chevron-right"></i></div>
+                <div class="breadcrumbs__list"><a class="breadcrumbs__link" href=""><i data-feather="list"></i><i data-feather="inbox"></i><span class="list-name"></span></a></div>
+            </div>
               <input id="taskId" name="taskId" type="hidden" value="">
               <div class="task-details__section">
                 <div class="edit-todo-form__form-group">
