@@ -114,11 +114,11 @@
 .task-details__name {
   margin: 0;
   padding: 0 0 0 4px;
-  width: 100%;
   font-weight: 700;
   color: $dk-grey;
   font-size: 18px;
   width: calc(100% - 34px);
+  min-height: 23px;
 }
 
 .task-details__lemon {
