@@ -746,6 +746,9 @@
           item.classList.remove('is-selected');
         }
       });
+      if (document.documentElement.clientWidth < 768) {
+        $(".todo-item__title", todoItem).blur();
+      }
       todoAppContainer.classList.add('show-task-details');
     }
   }
