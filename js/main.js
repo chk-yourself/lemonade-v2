@@ -87,6 +87,10 @@
       return document.getElementById(this.id);
     }
 
+    get tagSummary() {
+      return this.tags.map((tag) => tag.text).join(", ");
+    }
+
     get isDueToday() {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
@@ -297,6 +301,7 @@
   const createNode = (tagName, attributes, ...children) => {
     const node = document.createElement(tagName);
 
+    if (attributes) {
     Object.keys(attributes).forEach((key) => {
       if (key === "class") {
         const classes = attributes[key].split(" ");
@@ -317,6 +322,7 @@
         node.setAttribute(key, attributes[key]);
       }
     });
+  }
 
     children.forEach((child) => {
       if (typeof child === "undefined" || child === null) {
@@ -450,13 +456,11 @@
               },
               "..."
             );
-          tagsTooltipBtn.dataset.tooltip = itemsArray[j].tags
-            .map((tag) => tag.text)
-            .join(", ");
+          tagsTooltipBtn.dataset.tooltip = itemsArray[j].tagSummary;
           tagsTooltipBtn.addEventListener("click", (e) => {
             e.currentTarget.classList.toggle("show-tooltip");
           });
-          tagLabels.insertBefore(tagsTooltipBtn, lemon);
+          tagLabels.appendChild(tagsTooltipBtn);
 
           // Renders tag labels
           taskObj.tags.forEach((tag, i) => {
@@ -622,12 +626,10 @@
     e.preventDefault();
 
     if (e.target.dataset.action !== "addSubtask") return;
-    const id = formEditTodo.dataset.id;
+    const id = hiddenTaskId.value;
 
-    const currentTask = state.activeList.tasks.find((task) => task.id === id);
-    const todoIndex = state.activeList.tasks.findIndex(
-      (task) => task.id === id
-    ); // index of todo object with matching ID in TODOS array
+    const currentTask = state.activeList.getTask(id);
+    const todoIndex = state.activeList.findTaskIndex(id);
     const currentList = state.activeList;
 
     const text = $("#newSubtaskInput").value;
@@ -2038,7 +2040,7 @@
 
       const todoItem = $(`#${id}`);
       const dueDateLabel = $(".badge--due-date", todoItem) ? $(".badge--due-date", todoItem)
-        : createNode("span", { class: "badge--due-date" });
+        : createNode("span");
 
       if (currentTask.isDueToday) {
         dueDateLabel.textContent = "Today";
