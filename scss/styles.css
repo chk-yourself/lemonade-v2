@@ -877,7 +877,7 @@ input[type="search"].search-form__input {
 .todo-item__tag-labels {
   position: absolute;
   top: 4px;
-  right: 4px;
+  right: 40px;
   display: block;
 }
 
@@ -2360,7 +2360,7 @@ input[type="search"].search-form__input {
 }
 
 .active-list__title {
-  margin-bottom: 16px;
+  margin: 16px 0;
   font-size: 1.5rem;
   padding: 8px;
 }
@@ -2370,7 +2370,7 @@ input[type="search"].search-form__input {
 }
 
 .filtered-list__item {
-  margin-top: 16px;
+  margin-bottom: 24px;
   font-family: "Montserrat", Helvetica, Arial, sans-serif;
   font-size: 14px;
 }
@@ -2379,6 +2379,10 @@ input[type="search"].search-form__input {
   list-style-type: none;
   text-align: left;
   font-family: "Roboto", Arial, sans-serif;
+}
+
+.filtered-list__sub-list-name {
+  padding: 0 8px;
 }
 
 .filtered-list__link {
@@ -2692,6 +2696,7 @@ label.bulk-actions__checkbox-label {
   padding: 2px 0;
   width: calc(100% - 32px);
   display: inline-block;
+  vertical-align: top;
 }
 
 .edit-todo-form__tags-container .form__input--inline {

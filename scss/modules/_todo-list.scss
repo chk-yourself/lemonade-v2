@@ -104,7 +104,7 @@
 }
 
 .active-list__title {
-  margin-bottom: 16px;
+  margin: 16px 0;
   font-size: 1.5rem;
   padding: 8px;
 }
@@ -115,7 +115,7 @@
   list-style-type: none;
 }
 .filtered-list__item {
-  margin-top: 16px;
+  margin-bottom: 24px;
   font-family: $heading-font;
   font-size: 14px;
 }
@@ -124,6 +124,10 @@
   list-style-type: none;
   text-align: left;
   font-family: $body-font;
+}
+
+.filtered-list__sub-list-name {
+  padding: 0 8px;
 }
 
 .filtered-list__link {
