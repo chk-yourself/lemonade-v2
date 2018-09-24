@@ -713,7 +713,7 @@
 
   function toggleContent(e) {
 
-    if (e.target.classList.contains('lemon') || e.target.classList.contains('todo-list__checkbox') || e.target.getAttribute('type') === 'checkbox' || e.target.classList.contains('bulk-actions__checkbox-label')) return;
+    if (e.target.classList.contains('lemon') || e.target.classList.contains('todo-list__checkbox') || e.target.getAttribute('type') === 'checkbox' || e.currentTarget.contains($('.bulk-actions__checkbox-label', e.currentTarget))) return;
     let todoItem = e.currentTarget;
     const id = todoItem.id;
     const dueDateLabel = $(".badge--due-date", todoItem);
@@ -730,6 +730,7 @@
       const tags = $all("#tagsContainer .tag", taskDetails);
       tags.forEach((x) => x.remove());
     } else {
+
       hiddenTaskId.value = id;
       $("#dueDateWrapper").classList.remove("has-due-date");
       $("#dueDateWrapper").classList.remove("show-input");
