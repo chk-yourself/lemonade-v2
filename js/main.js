@@ -39,7 +39,9 @@
         this.tasks = obj.tasks;
       }
     }
-
+    get elem() {
+      return document.getElementById(this.id);
+    }
     getTask(taskId) {
       return this.tasks.find((task) => task.id === taskId);
     }
@@ -80,6 +82,11 @@
         this.isPriority = obj.isPriority;
       }
     }
+
+    get elem() {
+      return document.getElementById(this.id);
+    }
+
     get isDueToday() {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
@@ -577,30 +584,6 @@
       inbox.tasks.pop();
     }
     saveToStorage();
-    // Remove saved data of objects in TODOS array from local storage
-    ulInbox.innerHTML = ""; // Deletes all list items from DOM
-    const allLists = $all(".todo-list");
-    allLists.forEach((list) => {
-      if (list.classList.contains('custom-list')) {
-        list.remove();
-      }
-    });
-    ulSubtasks.innerHTML = ""; // Deletes all ulSubtasks items from DOM
-    formEditTodo.reset();
-    $all("[data-folder]").forEach((item) => item.remove());
-    $all('input[name="folder"]').forEach((item) => {
-      if (item.value !== "null" && item.value !== "new") {
-        item.remove();
-      }
-    });
-    $all(".form__label--folder").forEach((item) => {
-      if (
-        item.getAttribute("for") !== "folderNone" &&
-        item.getAttribute("for") !== "folderNew"
-      ) {
-        item.remove();
-      }
-    });
     window.location.reload(true);
   }
 
@@ -1141,10 +1124,10 @@
           class: "filtered-list__sub-list"
         });
         // Create list link
-        const subListTitle = filterByDate ? createNode("h2", {class: 'filtered-list__date'}, date.valueOf() === today.valueOf() ? 'Today' : date.valueOf() === tomorrow.valueOf() ? 'Tomorrow' : `${weekday}, ${month} ${dayNum}`)
+        const subListTitle = filterByDate ? createNode("h2", {class: 'filtered-list__date filtered-list__sub-list-name'}, date.valueOf() === today.valueOf() ? 'Today' : date.valueOf() === tomorrow.valueOf() ? 'Tomorrow' : `${weekday}, ${month} ${dayNum}`)
         : createNode(
           "a",
-          { class: "filtered-list__link", href: `#${listObj.id}` },
+          { class: "filtered-list__link filtered-list__sub-list-name", href: `#${listObj.id}` },
           listObj.name
         );
 
@@ -1605,7 +1588,6 @@
           link.classList.remove("is-active");
         }
       });
-      console.table(todoLists);
       e.currentTarget.reset();
       $("#newListFormContainer").classList.remove("is-active");
       if ($("#transferTasksFormContainer").classList.contains("is-active")) {
@@ -1681,7 +1663,6 @@
         $("#sidebarMenu").appendChild(listNavItem);
       } else {
         // Append list nav item to different/new folder
-        console.log({ selectedFolder });
         listNavItem.className = "accordion__sub-item";
         listNavItem.removeAttribute("data-folder");
         $(`[data-folder="${selectedFolder}"]`).appendChild(listNavItem);
@@ -1696,11 +1677,10 @@
   function deleteList(listObj) {
     const listNavLink = $(`a[href="#${listObj.id}"]`);
     const listNavItem = listNavLink.parentNode;
-    const listElement = $(`#${listObj.id}`);
+    const listElement = listObj.elem;
 
     // Delete list object
     const listIndex = todoLists.indexOf(listObj);
-    console.log({ listIndex });
     todoLists.splice(listIndex, 1);
     saveToStorage();
 
