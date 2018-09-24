@@ -2655,6 +2655,7 @@ label.bulk-actions__checkbox-label {
   margin-left: 4px;
   pointer-events: none;
   -webkit-font-smoothing: subpixel-antialiased;
+  font-weight: 500;
 }
 
 .task-details__btn--rt {
