@@ -801,12 +801,10 @@
     $all(".todo-item__tag-labels .tag-label", todoItem)[tagIndex].remove();
     currentTask.tags.splice(tagIndex, 1);
     saveToStorage();
-    const tagsTooltipBtn = todoItem.querySelector(".tag-labels__btn--tooltip");
+    const tagsTooltipBtn = $(".tag-labels__btn--tooltip", todoItem);
     if (currentTask.tags.length > 0) {
       // Update tags tooltip
-      tagsTooltipBtn.dataset.tooltip = state.activeList.tasks[todoIndex].tags
-      .map((tag) => tag.text)
-      .join(", ");
+      tagsTooltipBtn.dataset.tooltip = currentTask.tagSummary;
     } else {
       tagsTooltipBtn.remove();
     }
@@ -890,10 +888,7 @@
         );
 
         // Updates tooltip data
-        tagsTooltipBtn.dataset.tooltip = currentTask.tags
-          .map((tag) => tag.text)
-          .join(", ");
-        console.log(tagsTooltipBtn.dataset.tooltip);
+        tagsTooltipBtn.dataset.tooltip = currentTask.tagSummary;
         tagLabels.insertBefore(tagLabel, tagsTooltipBtn);
         newTagInput.value = "";
 
