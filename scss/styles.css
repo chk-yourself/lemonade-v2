@@ -2370,6 +2370,10 @@ input[type="search"].search-form__input {
   background-color: transparent;
 }
 
+.is-done .lemon {
+  opacity: 0.2;
+}
+
 .todo-item__toggle-btn {
   cursor: pointer;
   position: relative;

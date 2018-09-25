@@ -62,6 +62,9 @@
 
 .is-done {
   background-color: transparent;
+  .lemon {
+    opacity: 0.2;
+  }
 }
 
 .todo-item__toggle-btn {
