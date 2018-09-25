@@ -746,11 +746,13 @@
     saveToStorage();
 
     if (todoAppContainer.classList.contains("show-task-details")) {
-      const currentTasksList =
+      todoAppContainer.classList.remove('show-task-details');
+    }
+    
+    const currentTasksList =
         state.filteredList === null
           ? state.activeList.tasks
           : state.filteredList;
-      todoAppContainer.classList.remove('show-task-details');
       if (ulActiveList.id === "upcoming") {
         displayTaskSchedule('upcoming', $("#upcoming"));
       } else if (ulActiveList.id === "today") {
@@ -763,7 +765,6 @@
         updateTaskCount('today');
       }
       $("#alertWarningDeleteTask").classList.remove("is-active");
-    }
   }
 
   function filterTag(tag) {
@@ -1391,7 +1392,7 @@
     const spanTaskCount = createNode('span', {
       class: 'sidebar__task-count'
     },
-    ''+listObj.activeTaskCount);
+    listObj.activeTaskCount > 0 ? ''+listObj.activeTaskCount : '');
     const aListLink = createNode(
       "a",
       {
