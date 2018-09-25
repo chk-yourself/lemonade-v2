@@ -2944,6 +2944,10 @@ label.bulk-actions__checkbox-label {
   padding: 4px 7px;
 }
 
+.task-details__btn--inline {
+  line-height: 0;
+}
+
 .form__label--list {
   vertical-align: middle;
   padding: 8px 0 8px 16px;
