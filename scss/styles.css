@@ -1245,6 +1245,7 @@ input[type="search"].search-form__input {
   font-style: normal;
   font-weight: 500;
   text-decoration: none;
+  vertical-align: middle;
   cursor: pointer;
 }
 
@@ -1953,7 +1954,7 @@ input[type="search"].search-form__input {
   font-size: 2.25rem;
   color: #404551;
   font-family: "Montserrat", Helvetica, Arial, sans-serif;
-  font-weight: 700;
+  font-weight: 400;
   width: 65%;
   -webkit-font-smoothing: antialiased;
 }
@@ -2167,6 +2168,17 @@ input[type="search"].search-form__input {
   }
 }
 
+.sidebar__link.has-active-tasks .sidebar__task-count {
+  background-color: #ffd9e0;
+  color: #ff3058;
+}
+
+.sidebar__link.has-active-tasks.is-active .sidebar__task-count {
+  background-color: #ff7ca0;
+  color: #fff;
+  font-weight: 700;
+}
+
 .sidebar__list-name {
   pointer-events: none;
 }
@@ -2244,9 +2256,15 @@ input[type="search"].search-form__input {
 
 .sidebar__task-count {
   position: absolute;
-  top: calc(50% - 8px);
+  top: calc(50% - 9px);
   right: 16px;
-  font-size: 12px;
+  text-align: center;
+  font-size: 10px;
+  width: 24px;
+  vertical-align: middle;
+  padding: 4px 0;
+  line-height: 10px;
+  border-radius: 5000px;
 }
 
 .todo-list__item {
@@ -3179,7 +3197,7 @@ input[name="list"]:checked + label::after {
 }
 
 .bg--dk-pink {
-  background-color: #ff497b;
+  background-color: #ff3058;
   color: #fff;
   border-color: transparent;
 }

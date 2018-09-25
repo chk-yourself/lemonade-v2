@@ -608,13 +608,6 @@
 </li>`
       )
       .join("");
-
-    // Enable auto height resizing for each subtask textarea
-    $all(".edit-todo-form__textarea--subtask", itemsList).forEach((subtask) => {
-      subtask.addEventListener("input", (e) => {
-        autoHeightResize(e.currentTarget);
-      });
-    });
   }
 
   /**
@@ -975,24 +968,24 @@
     }
 
     populateSubtasks(state.activeList.tasks, "subtasks", ulSubtasks, todoIndex);
+    const subtasks = $all(".edit-todo-form__textarea--subtask", ulSubtasks);
     formEditTodo.dataset.index = todoIndex;
     formEditTodo.dataset.id = id;
     colorPicker.dataset.index = todoIndex;
     colorPicker.dataset.id = id;
 
-    autoHeightResize(todoItemTitle);
-
-    if (!todoItemNote.value) {
-      todoItemNote.style.height = "0px";
-    } else {
-      autoHeightResize(todoItemNote);
-    }
-
-    // Readjust heights of subtask textareas to display all content within
-    const subtasks = $all(".edit-todo-form__textarea--subtask", ulSubtasks);
-    if (currentTask.subtasks.length > 0) {
-      subtasks.forEach((subtask) => autoHeightResize(subtask));
-    }
+    // Readjust height of textareas to display all content within
+    setTimeout(() => {
+      autoHeightResize(todoItemTitle);
+      if (!todoItemNote.value) {
+        todoItemNote.style.height = "0px";
+      } else {
+        autoHeightResize(todoItemNote);
+      }
+      if (currentTask.subtasks.length > 0) {
+        subtasks.forEach((subtask) => autoHeightResize(subtask));
+      }
+    }, 0);
 
     const tagsContainer = $("#tagsContainer");
 
@@ -1399,7 +1392,7 @@
     const aListLink = createNode(
       "a",
       {
-        class: "sidebar__link",
+        class: `sidebar__link${listObj.activeTaskCount > 0 ? ' has-active-tasks' : ''}`,
         href: `#${listObj.id}`
       },
       iListIcon,
@@ -1490,6 +1483,11 @@
         today.setHours(0, 0, 0, 0);
         const taskCountDueToday = filterTasksByDueDate(today).length;
         $('.sidebar__task-count', navLink).textContent = taskCountDueToday > 0 ? ''+filterTasksByDueDate(today).length : '';
+        if (taskCountDueToday > 0) {
+          navLink.classList.add('has-active-tasks');
+        } else {
+          navLink.classList.remove('has-active-tasks');
+        }
         break;
       case 'upcoming':
         return;
@@ -1500,6 +1498,11 @@
       default:
         const listObj = todoLists.find(list => list.id === listId);
         $('.sidebar__task-count', navLink).textContent = listObj.activeTaskCount > 0 ? ''+listObj.activeTaskCount : '';
+        if (listObj.activeTaskCount > 0) {
+          navLink.classList.add('has-active-tasks');
+        } else {
+          navLink.classList.remove('has-active-tasks');
+        }
         break;
     }
   }
@@ -2715,6 +2718,10 @@
     e.currentTarget.parentNode.classList.add('is-focused');
   });
   ulSubtasks.addEventListener("click", toggleComplete);
+  ulSubtasks.addEventListener('input', (e) => {
+    if (!e.target.classList.contains('edit-todo-form__textarea--subtask')) return;
+    autoHeightResize(e.target);
+  });
   formEditTodo.addEventListener("submit", addSubtask);
   $("#btnAddSubtask").addEventListener("click", addSubtask);
   colorPicker.addEventListener("click", setTagColor);
@@ -3014,10 +3021,6 @@
         parent.classList.remove('is-focused');
       }
     });
-  });
-
-  $("#todoItemNote").addEventListener("input", () => {
-    autoHeightResize(e.currentTarget);
   });
 
   $("#btnTriggerWarningDeleteTask").addEventListener("click", (e) => {

@@ -166,6 +166,19 @@
       font-weight: 400;
       -webkit-font-smoothing: antialiased;
     }
+    &.has-active-tasks {
+      .sidebar__task-count {
+        background-color: $lt-pink;
+        color: $dk-pink;
+      }
+      &.is-active {
+        .sidebar__task-count {
+          background-color: $pink;
+          color: $white;
+          font-weight: 700;
+        }
+      }
+    }
   }
 
   .sidebar__list-name {
@@ -238,7 +251,13 @@ position: relative;
 
 .sidebar__task-count {
   position: absolute;
-  top: calc(50% - 8px);
-  right: 16px;
-  font-size: 12px;
+  top: calc(50% - 9px);
+    right: 16px;
+    text-align: center;
+    font-size: 10px;
+    width: 24px;
+    vertical-align: middle;
+    padding: 4px 0;
+    line-height: 10px;
+    border-radius: 5000px;
 }
