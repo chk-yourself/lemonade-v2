@@ -496,8 +496,6 @@
 
     state.activeList = getListByTaskId(id);
 
-    console.log(state.activeList);
-
     const activeList_ul = $(".is-active-list");
     const index = state.activeList.findTaskIndex(id);
     const currentTask = state.activeList.getTask(id);
