@@ -1,13 +1,20 @@
 .badge--due-date {
   position: absolute;
   bottom: 4px;
-  left: 41px;
+  left: 40px;
   display: block;
   font-size: 10.5px;
   letter-spacing: .02em;
   color: rgba($dk-grey, 0.4);
   &.is-hidden {
     display: none;
+  }
+}
+
+@supports (-webkit-overflow-scrolling: touch) {
+  /* CSS specific to iOS devices */
+  .badge--due-date {
+    left: 44px;
   }
 }
 

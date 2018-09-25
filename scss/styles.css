@@ -55,7 +55,7 @@ h1 {
 .badge--due-date {
   position: absolute;
   bottom: 4px;
-  left: 41px;
+  left: 40px;
   display: block;
   font-size: 10.5px;
   letter-spacing: .02em;
@@ -64,6 +64,13 @@ h1 {
 
 .badge--due-date.is-hidden {
   display: none;
+}
+
+@supports (-webkit-overflow-scrolling: touch) {
+  /* CSS specific to iOS devices */
+  .badge--due-date {
+    left: 44px;
+  }
 }
 
 .badge--today {
@@ -1230,13 +1237,20 @@ input[type="search"].search-form__input {
 .breadcrumbs {
   position: absolute;
   bottom: 4px;
-  left: 41px;
+  left: 40px;
   display: block;
   font-size: 10.5px;
   letter-spacing: .02em;
   color: rgba(86, 93, 109, 0.6);
   font-style: italic;
   font-family: "Montserrat", Helvetica, Arial, sans-serif;
+}
+
+@supports (-webkit-overflow-scrolling: touch) {
+  /* CSS specific to iOS devices */
+  .breadcrumbs {
+    left: 44px;
+  }
 }
 
 .breadcrumbs__link {

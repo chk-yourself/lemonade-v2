@@ -1,13 +1,20 @@
 .breadcrumbs {
   position: absolute;
   bottom: 4px;
-  left: 41px;
+  left: 40px;
   display: block;
   font-size: 10.5px;
   letter-spacing: .02em;
   color: rgba($grey, 0.6);
   font-style: italic;
   font-family: $heading-font;
+}
+
+@supports (-webkit-overflow-scrolling: touch) {
+  /* CSS specific to iOS devices */
+  .breadcrumbs {
+    left: 44px;
+  }
 }
 
 .breadcrumbs__link {
