@@ -1,13 +1,16 @@
 .badge--due-date {
   position: absolute;
   bottom: 4px;
-  left: 40px;
+  left: 44px;
   display: block;
   font-size: 10.5px;
   letter-spacing: .02em;
   color: rgba($dk-grey, 0.4);
   &.is-hidden {
     display: none;
+  }
+  @include sm {
+    left: 40px;
   }
 }
 
