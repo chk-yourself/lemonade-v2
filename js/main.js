@@ -697,7 +697,7 @@
 
   function toggleContent(e) {
 
-    if (e.target.classList.contains('lemon') || e.target.classList.contains('todo-list__checkbox') || e.target.getAttribute('type') === 'checkbox' || e.currentTarget.contains($('.bulk-actions__checkbox-label', e.currentTarget))) return;
+    if (e.target.classList.contains('lemon') || e.target.classList.contains('todo-list__checkbox') || e.target.getAttribute('type') === 'checkbox' || e.currentTarget.contains($('.bulk-actions__checkbox-label', e.currentTarget)) || e.target.classList.contains('tag-labels__btn--tooltip')) return;
     let todoItem = e.currentTarget;
     const id = todoItem.id;
     const dueDateLabel = $(".badge--due-date", todoItem);
