@@ -2477,7 +2477,7 @@
     // Part 3
 
     if (target === $('#newListForm')) {
-      $('.todo-app__header').appendChild($('#onboardingTooltip_3-1'));
+      $('#listActionsWrapper').appendChild($('#onboardingTooltip_3-1'));
     }
 
     /**

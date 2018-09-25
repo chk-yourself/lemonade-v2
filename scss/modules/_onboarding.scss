@@ -143,10 +143,10 @@
 
 .onboarding__tooltip--3-1 {
   .tooltip__inner {
-    top: 0;
-    right: 64px;
+    top: -8px;
+    right: 42px;
     &::before {
-      top: 16px;
+      top: 12px;
     }
   }
 }
