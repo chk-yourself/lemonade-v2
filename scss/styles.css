@@ -2725,6 +2725,7 @@ label.bulk-actions__checkbox-label {
 }
 
 .task-details__breadcrumbs .breadcrumbs__folder .feather-chevron-right {
+  margin: 0 4px;
   width: 14px;
   height: 14px;
 }
