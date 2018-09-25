@@ -131,7 +131,6 @@
   const formSearch = $("#searchForm");
   const searchBar = $("#searchBar");
   const inputSearch = $("#searchInput");
-  const ulInbox = $("#inbox");
   const ulSubtasks = $("#subtaskList");
   const divViews = $("#views");
   const colorPicker = $("#colorPicker");
@@ -389,11 +388,10 @@
 
   // Renders todo objects as list items
   function populateList(itemsArray = [], itemsList) {
-
     itemsList.innerHTML = itemsArray
       .map(
         (item, i) => `<li class= "todo-list__item${
-          item.done ? ' is-done' : ''}${item.isPriority ? ' is-priority' : ''}" data-index="${i}" id="${item.id}">
+          item.done ? ' is-done' : ''}${item.isPriority ? ' is-priority' : ''}${item.dueDate || state.filteredList !== null ? ' show-info' : ''}" data-index="${i}" id="${item.id}">
 <input type="checkbox" id="item-${i}" data-index="${i}" value="${item.text}" ${
           item.done ? "checked" : ""
         } />
@@ -1074,6 +1072,7 @@
         badgeDueDate.classList.add('is-hidden');
       }
     });
+    feather.replace();
   }
 
   function renderList(itemsArray, itemsList) {
@@ -1200,7 +1199,8 @@
       }, []);
 
       const ulFilteredList = $("#filteredList");
-
+      state.activeList = null;
+      state.filteredList = filteredArray;
       renderList(filteredArray, ulFilteredList);
 
       const taskCount = filteredArray.reduce(
@@ -1215,8 +1215,6 @@
         inputSearch.value
       }</strong>`;
       formAddTodo.classList.add("is-hidden");
-      state.activeList = null;
-      state.filteredList = filteredArray;
       inputSearch.blur();
     }
   }
@@ -1273,14 +1271,13 @@
     if (todoAppContainer.classList.contains('show-task-details')) {
       todoAppContainer.classList.remove('show-task-details');
     }
-
+    state.activeList = null;
+    state.filteredList = filteredArray;
     renderList(filteredArray, listElem);
 
     $(".is-active-list").classList.remove("is-active-list");
     listElem.classList.add("is-active-list");
     formAddTodo.classList.add("is-hidden");
-    state.activeList = null;
-    state.filteredList = filteredArray;
 
     // Closes sidebar if viewport is < 768px
     if (document.documentElement.clientWidth < 768) {
@@ -1734,6 +1731,11 @@
   function displayList(listObj) {
     const ulActiveList = $(".is-active-list");
     const list_ul = $(`#${listObj.id}`);
+    
+    // Updates state
+    state.activeList = listObj;
+    state.filteredList = null;
+
     if ($("#bulkActionsToolbar").classList.contains("is-active")) {
       $("#bulkActionsToolbar").classList.remove("is-active");
       ulActiveList.removeEventListener("click", enableBulkActions);
@@ -1758,10 +1760,6 @@
       }
     });
     formAddTodo.classList.remove("is-hidden");
-
-    // Updates state
-    state.activeList = listObj;
-    state.filteredList = null;
   }
 
   function populateCalendarYears() {
@@ -2036,6 +2034,7 @@
   function setDueDate(e) {
     const id = hiddenTaskId.value;
     const currentTask = state.activeList.getTask(id);
+    const todoItem = currentTask.elem;
 
     const dueDate = $("#inputDueDate").value; // `mm/dd/yy`
     const dueYear = +`20${dueDate.slice(6)}`;
@@ -2048,8 +2047,6 @@
     if (currentDueDate.valueOf() !== newDueDate.valueOf()) {
       currentTask.dueDate = newDueDate;
       saveToStorage();
-
-      const todoItem = $(`#${id}`);
       const dueDateLabel = $(".badge--due-date", todoItem) ? $(".badge--due-date", todoItem)
         : createNode("span");
 

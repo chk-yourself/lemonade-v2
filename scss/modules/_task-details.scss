@@ -110,7 +110,6 @@
 .todo-item__title,
 .edit-todo-form__textarea--subtask {
   display: inline-block;
-  margin-bottom: 0;
   background-color: transparent;
   height: 0;
   min-height: 20px;
@@ -120,11 +119,7 @@
   width: calc(100% - 69px);
   margin: 0 0 0 -4px;
   padding: 0;
-}
-
-.todo-item__title {
-  padding-top: 0;
-  padding-bottom: 0;
+  position: relative;
 }
 
 .edit-todo-form__tags-container {

@@ -31,6 +31,11 @@
       left: calc(50% + 11.7px);
     }
   }
+  &.show-info {
+    .todo-item__title {
+      top: -4px;
+    }
+  }
 }
 
 .todo-list {
