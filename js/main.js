@@ -477,6 +477,12 @@
     }
   }
 
+  function getListByTaskId(todoId) {
+    return todoLists.find((list) =>
+      list.tasks.find((task) => task.id === todoId)
+    );
+  }
+
   // Updates todo object's `done` property to reflect current `checked` state
   function toggleDone(e) {
     const el = e.target;
@@ -488,9 +494,9 @@
 
     const id = el.parentNode.id; // ID of list item
 
-    if (state.activeList === null) {
-      state.activeList = getListByTaskId(id);
-    }
+    state.activeList = getListByTaskId(id);
+
+    console.log(state.activeList);
 
     const activeList_ul = $(".is-active-list");
     const index = state.activeList.findTaskIndex(id);
@@ -688,6 +694,7 @@
     currentTask.subtasks[subtaskIndex].text = newSubtaskText.trim();
     saveToStorage();
   }
+  
 
   function toggleContent(e) {
 
@@ -907,12 +914,6 @@
         }
       }
     }
-  }
-
-  function getListByTaskId(todoId) {
-    return todoLists.find((list) =>
-      list.tasks.find((task) => task.id === todoId)
-    );
   }
 
   function populateContent(id) {

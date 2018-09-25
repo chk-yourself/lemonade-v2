@@ -1954,7 +1954,7 @@ input[type="search"].search-form__input {
   font-size: 2.25rem;
   color: #404551;
   font-family: "Montserrat", Helvetica, Arial, sans-serif;
-  font-weight: 400;
+  font-weight: 500;
   width: 65%;
   -webkit-font-smoothing: antialiased;
 }
@@ -2174,7 +2174,7 @@ input[type="search"].search-form__input {
 }
 
 .sidebar__link.has-active-tasks.is-active .sidebar__task-count {
-  background-color: #ff7ca0;
+  background-color: #6381ff;
   color: #fff;
   font-weight: 700;
 }
