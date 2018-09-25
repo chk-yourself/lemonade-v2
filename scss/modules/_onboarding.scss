@@ -1,3 +1,8 @@
+.onboarding {
+  .modal__content {
+    top: calc(50vh - 220px);
+  }
+}
 .onboarding__desc,
 .onboarding__list {
   font-size: 14px;
@@ -83,8 +88,8 @@
 
 .onboarding__tooltip--1-2 {
   .tooltip__inner {
-    bottom: 100%;
-    left: 16px;
+    bottom: calc(100% + 8px);
+    left: 8px;
     &::before {
       left: 32px;
     }
@@ -93,11 +98,11 @@
 
 .onboarding__tooltip--1-3 {
   .tooltip__inner {
-    bottom: calc(100% - 4px);
+    bottom: 100%;
     left: 8px;
     width: 240px;
     &::before {
-      left: 24px;
+      left: 20px;
     }
   }
 }
@@ -121,9 +126,9 @@
 .onboarding__tooltip--2-2 {
   .tooltip__inner {
     top: 48px;
-    left: -9px;
+    left: 8px;
     &::before {
-      left: 24px;
+      left: 32px;
     }
   }
 }
@@ -146,27 +151,27 @@
     top: -8px;
     right: 42px;
     &::before {
-      top: 12px;
+      top: 14px;
     }
   }
 }
 
 .onboarding__tooltip--3-2 {
   .tooltip__inner {
-    left: -12px;
-    bottom: calc(100% + 6px);
+    left: -6px;
+    bottom: calc(100% + 2px);
     &::before {
-      left: 24px;
+      left: 14px;
     }
   }
 }
 
 .onboarding__tooltip--3-3 {
   .tooltip__inner {
-    left: -6px;
+    left: 0;
     bottom: calc(100% + 6px);
     &::before {
-      right: 32px;
+      right: 46px;
     }
   }
 }

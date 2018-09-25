@@ -79,8 +79,8 @@
   // background-color: darken($dk-grey, 1);
   background-color: $blue;
   color: $dk-grey;
-  padding: 16px;
-  border-radius: 14px;
+  padding: 12px;
+  border-radius: 12px;
   width: 240px;
   position: absolute;
   pointer-events: visible;
@@ -88,7 +88,7 @@
   &::before {
     content: "";
     width: 0;
-    border: 12px solid transparent;
+    border: 10px solid transparent;
     position: absolute;
   }
 }
@@ -99,7 +99,7 @@
     right: 60px;
     &::before {
       top: 32px;
-      right: -24px;
+      right: -20px;
       border-left-color: $blue;
     }
   }
@@ -110,7 +110,7 @@
     left: 68px;
     &::before {
       top: 32px;
-      left: -24px;
+      left: -20px;
       border-right-color: $blue;
     }
   }
@@ -121,7 +121,7 @@
     bottom: calc(100% + 12px);
     &::before {
       right: 32px;
-      bottom: -24px;
+      bottom: -20px;
       border-top-color: $blue;
     }
   }
@@ -131,7 +131,7 @@
   .tooltip__inner {
     top: calc(100% + 12px);
     &::before {
-      top: -24px;
+      top: -20px;
       left: 32px;
       border-bottom-color: $blue;
     }
@@ -140,15 +140,15 @@
 
 .tooltip__icon-btn--close {
   position: absolute;
-  top: 4px;
-  right: 4px;
+  top: 0;
+  right: 0;
   padding: 8px;
   z-index: 99;
   color: $dk-grey;
   pointer-events: visible;
   .feather {
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
     pointer-events: none;
   }
 }

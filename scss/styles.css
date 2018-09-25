@@ -1152,8 +1152,8 @@ input[type="search"].search-form__input {
   display: none;
   background-color: #63dcff;
   color: #404551;
-  padding: 16px;
-  border-radius: 14px;
+  padding: 12px;
+  border-radius: 12px;
   width: 240px;
   position: absolute;
   pointer-events: visible;
@@ -1164,7 +1164,7 @@ input[type="search"].search-form__input {
 .tooltip__inner::before {
   content: "";
   width: 0;
-  border: 12px solid transparent;
+  border: 10px solid transparent;
   position: absolute;
 }
 
@@ -1175,7 +1175,7 @@ input[type="search"].search-form__input {
 
 .tooltip--left .tooltip__inner::before {
   top: 32px;
-  right: -24px;
+  right: -20px;
   border-left-color: #63dcff;
 }
 
@@ -1185,7 +1185,7 @@ input[type="search"].search-form__input {
 
 .tooltip--right .tooltip__inner::before {
   top: 32px;
-  left: -24px;
+  left: -20px;
   border-right-color: #63dcff;
 }
 
@@ -1195,7 +1195,7 @@ input[type="search"].search-form__input {
 
 .tooltip--top .tooltip__inner::before {
   right: 32px;
-  bottom: -24px;
+  bottom: -20px;
   border-top-color: #63dcff;
 }
 
@@ -1204,15 +1204,15 @@ input[type="search"].search-form__input {
 }
 
 .tooltip--bottom .tooltip__inner::before {
-  top: -24px;
+  top: -20px;
   left: 32px;
   border-bottom-color: #63dcff;
 }
 
 .tooltip__icon-btn--close {
   position: absolute;
-  top: 4px;
-  right: 4px;
+  top: 0;
+  right: 0;
   padding: 8px;
   z-index: 99;
   color: #404551;
@@ -1220,8 +1220,8 @@ input[type="search"].search-form__input {
 }
 
 .tooltip__icon-btn--close .feather {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   pointer-events: none;
 }
 
@@ -2991,6 +2991,10 @@ input[name="list"]:checked + label::after {
   left: 0;
 }
 
+.onboarding .modal__content {
+  top: calc(50vh - 220px);
+}
+
 .onboarding__desc,
 .onboarding__list {
   font-size: 14px;
@@ -3082,8 +3086,8 @@ input[name="list"]:checked + label::after {
 }
 
 .onboarding__tooltip--1-2 .tooltip__inner {
-  bottom: 100%;
-  left: 16px;
+  bottom: calc(100% + 8px);
+  left: 8px;
 }
 
 .onboarding__tooltip--1-2 .tooltip__inner::before {
@@ -3091,13 +3095,13 @@ input[name="list"]:checked + label::after {
 }
 
 .onboarding__tooltip--1-3 .tooltip__inner {
-  bottom: calc(100% - 4px);
+  bottom: 100%;
   left: 8px;
   width: 240px;
 }
 
 .onboarding__tooltip--1-3 .tooltip__inner::before {
-  left: 24px;
+  left: 20px;
 }
 
 .onboarding__tooltip--2-1 .tooltip__inner {
@@ -3123,11 +3127,11 @@ input[name="list"]:checked + label::after {
 
 .onboarding__tooltip--2-2 .tooltip__inner {
   top: 48px;
-  left: -9px;
+  left: 8px;
 }
 
 .onboarding__tooltip--2-2 .tooltip__inner::before {
-  left: 24px;
+  left: 32px;
 }
 
 .onboarding__tooltip--2-3 {
@@ -3151,25 +3155,25 @@ input[name="list"]:checked + label::after {
 }
 
 .onboarding__tooltip--3-1 .tooltip__inner::before {
-  top: 12px;
+  top: 14px;
 }
 
 .onboarding__tooltip--3-2 .tooltip__inner {
-  left: -12px;
-  bottom: calc(100% + 6px);
+  left: -6px;
+  bottom: calc(100% + 2px);
 }
 
 .onboarding__tooltip--3-2 .tooltip__inner::before {
-  left: 24px;
+  left: 14px;
 }
 
 .onboarding__tooltip--3-3 .tooltip__inner {
-  left: -6px;
+  left: 0;
   bottom: calc(100% + 6px);
 }
 
 .onboarding__tooltip--3-3 .tooltip__inner::before {
-  right: 32px;
+  right: 46px;
 }
 
 .views {
