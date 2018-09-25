@@ -266,6 +266,11 @@ btn--primary:active {
   width: 100%;
 }
 
+input[type=text],
+textarea {
+  -webkit-appearance: none;
+}
+
 input[type=text]:focus,
 textarea:focus {
   -webkit-box-shadow: none;
