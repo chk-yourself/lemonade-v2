@@ -4,6 +4,7 @@
   transition: all .2s ease-in-out;
   border: 1px solid transparent;
   border-bottom-color: rgba($lt-grey, 0.8);
+  border-radius: 4px;
   &:hover, &:focus {
     background-color: $white;
     .todo-item__btn--neutral {
@@ -18,6 +19,7 @@
   }
   &.is-selected {
     background-color: rgba($primary-color, 0.15);
+    border-bottom-color: $primary-color;
     .todo-item__btn--neutral {
       border-color: $dk-grey;
     }
@@ -136,6 +138,7 @@
 
 .filtered-list__sub-list-name {
   padding: 0 8px;
+  margin-bottom: 8px;
 }
 
 .filtered-list__link {

@@ -2306,6 +2306,7 @@ input[type="search"].search-form__input {
   transition: all .2s ease-in-out;
   border: 1px solid transparent;
   border-bottom-color: rgba(214, 222, 226, 0.8);
+  border-radius: 4px;
 }
 
 .todo-list__item:hover, .todo-list__item:focus {
@@ -2326,6 +2327,7 @@ input[type="search"].search-form__input {
 
 .todo-list__item.is-selected {
   background-color: rgba(99, 129, 255, 0.15);
+  border-bottom-color: #6381ff;
 }
 
 .todo-list__item.is-selected .todo-item__btn--neutral {
@@ -2458,6 +2460,7 @@ input[type="search"].search-form__input {
 
 .filtered-list__sub-list-name {
   padding: 0 8px;
+  margin-bottom: 8px;
 }
 
 .filtered-list__link {
