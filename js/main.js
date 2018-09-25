@@ -671,14 +671,16 @@
     const newText = e.target.value.trim();
     const currentTask = state.activeList.getTask(id);
     const todoItem = $(`#${id}`);
-    currentTask.text = newText;
-    saveToStorage();
-
-    if (e.currentTarget === $('#taskName')) {
-      $('.todo-item__title', todoItem).value = newText;
-    } else {
-      if (todoAppContainer.classList.contains('show-task-details')) {
-        $('#taskName').value = newText;
+    if (newText !== "") {
+      currentTask.text = newText;
+      saveToStorage();
+  
+      if (e.currentTarget === $('#taskName')) {
+        $('.todo-item__title', todoItem).value = newText;
+      } else {
+        if (todoAppContainer.classList.contains('show-task-details')) {
+          $('#taskName').value = newText;
+        }
       }
     }
   }
@@ -737,19 +739,29 @@
   }
 
   function deleteTask(listObj, taskId) {
+    const currentTask = listObj.getTask(taskId);
     const taskIndex = listObj.findTaskIndex(taskId);
+    const ulActiveList = $(".is-active-list");
     listObj.tasks.splice(taskIndex, 1);
     saveToStorage();
 
     if (todoAppContainer.classList.contains("show-task-details")) {
-      const activeList_ul = $(".is-active-list");
       const currentTasksList =
         state.filteredList === null
           ? state.activeList.tasks
           : state.filteredList;
       todoAppContainer.classList.remove('show-task-details');
-      renderList(currentTasksList, activeList_ul);
+      if (ulActiveList.id === "upcoming") {
+        displayTaskSchedule('upcoming', $("#upcoming"));
+      } else if (ulActiveList.id === "today") {
+        displayTaskSchedule('today', $("#today"));
+      } else {
+        renderList(currentTasksList, ulActiveList);
+      }
       updateTaskCount(listObj.id);
+      if (currentTask.isDueToday) {
+        updateTaskCount('today');
+      }
       $("#alertWarningDeleteTask").classList.remove("is-active");
     }
   }
@@ -2065,6 +2077,7 @@
       if (!$(".badge--due-date", todoItem)) {
         todoItem.appendChild(dueDateLabel);
       }
+      todoItem.classList.add('show-info');
     }
 
     $("#dueDateWrapper").classList.add("has-due-date");
