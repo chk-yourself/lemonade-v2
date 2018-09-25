@@ -740,31 +740,34 @@
 
   function deleteTask(listObj, taskId) {
     const currentTask = listObj.getTask(taskId);
+    const todoItem = currentTask.elem;
     const taskIndex = listObj.findTaskIndex(taskId);
     const ulActiveList = $(".is-active-list");
     listObj.tasks.splice(taskIndex, 1);
     saveToStorage();
 
+    const currentTasksList = state.filteredList === null ? state.activeList.tasks : state.filteredList;
     if (todoAppContainer.classList.contains("show-task-details")) {
       todoAppContainer.classList.remove('show-task-details');
     }
-    
-    const currentTasksList =
-        state.filteredList === null
-          ? state.activeList.tasks
-          : state.filteredList;
-      if (ulActiveList.id === "upcoming") {
-        displayTaskSchedule('upcoming', $("#upcoming"));
-      } else if (ulActiveList.id === "today") {
-        displayTaskSchedule('today', $("#today"));
-      } else {
-        renderList(currentTasksList, ulActiveList);
+    if (!todoItem.classList.contains('bulk-editing-list__item')) {
+      switch (ulActiveList.id) {
+        case "upcoming":
+          displayTaskSchedule('upcoming', $("#upcoming"));
+          break;
+        case "today":
+          displayTaskSchedule('today', $("#today"));
+          break;
+        default:
+          renderList(currentTasksList, ulActiveList);
+          break;
       }
-      updateTaskCount(listObj.id);
-      if (currentTask.isDueToday) {
-        updateTaskCount('today');
-      }
-      $("#alertWarningDeleteTask").classList.remove("is-active");
+    }
+    updateTaskCount(listObj.id);
+    if (currentTask.isDueToday) {
+      updateTaskCount('today');
+    }
+    $("#alertWarningDeleteTask").classList.remove("is-active");
   }
 
   function filterTag(tag) {
@@ -2193,7 +2196,7 @@
     }
   }
 
-  function openBulkEditing(e) {
+  function initBulkEditing(e) {
     // Hide add todo form
     $("#addTodoForm").classList.add("is-hidden");
     // Uncheck master bulk editing checkbox
@@ -2266,7 +2269,13 @@
       listObj = getListByTaskId(item.dataset.id);
       deleteTask(listObj, item.dataset.id);
     });
-    renderList(currentTasksList, ulActiveList);
+    if (ulActiveList.id === "upcoming") {
+      displayTaskSchedule('upcoming', $("#upcoming"));
+    } else if (ulActiveList.id === "today") {
+      displayTaskSchedule('today', $("#today"));
+    } else {
+      renderList(currentTasksList, ulActiveList);
+    }
   }
 
   // Hides certain elements if you click outside of them
@@ -2476,11 +2485,11 @@
     if (target.classList.contains('list-actions__btn--toggle')) {
       $('#bulkActionsToolbar').appendChild($('#onboardingTooltip_3-2'));
       $('#onboardingTooltip_3-2').classList.add('show-tooltip');
-      $('#btnOpenBulkEditing').addEventListener('click', trackTourProgress);
+      $('#btnInitBulkEditing').addEventListener('click', trackTourProgress);
     }
     // Part 2
 
-    if (target === $('#btnOpenBulkEditing')) {
+    if (target === $('#btnInitBulkEditing')) {
       // Create dummy tasks for user to delete
       for (let i = 0; i < 3; i++) {
         let dummyTask = new Task("Delete Me!");
@@ -2639,8 +2648,8 @@
       case "editList":
         prepEditListForm(e);
         break;
-      case "openBulkEditing":
-        openBulkEditing(e);
+      case "initBulkEditing":
+        initBulkEditing(e);
         break;
       case "clearAll":
         $("#alertWarningClearAll").classList.add("is-active");
