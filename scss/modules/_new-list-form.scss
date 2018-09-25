@@ -4,11 +4,14 @@
 
 .form__input--list-name {
   max-width: 320px;
-  border-radius: 4px;
-  padding: 16px;
+  border-radius: 5000px;
+  padding: 14px 32px;
+  height: auto;
+  border-bottom: 2px solid transparent;
   &:focus {
-    border:1px solid $lt-grey;
+    border-bottom-color: $primary-color;
   }
+  background-color: rgba($primary-color, 0.15);
 }
 .new-list-form__form-group--inline {
   width: 100%;
@@ -21,7 +24,7 @@
 }
 .new-list-form__input {
   width: calc(100% - 24px);
-  padding: 16px 8px;
+  padding: 8px;
   &:focus {
     border: 1px solid $lt-grey;
   }

@@ -516,9 +516,10 @@ label.subtask-list__checkbox:before {
   font-family: "Montserrat", Helvetica, Arial, sans-serif;
   font-size: 16px;
   letter-spacing: .03em;
-  font-weight: 700;
+  font-weight: 400;
   margin-bottom: 4px;
   text-transform: uppercase;
+  line-height: 0;
 }
 
 .form__fieldset {
@@ -2560,12 +2561,15 @@ input[type="search"].search-form__input {
 
 .form__input--list-name {
   max-width: 320px;
-  border-radius: 4px;
-  padding: 16px;
+  border-radius: 5000px;
+  padding: 14px 32px;
+  height: auto;
+  border-bottom: 2px solid transparent;
+  background-color: rgba(99, 129, 255, 0.15);
 }
 
 .form__input--list-name:focus {
-  border: 1px solid #d6dee2;
+  border-bottom-color: #6381ff;
 }
 
 .new-list-form__form-group--inline {
@@ -2581,7 +2585,7 @@ input[type="search"].search-form__input {
 
 .new-list-form__input {
   width: calc(100% - 24px);
-  padding: 16px 8px;
+  padding: 8px;
 }
 
 .new-list-form__input:focus {
