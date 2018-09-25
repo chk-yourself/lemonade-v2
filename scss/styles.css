@@ -54,7 +54,7 @@ h1 {
 
 .badge--due-date {
   position: absolute;
-  bottom: 4px;
+  bottom: 8px;
   left: 44px;
   display: block;
   font-size: 10.5px;
@@ -1242,7 +1242,7 @@ input[type="search"].search-form__input {
 
 .breadcrumbs {
   position: absolute;
-  bottom: 4px;
+  bottom: 8px;
   left: 44px;
   display: block;
   font-size: 10.5px;
@@ -2339,7 +2339,7 @@ input[type="search"].search-form__input {
 }
 
 .todo-list__item.show-info .todo-item__title {
-  top: -4px;
+  top: -8px;
 }
 
 .todo-list {
@@ -2811,6 +2811,7 @@ label.bulk-actions__checkbox-label {
   margin: 0 0 0 -4px;
   padding: 0;
   position: relative;
+  font-size: 14px;
 }
 
 .edit-todo-form__tags-container {

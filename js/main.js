@@ -632,6 +632,7 @@
       const newSubtask = new Subtask(text);
       currentTask.subtasks.push(newSubtask);
       populateSubtasks(currentList.tasks, "subtasks", ulSubtasks, todoIndex);
+      $all('.edit-todo-form__textarea--subtask', ulSubtasks).forEach(subtask => autoHeightResize(subtask));
       saveToStorage();
       $("#newSubtaskInput").value = "";
     }
