@@ -718,6 +718,7 @@
       $("#dueDateWrapper").classList.remove("show-input");
       $("#dueDateWrapper").parentNode.classList.remove('is-focused');
       $("#dpCalendar").classList.remove("is-active");
+      $all('.todo-list__item', ulActiveList).forEach(item => item.classList.remove('is-selected'));
     } 
     
     if (!todoAppContainer.classList.contains("show-task-details") && e.currentTarget.id !== "btnCloseTaskDetails") {
