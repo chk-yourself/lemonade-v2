@@ -117,9 +117,12 @@
   font-size: 1.5rem;
   padding: 8px;
   display: flex;
-  align-items: center;
+  align-items: baseline;
   strong {
     margin-left: 4px;
+  }
+  .filtered-list__date-group {
+    align-self: center;
   }
 }
 
@@ -183,41 +186,44 @@
 }
 
 .filtered-list__day-num {
-  font-size: 32px;
+  font-size: 28px;
   margin-right: 4px;
   letter-spacing: -0.02em;
-  margin-top: -3px;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .filtered-list__date-group {
   display: inline-flex;
   flex-direction: column;
-  margin-right: 24px;
+  margin-right: auto;
 }
 
 .filtered-list__month {
   text-transform: uppercase;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 11px;
   margin-bottom: -1px;
+  letter-spacing: .01em;
 }
 
 .filtered-list__year {
-  font-size: 10px;
+  font-size: 9.5px;
   font-weight: 400;
-  margin-top: -1px;
 }
 
 .filtered-list__weekday {
   text-transform: uppercase;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: .03em;
   -webkit-font-smoothing: antialiased;
   &--lg {
     font-size: 1.5rem;
     margin-right: 8px;
+  }
+  &--sm {
+    font-size: 14px;
+    text-transform: uppercase;
   }
 }
 

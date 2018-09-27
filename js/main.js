@@ -129,7 +129,8 @@
     }
     get dueDayNumStr() {
       const dueDate = new Date(this.dueDate);
-      return ''+dueDate.getDate();
+      const dayNum = dueDate.getDate();
+      return dayNum > 9 ? ''+dayNum : '0'+dayNum;
     }
     get dueYearStr() {
       const dueDate = new Date(this.dueDate);
@@ -1142,7 +1143,35 @@
           class: "filtered-list__sub-list"
         });
         // Create list link
-        const subListTitle = filterByDate ? createNode("h2", {class: 'filtered-list__date filtered-list__sub-list-name'}, createNode('span', {class: 'filtered-list__day-num'}, firstTask.dueDayNumStr), createNode('span', {class: 'filtered-list__date-group'}, createNode('span', {class: 'filtered-list__month'}, firstTask.dueMonthAbbrev), createNode('span', {class: 'filtered-list__year'}, firstTask.dueYearStr)), createNode('span', {class: 'filtered-list__weekday'}, firstTask.dueDayOfWeek))
+        const subListTitle = filterByDate
+          ? createNode(
+              "h2",
+              { class: "filtered-list__date filtered-list__sub-list-name" },
+              createNode(
+                "span",
+                { class: "filtered-list__day-num" },
+                firstTask.dueDayNumStr
+              ),
+              createNode(
+                "span",
+                { class: "filtered-list__date-group" },
+                createNode(
+                  "span",
+                  { class: "filtered-list__month" },
+                  firstTask.dueMonthAbbrev
+                ),
+                createNode(
+                  "span",
+                  { class: "filtered-list__year" },
+                  firstTask.dueYearStr
+                )
+              ),
+              createNode(
+                "span",
+                { class: "filtered-list__weekday" },
+                firstTask.dueDayOfWeek
+              )
+            )
         : createNode(
           "a",
           { class: "filtered-list__link filtered-list__sub-list-name", href: `#${listObj.id}` },
@@ -1243,7 +1272,7 @@
     today.setHours(0, 0, 0, 0);
     if (timeFrame === 'today') {
     filteredArray = filterTasksByDueDate(today);
-    $("#activeListTitle").innerHTML = `<span class="filtered-list__weekday--lg">Today,</span><span class="filtered-list__day-num">${today.getDate()}</span><span class="filtered-list__date-group"><span class="filtered-list__month">${monthsArr[today.getMonth()].abbrev}</span><span class="filtered-list__year">${today.getFullYear()}</span></span>`;
+    $("#activeListTitle").innerHTML = `<span class="filtered-list__weekday--lg">Today,</span><span class="filtered-list__day-num">${today.getDate()}</span><span class="filtered-list__date-group"><span class="filtered-list__month">${monthsArr[today.getMonth()].abbrev}</span><span class="filtered-list__year">${today.getFullYear()}</span></span><span class="filtered-list__weekday">${weekdaysArr[today.getDay()].full}</span>`;
     } else if (timeFrame === 'upcoming') {
       const currentMonthIndex = today.getMonth();
       const currentYear = today.getFullYear();

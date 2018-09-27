@@ -2458,13 +2458,19 @@ input[type="search"].search-form__input {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -webkit-box-align: baseline;
+      -ms-flex-align: baseline;
+          align-items: baseline;
 }
 
 .active-list__title strong {
   margin-left: 4px;
+}
+
+.active-list__title .filtered-list__date-group {
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
 }
 
 .filtered-list {
@@ -2530,11 +2536,10 @@ input[type="search"].search-form__input {
 }
 
 .filtered-list__day-num {
-  font-size: 32px;
+  font-size: 28px;
   margin-right: 4px;
   letter-spacing: -0.02em;
-  margin-top: -3px;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .filtered-list__date-group {
@@ -2545,26 +2550,26 @@ input[type="search"].search-form__input {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  margin-right: 24px;
+  margin-right: auto;
 }
 
 .filtered-list__month {
   text-transform: uppercase;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 11px;
   margin-bottom: -1px;
+  letter-spacing: .01em;
 }
 
 .filtered-list__year {
-  font-size: 10px;
+  font-size: 9.5px;
   font-weight: 400;
-  margin-top: -1px;
 }
 
 .filtered-list__weekday {
   text-transform: uppercase;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: .03em;
   -webkit-font-smoothing: antialiased;
 }
@@ -2572,6 +2577,11 @@ input[type="search"].search-form__input {
 .filtered-list__weekday--lg {
   font-size: 1.5rem;
   margin-right: 8px;
+}
+
+.filtered-list__weekday--sm {
+  font-size: 14px;
+  text-transform: uppercase;
 }
 
 .upcoming-list.bulk-editing-list,
