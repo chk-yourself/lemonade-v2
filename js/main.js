@@ -122,6 +122,23 @@
       const dueDay = dueDate.getDate();
       return `${dueMonthAbbrev} ${dueDay}`
     }
+    get dueMonthAbbrev() {
+      const dueDate = new Date(this.dueDate);
+      const dueMonthIndex = dueDate.getMonth();
+      return monthsArr[dueMonthIndex].abbrev;
+    }
+    get dueDayNumStr() {
+      const dueDate = new Date(this.dueDate);
+      return ''+dueDate.getDate();
+    }
+    get dueYearStr() {
+      const dueDate = new Date(this.dueDate);
+      return ''+dueDate.getFullYear();
+    }
+    get dueDayOfWeek() {
+      const dueDate = new Date(this.dueDate);
+      return this.isDueToday ? 'Today' : this.isDueTomorrow ? 'Tomorrow' : weekdaysArr[dueDate.getDay()].full;
+    }
   }
 
   // Variables
@@ -252,13 +269,13 @@
   ];
 
   const weekdaysArr = [
-    "Sun",
-    "Mon",
-    "Tue",
-    "Wed",
-    "Thu",
-    "Fri",
-    "Sat"
+    {full: "Sunday", short: "Sun"},
+    {full: "Monday", short: "Mon"},
+    {full: "Tuesday", short: "Tue"},
+    {full: "Wednesday", short: "Wed"},
+    {full: "Thursday", short: "Thu"},
+    {full: "Friday", short: "Fri"},
+    {full: "Saturday", short: "Sat"}
   ];
 
   // Generates unique ID string, used for identifying todo items.
@@ -1107,32 +1124,9 @@
 
       const filterByDate = itemsList === $('#upcoming');
       itemsArray.forEach((list) => {
-
-        const listObj = getListByTaskId(list[0].id);
-        const date = new Date(list[0].dueDate);
-        const month = monthsArr[date.getMonth()].abbrev;
-        const dayNum = date.getDate();
-        const weekday = weekdaysArr[date.getDay()];
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        const currentDay = today.getDate();
-        const currentMonthIndex = today.getMonth();
-        const currentYear = today.getFullYear();
-        const nextYear = currentYear + 1;
-        const currentMonth = monthsArr[currentMonthIndex];
-        const nextMonthIndex =
-        currentMonth.name !== "December" ? currentMonthIndex + 1 : 0;
-
-      if (currentMonth.name === "February") {
-        currentMonth.daysTotal = isLeapYear(currentYear) ? 29 : 28;
-      }
-        const tomorrow =
-        currentDay < currentMonth.daysTotal
-          ? new Date(currentYear, currentMonthIndex, currentDay + 1)
-          : nextMonthIndex !== 0
-            ? new Date(currentYear, nextMonthIndex, 1)
-            : new Date(nextYear, nextMonthIndex, 1);
-      tomorrow.setHours(0, 0, 0, 0);
+        const taskId = list[0].id;
+        const listObj = getListByTaskId(taskId);
+        const firstTask = listObj.getTask(taskId);
 
         const folderName =
           listObj.folder !== "null"
@@ -1148,16 +1142,16 @@
           class: "filtered-list__sub-list"
         });
         // Create list link
-        const subListTitle = filterByDate ? createNode("h2", {class: 'filtered-list__date filtered-list__sub-list-name'}, date.valueOf() === today.valueOf() ? 'Today' : date.valueOf() === tomorrow.valueOf() ? 'Tomorrow' : `${weekday}, ${month} ${dayNum}`)
+        const subListTitle = filterByDate ? createNode("h2", {class: 'filtered-list__date filtered-list__sub-list-name'}, createNode('span', {class: 'filtered-list__day-num'}, firstTask.dueDayNumStr), createNode('span', {class: 'filtered-list__date-group'}, createNode('span', {class: 'filtered-list__month'}, firstTask.dueMonthAbbrev), createNode('span', {class: 'filtered-list__year'}, firstTask.dueYearStr)), createNode('span', {class: 'filtered-list__weekday'}, firstTask.dueDayOfWeek))
         : createNode(
           "a",
           { class: "filtered-list__link filtered-list__sub-list-name", href: `#${listObj.id}` },
           listObj.name
         );
 
-        if (filterByDate && date.valueOf() === today.valueOf()) {
+        if (filterByDate && firstTask.isDueToday) {
           subListTitle.classList.add('filtered-list__date--today');
-        } else if (filterByDate && date.valueOf() === tomorrow.valueOf()) {
+        } else if (filterByDate && firstTask.isDueTomorrow) {
           subListTitle.classList.add('filtered-list__date--tomorrow');
         }
 

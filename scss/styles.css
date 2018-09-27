@@ -2490,13 +2490,19 @@ input[type="search"].search-form__input {
 .filtered-list__date {
   font-size: 14px;
   font-weight: 500;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
-.filtered-list__date--today {
+.filtered-list__date--today .filtered-list__weekday {
   color: #f2002e;
 }
 
-.filtered-list__date--tomorrow {
+.filtered-list__date--tomorrow .filtered-list__weekday {
   color: #6381ff;
 }
 
@@ -2509,6 +2515,45 @@ input[type="search"].search-form__input {
   width: 16px;
   height: 16px;
   margin: -3px 4px 0;
+}
+
+.filtered-list__day-num {
+  font-size: 32px;
+  margin-right: 4px;
+  letter-spacing: -0.02em;
+  margin-top: -3px;
+  font-weight: 700;
+}
+
+.filtered-list__date-group {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin-right: 24px;
+}
+
+.filtered-list__month {
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 11px;
+  margin-bottom: -1px;
+}
+
+.filtered-list__year {
+  font-size: 10px;
+  font-weight: 400;
+  margin-top: -1px;
+}
+
+.filtered-list__weekday {
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: .03em;
 }
 
 .add-todo-form.is-hidden {
