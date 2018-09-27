@@ -2557,6 +2557,15 @@ input[type="search"].search-form__input {
   -webkit-font-smoothing: antialiased;
 }
 
+.upcoming-list.bulk-editing-list {
+  background-color: transparent;
+  margin-top: 16px;
+}
+
+.upcoming-list.bulk-editing-list .filtered-list__sub-list {
+  background-color: rgba(246, 246, 249, 0.6);
+}
+
 .add-todo-form.is-hidden {
   display: none;
 }

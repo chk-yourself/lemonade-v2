@@ -209,3 +209,11 @@
   letter-spacing: .03em;
   -webkit-font-smoothing: antialiased;
 }
+
+.upcoming-list.bulk-editing-list {
+  background-color: transparent;
+  margin-top: 16px;
+  .filtered-list__sub-list {
+    background-color: rgba($off-white, 0.6);
+  }
+}
