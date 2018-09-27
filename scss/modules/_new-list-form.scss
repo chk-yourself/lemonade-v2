@@ -18,6 +18,7 @@
   display: inline-block;
 }
 .new-list-form__input {
+
   width: calc(100% - 24px);
   padding: 8px;
   &:focus {
@@ -43,7 +44,7 @@ input[name="folder"] {
   &:checked + label::after {
     border-color: $primary-color;
     left: 12px;
-    top: 30%;
+    top: calc(50% - 7px);
   }
 }
 
@@ -76,7 +77,8 @@ input[name="folder"] {
 
 .form__btn--add {
   margin-right: 1px;
-  position: relative;
+  position: relative;;
+  top: calc(50% - 15px);
   left: -2px;
   width: 21px;
   height: 30px;
@@ -87,13 +89,45 @@ input[name="folder"] {
   }
 }
 
+.new-list-form__btn--create-folder {
+  position: absolute;
+}
+
+.new-list-form__form-group--create-folder {
+  &.is-active {
+    .feather {
+      display: none;
+    }
+    input[name="folder"]:checked + label::after {
+      display: block;
+    }
+  }
+  input[name="folder"]:checked + label::after {
+    border-color: $primary-color;
+    left: 12px;
+    top: calc(50% - 7px);
+    display: none;
+  }
+}
+
+.new-list-form__input--folder {
+  width: 100%;
+  padding: 0;
+  height: 32px;
+}
+
+.form__label--new-folder {
+  padding-top: 0;
+  padding-bottom: 0;
+}
 .new-list-form__input--folder,
 .transfer-tasks-form__input {
+  border: none;
   &::placeholder {
     color: $primary-color;
   }
   &:focus {
-    border-color: transparent;
+    border: none;
     &::placeholder {
       color: rgba($dk-grey, 0.6);
     }

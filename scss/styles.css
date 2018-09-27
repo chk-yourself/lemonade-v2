@@ -2695,7 +2695,7 @@ input[name="folder"]:checked + label {
 input[name="folder"]:checked + label::after {
   border-color: #6381ff;
   left: 12px;
-  top: 30%;
+  top: calc(50% - 7px);
 }
 
 .form__title {
@@ -2727,6 +2727,7 @@ input[name="folder"]:checked + label::after {
 .form__btn--add {
   margin-right: 1px;
   position: relative;
+  top: calc(50% - 15px);
   left: -2px;
   width: 21px;
   height: 30px;
@@ -2736,6 +2737,41 @@ input[name="folder"]:checked + label::after {
 .form__btn--add .feather {
   width: 20px;
   height: 20px;
+}
+
+.new-list-form__btn--create-folder {
+  position: absolute;
+}
+
+.new-list-form__form-group--create-folder.is-active .feather {
+  display: none;
+}
+
+.new-list-form__form-group--create-folder.is-active input[name="folder"]:checked + label::after {
+  display: block;
+}
+
+.new-list-form__form-group--create-folder input[name="folder"]:checked + label::after {
+  border-color: #6381ff;
+  left: 12px;
+  top: calc(50% - 7px);
+  display: none;
+}
+
+.new-list-form__input--folder {
+  width: 100%;
+  padding: 0;
+  height: 32px;
+}
+
+.form__label--new-folder {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.new-list-form__input--folder,
+.transfer-tasks-form__input {
+  border: none;
 }
 
 .new-list-form__input--folder::-webkit-input-placeholder,
@@ -2760,7 +2796,7 @@ input[name="folder"]:checked + label::after {
 
 .new-list-form__input--folder:focus,
 .transfer-tasks-form__input:focus {
-  border-color: transparent;
+  border: none;
 }
 
 .new-list-form__input--folder:focus::-webkit-input-placeholder,

@@ -372,12 +372,13 @@
                 <input type="radio" id="folderNone" name="folder" value="null" checked />
                 <label class="form__label--folder" for="folderNone">None</label>
                 <div class="custom-folders"></div>
-                <input type="radio" name="folder" id="folderNew" value="new" />
-                <div class="form__form-group--inline new-list-form__form-group--inline">
-                  <button id="createFolderBtn" type="button" class="btn form__btn form__btn--neutral btn--inline form__btn--add"
+                <div class="form__form-group--inline new-list-form__form-group--inline new-list-form__form-group--create-folder" id="formGroupCreateFolder">
+                  <button id="createFolderBtn" type="button" class="btn form__btn form__btn--neutral btn--inline form__btn--add new-list-form__btn--create-folder"
                     data-action="createFolder"><i data-feather="plus-circle"></i></button>
-                  <input id="newFolderInput" class="form__input form__input--inline new-list-form__input new-list-form__input--folder" type="text"
-                    placeholder="Create new folder" />
+                    <input type="radio" name="folder" id="folderNew" value="new" />
+                    <label class="form__label--folder form__label--new-folder" for="folderNew"><input id="newFolderInput" class="form__input form__input--inline new-list-form__input new-list-form__input--folder" type="text"
+                      placeholder="Create new folder" /></label>
+                  
                 </div>
               </fieldset>
               <button id="addListBtn" type="submit" class="btn btn--primary form__btn" data-action="addList">Create

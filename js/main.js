@@ -2843,6 +2843,15 @@ function stickToolbar(e) {
     const newFolderRadio = $('input[id="folderNew"]');
     newFolderRadio.checked = true;
   });
+  
+
+  inputNewFolder.addEventListener('input', (e) => {
+    if (e.currentTarget.value !== "") {
+      $("#formGroupCreateFolder").classList.add('is-active');
+    } else {
+      $("#formGroupCreateFolder").classList.remove('is-active');
+    }
+  })
 
   // Prevents empty folder names from being created
   inputNewFolder.addEventListener("blur", (e) => {
