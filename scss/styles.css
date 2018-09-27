@@ -2587,12 +2587,6 @@ input[type="search"].search-form__input {
   display: inline-block;
 }
 
-.new-list-form__form-group--inline .cross-icon {
-  width: 16px;
-  height: 16px;
-  margin-right: 8px;
-}
-
 .new-list-form__input {
   width: calc(100% - 24px);
   padding: 8px;
@@ -2650,6 +2644,56 @@ input[name="folder"]:checked + label::after {
   margin-right: 12px;
   position: relative;
   top: -2.5px;
+}
+
+.new-list-form__btn--create-folder {
+  margin-right: 1px;
+  position: relative;
+  left: -2px;
+  width: 21px;
+  height: 30px;
+  color: #6381ff;
+}
+
+.new-list-form__btn--create-folder .feather {
+  width: 20px;
+  height: 20px;
+}
+
+.new-list-form__input--folder::-webkit-input-placeholder {
+  color: #6381ff;
+}
+
+.new-list-form__input--folder:-ms-input-placeholder {
+  color: #6381ff;
+}
+
+.new-list-form__input--folder::-ms-input-placeholder {
+  color: #6381ff;
+}
+
+.new-list-form__input--folder::placeholder {
+  color: #6381ff;
+}
+
+.new-list-form__input--folder:focus {
+  border-color: transparent;
+}
+
+.new-list-form__input--folder:focus::-webkit-input-placeholder {
+  color: rgba(64, 69, 81, 0.6);
+}
+
+.new-list-form__input--folder:focus:-ms-input-placeholder {
+  color: rgba(64, 69, 81, 0.6);
+}
+
+.new-list-form__input--folder:focus::-ms-input-placeholder {
+  color: rgba(64, 69, 81, 0.6);
+}
+
+.new-list-form__input--folder:focus::placeholder {
+  color: rgba(64, 69, 81, 0.6);
 }
 
 .bulk-actions-toolbar {

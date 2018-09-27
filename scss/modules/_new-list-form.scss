@@ -16,11 +16,6 @@
 .new-list-form__form-group--inline {
   width: 100%;
   display: inline-block;
-  .cross-icon {
-    width: 16px;
-    height: 16px;
-    margin-right: 8px;
-  }
 }
 .new-list-form__input {
   width: calc(100% - 24px);
@@ -78,3 +73,29 @@ input[name="folder"] {
     top: -2.5px;
   }
 }
+
+.new-list-form__btn--create-folder {
+  margin-right: 1px;
+  position: relative;
+  left: -2px;
+  width: 21px;
+  height: 30px;
+  color: $primary-color;
+  .feather {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.new-list-form__input--folder {
+  &::placeholder {
+    color: $primary-color;
+  }
+  &:focus {
+    border-color: transparent;
+    &::placeholder {
+      color: rgba($dk-grey, 0.6);
+    }
+  }
+}
+
