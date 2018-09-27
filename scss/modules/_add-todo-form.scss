@@ -5,14 +5,11 @@
 }
 
 .add-todo-form__form-group--inline {
-  background-color: rgba($white, 0.8);
+  background-color: transparent;
   border: 1px solid transparent;
   border-radius: 0;
   .feather {
     color: $primary-color;
-  }
-  &.is-focused {
-    background-color: $white;
   }
 }
 

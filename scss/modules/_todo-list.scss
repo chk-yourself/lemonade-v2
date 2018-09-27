@@ -3,8 +3,8 @@
   position: relative;
   transition: all .2s ease-in-out;
   border: 1px solid transparent;
-  border-bottom-color: rgba($lt-grey, 0.8);
-  border-radius: 4px;
+  box-shadow: 0px 1px 0 0 $lt-grey;
+  border-radius: 0;
   &:hover, &:focus {
     background-color: $white;
     .todo-item__btn--neutral {
@@ -18,8 +18,8 @@
     }
   }
   &.is-selected {
-    background-color: rgba($primary-color, 0.15);
-    border-bottom-color: $primary-color;
+    background-color: $lt-primary;
+    box-shadow: 0px 1px 0 0 $primary-color;
     .todo-item__btn--neutral {
       border-color: $dk-grey;
     }
@@ -59,7 +59,7 @@
   font-family: $body-font;
   width: 100%;
   line-height: 16px;
-  background-color: $white;
+  background-color: transparent;
 }
 
 .is-done {
