@@ -1,6 +1,6 @@
 .form__label--list {
   vertical-align: middle;
-  padding: 8px 0 8px 16px;
+  padding: 8px 0 8px 32px;
   width: calc(100% - 24px);
   font-size: 16px;
   display: inline-block;
@@ -10,6 +10,9 @@
   }
   &:focus {
     outline: none;
+  }
+  &::after {
+    left: 12px;
   }
 }
 
@@ -24,6 +27,15 @@ input[name="list"] {
   }
   &:checked + label::after {
     border-color: $primary-color;
-    left: 0;
+    left: 12px;
+    top: 30%;
   }
+}
+
+.transfer-tasks-form__form-group--inline {
+  margin-bottom: 16px;
+}
+
+.form__fieldset--lists {
+  margin-bottom: 8px;
 }

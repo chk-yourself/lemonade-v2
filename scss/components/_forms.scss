@@ -221,9 +221,7 @@ z-index: 3;
   border: none;
   padding: 0;
   position: relative;
-  &:not(:last-child) {
   margin-bottom: 24px;
-  }
 }
 
 .form__label--block {

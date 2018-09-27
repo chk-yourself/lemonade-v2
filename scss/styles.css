@@ -530,9 +530,6 @@ label.subtask-list__checkbox:before {
   border: none;
   padding: 0;
   position: relative;
-}
-
-.form__fieldset:not(:last-child) {
   margin-bottom: 24px;
 }
 
@@ -2646,7 +2643,7 @@ input[name="folder"]:checked + label::after {
   top: -2.5px;
 }
 
-.new-list-form__btn--create-folder {
+.form__btn--add {
   margin-right: 1px;
   position: relative;
   left: -2px;
@@ -2655,44 +2652,53 @@ input[name="folder"]:checked + label::after {
   color: #6381ff;
 }
 
-.new-list-form__btn--create-folder .feather {
+.form__btn--add .feather {
   width: 20px;
   height: 20px;
 }
 
-.new-list-form__input--folder::-webkit-input-placeholder {
+.new-list-form__input--folder::-webkit-input-placeholder,
+.transfer-tasks-form__input::-webkit-input-placeholder {
   color: #6381ff;
 }
 
-.new-list-form__input--folder:-ms-input-placeholder {
+.new-list-form__input--folder:-ms-input-placeholder,
+.transfer-tasks-form__input:-ms-input-placeholder {
   color: #6381ff;
 }
 
-.new-list-form__input--folder::-ms-input-placeholder {
+.new-list-form__input--folder::-ms-input-placeholder,
+.transfer-tasks-form__input::-ms-input-placeholder {
   color: #6381ff;
 }
 
-.new-list-form__input--folder::placeholder {
+.new-list-form__input--folder::placeholder,
+.transfer-tasks-form__input::placeholder {
   color: #6381ff;
 }
 
-.new-list-form__input--folder:focus {
+.new-list-form__input--folder:focus,
+.transfer-tasks-form__input:focus {
   border-color: transparent;
 }
 
-.new-list-form__input--folder:focus::-webkit-input-placeholder {
+.new-list-form__input--folder:focus::-webkit-input-placeholder,
+.transfer-tasks-form__input:focus::-webkit-input-placeholder {
   color: rgba(64, 69, 81, 0.6);
 }
 
-.new-list-form__input--folder:focus:-ms-input-placeholder {
+.new-list-form__input--folder:focus:-ms-input-placeholder,
+.transfer-tasks-form__input:focus:-ms-input-placeholder {
   color: rgba(64, 69, 81, 0.6);
 }
 
-.new-list-form__input--folder:focus::-ms-input-placeholder {
+.new-list-form__input--folder:focus::-ms-input-placeholder,
+.transfer-tasks-form__input:focus::-ms-input-placeholder {
   color: rgba(64, 69, 81, 0.6);
 }
 
-.new-list-form__input--folder:focus::placeholder {
+.new-list-form__input--folder:focus::placeholder,
+.transfer-tasks-form__input:focus::placeholder {
   color: rgba(64, 69, 81, 0.6);
 }
 
@@ -3017,7 +3023,7 @@ label.bulk-actions__checkbox-label {
 
 .form__label--list {
   vertical-align: middle;
-  padding: 8px 0 8px 16px;
+  padding: 8px 0 8px 32px;
   width: calc(100% - 24px);
   font-size: 16px;
   display: inline-block;
@@ -3030,6 +3036,10 @@ label.bulk-actions__checkbox-label {
 
 .form__label--list:focus {
   outline: none;
+}
+
+.form__label--list::after {
+  left: 12px;
 }
 
 input[name="list"] {
@@ -3046,7 +3056,16 @@ input[name="list"]:checked + label {
 
 input[name="list"]:checked + label::after {
   border-color: #6381ff;
-  left: 0;
+  left: 12px;
+  top: 30%;
+}
+
+.transfer-tasks-form__form-group--inline {
+  margin-bottom: 16px;
+}
+
+.form__fieldset--lists {
+  margin-bottom: 8px;
 }
 
 .onboarding .modal__content {

@@ -74,7 +74,7 @@ input[name="folder"] {
   }
 }
 
-.new-list-form__btn--create-folder {
+.form__btn--add {
   margin-right: 1px;
   position: relative;
   left: -2px;
@@ -87,7 +87,8 @@ input[name="folder"] {
   }
 }
 
-.new-list-form__input--folder {
+.new-list-form__input--folder,
+.transfer-tasks-form__input {
   &::placeholder {
     color: $primary-color;
   }

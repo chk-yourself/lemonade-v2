@@ -374,7 +374,7 @@
                 <div class="custom-folders"></div>
                 <input type="radio" name="folder" id="folderNew" value="new" />
                 <div class="form__form-group--inline new-list-form__form-group--inline">
-                  <button id="createFolderBtn" type="button" class="btn form__btn form__btn--neutral btn--inline new-list-form__btn--create-folder"
+                  <button id="createFolderBtn" type="button" class="btn form__btn form__btn--neutral btn--inline form__btn--add"
                     data-action="createFolder"><i data-feather="plus-circle"></i></button>
                   <input id="newFolderInput" class="form__input form__input--inline new-list-form__input new-list-form__input--folder" type="text"
                     placeholder="Create new folder" />
@@ -421,15 +421,16 @@
             <h2 class="form__title">Move tasks to</h2>
             <form id="transferTasksForm" class="form transfer-tasks-form">
 
-              <fieldset class="form__fieldset" id="fieldsetLists">
+              <fieldset class="form__fieldset form__fieldset--lists" id="fieldsetLists">
+                  <div class="label--text"><i data-feather="list"></i>Select a list:</div>
                 <input type="radio" id="list--inbox" name="list" value="inbox">
                 <label class="form__label--list" for="list--inbox">Inbox</label>
               </fieldset>
 
               <div class="form__form-group--inline transfer-tasks-form__form-group--inline">
                 <input type="radio" name="list" id="listNew" value="new" />
-                <button id="createListBtn" type="button" class="btn form__btn form__btn--sm form__btn--neutral cross-icon cross-icon--dk btn--inline"
-                  data-action="createList"></button>
+                <button id="createListBtn" type="button" class="btn form__btn form__btn--neutral form__btn--add btn--inline"
+                  data-action="createList"><i data-feather="plus-circle"></i></button>
                 <input id="newListInput" class="form__input form__input--inline transfer-tasks-form__input" data-action="openListForm"
                   type="text" placeholder="Create new list" />
               </div>
