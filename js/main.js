@@ -2728,6 +2728,13 @@ function stickToolbar(e) {
           todoAppContainer.classList.remove("show-task-details");
         }
 
+        // Disables bulk editing button if toolbar is active
+        if ($('#bulkActionsToolbar').classList.contains('is-active')) {
+          $("#btnInitBulkEditing").disabled = true;
+        } else {
+          $("#btnInitBulkEditing").disabled = false;
+        }
+
         $all('button[data-required="custom-list"]', moreActionsWrapper).forEach((item) => {
             if (
               state.activeList === null ||
