@@ -118,6 +118,9 @@
   padding: 8px;
   display: flex;
   align-items: center;
+  strong {
+    margin-left: 4px;
+  }
 }
 
 // Filtered Lists
@@ -145,6 +148,8 @@
 .filtered-list__link {
   color: $dk-grey;
   text-decoration: none;
+  padding-left: 0;
+  display: inline-block;
   &:hover, &:active {
     color: $primary-color;
   }
@@ -216,7 +221,8 @@
   }
 }
 
-.upcoming-list.bulk-editing-list {
+.upcoming-list.bulk-editing-list,
+.filtered-list.bulk-editing-list {
   background-color: transparent;
   margin-top: 16px;
   .filtered-list__sub-list {

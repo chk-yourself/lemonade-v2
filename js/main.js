@@ -408,7 +408,7 @@
     itemsList.innerHTML = itemsArray
       .map(
         (item, i) => `<li class= "todo-list__item${
-          item.done ? ' is-done' : ''}${item.isPriority ? ' is-priority' : ''}${item.dueDate || state.filteredList !== null ? ' show-info' : ''}" data-index="${i}" id="${item.id}">
+          item.done ? ' is-done' : ''}${item.isPriority ? ' is-priority' : ''}${item.dueDate || ( state.filteredList !== null && $("#searchInput").value === "" ) ? ' show-info' : ''}" data-index="${i}" id="${item.id}">
 <input type="checkbox" id="item-${i}" data-index="${i}" value="${item.text}" ${
           item.done ? "checked" : ""
         } />
