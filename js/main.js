@@ -1243,7 +1243,7 @@
     today.setHours(0, 0, 0, 0);
     if (timeFrame === 'today') {
     filteredArray = filterTasksByDueDate(today);
-    $("#activeListTitle").textContent = 'Today';
+    $("#activeListTitle").innerHTML = `<span class="filtered-list__weekday--lg">Today,</span><span class="filtered-list__day-num">${today.getDate()}</span><span class="filtered-list__date-group"><span class="filtered-list__month">${monthsArr[today.getMonth()].abbrev}</span><span class="filtered-list__year">${today.getFullYear()}</span></span>`;
     } else if (timeFrame === 'upcoming') {
       const currentMonthIndex = today.getMonth();
       const currentYear = today.getFullYear();

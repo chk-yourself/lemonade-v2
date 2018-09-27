@@ -2455,6 +2455,12 @@ input[type="search"].search-form__input {
   margin: 16px 0;
   font-size: 1.5rem;
   padding: 8px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .filtered-list {
@@ -2555,6 +2561,11 @@ input[type="search"].search-form__input {
   font-weight: 700;
   letter-spacing: .03em;
   -webkit-font-smoothing: antialiased;
+}
+
+.filtered-list__weekday--lg {
+  font-size: 1.5rem;
+  margin-right: 8px;
 }
 
 .upcoming-list.bulk-editing-list {
