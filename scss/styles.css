@@ -8,6 +8,10 @@ html {
   height: 100%;
   padding: 0;
   margin: 0;
+  -moz-text-size-adjust: none;
+  -ms-text-size-adjust: none;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
 }
 
 *, *:before, *:after {
@@ -2125,17 +2129,17 @@ input[type="search"].search-form__input {
 .accordion__item .chevron-icon {
   float: right;
   margin-right: 0;
-  -webkit-transition: -webkit-transform .2s ease-out;
-  transition: -webkit-transform .2s ease-out;
-  transition: transform .2s ease-out;
-  transition: transform .2s ease-out, -webkit-transform .2s ease-out;
+  -webkit-transition: -webkit-transform 0.2s ease-out;
+  transition: -webkit-transform 0.2s ease-out;
+  transition: transform 0.2s ease-out;
+  transition: transform 0.2s ease-out, -webkit-transform 0.2s ease-out;
   position: relative;
   top: 3px;
   pointer-events: none;
 }
 
 .accordion__item .chevron-icon::after {
-  content: '';
+  content: "";
   clear: both;
 }
 
@@ -2144,10 +2148,10 @@ input[type="search"].search-form__input {
 }
 
 .accordion__item.is-active .chevron-icon {
-  -webkit-transition: -webkit-transform .2s ease-out;
-  transition: -webkit-transform .2s ease-out;
-  transition: transform .2s ease-out;
-  transition: transform .2s ease-out, -webkit-transform .2s ease-out;
+  -webkit-transition: -webkit-transform 0.2s ease-out;
+  transition: -webkit-transform 0.2s ease-out;
+  transition: transform 0.2s ease-out;
+  transition: transform 0.2s ease-out, -webkit-transform 0.2s ease-out;
   -webkit-transform: rotate(-90deg);
           transform: rotate(-90deg);
 }
@@ -2201,14 +2205,18 @@ input[type="search"].search-form__input {
 }
 
 .sidebar__link.has-active-tasks .sidebar__task-count {
-  background-color: #ffd9e0;
-  color: #ff3058;
+  background-color: #ffe163;
+  color: #565d6d;
 }
 
 .sidebar__link.has-active-tasks.is-active .sidebar__task-count {
   background-color: #6381ff;
   color: #fff;
-  font-weight: 700;
+}
+
+.sidebar__link--today.has-active-tasks .sidebar__task-count {
+  background-color: #ffd9e0;
+  color: #ff3058;
 }
 
 .sidebar__list-name {
@@ -2295,8 +2303,9 @@ input[type="search"].search-form__input {
   width: 24px;
   vertical-align: middle;
   padding: 4px 0;
-  line-height: 10px;
+  line-height: 9px;
   border-radius: 5000px;
+  -webkit-font-smoothing: antialiased;
 }
 
 .todo-list__item {
