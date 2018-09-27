@@ -1096,6 +1096,8 @@
     if ($("#bulkActionsToolbar").classList.contains("is-active")) {
       $("#bulkActionsToolbar").classList.remove("is-active");
       ulActiveList.removeEventListener("click", enableBulkActions);
+      $('#main').removeEventListener('scroll', stickToolbar);
+      ulActiveList.classList.remove('bulk-editing-list');
       $("#addTodoForm").classList.remove("is-hidden");
     }
 
@@ -1759,6 +1761,8 @@
     if ($("#bulkActionsToolbar").classList.contains("is-active")) {
       $("#bulkActionsToolbar").classList.remove("is-active");
       ulActiveList.removeEventListener("click", enableBulkActions);
+      $('#main').removeEventListener('scroll', stickToolbar);
+      ulActiveList.classList.remove('bulk-editing-list');
     }
 
     if ($("#main").classList.contains("show-search-results")) {
@@ -2198,6 +2202,7 @@
         masterCheckbox.checked = true;
       }
     }
+
   }
 
   function initBulkEditing(e) {
@@ -2209,6 +2214,7 @@
     $("#bulkActionsToolbar").classList.add("is-active");
     // Add bulk-editing checkboxes and hide regular checkboxes for toggling completeness
     const ulActiveList = $(".is-active-list");
+    ulActiveList.classList.add('bulk-editing-list');
     $all(".todo-list__item", ulActiveList).forEach((x, i) => {
       const frag = document.createDocumentFragment();
       const checkbox = createNode("input", {
@@ -2218,6 +2224,7 @@
         "data-id": x.id,
         class: "bulk-actions__checkbox"
       });
+      checkbox.addEventListener('change', highlightSelected);
       const checkboxLabel = createNode("label", {
         class: "bulk-actions__checkbox-label",
         for: `bulk-item-${i}`
@@ -2233,6 +2240,16 @@
       (btn) => (btn.disabled = true)
     );
     ulActiveList.addEventListener("click", enableBulkActions);
+    $('#main').addEventListener('scroll', stickToolbar);
+  }
+
+  function highlightSelected(e) {
+    const todoItem = e.currentTarget.parentNode;
+    if (e.currentTarget.checked === true) {
+      todoItem.classList.add('is-checked');
+    } else {
+      todoItem.classList.remove('is-checked');
+    }
   }
 
   function transferTasks(e) {
@@ -2583,7 +2600,18 @@
   });
   }
 
+function stickToolbar(e) {
+  const toolbar = $('#bulkActionsToolbar');
+  const main = $('#main');
+  if (main.scrollTop >= toolbar.offsetTop) {
+    main.classList.add('sticky-toolbar');
+  } else {
+   main.classList.remove('sticky-toolbar');
+  }
+}
+
   // Event Listeners
+
 
   $('#taskDetailsBreadcrumbs .breadcrumbs__link').addEventListener('click', openList);
 
@@ -2619,6 +2647,8 @@
       deleteSelected(e);
     } else if (el.dataset.action === "closeBulkActionsToolbar") {
       ulActiveList.removeEventListener("click", enableBulkActions);
+      $('#main').removeEventListener('scroll', stickToolbar);
+      ulActiveList.classList.remove('bulk-editing-list');
       renderList(currentTasksList, ulActiveList);
     }
   });
@@ -2627,7 +2657,15 @@
     const checkedState = e.currentTarget.checked;
     const ulActiveList = $(".is-active-list");
     const checkedItems = $all(".bulk-actions__checkbox", ulActiveList);
-    checkedItems.forEach((x) => (x.checked = checkedState));
+    checkedItems.forEach((x) => {
+      const todoItem = x.parentNode;
+      x.checked = checkedState;
+      if (x.checked === true) {
+        todoItem.classList.add('is-checked');
+      } else {
+        todoItem.classList.remove('is-checked');
+      }
+    });
     const bulkActions = $all('.toolbar__btn[data-bulk-action="true"]');
     if (checkedState === true && checkedItems.length > 0) {
       // Enable bulk action buttons

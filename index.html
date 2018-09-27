@@ -113,7 +113,7 @@
               <div class="toolbar__item bulk-actions-toolbar__item--check-all" data-action="checkAll">
                 <input type="checkbox" id="masterCheckbox" class="bulk-actions__checkbox">
                 <label class="bulk-actions__checkbox-label" for="masterCheckbox" id="masterCheckboxLabel"></label>
-                <p class="toolbar__item-label">Select All/None</p>
+                <p class="toolbar__item-label">Select All</p>
               </div>
               <div class="toolbar__item flex-column">
                 <button class="btn btn--inline toolbar__btn" type="button" data-action="transferSelected"
@@ -400,7 +400,7 @@
             <h2 class="form__title">Edit list</h2>
             <form id="editListForm" class="form edit-list-form">
               <fieldset class="form__fieldset">
-                <label for="editListNameInput" class="label--text">List Name:</label>
+                <label for="editListNameInput" class="label--text"><i data-feather="list"></i>List Name:</label>
                 <input id="editListNameInput" class="form__input form__input--inline form__input--list-name" type="text" />
               </fieldset>
               <button id="btnUpdateList" type="submit" class="btn btn--primary form__btn" data-action="updateList">Save</button>
@@ -418,7 +418,7 @@
             <button type="button" class="form__btn--icon modal__btn--close modal__icon-btn--close" data-action="closeModal">
               <i data-feather="x"></i>
             </button>
-            <h2 class="form__title">Move tasks to</h2>
+            <h2 class="form__title">Move tasks to...</h2>
             <form id="transferTasksForm" class="form transfer-tasks-form">
 
               <fieldset class="form__fieldset form__fieldset--lists" id="fieldsetLists">
