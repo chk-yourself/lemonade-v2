@@ -2584,6 +2584,12 @@ input[type="search"].search-form__input {
   text-transform: uppercase;
 }
 
+@media (min-width: 992px) {
+  .filtered-list__weekday {
+    margin-right: auto;
+  }
+}
+
 .upcoming-list.bulk-editing-list,
 .filtered-list.bulk-editing-list {
   background-color: transparent;

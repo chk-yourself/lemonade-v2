@@ -225,6 +225,9 @@
     font-size: 14px;
     text-transform: uppercase;
   }
+  @include lg {
+    margin-right: auto;
+  }
 }
 
 .upcoming-list.bulk-editing-list,
