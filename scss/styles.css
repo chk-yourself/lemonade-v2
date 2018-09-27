@@ -117,10 +117,10 @@ h1 {
 .lemon::before {
   content: '';
   position: absolute;
-  width: 32px;
-  height: 32px;
-  top: calc(50% - 16px);
-  left: calc(50% - 16px);
+  width: 40px;
+  height: 40px;
+  top: calc(50% - 20px);
+  left: calc(50% - 20px);
   display: block;
 }
 
