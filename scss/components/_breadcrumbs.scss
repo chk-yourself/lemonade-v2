@@ -27,6 +27,7 @@
   font-weight: 500;
   text-decoration: none;
   vertical-align: middle;
+  -webkit-font-smoothing: subpixel-antialiased;
   cursor: pointer;
   &:hover, &:active {
     color: $primary-color;

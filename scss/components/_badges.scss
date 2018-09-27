@@ -48,6 +48,15 @@
   transform: rotate(225deg);
   cursor: pointer;
   top: calc(50% - 12px);
+  &::before {
+    content: '';
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    top: calc(50% - 16px);
+    left: calc(50% - 16px);
+    display: block;
+  }
 }
 
 .is-priority {
