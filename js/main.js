@@ -1339,7 +1339,7 @@
       taskDetails.classList.toggle('is-priority');
     }
 
-    const reverseIndex = state.activeList.tasks.slice().reverse().findIndex(task => task.isPriority);
+    const reverseIndex = state.activeList.tasks.slice().reverse().findIndex(task => task.isPriority && !task.done);
     const lastIndex = state.activeList.tasks.length - 1;
     const indexLastPriority = reverseIndex >= 0 ? lastIndex - reverseIndex : reverseIndex;
 
@@ -1347,8 +1347,9 @@
     if (currentTask.isPriority === true && !currentTask.done && taskIndex > 0) {
       state.activeList.tasks.unshift(state.activeList.tasks.splice(taskIndex, 1)[0]);
       saveToStorage();
-      todoItem.style.transform = `translateY(-${todoItem.offsetTop + 58}px)`;
       ulActiveList.classList.add('slideDown');
+      todoItem.style.transform = `translateY(-${todoItem.offsetTop + 58}px)`;
+      
   
       setTimeout(() => {
         ulActiveList.classList.remove('slideDown');
