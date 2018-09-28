@@ -2497,7 +2497,7 @@ input[type="search"].search-form__input {
 .filtered-list__link {
   color: #404551;
   text-decoration: none;
-  padding-left: 0;
+  padding-left: 8px;
   display: inline-block;
 }
 
@@ -2527,12 +2527,13 @@ input[type="search"].search-form__input {
 .filtered-list__folder-name {
   font-weight: 300;
   font-style: italic;
+  padding-left: 8px;
 }
 
 .filtered-list__folder-name .feather {
   width: 16px;
   height: 16px;
-  margin: -3px 4px 0;
+  margin: -3px -4px 0 4px;
 }
 
 .filtered-list__day-num {

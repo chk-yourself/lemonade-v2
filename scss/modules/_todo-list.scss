@@ -151,7 +151,7 @@
 .filtered-list__link {
   color: $dk-grey;
   text-decoration: none;
-  padding-left: 0;
+  padding-left: 8px;
   display: inline-block;
   &:hover, &:active {
     color: $primary-color;
@@ -178,10 +178,11 @@
 .filtered-list__folder-name {
   font-weight: 300;
   font-style: italic;
+  padding-left: 8px;
   .feather {
     width: 16px;
     height: 16px;
-    margin: -3px 4px 0;
+    margin: -3px -4px 0 4px;
   }
 }
 
