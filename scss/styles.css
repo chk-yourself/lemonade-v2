@@ -2602,6 +2602,62 @@ input[type="search"].search-form__input {
   background-color: rgba(246, 246, 249, 0.6);
 }
 
+.slideUp {
+  -webkit-animation: slideUp .2s ease forwards;
+          animation: slideUp .2s ease forwards;
+  visibility: visible;
+}
+
+.slideDown {
+  -webkit-animation: slideDown .1s ease forwards;
+          animation: slideDown .1s ease forwards;
+  visibility: visible;
+}
+
+@-webkit-keyframes slideUp {
+  0% {
+    -webkit-transform: translateY(0%);
+            transform: translateY(0%);
+  }
+  100% {
+    -webkit-transform: translateY(-116px);
+            transform: translateY(-116px);
+  }
+}
+
+@keyframes slideUp {
+  0% {
+    -webkit-transform: translateY(0%);
+            transform: translateY(0%);
+  }
+  100% {
+    -webkit-transform: translateY(-116px);
+            transform: translateY(-116px);
+  }
+}
+
+@-webkit-keyframes slideDown {
+  0% {
+    -webkit-transform: translateY(0%);
+            transform: translateY(0%);
+  }
+  100% {
+    -webkit-transform: translateY(58px);
+            transform: translateY(58px);
+  }
+}
+
+@keyframes slideDown {
+  0% {
+    -webkit-transform: translateY(0%);
+            transform: translateY(0%);
+  }
+  100% {
+    -webkit-transform: translateY(58px);
+            transform: translateY(58px);
+  }
+}
+
 .add-todo-form.is-hidden {
   display: none;
 }

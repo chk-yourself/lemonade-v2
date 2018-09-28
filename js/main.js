@@ -1330,6 +1330,7 @@
       state.filteredList === null ? state.activeList.tasks : state.filteredList;
     const ulActiveList = $('.is-active-list');
     const currentTask = state.activeList.getTask(id);
+    const todoItem = currentTask.elem;
     const taskIndex = state.activeList.findTaskIndex(id);
     currentTask.isPriority = !currentTask.isPriority;
     $(`#${id}`).classList.toggle('is-priority');
@@ -1338,17 +1339,44 @@
       taskDetails.classList.toggle('is-priority');
     }
 
+    const reverseIndex = state.activeList.tasks.slice().reverse().findIndex(task => task.isPriority);
+    const lastIndex = state.activeList.tasks.length - 1;
+    const indexLastPriority = reverseIndex >= 0 ? lastIndex - reverseIndex : reverseIndex;
+
     // Move priority items to top of list
-    if (currentTask.isPriority === true && !currentTask.done) {
+    if (currentTask.isPriority === true && !currentTask.done && taskIndex > 0) {
       state.activeList.tasks.unshift(state.activeList.tasks.splice(taskIndex, 1)[0]);
+      saveToStorage();
+      todoItem.style.transform = `translateY(-${todoItem.offsetTop + 58}px)`;
+      ulActiveList.classList.add('slideDown');
+  
+      setTimeout(() => {
+        ulActiveList.classList.remove('slideDown');
+        renderList(currentTasksList, ulActiveList);
+      if (todoAppContainer.classList.contains('show-task-details')) {
+        const activeTask = $(`#${hiddenTaskId.value}`);
+        activeTask.classList.add('is-selected');
+      }
+      }, 250);
+    } else if (!currentTask.isPriority && !currentTask.done && taskIndex < indexLastPriority) {
+      state.activeList.tasks.splice(indexLastPriority, 0, state.activeList.tasks.splice(taskIndex, 1)[0]);
+      saveToStorage();
+      const itemsBetween = indexLastPriority - taskIndex;
+      todoItem.style.transform = `translateY(${itemsBetween *  58}px)`;
+      for (let i = indexLastPriority; i > indexLastPriority - itemsBetween; i--) {
+        $all('.todo-list__item', ulActiveList)[i].style.transform = `translateY(-58px)`;
+      }
+      setTimeout(() => {
+
+        renderList(currentTasksList, ulActiveList);
+      if (todoAppContainer.classList.contains('show-task-details')) {
+        const activeTask = $(`#${hiddenTaskId.value}`);
+        activeTask.classList.add('is-selected');
+      }
+      }, 250);
+      
     } else {
-      state.activeList.tasks.push(state.activeList.tasks.splice(taskIndex, 1)[0]);
-    }
-    saveToStorage();
-    renderList(currentTasksList, ulActiveList);
-    if (todoAppContainer.classList.contains('show-task-details')) {
-      const activeTask = $(`#${hiddenTaskId.value}`);
-      activeTask.classList.add('is-selected');
+      saveToStorage();
     }
   }
 

@@ -239,3 +239,37 @@
     background-color: rgba($off-white, 0.6);
   }
 }
+
+// Animations
+
+.slideUp{
+	animation: slideUp .2s ease forwards;
+  visibility: visible;
+}
+.slideDown{
+	animation: slideDown .1s ease forwards;
+  visibility: visible;
+  
+}
+
+@keyframes slideUp {
+	0% {
+		transform: translateY(0%);
+	}
+ // 90% {
+ //   transform: translateY(-325%);
+  //}
+	100% {
+		transform: translateY(-116px);
+	}	
+}
+
+@keyframes slideDown {
+  0% {
+    transform: translateY(0%);
+  }
+  100% {
+    transform: translateY(58px);
+  }
+}
+
