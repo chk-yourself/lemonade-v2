@@ -1,0 +1,48 @@
+.error {
+  background-color: $white;
+  position: relative;
+  .feather-alert-circle {
+    width: 16px;
+    height: 16px;
+    color: $red;
+    margin-right: 8px;
+  }
+  &.show-msg {
+    margin-top: 8px;
+    border: 1px solid $red;
+  border-radius: 4px;
+    .error__msg {
+      display: inline-block;
+    }
+  }
+}
+
+.error__text {
+  color: $dk-grey;
+  font-size: 14px;
+}
+
+.error__msg {
+  display: none;
+  padding: 12px 8px;
+}
+
+.error__btn--hide {
+  margin-left: auto;
+  display: block;
+}
+
+.error__icon-btn--hide {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 8px;
+  z-index: 99;
+  color: $dk-grey;
+  pointer-events: visible;
+  .feather {
+    width: 14px;
+    height: 14px;
+    pointer-events: none;
+  }
+}

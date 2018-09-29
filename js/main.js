@@ -71,6 +71,8 @@
         this.id = uniqueID();
         this.dueDate = null;
         this.isPriority = false;
+        this.dateCreated = new Date();
+        this.lastModified = null;
       } else {
         this.text = obj.text;
         this.done = obj.done;
@@ -80,6 +82,8 @@
         this.id = obj.id;
         this.dueDate = obj.dueDate;
         this.isPriority = obj.isPriority;
+        this.dateCreated = obj.dateCreated;
+        this.lastModified = obj.lastModified;
       }
     }
 
@@ -96,6 +100,7 @@
       today.setHours(0, 0, 0, 0);
       return new Date(this.dueDate).valueOf() === today.valueOf();
     }
+
     get isDueTomorrow() {
       const today = new Date();
       const currentDay = today.getDate();
@@ -104,17 +109,17 @@
       const nextYear = currentYear + 1;
       const currentMonth = monthsArr[currentMonthIndex];
       const nextMonthIndex = currentMonth.name !== "December" ? currentMonthIndex + 1 : 0;
-      
       if (currentMonth.name === "February") {
-            currentMonth.daysTotal = isLeapYear(currentYear) ? 29 : 28;
-          }
+        currentMonth.daysTotal = isLeapYear(currentYear) ? 29 : 28;
+      }
       const tomorrow = currentDay < currentMonth.daysTotal
-              ? new Date(currentYear, currentMonthIndex, currentDay + 1)
-              : nextMonthIndex !== 0
-                ? new Date(currentYear, nextMonthIndex, 1)
-                : new Date(nextYear, nextMonthIndex, 1);
+        ? new Date(currentYear, currentMonthIndex, currentDay + 1)
+        : nextMonthIndex !== 0
+          ? new Date(currentYear, nextMonthIndex, 1)
+          : new Date(nextYear, nextMonthIndex, 1);
       return new Date(this.dueDate).valueOf() === tomorrow.valueOf();
     }
+
     get dueDateText() {
       const dueDate = new Date(this.dueDate);
       const dueMonthIndex = dueDate.getMonth();
@@ -122,20 +127,24 @@
       const dueDay = dueDate.getDate();
       return `${dueMonthAbbrev} ${dueDay}`
     }
+
     get dueMonthAbbrev() {
       const dueDate = new Date(this.dueDate);
       const dueMonthIndex = dueDate.getMonth();
       return monthsArr[dueMonthIndex].abbrev;
     }
+
     get dueDayNumStr() {
       const dueDate = new Date(this.dueDate);
       const dayNum = dueDate.getDate();
       return dayNum > 9 ? ''+dayNum : '0'+dayNum;
     }
+
     get dueYearStr() {
       const dueDate = new Date(this.dueDate);
       return ''+dueDate.getFullYear();
     }
+
     get dueDayOfWeek() {
       const dueDate = new Date(this.dueDate);
       return this.isDueToday ? 'Today' : this.isDueTomorrow ? 'Tomorrow' : weekdaysArr[dueDate.getDay()].full;
@@ -159,7 +168,7 @@
   const todoAppContainer = $('#todoAppContainer');
   const taskDetails = $("#taskDetails");
   const hiddenTaskId = $('#taskId');
-  const todoLists = JSON.parse(localStorage.getItem("todoLists")) ? initClasses(JSON.parse(localStorage.getItem("todoLists"))) : [];
+  const todoLists = localStorage.getItem("todoLists") ? initClasses(JSON.parse(localStorage.getItem("todoLists"))) : [];
 
   // Converts JSON list and task objects back to instances of original classes
   function initClasses(arr) {
@@ -387,14 +396,14 @@
     e.preventDefault();
     const target = e.currentTarget;
 
-    const activeList_ul = $(".is-active-list");
+    const ulActiveList = $(".is-active-list");
 
     const text = $("#todoInput").value;
     if (text !== "") {
       const todo = new Task(text);
       state.activeList.tasks.push(todo); // Add new item to bottom of the list
       saveToStorage();
-      populateList(state.activeList.tasks, activeList_ul);
+      populateList(state.activeList.tasks, ulActiveList);
       updateTaskCount(state.activeList.id);
     }
     target.reset();
@@ -510,35 +519,45 @@
     )
       return;
 
-    const id = el.parentNode.id; // ID of list item
+    const id = el.parentNode.id;
 
     state.activeList = getListByTaskId(id);
 
-    const activeList_ul = $(".is-active-list");
+    const ulActiveList = $(".is-active-list");
+    const listHeight = parseInt(window.getComputedStyle(ulActiveList).height);
     const index = state.activeList.findTaskIndex(id);
     const currentTask = state.activeList.getTask(id);
-    const indexLastCompleted = state.activeList.tasks.findIndex(
+    const indexFirstCompleted = state.activeList.tasks.findIndex(
       (item) => item.done === true
-    ); // Represents index of most recently completed task
-    currentTask.done = !currentTask.done; // Toggle `done` property of todo item: true becomes false; false becomes true
+    ); // Index of most recently completed task
+    const firstCompletedItem = state.activeList.tasks[indexFirstCompleted].elem;
+    currentTask.done = !currentTask.done;
 
     if (currentTask.done) {
-      if (indexLastCompleted !== -1) {
-        state.activeList.tasks.splice(
-          indexLastCompleted - 1,
-          0,
-          state.activeList.tasks.splice(index, 1)[0]
-        ); // Moves finished task to the top of all completed items
-      } else {
-        state.activeList.tasks.push(state.activeList.tasks.splice(index, 1)[0]); // Move first completed task to bottom of todo list
-      }
+      // Moves completed task to bottom of todo list
+      state.activeList.tasks.push(state.activeList.tasks.splice(index, 1)[0]);
+      
+      $all('.todo-list__item', ulActiveList).forEach((item, i) => {
+        if (i === index) {
+          item.style.transform = `translateY(${listHeight - item.offsetTop - 58}px)`;
+        } else if (i > index) {
+          item.style.transform = `translateY(-58px)`;
+        }
+      });
     }
-    if (!currentTask.done && indexLastCompleted < index) {
+    if (!currentTask.done && index > 0) {
       state.activeList.tasks.splice(
-        indexLastCompleted,
+        indexFirstCompleted,
         0,
         state.activeList.tasks.splice(index, 1)[0]
       ); // Move task reverted to incomplete to the bottom of all unfinished tasks (and to  the top of the entire todo list, if there are none)
+      $all('.todo-list__item', ulActiveList).forEach((item, i) => {
+        if (i === index) {
+          item.style.transform = `translateY(${firstCompletedItem.offsetTop - item.offsetTop}px)`;
+        } else if (i === indexFirstCompleted || (i < index && i > indexFirstCompleted)) {
+          item.style.transform = `translateY(58px)`;
+        }
+      });
     }
 
     saveToStorage();
@@ -567,18 +586,20 @@
       ? filteredArray(currentTasksList, completedFilter)
       : currentTasksList.filter((task) => task.done);
     const action = divViews.querySelector(".is-selected").dataset.action;
+
+    
     if (action === "viewActive") {
       window.setTimeout(() => {
-        renderList(activeTodos, activeList_ul);
-      }, 100);
+        renderList(activeTodos, ulActiveList);
+      }, 300);
     } else if (action === "viewCompleted") {
       window.setTimeout(() => {
-        renderList(completedTodos, activeList_ul);
-      }, 100);
+        renderList(completedTodos, ulActiveList);
+      }, 300);
     } else {
       window.setTimeout(() => {
-        renderList(currentTasksList, activeList_ul);
-      }, 100);
+        renderList(currentTasksList, ulActiveList);
+      }, 300);
     }
     
   }
@@ -741,7 +762,7 @@
     
     if (!todoAppContainer.classList.contains("show-task-details") && e.currentTarget.id !== "btnCloseTaskDetails") {
       hiddenTaskId.value = id;
-      populateContent(id);
+      populateTaskDetails(id);
       $all('.todo-list__item', ulActiveList).forEach(item => {
         if (item === todoItem) {
           item.classList.add('is-selected');
@@ -801,7 +822,7 @@
    */
   function findExistingTag(text, todoIndex = undefined) {
     let existingTag;
-    const activeList_ul = $(".is-active-list");
+    const ulActiveList = $(".is-active-list");
     const currentList = state.activeList;
     if (todoIndex !== undefined) {
       existingTag = currentList.tasks[todoIndex].tags.find(
@@ -934,7 +955,7 @@
     }
   }
 
-  function populateContent(id) {
+  function populateTaskDetails(id) {
     const todoItem = $(`#${id}`);
     // Change state to current list object
     state.activeList = getListByTaskId(id);
@@ -1035,7 +1056,7 @@
   }
 
   function updateView(e) {
-    const activeList_ul = $(".is-active-list");
+    const ulActiveList = $(".is-active-list");
     const currentTasksList =
       state.filteredList !== null ? state.filteredList : state.activeList.tasks;
 
@@ -1058,13 +1079,13 @@
     const action = e.target.dataset.action;
     switch (action) {
       case "viewAll":
-        renderList(currentTasksList, activeList_ul);
+        renderList(currentTasksList, ulActiveList);
         break;
       case "viewActive":
-        renderList(activeTodos, activeList_ul);
+        renderList(activeTodos, ulActiveList);
         break;
       case "viewCompleted":
-        renderList(completedTodos, activeList_ul);
+        renderList(completedTodos, ulActiveList);
         break;
     }
     const viewBtns = divViews.querySelectorAll(".views__btn");
@@ -1343,42 +1364,45 @@
     const lastIndex = state.activeList.tasks.length - 1;
     const indexLastPriority = reverseIndex >= 0 ? lastIndex - reverseIndex : reverseIndex;
 
+    
     // Move priority items to top of list
     if (currentTask.isPriority === true && !currentTask.done && taskIndex > 0) {
       state.activeList.tasks.unshift(state.activeList.tasks.splice(taskIndex, 1)[0]);
-      saveToStorage();
-      ulActiveList.classList.add('slideDown');
-      todoItem.style.transform = `translateY(-${todoItem.offsetTop + 58}px)`;
+      $all('.todo-list__item', ulActiveList).forEach((item, i) => {
+        if (i < taskIndex) {
+          item.style.transform = `translateY(58px)`;
+        } else if (i === taskIndex) {
+          item.style.transform = `translateY(-${item.offsetTop}px)`;
+        }
+      });
       
-  
       setTimeout(() => {
-        ulActiveList.classList.remove('slideDown');
         renderList(currentTasksList, ulActiveList);
       if (todoAppContainer.classList.contains('show-task-details')) {
         const activeTask = $(`#${hiddenTaskId.value}`);
         activeTask.classList.add('is-selected');
       }
-      }, 250);
-    } else if (!currentTask.isPriority && !currentTask.done && taskIndex < indexLastPriority) {
+      }, 300);
+    } 
+    
+    if (!currentTask.isPriority && !currentTask.done && taskIndex < indexLastPriority) {
       state.activeList.tasks.splice(indexLastPriority, 0, state.activeList.tasks.splice(taskIndex, 1)[0]);
-      saveToStorage();
       const itemsBetween = indexLastPriority - taskIndex;
       todoItem.style.transform = `translateY(${itemsBetween *  58}px)`;
       for (let i = indexLastPriority; i > indexLastPriority - itemsBetween; i--) {
         $all('.todo-list__item', ulActiveList)[i].style.transform = `translateY(-58px)`;
       }
+      
       setTimeout(() => {
-
         renderList(currentTasksList, ulActiveList);
       if (todoAppContainer.classList.contains('show-task-details')) {
         const activeTask = $(`#${hiddenTaskId.value}`);
         activeTask.classList.add('is-selected');
       }
-      }, 250);
-      
-    } else {
-      saveToStorage();
+      }, 300);
     }
+
+    saveToStorage();
   }
 
   function toggleMenu() {
@@ -1625,7 +1649,9 @@
   function addList(e) {
     e.preventDefault();
     const newListName = $("#newListNameInput").value;
-    if (newListName !== "") {
+    if (newListName === "") {
+      $('#errorNoListName').classList.add('show-msg');
+    } else {
       const checkedRadio = $('input[name="folder"]:checked').value;
       const newFolder = $("#newFolderInput").value;
       const selectedFolder =
@@ -2166,6 +2192,11 @@
     }
   }
 
+  function hideError(e) {
+    if (!e.target.classList.contains("error__btn--hide")) return;
+    e.currentTarget.classList.remove("show-msg");
+  }
+
   function initDpCalendar(e) {
     if (e.currentTarget.classList.contains("show-input")) return;
 
@@ -2504,7 +2535,7 @@
     const target = e.currentTarget;
     const tooltip = $('.onboarding__tooltip.show-tooltip');
     const currentStep = state.onboarding.currentStep;
-    const activeList_ul = $('.is-active-list');
+    const ulActiveList = $('.is-active-list');
     const tooltipSet = Array.prototype.slice.call($all(`.onboarding__tooltip[data-onboarding-step="${currentStep}"]`)).sort((a, b) => {
       return +a.dataset.order - +b.dataset.order;
     });
@@ -2540,12 +2571,20 @@
       $('#openListFormBtn').addEventListener('click', trackTourProgress);
     }
 
+    // Part 2
+
     if (target === $('#openListFormBtn')) {
-      $('#fieldsetFolders').appendChild($("#onboardingTooltip_2-3"));
-      $('#newListForm').addEventListener('submit', trackTourProgress);
+      $('#fieldsetNewListInput').appendChild($("#onboardingTooltip_2-3"));
+      $('#newListNameInput').addEventListener('input', trackTourProgress);
     }
 
     // Part 3
+    if (target === $('#newListNameInput')) {
+      $('#fieldsetFolders').appendChild($("#onboardingTooltip_2-4"));
+      $('#newListForm').addEventListener('submit', trackTourProgress);
+    }
+
+    // Part 4
 
     if (target === $('#newListForm')) {
       $('#listActionsWrapper').appendChild($('#onboardingTooltip_3-1'));
@@ -2568,7 +2607,7 @@
         let dummyTask = new Task("Delete Me!");
         state.activeList.tasks.push(dummyTask);
       }
-      populateList(state.activeList.tasks, activeList_ul);
+      populateList(state.activeList.tasks, ulActiveList);
       $('#masterCheckbox').addEventListener('change', trackTourProgress);
       return;
     }
@@ -2664,6 +2703,11 @@ function stickToolbar(e) {
 
   // Event Listeners
 
+  $('#newListNameInput').addEventListener('input', (e) => {
+    if ($("#errorNoListName").classList.contains('show-msg')) {
+      $("#errorNoListName").classList.remove('show-msg');
+    }
+  });
 
   $('#taskDetailsBreadcrumbs .breadcrumbs__link').addEventListener('click', openList);
 
@@ -2924,6 +2968,7 @@ function stickToolbar(e) {
   );
 
   $all('.tooltip').forEach(tooltip => tooltip.addEventListener('click', closeTooltip));
+  $all('.error').forEach(error => error.addEventListener('click', hideError));
 
   $all(".dp-calendar__toggle-btn").forEach((btn) => {
     btn.addEventListener("click", (e) => {

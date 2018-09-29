@@ -163,6 +163,7 @@ label.subtask-list__checkbox:before {
 [type="checkbox"]:checked + .subtask-list__checkbox + .edit-todo-form__input--edit-subtask {
   color: lighten($dk-grey, 40%);
   text-decoration: line-through;
+  font-weight: 300;
 }
 
 // custom checkmark
