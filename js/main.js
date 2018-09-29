@@ -530,10 +530,10 @@
     const indexFirstCompleted = state.activeList.tasks.findIndex(
       (item) => item.done === true
     ); // Index of most recently completed task
-    const firstCompletedItem = state.activeList.tasks[indexFirstCompleted].elem;
+    
     currentTask.done = !currentTask.done;
 
-    if (currentTask.done) {
+    if (currentTask.done && state.activeList.tasks.length !== 1) {
       // Moves completed task to bottom of todo list
       state.activeList.tasks.push(state.activeList.tasks.splice(index, 1)[0]);
       
@@ -545,19 +545,21 @@
         }
       });
     }
-    if (!currentTask.done && index > 0) {
-      state.activeList.tasks.splice(
-        indexFirstCompleted,
-        0,
-        state.activeList.tasks.splice(index, 1)[0]
-      ); // Move task reverted to incomplete to the bottom of all unfinished tasks (and to  the top of the entire todo list, if there are none)
+    if (!currentTask.done && index > 0 && indexFirstCompleted !== -1) {
+      
       $all('.todo-list__item', ulActiveList).forEach((item, i) => {
         if (i === index) {
+          const firstCompletedItem = state.activeList.tasks[indexFirstCompleted].elem;
           item.style.transform = `translateY(${firstCompletedItem.offsetTop - item.offsetTop}px)`;
         } else if (i === indexFirstCompleted || (i < index && i > indexFirstCompleted)) {
           item.style.transform = `translateY(58px)`;
         }
       });
+      state.activeList.tasks.splice(
+        indexFirstCompleted,
+        0,
+        state.activeList.tasks.splice(index, 1)[0]
+      );
     }
 
     saveToStorage();
