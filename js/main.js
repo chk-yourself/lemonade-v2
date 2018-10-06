@@ -2184,6 +2184,16 @@
   function closeModal(e) {
     if (!e.target.classList.contains("modal__btn--close")) return;
     e.currentTarget.classList.remove("is-active");
+    const errors = $all('.error', e.currentTarget);
+    errors.forEach(error => {
+      if (error.classList.contains('show-msg')) {
+        error.classList.remove('show-msg');
+      }
+    });
+    const form = $('form', e.currentTarget);
+    if (e.currentTarget.contains(form)) {
+      form.reset();
+    }
   }
 
   function closeTooltip(e) {
