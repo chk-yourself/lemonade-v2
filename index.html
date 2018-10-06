@@ -9,7 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,600,700|Roboto:400,400i,500,700"
     rel="stylesheet">
-  <link rel="stylesheet" href="scss/styles.css">
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
@@ -287,7 +287,7 @@
                 <!--/ .dp-calendar__wrapper -->
 
                 <button class="btn btn--primary form__btn form__btn--rt dp-calendar__btn" type="button" id="btnSetDueDate"
-                  action="setDueDate">Set</button>
+                  data-action="setDueDate">Set</button>
                 <button class="btn btn--neutral form__btn form__btn--rt dp-calendar__btn dp-calendar__btn--reset" type="button"
                   id="btnResetDueDate" data-action="resetDueDate">Cancel</button>
                 <button class="btn btn--neutral form__btn dp-calendar__btn dp-calendar__btn--clear" type="button" id="btnClearDueDate"
@@ -370,13 +370,12 @@
                 <input id="newListNameInput" class="form__input form__input--inline form__input--list-name" type="text" />
                 <div class="error" id="errorNoListName">
                   <div class="error__msg">
-                    <button type="button" class="form__btn--icon error__btn--hide error__icon-btn--hide"
-                      data-action="hideError">
+                    <button type="button" class="form__btn--icon error__btn--hide error__icon-btn--hide" data-action="hideError">
                       <i data-feather="x"></i>
                     </button>
                     <p class="error__text"><i data-feather="alert-circle"></i>Please enter a name for your list.</p>
-                    </div>
                   </div>
+                </div>
               </fieldset>
               <fieldset id="fieldsetFolders" class="form__fieldset form__fieldset--folders">
                 <p class="label--text"><i data-feather="folder"></i>Folder:</p>
@@ -388,10 +387,9 @@
                   <button id="createFolderBtn" type="button" class="btn form__btn form__btn--neutral btn--inline form__btn--add new-list-form__btn--create-folder"
                     data-action="createFolder"><i data-feather="plus-circle"></i></button>
                   <input type="radio" name="folder" id="folderNew" value="new" />
-                  <label class="form__label--folder form__label--new-folder" for="folderNew"><input id="newFolderInput"
-                      class="form__input form__input--inline new-list-form__input new-list-form__input--folder" type="text"
-                      placeholder="Create new folder" /></label>
-
+                  <label class="form__label--folder form__label--new-folder" for="folderNew"></label>
+                  <input id="newFolderInput" class="form__input form__input--inline new-list-form__input new-list-form__input--folder"
+                    type="text" placeholder="Create new folder" />
                 </div>
               </fieldset>
               <button id="addListBtn" type="submit" class="btn btn--primary form__btn" data-action="addList">Create

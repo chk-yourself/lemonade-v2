@@ -2818,7 +2818,7 @@ input[name="folder"] {
 input[name="folder"]:checked + label {
   font-weight: 700;
   position: relative;
-  display: block;
+  display: inline-block;
 }
 
 input[name="folder"]:checked + label::after {
@@ -2888,14 +2888,18 @@ input[name="folder"]:checked + label::after {
 }
 
 .new-list-form__input--folder {
-  width: 100%;
   padding: 0;
   height: 32px;
+  width: calc(100% - 32px);
+  display: inline-block;
 }
 
 .form__label--new-folder {
   padding-top: 0;
   padding-bottom: 0;
+  display: inline-block;
+  width: 32px;
+  height: 32px;
 }
 
 .new-list-form__input--folder,
