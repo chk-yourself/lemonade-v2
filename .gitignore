@@ -3,3 +3,9 @@
 .eslintrc.json
 
 .prettierrc
+
+.babelrc
+
+package.json
+
+node_modules
