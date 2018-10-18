@@ -1,0 +1,1 @@
+{"version":3,"sources":["../src/js/Subtask.js"],"names":["Subtask","text","done"],"mappings":";;;;;;;;IAAqBA,O,GACnB,iBAAYC,IAAZ,EAAkB;AAAA;;AAChB,OAAKA,IAAL,GAAYA,IAAZ;AACA,OAAKC,IAAL,GAAY,KAAZ;AACD,C;;kBAJkBF,O","file":"Subtask.js","sourcesContent":["export default class Subtask {\n  constructor(text) {\n    this.text = text;\n    this.done = false;\n  }\n}"]}

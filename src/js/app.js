@@ -1,5 +1,6 @@
-import 'dotenv/config';
-
+import List from './List.js';
+import Task from './Task.js';
+import Subtask from './Subtask.js';
 
 (function app() {
   // for feather icons
@@ -26,164 +27,38 @@ import 'dotenv/config';
     return context.querySelectorAll(selector);
   }
 
-  // Classes
-
-  class List {
-    constructor(name, folder, obj = null) {
-      if (!obj) {
-        this.name = name;
-        this.folder = folder;
-        this.id = `${camelCased(name)}-${Date.now()}`;
-        this.tasks = [];
-      } else {
-        this.name = obj.name;
-        this.folder = obj.folder;
-        this.id = obj.id;
-        this.tasks = obj.tasks;
-      }
-    }
-    get elem() {
-      return document.getElementById(this.id);
-    }
-    getTask(taskId) {
-      return this.tasks.find((task) => task.id === taskId);
-    }
-
-    findTaskIndex(taskId) {
-      return this.tasks.findIndex((task) => task.id === taskId);
-    }
-    get activeTaskCount() {
-      return this.tasks.filter(task => !task.done).length;
-    }
-  }
-
-  class Subtask {
-    constructor(text) {
-      this.text = text;
-      this.done = false;
-    }
-  }
-
-  class Task extends Subtask {
-    constructor(text, obj = null) {
-      super(text);
-      if (!obj) {
-        this.subtasks = [];
-        this.note = "";
-        this.tags = [];
-        this.id = uniqueID();
-        this.dueDate = null;
-        this.isPriority = false;
-        this.dateCreated = new Date();
-        this.lastModified = null;
-      } else {
-        this.text = obj.text;
-        this.done = obj.done;
-        this.subtasks = obj.subtasks;
-        this.note = obj.note;
-        this.tags = obj.tags;
-        this.id = obj.id;
-        this.dueDate = obj.dueDate;
-        this.isPriority = obj.isPriority;
-        this.dateCreated = obj.dateCreated;
-        this.lastModified = obj.lastModified;
-      }
-    }
-
-    get elem() {
-      return document.getElementById(this.id);
-    }
-
-    get tagSummary() {
-      return this.tags.map((tag) => tag.text).join(", ");
-    }
-
-    get isDueToday() {
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      return new Date(this.dueDate).valueOf() === today.valueOf();
-    }
-
-    get isDueTomorrow() {
-      const today = new Date();
-      const currentDay = today.getDate();
-      const currentMonthIndex = today.getMonth();
-      const currentYear = today.getFullYear();
-      const nextYear = currentYear + 1;
-      const currentMonth = monthsArr[currentMonthIndex];
-      const nextMonthIndex = currentMonth.name !== "December" ? currentMonthIndex + 1 : 0;
-      if (currentMonth.name === "February") {
-        currentMonth.daysTotal = isLeapYear(currentYear) ? 29 : 28;
-      }
-      const tomorrow = currentDay < currentMonth.daysTotal
-        ? new Date(currentYear, currentMonthIndex, currentDay + 1)
-        : nextMonthIndex !== 0
-          ? new Date(currentYear, nextMonthIndex, 1)
-          : new Date(nextYear, nextMonthIndex, 1);
-      return new Date(this.dueDate).valueOf() === tomorrow.valueOf();
-    }
-
-    get dueDateText() {
-      const dueDate = new Date(this.dueDate);
-      const dueMonthIndex = dueDate.getMonth();
-      const dueMonthAbbrev = monthsArr[dueMonthIndex].abbrev;
-      const dueDay = dueDate.getDate();
-      return `${dueMonthAbbrev} ${dueDay}`
-    }
-
-    get dueMonthAbbrev() {
-      const dueDate = new Date(this.dueDate);
-      const dueMonthIndex = dueDate.getMonth();
-      return monthsArr[dueMonthIndex].abbrev;
-    }
-
-    get dueDayNumStr() {
-      const dueDate = new Date(this.dueDate);
-      const dayNum = dueDate.getDate();
-      return dayNum > 9 ? ''+dayNum : '0'+dayNum;
-    }
-
-    get dueYearStr() {
-      const dueDate = new Date(this.dueDate);
-      return ''+dueDate.getFullYear();
-    }
-
-    get dueDayOfWeek() {
-      const dueDate = new Date(this.dueDate);
-      return this.isDueToday ? 'Today' : this.isDueTomorrow ? 'Tomorrow' : weekdaysArr[dueDate.getDay()].full;
-    }
-  }
-
   // Variables
-  const divTodoApp = $("#todoApp");
-  const formAddTodo = $("#addTodoForm");
-  const formEditTodo = $("#editTodoForm");
-  const formSearch = $("#searchForm");
-  const searchBar = $("#searchBar");
-  const inputSearch = $("#searchInput");
-  const ulSubtasks = $("#subtaskList");
-  const divViews = $("#views");
-  const colorPicker = $("#colorPicker");
-  const formNewList = $("#newListForm");
-  const fieldsetFolders = $("#fieldsetFolders");
-  const formEditList = $("#editListForm");
-  const inputNewFolder = $("#newFolderInput");
+  const divTodoApp = $('#todoApp');
+  const formAddTodo = $('#addTodoForm');
+  const formEditTodo = $('#editTodoForm');
+  const formSearch = $('#searchForm');
+  const searchBar = $('#searchBar');
+  const inputSearch = $('#searchInput');
+  const ulSubtasks = $('#subtaskList');
+  const divViews = $('#views');
+  const colorPicker = $('#colorPicker');
+  const formNewList = $('#newListForm');
+  const fieldsetFolders = $('#fieldsetFolders');
+  const formEditList = $('#editListForm');
+  const inputNewFolder = $('#newFolderInput');
   const todoAppContainer = $('#todoAppContainer');
-  const taskDetails = $("#taskDetails");
+  const taskDetails = $('#taskDetails');
   const hiddenTaskId = $('#taskId');
-  const todoLists = localStorage.getItem("todoLists") ? initClasses(JSON.parse(localStorage.getItem("todoLists"))) : [];
+  const todoLists = localStorage.getItem('todoLists')
+    ? initClasses(JSON.parse(localStorage.getItem('todoLists')))
+    : [];
 
   // Converts JSON list and task objects back to instances of original classes
   function initClasses(arr) {
     return arr.map((item) => {
       const list = new List(null, null, item);
-      list.tasks = item.tasks.map(task => new Task(null, task));
+      list.tasks = item.tasks.map((task) => new Task(null, task));
       return list;
     });
   }
 
   const saveToStorage = () =>
-    localStorage.setItem("todoLists", JSON.stringify(todoLists));
+    localStorage.setItem('todoLists', JSON.stringify(todoLists));
 
   const BACKSPACE_KEY = 8;
   const ENTER_KEY = 13;
@@ -195,12 +70,14 @@ import 'dotenv/config';
       currentStep: null,
       statusLog: [false, false, false],
       get isCompleted() {
-        return this.statusLog.every(status => status === true);
+        return this.statusLog.every((status) => status === true);
       },
       get nextStep() {
-        return this.isCompleted ? 4 
-        : this.currentStep === 3 ? this.statusLog.indexOf(false) + 1 
-        : this.statusLog.indexOf(false, this.currentStep) + 1;
+        return this.isCompleted
+          ? 4
+          : this.currentStep === 3
+            ? this.statusLog.indexOf(false) + 1
+            : this.statusLog.indexOf(false, this.currentStep) + 1;
       },
       set updateStatus(val) {
         this.statusLog[this.currentStep - 1] = val;
@@ -209,7 +86,7 @@ import 'dotenv/config';
   };
 
   const clickTouch = () =>
-    "ontouchstart" in document === true ? "touchstart" : "click";
+    'ontouchstart' in document === true ? 'touchstart' : 'click';
 
   const now = new Date();
   const currentDate = now.getDate();
@@ -220,75 +97,75 @@ import 'dotenv/config';
 
   const monthsArr = [
     {
-      name: "January",
+      name: 'January',
       daysTotal: 31,
-      abbrev: "Jan"
+      abbrev: 'Jan'
     },
     {
-      name: "February",
+      name: 'February',
       daysTotal: isLeapYear(currentYear) ? 29 : 28,
-      abbrev: "Feb"
+      abbrev: 'Feb'
     },
     {
-      name: "March",
+      name: 'March',
       daysTotal: 31,
-      abbrev: "Mar"
+      abbrev: 'Mar'
     },
     {
-      name: "April",
+      name: 'April',
       daysTotal: 30,
-      abbrev: "Apr"
+      abbrev: 'Apr'
     },
     {
-      name: "May",
+      name: 'May',
       daysTotal: 31,
-      abbrev: "May"
+      abbrev: 'May'
     },
     {
-      name: "June",
+      name: 'June',
       daysTotal: 30,
-      abbrev: "Jun"
+      abbrev: 'Jun'
     },
     {
-      name: "July",
+      name: 'July',
       daysTotal: 31,
-      abbrev: "Jul"
+      abbrev: 'Jul'
     },
     {
-      name: "August",
+      name: 'August',
       daysTotal: 31,
-      abbrev: "Aug"
+      abbrev: 'Aug'
     },
     {
-      name: "September",
+      name: 'September',
       daysTotal: 30,
-      abbrev: "Sep"
+      abbrev: 'Sep'
     },
     {
-      name: "October",
+      name: 'October',
       daysTotal: 31,
-      abbrev: "Oct"
+      abbrev: 'Oct'
     },
     {
-      name: "November",
+      name: 'November',
       daysTotal: 30,
-      abbrev: "Nov"
+      abbrev: 'Nov'
     },
     {
-      name: "December",
+      name: 'December',
       daysTotal: 31,
-      abbrev: "Dec"
+      abbrev: 'Dec'
     }
   ];
 
   const weekdaysArr = [
-    {full: "Sunday", short: "Sun"},
-    {full: "Monday", short: "Mon"},
-    {full: "Tuesday", short: "Tue"},
-    {full: "Wednesday", short: "Wed"},
-    {full: "Thursday", short: "Thu"},
-    {full: "Friday", short: "Fri"},
-    {full: "Saturday", short: "Sat"}
+    { full: 'Sunday', short: 'Sun' },
+    { full: 'Monday', short: 'Mon' },
+    { full: 'Tuesday', short: 'Tue' },
+    { full: 'Wednesday', short: 'Wed' },
+    { full: 'Thursday', short: 'Thu' },
+    { full: 'Friday', short: 'Fri' },
+    { full: 'Saturday', short: 'Sat' }
   ];
 
   // Generates unique ID string, used for identifying todo items.
@@ -301,15 +178,15 @@ import 'dotenv/config';
   const camelCased = (text) =>
     text
       .trim()
-      .replace(/[^A-Za-z0-9 ]/g, "")
-      .split(" ")
+      .replace(/[^A-Za-z0-9 ]/g, '')
+      .split(' ')
       .map(
         (str, i) =>
           i === 0
             ? str.toLowerCase()
             : str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
       )
-      .join("");
+      .join('');
 
   /**
    * Creates HTML element with specified tagName, attributes and child nodes.
@@ -331,33 +208,33 @@ import 'dotenv/config';
     const node = document.createElement(tagName);
 
     if (attributes) {
-    Object.keys(attributes).forEach((key) => {
-      if (key === "class") {
-        const classes = attributes[key].split(" ");
-        classes.forEach((x) => node.classList.add(x));
-      } else if (/^data-/.test(key)) {
-        const dataProp = key
-          .slice(5) // removes `data-`
-          .split("-")
-          .map(
-            (str, i) =>
-              i === 0
-                ? str
-                : str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
-          )
-          .join("");
-        node.dataset[dataProp] = attributes[key];
-      } else {
-        node.setAttribute(key, attributes[key]);
-      }
-    });
-  }
+      Object.keys(attributes).forEach((key) => {
+        if (key === 'class') {
+          const classes = attributes[key].split(' ');
+          classes.forEach((x) => node.classList.add(x));
+        } else if (/^data-/.test(key)) {
+          const dataProp = key
+            .slice(5) // removes `data-`
+            .split('-')
+            .map(
+              (str, i) =>
+                i === 0
+                  ? str
+                  : str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
+            )
+            .join('');
+          node.dataset[dataProp] = attributes[key];
+        } else {
+          node.setAttribute(key, attributes[key]);
+        }
+      });
+    }
 
     children.forEach((child) => {
-      if (typeof child === "undefined" || child === null) {
+      if (typeof child === 'undefined' || child === null) {
         return;
       }
-      if (typeof child === "string") {
+      if (typeof child === 'string') {
         node.appendChild(document.createTextNode(child));
       } else {
         node.appendChild(child);
@@ -367,20 +244,20 @@ import 'dotenv/config';
     return node;
   };
 
-  if (!todoLists.find((list) => list.name === "Inbox")) {
+  if (!todoLists.find((list) => list.name === 'Inbox')) {
     $('#onboarding').classList.add('is-active');
-    const initInbox = new List("Inbox", "null");
+    const initInbox = new List('Inbox', 'null');
     todoLists.push(initInbox);
     saveToStorage();
   }
 
-  const inbox = todoLists.find((list) => list.name === "Inbox");
-  inbox.id = "inbox";
+  const inbox = todoLists.find((list) => list.name === 'Inbox');
+  inbox.id = 'inbox';
   // Populates inbox tasks on load
   displayList(inbox);
 
   // Add toggleDone functionality to all prebuilt lists
-  $all('.todo-list').forEach(list => {
+  $all('.todo-list').forEach((list) => {
     list.addEventListener('click', toggleDone);
     updateTaskCount(list.id);
   });
@@ -392,17 +269,15 @@ import 'dotenv/config';
     }
   });
 
-
-
   // Adds new task object to current list array
   function addTodo(e) {
     e.preventDefault();
     const target = e.currentTarget;
 
-    const ulActiveList = $(".is-active-list");
+    const ulActiveList = $('.is-active-list');
 
-    const text = $("#todoInput").value;
-    if (text !== "") {
+    const text = $('#todoInput').value;
+    if (text !== '') {
       const todo = new Task(text);
       state.activeList.tasks.push(todo); // Add new item to bottom of the list
       saveToStorage();
@@ -421,30 +296,53 @@ import 'dotenv/config';
     itemsList.innerHTML = itemsArray
       .map(
         (item, i) => `<li class= "todo-list__item${
-          item.done ? ' is-done' : ''}${item.isPriority ? ' is-priority' : ''}${item.dueDate || ( state.filteredList !== null && $("#searchInput").value === "" ) ? ' show-info' : ''}" data-index="${i}" id="${item.id}">
+          item.done ? ' is-done' : ''
+        }${item.isPriority ? ' is-priority' : ''}${
+          item.dueDate ||
+          (state.filteredList !== null && $('#searchInput').value === '')
+            ? ' show-info'
+            : ''
+        }" data-index="${i}" id="${item.id}">
 <input type="checkbox" id="item-${i}" data-index="${i}" value="${item.text}" ${
-          item.done ? "checked" : ""
+          item.done ? 'checked' : ''
         } />
 <label for ="item-${i}" class="todo-list__checkbox"></label>
 <textarea class="form__textarea todo-item__title" data-index="${i}" data-id="${
           item.id
         }">${item.text}</textarea>
 <div class="todo-item__tag-labels"></div><span class="lemon" data-id="${
-  item.id}"></span>${item.dueDate !== null ? `<span class="badge--due-date${item.isDueToday ? ' badge--today' : item.isDueTomorrow ? ' badge--tomorrow' : ''}">${item.isDueToday ? 'Today' : item.isDueTomorrow ? 'Tomorrow' : item.dueDateText}</span>` : ''}
+          item.id
+        }"></span>${
+          item.dueDate !== null
+            ? `<span class="badge--due-date${
+                item.isDueToday
+                  ? ' badge--today'
+                  : item.isDueTomorrow
+                    ? ' badge--tomorrow'
+                    : ''
+              }">${
+                item.isDueToday
+                  ? 'Today'
+                  : item.isDueTomorrow
+                    ? 'Tomorrow'
+                    : item.dueDateText
+              }</span>`
+            : ''
+        }
 </li>`
       )
-      .join("");
+      .join('');
 
     const itemsCollection = $all('.todo-list__item', itemsList);
 
     // Adds event listeners to each list item
     for (let i = 0; i < itemsCollection.length; i++) {
       let todoItem = itemsCollection[i];
-      todoItem.addEventListener("click", toggleContent, true);
-      
+      todoItem.addEventListener('click', toggleContent, true);
+
       if (state.filteredList !== null) {
         todoItem.addEventListener(
-          "click",
+          'click',
           (e) => {
             const id = e.currentTarget.id;
             state.activeList = getListByTaskId(id);
@@ -455,54 +353,51 @@ import 'dotenv/config';
 
       const lemon = $('.lemon', todoItem);
       lemon.addEventListener('click', setPriority);
-      const itemTitle = $(".todo-item__title", todoItem);
-      itemTitle.addEventListener("click", (e) => {
+      const itemTitle = $('.todo-item__title', todoItem);
+      itemTitle.addEventListener('click', (e) => {
         const id = e.currentTarget.dataset.id;
         state.activeList = getListByTaskId(id);
       });
-      itemTitle.addEventListener("change", renameTodo);
+      itemTitle.addEventListener('change', renameTodo);
 
       // Creates tag labels and badges for each todo item, if any
       const id = todoItem.id;
-      
+
       for (let j = 0; j < itemsArray.length; j++) {
-
         if (itemsArray[j].id === id) {
-        let taskObj = itemsArray[j];
-
-        // Renders tag labels
-        if (taskObj.tags.length > 0) {
-          const tagLabels =
-            $(".todo-item__tag-labels", todoItem);
-          const tagsTooltipBtn =
-            createNode(
-              "button",
-              {
-                class: "btn btn--tooltip tag-labels__btn--tooltip",
-                "data-tooltip": "",
-                type: "button"
-              },
-              "..."
-            );
-          tagsTooltipBtn.dataset.tooltip = itemsArray[j].tagSummary;
-          tagsTooltipBtn.addEventListener("click", (e) => {
-            e.currentTarget.classList.toggle("show-tooltip");
-          });
-          tagLabels.appendChild(tagsTooltipBtn);
+          let taskObj = itemsArray[j];
 
           // Renders tag labels
-          taskObj.tags.forEach((tag, i) => {
-            const tagLabel = createNode(
-              "span",
+          if (taskObj.tags.length > 0) {
+            const tagLabels = $('.todo-item__tag-labels', todoItem);
+            const tagsTooltipBtn = createNode(
+              'button',
               {
-                class: `tag tag-label ${tag.color}`
+                class: 'btn btn--tooltip tag-labels__btn--tooltip',
+                'data-tooltip': '',
+                type: 'button'
               },
-              tag.text
+              '...'
             );
-            tagLabels.insertBefore(tagLabel, tagsTooltipBtn);
-          });
+            tagsTooltipBtn.dataset.tooltip = itemsArray[j].tagSummary;
+            tagsTooltipBtn.addEventListener('click', (e) => {
+              e.currentTarget.classList.toggle('show-tooltip');
+            });
+            tagLabels.appendChild(tagsTooltipBtn);
+
+            // Renders tag labels
+            taskObj.tags.forEach((tag, i) => {
+              const tagLabel = createNode(
+                'span',
+                {
+                  class: `tag tag-label ${tag.color}`
+                },
+                tag.text
+              );
+              tagLabels.insertBefore(tagLabel, tagsTooltipBtn);
+            });
+          }
         }
-      }
       }
     }
   }
@@ -517,8 +412,8 @@ import 'dotenv/config';
   function toggleDone(e) {
     const el = e.target;
     if (
-      !el.classList.contains("todo-list__checkbox") ||
-      el.classList.contains("bulk-actions__checkbox")
+      !el.classList.contains('todo-list__checkbox') ||
+      el.classList.contains('bulk-actions__checkbox')
     )
       return;
 
@@ -526,35 +421,41 @@ import 'dotenv/config';
 
     state.activeList = getListByTaskId(id);
 
-    const ulActiveList = $(".is-active-list");
+    const ulActiveList = $('.is-active-list');
     const listHeight = parseInt(window.getComputedStyle(ulActiveList).height);
     const index = state.activeList.findTaskIndex(id);
     const currentTask = state.activeList.getTask(id);
     const indexFirstCompleted = state.activeList.tasks.findIndex(
       (item) => item.done === true
     ); // Index of most recently completed task
-    
+
     currentTask.done = !currentTask.done;
 
     if (currentTask.done && state.activeList.tasks.length !== 1) {
       // Moves completed task to bottom of todo list
       state.activeList.tasks.push(state.activeList.tasks.splice(index, 1)[0]);
-      
+
       $all('.todo-list__item', ulActiveList).forEach((item, i) => {
         if (i === index) {
-          item.style.transform = `translateY(${listHeight - item.offsetTop - 58}px)`;
+          item.style.transform = `translateY(${listHeight -
+            item.offsetTop -
+            58}px)`;
         } else if (i > index) {
           item.style.transform = `translateY(-58px)`;
         }
       });
     }
     if (!currentTask.done && index > 0 && indexFirstCompleted !== -1) {
-      
       $all('.todo-list__item', ulActiveList).forEach((item, i) => {
         if (i === index) {
-          const firstCompletedItem = state.activeList.tasks[indexFirstCompleted].elem;
-          item.style.transform = `translateY(${firstCompletedItem.offsetTop - item.offsetTop}px)`;
-        } else if (i === indexFirstCompleted || (i < index && i > indexFirstCompleted)) {
+          const firstCompletedItem =
+            state.activeList.tasks[indexFirstCompleted].elem;
+          item.style.transform = `translateY(${firstCompletedItem.offsetTop -
+            item.offsetTop}px)`;
+        } else if (
+          i === indexFirstCompleted ||
+          (i < index && i > indexFirstCompleted)
+        ) {
           item.style.transform = `translateY(58px)`;
         }
       });
@@ -582,7 +483,6 @@ import 'dotenv/config';
         }
         return acc;
       }, []);
-      
 
     const activeTodos = Array.isArray(currentTasksList[0])
       ? filteredArray(currentTasksList, activeFilter)
@@ -590,14 +490,13 @@ import 'dotenv/config';
     const completedTodos = Array.isArray(currentTasksList[0])
       ? filteredArray(currentTasksList, completedFilter)
       : currentTasksList.filter((task) => task.done);
-    const action = divViews.querySelector(".is-selected").dataset.action;
+    const action = divViews.querySelector('.is-selected').dataset.action;
 
-    
-    if (action === "viewActive") {
+    if (action === 'viewActive') {
       window.setTimeout(() => {
         renderList(activeTodos, ulActiveList);
       }, 300);
-    } else if (action === "viewCompleted") {
+    } else if (action === 'viewCompleted') {
       window.setTimeout(() => {
         renderList(completedTodos, ulActiveList);
       }, 300);
@@ -606,12 +505,11 @@ import 'dotenv/config';
         renderList(currentTasksList, ulActiveList);
       }, 300);
     }
-    
   }
 
   // Updates subtask object's `done` property to reflect current `checked` state
   function toggleComplete(e) {
-    if (!e.target.classList.contains("subtask-list__checkbox")) return;
+    if (!e.target.classList.contains('subtask-list__checkbox')) return;
     const id = formEditTodo.dataset.id;
     const todoIndex = state.activeList.tasks.findIndex(
       (task) => task.id === id
@@ -622,7 +520,7 @@ import 'dotenv/config';
       subtaskIndex
     ].done;
     saveToStorage();
-    populateSubtasks(state.activeList.tasks, "subtasks", ulSubtasks, todoIndex);
+    populateSubtasks(state.activeList.tasks, 'subtasks', ulSubtasks, todoIndex);
   }
 
   // Empties todos array and removes all rendered todo items
@@ -647,7 +545,7 @@ import 'dotenv/config';
       .map(
         (subitem, i) => `<li class="subtask-list__item">
 <input type="checkbox" id="i${k}--${i}" name="i${k}--${i}" data-index="${k}" data-sub-index="${i}" class="subtask-list__checkbox" ${
-          subitem.done ? "checked" : ""
+          subitem.done ? 'checked' : ''
         } />
 <label for="i${k}--${i}" class="subtask-list__checkbox" data-index="${k}" data-sub-index="${i}"></label>
 <textarea class="form__textarea edit-todo-form__textarea--subtask" data-index="${k}" data-sub-index=${i}>${
@@ -655,7 +553,7 @@ import 'dotenv/config';
         }</textarea>
 </li>`
       )
-      .join("");
+      .join('');
   }
 
   /**
@@ -664,21 +562,23 @@ import 'dotenv/config';
   function addSubtask(e) {
     e.preventDefault();
 
-    if (e.target.dataset.action !== "addSubtask") return;
+    if (e.target.dataset.action !== 'addSubtask') return;
     const id = hiddenTaskId.value;
 
     const currentTask = state.activeList.getTask(id);
     const todoIndex = state.activeList.findTaskIndex(id);
     const currentList = state.activeList;
 
-    const text = $("#newSubtaskInput").value;
+    const text = $('#newSubtaskInput').value;
     if (text) {
       const newSubtask = new Subtask(text);
       currentTask.subtasks.push(newSubtask);
-      populateSubtasks(currentList.tasks, "subtasks", ulSubtasks, todoIndex);
-      $all('.edit-todo-form__textarea--subtask', ulSubtasks).forEach(subtask => autoHeightResize(subtask));
+      populateSubtasks(currentList.tasks, 'subtasks', ulSubtasks, todoIndex);
+      $all('.edit-todo-form__textarea--subtask', ulSubtasks).forEach(
+        (subtask) => autoHeightResize(subtask)
+      );
       saveToStorage();
-      $("#newSubtaskInput").value = "";
+      $('#newSubtaskInput').value = '';
     }
   }
 
@@ -690,7 +590,7 @@ import 'dotenv/config';
    * Adds note
    */
   function addNote(e) {
-    if (!e.target.classList.contains("todo-item__note")) return;
+    if (!e.target.classList.contains('todo-item__note')) return;
     const id = formEditTodo.dataset.id;
     const currentTask = state.activeList.getTask(id);
     const todoIndex = state.activeList.findTaskIndex(id); // index of todo object with matching ID in TODOS array
@@ -703,20 +603,20 @@ import 'dotenv/config';
 
   // Resizes text inputs and textareas to show all content within
   function autoHeightResize(elem) {
-    elem.style.height = "0px";
+    elem.style.height = '0px';
     elem.style.height = `${elem.scrollHeight}px`;
   }
 
   function renameTodo(e) {
-    if (!e.target.classList.contains("todo-item__title")) return;
+    if (!e.target.classList.contains('todo-item__title')) return;
     const id = e.target.dataset.id;
     const newText = e.target.value.trim();
     const currentTask = state.activeList.getTask(id);
     const todoItem = $(`#${id}`);
-    if (newText !== "") {
+    if (newText !== '') {
       currentTask.text = newText;
       saveToStorage();
-  
+
       if (e.currentTarget === $('#taskName')) {
         $('.todo-item__title', todoItem).value = newText;
       } else {
@@ -728,7 +628,7 @@ import 'dotenv/config';
   }
 
   function editSubtask(e) {
-    if (!e.target.classList.contains("edit-todo-form__textarea--subtask"))
+    if (!e.target.classList.contains('edit-todo-form__textarea--subtask'))
       return;
     const id = e.currentTarget.dataset.id;
     const currentTask = state.activeList.getTask(id);
@@ -737,38 +637,50 @@ import 'dotenv/config';
     currentTask.subtasks[subtaskIndex].text = newSubtaskText.trim();
     saveToStorage();
   }
-  
 
   function toggleContent(e) {
-
-    if (e.target.classList.contains('lemon') || e.target.classList.contains('todo-list__checkbox') || e.target.getAttribute('type') === 'checkbox' || e.currentTarget.contains($('.bulk-actions__checkbox-label', e.currentTarget)) || e.target.classList.contains('tag-labels__btn--tooltip')) return;
+    if (
+      e.target.classList.contains('lemon') ||
+      e.target.classList.contains('todo-list__checkbox') ||
+      e.target.getAttribute('type') === 'checkbox' ||
+      e.currentTarget.contains(
+        $('.bulk-actions__checkbox-label', e.currentTarget)
+      ) ||
+      e.target.classList.contains('tag-labels__btn--tooltip')
+    )
+      return;
     let todoItem = e.currentTarget;
     const id = todoItem.id;
-    const dueDateLabel = $(".badge--due-date", todoItem);
-    const todoItemTitle = $(".todo-item__title", todoItem);
+    const dueDateLabel = $('.badge--due-date', todoItem);
+    const todoItemTitle = $('.todo-item__title', todoItem);
     const ulActiveList = $('.is-active-list');
 
-    if (e.currentTarget.id === "btnCloseTaskDetails") {
+    if (e.currentTarget.id === 'btnCloseTaskDetails') {
       todoItem = $(`#${hiddenTaskId.value}`);
     }
 
-    if (todoAppContainer.classList.contains("show-task-details")) {
-      todoItem.classList.remove("is-selected");
-      todoAppContainer.classList.remove("show-task-details");
+    if (todoAppContainer.classList.contains('show-task-details')) {
+      todoItem.classList.remove('is-selected');
+      todoAppContainer.classList.remove('show-task-details');
       // Reset task details pane
-      const tags = $all("#tagsContainer .tag", taskDetails);
+      const tags = $all('#tagsContainer .tag', taskDetails);
       tags.forEach((x) => x.remove());
-      $("#dueDateWrapper").classList.remove("has-due-date");
-      $("#dueDateWrapper").classList.remove("show-input");
-      $("#dueDateWrapper").parentNode.classList.remove('is-focused');
-      $("#dpCalendar").classList.remove("is-active");
-      $all('.todo-list__item', ulActiveList).forEach(item => item.classList.remove('is-selected'));
-    } 
-    
-    if (!todoAppContainer.classList.contains("show-task-details") && e.currentTarget.id !== "btnCloseTaskDetails") {
+      $('#dueDateWrapper').classList.remove('has-due-date');
+      $('#dueDateWrapper').classList.remove('show-input');
+      $('#dueDateWrapper').parentNode.classList.remove('is-focused');
+      $('#dpCalendar').classList.remove('is-active');
+      $all('.todo-list__item', ulActiveList).forEach((item) =>
+        item.classList.remove('is-selected')
+      );
+    }
+
+    if (
+      !todoAppContainer.classList.contains('show-task-details') &&
+      e.currentTarget.id !== 'btnCloseTaskDetails'
+    ) {
       hiddenTaskId.value = id;
       populateTaskDetails(id);
-      $all('.todo-list__item', ulActiveList).forEach(item => {
+      $all('.todo-list__item', ulActiveList).forEach((item) => {
         if (item === todoItem) {
           item.classList.add('is-selected');
         } else {
@@ -776,7 +688,7 @@ import 'dotenv/config';
         }
       });
       if (document.documentElement.clientWidth < 768) {
-        $(".todo-item__title", todoItem).blur();
+        $('.todo-item__title', todoItem).blur();
       }
       todoAppContainer.classList.add('show-task-details');
     }
@@ -786,21 +698,22 @@ import 'dotenv/config';
     const currentTask = listObj.getTask(taskId);
     const todoItem = currentTask.elem;
     const taskIndex = listObj.findTaskIndex(taskId);
-    const ulActiveList = $(".is-active-list");
+    const ulActiveList = $('.is-active-list');
     listObj.tasks.splice(taskIndex, 1);
     saveToStorage();
 
-    const currentTasksList = state.filteredList === null ? state.activeList.tasks : state.filteredList;
-    if (todoAppContainer.classList.contains("show-task-details")) {
+    const currentTasksList =
+      state.filteredList === null ? state.activeList.tasks : state.filteredList;
+    if (todoAppContainer.classList.contains('show-task-details')) {
       todoAppContainer.classList.remove('show-task-details');
     }
     if (!todoItem.classList.contains('bulk-editing-list__item')) {
       switch (ulActiveList.id) {
-        case "upcoming":
-          displayTaskSchedule('upcoming', $("#upcoming"));
+        case 'upcoming':
+          displayTaskSchedule('upcoming', $('#upcoming'));
           break;
-        case "today":
-          displayTaskSchedule('today', $("#today"));
+        case 'today':
+          displayTaskSchedule('today', $('#today'));
           break;
         default:
           renderList(currentTasksList, ulActiveList);
@@ -811,14 +724,14 @@ import 'dotenv/config';
     if (currentTask.isDueToday) {
       updateTaskCount('today');
     }
-    $("#alertWarningDeleteTask").classList.remove("is-active");
+    $('#alertWarningDeleteTask').classList.remove('is-active');
   }
 
   function filterTag(tag) {
     return tag
       .trim()
-      .replace(/  +/g, " ")
-      .replace(/[^\w -]/g, "");
+      .replace(/  +/g, ' ')
+      .replace(/[^\w -]/g, '');
   }
 
   /**
@@ -827,7 +740,7 @@ import 'dotenv/config';
    */
   function findExistingTag(text, todoIndex = undefined) {
     let existingTag;
-    const ulActiveList = $(".is-active-list");
+    const ulActiveList = $('.is-active-list');
     const currentList = state.activeList;
     if (todoIndex !== undefined) {
       existingTag = currentList.tasks[todoIndex].tags.find(
@@ -855,11 +768,11 @@ import 'dotenv/config';
     const currentTask = state.activeList.tasks[todoIndex];
     const id = currentTask.id;
     const todoItem = $(`#${id}`);
-    $all("#tagsContainer .tag", formEditTodo)[tagIndex].remove();
-    $all(".todo-item__tag-labels .tag-label", todoItem)[tagIndex].remove();
+    $all('#tagsContainer .tag', formEditTodo)[tagIndex].remove();
+    $all('.todo-item__tag-labels .tag-label', todoItem)[tagIndex].remove();
     currentTask.tags.splice(tagIndex, 1);
     saveToStorage();
-    const tagsTooltipBtn = $(".tag-labels__btn--tooltip", todoItem);
+    const tagsTooltipBtn = $('.tag-labels__btn--tooltip', todoItem);
     if (currentTask.tags.length > 0) {
       // Update tags tooltip
       tagsTooltipBtn.dataset.tooltip = currentTask.tagSummary;
@@ -869,33 +782,31 @@ import 'dotenv/config';
   }
 
   function addTag(e) {
-
-    if (e.target.dataset.action !== "addTag" && $("#newTagInput").value === "")
+    if (e.target.dataset.action !== 'addTag' && $('#newTagInput').value === '')
       return;
     e.preventDefault();
-    const tagsContainer = $("#tagsContainer");
-    const newTagInput = $("#newTagInput");
+    const tagsContainer = $('#tagsContainer');
+    const newTagInput = $('#newTagInput');
     const id = formEditTodo.dataset.id;
     const todoIndex = state.activeList.findTaskIndex(id);
     const currentTask = state.activeList.getTask(id);
     const todoItem = $(`#${id}`);
-    const tagLabels =
-      $(".todo-item__tag-labels", todoItem);
+    const tagLabels = $('.todo-item__tag-labels', todoItem);
     const tagsTooltipBtn =
-      tagLabels.querySelector(".btn--tooltip") ||
+      tagLabels.querySelector('.btn--tooltip') ||
       createNode(
-        "button",
+        'button',
         {
-          class: "btn btn--tooltip tag-labels__btn--tooltip",
-          "data-tooltip": "",
-          type: "button"
+          class: 'btn btn--tooltip tag-labels__btn--tooltip',
+          'data-tooltip': '',
+          type: 'button'
         },
-        "..."
+        '...'
       );
     if (!tagLabels.contains(tagsTooltipBtn)) {
       tagLabels.appendChild(tagsTooltipBtn);
     }
-    if (newTagInput.value !== "") {
+    if (newTagInput.value !== '') {
       const text = filterTag(newTagInput.value);
 
       // Prevents duplicating existing tags for a todo item
@@ -906,17 +817,17 @@ import 'dotenv/config';
         const tag = {
           text,
           // Assigns color of previously created tag that matches text, if exists
-          color: existingTag !== undefined ? existingTag.color : "bg--default"
+          color: existingTag !== undefined ? existingTag.color : 'bg--default'
         };
         state.activeList.tasks[todoIndex].tags.push(tag);
         saveToStorage();
-        const deleteTagBtn = createNode("button", {
-          class: "close-icon",
-          type: "button",
-          value: "false"
+        const deleteTagBtn = createNode('button', {
+          class: 'close-icon',
+          type: 'button',
+          value: 'false'
         });
         deleteTagBtn.addEventListener(
-          "click",
+          'click',
           (e) => {
             removeTag(
               todoIndex,
@@ -926,10 +837,10 @@ import 'dotenv/config';
           false
         );
         const newTagNode = createNode(
-          "span",
+          'span',
           {
             class: `tag ${tag.color}`,
-            "data-tag-index": state.activeList.tasks[todoIndex].tags.indexOf(
+            'data-tag-index': state.activeList.tasks[todoIndex].tags.indexOf(
               tag
             )
           },
@@ -938,7 +849,7 @@ import 'dotenv/config';
         );
         tagsContainer.insertBefore(newTagNode, newTagInput);
         const tagLabel = createNode(
-          "span",
+          'span',
           {
             class: `tag tag-label ${tag.color}`
           },
@@ -948,13 +859,13 @@ import 'dotenv/config';
         // Updates tooltip data
         tagsTooltipBtn.dataset.tooltip = currentTask.tagSummary;
         tagLabels.insertBefore(tagLabel, tagsTooltipBtn);
-        newTagInput.value = "";
+        newTagInput.value = '';
 
         // Appends color picker to tag node if there are no existing tags that matches text
         if (existingTag === undefined) {
           newTagNode.appendChild(colorPicker);
           $('#colorDefault', colorPicker).checked = true;
-          colorPicker.classList.add("is-visible");
+          colorPicker.classList.add('is-visible');
         }
       }
     }
@@ -964,37 +875,42 @@ import 'dotenv/config';
     const todoItem = $(`#${id}`);
     // Change state to current list object
     state.activeList = getListByTaskId(id);
-    const ulActiveList = $(".is-active-list");
+    const ulActiveList = $('.is-active-list');
     const currentTask = state.activeList.getTask(id);
     const todoIndex = state.activeList.findTaskIndex(id);
     const todoItemTitle = $('#taskName');
-    const todoItemNote = $(".todo-item__note", formEditTodo);
-    const newTagInput = $("#newTagInput");
+    const todoItemNote = $('.todo-item__note', formEditTodo);
+    const newTagInput = $('#newTagInput');
     const lemon = $('.task-details__lemon', taskDetails);
     todoItemTitle.value = currentTask.text;
     todoItemTitle.dataset.id = id;
     todoItemTitle.dataset.index = todoIndex;
     todoItemNote.value = currentTask.note;
     lemon.dataset.id = id;
-    
+
     if (currentTask.isPriority) {
       taskDetails.classList.add('is-priority');
     } else {
       taskDetails.classList.remove('is-priority');
     }
 
-    $('#btnCloseTaskDetails .list-name').textContent = ulActiveList.dataset.name;
+    $('#btnCloseTaskDetails .list-name').textContent =
+      ulActiveList.dataset.name;
     $('#taskDetailsBreadcrumbs .list-name').textContent = state.activeList.name;
-    $('#taskDetailsBreadcrumbs .breadcrumbs__link').setAttribute('href', `#${state.activeList.id}`);
+    $('#taskDetailsBreadcrumbs .breadcrumbs__link').setAttribute(
+      'href',
+      `#${state.activeList.id}`
+    );
 
-    if (state.activeList.folder !== "null") {
-      $('#taskDetailsBreadcrumbs .folder-name').textContent = state.activeList.folder;
+    if (state.activeList.folder !== 'null') {
+      $('#taskDetailsBreadcrumbs .folder-name').textContent =
+        state.activeList.folder;
       $('#taskDetailsBreadcrumbs').classList.add('show-folder');
     } else {
       $('#taskDetailsBreadcrumbs').classList.remove('show-folder');
     }
-    
-    if (state.activeList.id === "inbox") {
+
+    if (state.activeList.id === 'inbox') {
       $('#taskDetailsBreadcrumbs .feather-list').classList.add('is-hidden');
       $('#taskDetailsBreadcrumbs .feather-inbox').classList.remove('is-hidden');
     } else {
@@ -1003,17 +919,15 @@ import 'dotenv/config';
     }
 
     if (currentTask.dueDate !== null) {
-      $("#dueDateWrapper").classList.add("has-due-date");
-      $(
-        "#dueDateWrapper .due-date-text"
-      ).textContent = currentTask.dueDateText;
+      $('#dueDateWrapper').classList.add('has-due-date');
+      $('#dueDateWrapper .due-date-text').textContent = currentTask.dueDateText;
     } else {
-      $("#dueDateWrapper").classList.remove("has-due-date");
-      $("#dueDateWrapper .due-date-text").textContent = "Set due date";
+      $('#dueDateWrapper').classList.remove('has-due-date');
+      $('#dueDateWrapper .due-date-text').textContent = 'Set due date';
     }
 
-    populateSubtasks(state.activeList.tasks, "subtasks", ulSubtasks, todoIndex);
-    const subtasks = $all(".edit-todo-form__textarea--subtask", ulSubtasks);
+    populateSubtasks(state.activeList.tasks, 'subtasks', ulSubtasks, todoIndex);
+    const subtasks = $all('.edit-todo-form__textarea--subtask', ulSubtasks);
     formEditTodo.dataset.index = todoIndex;
     formEditTodo.dataset.id = id;
     colorPicker.dataset.index = todoIndex;
@@ -1023,7 +937,7 @@ import 'dotenv/config';
     setTimeout(() => {
       autoHeightResize(todoItemTitle);
       if (!todoItemNote.value) {
-        todoItemNote.style.height = "0px";
+        todoItemNote.style.height = '0px';
       } else {
         autoHeightResize(todoItemNote);
       }
@@ -1032,23 +946,23 @@ import 'dotenv/config';
       }
     }, 0);
 
-    const tagsContainer = $("#tagsContainer");
+    const tagsContainer = $('#tagsContainer');
 
     if (currentTask.tags.length > 0) {
       currentTask.tags.forEach((tag, i) => {
-        const deleteTagBtn = createNode("button", {
-          class: "close-icon",
-          type: "button",
-          value: "false"
+        const deleteTagBtn = createNode('button', {
+          class: 'close-icon',
+          type: 'button',
+          value: 'false'
         });
-        deleteTagBtn.addEventListener("click", (e) => {
+        deleteTagBtn.addEventListener('click', (e) => {
           removeTag(todoIndex, i);
         });
         const newTagNode = createNode(
-          "span",
+          'span',
           {
-            class: "tag",
-            "data-tag-index": i
+            class: 'tag',
+            'data-tag-index': i
           },
           tag.text,
           deleteTagBtn
@@ -1061,7 +975,7 @@ import 'dotenv/config';
   }
 
   function updateView(e) {
-    const ulActiveList = $(".is-active-list");
+    const ulActiveList = $('.is-active-list');
     const currentTasksList =
       state.filteredList !== null ? state.filteredList : state.activeList.tasks;
 
@@ -1083,40 +997,48 @@ import 'dotenv/config';
       : currentTasksList.filter((task) => task.done);
     const action = e.target.dataset.action;
     switch (action) {
-      case "viewAll":
+      case 'viewAll':
         renderList(currentTasksList, ulActiveList);
         break;
-      case "viewActive":
+      case 'viewActive':
         renderList(activeTodos, ulActiveList);
         break;
-      case "viewCompleted":
+      case 'viewCompleted':
         renderList(completedTodos, ulActiveList);
         break;
     }
-    const viewBtns = divViews.querySelectorAll(".views__btn");
+    const viewBtns = divViews.querySelectorAll('.views__btn');
     // Mark current view displayed by adding '.is-selected' class to corresponding button
     for (let i = 0; i < viewBtns.length; i++) {
       if (e.target !== viewBtns[i]) {
-        viewBtns[i].classList.remove("is-selected");
+        viewBtns[i].classList.remove('is-selected');
       } else {
-        viewBtns[i].classList.add("is-selected");
+        viewBtns[i].classList.add('is-selected');
       }
     }
   }
 
   function createBreadcrumbs(listElement) {
-    $all(".todo-list__item", listElement).forEach((item) => {
+    $all('.todo-list__item', listElement).forEach((item) => {
       const list = getListByTaskId(item.id);
-      const folderName = list.folder !== "null" ? createNode('span', {class: "breadcrumbs__folder"}, list.folder, createNode('i', {"data-feather": "chevron-right"})) : "";
+      const folderName =
+        list.folder !== 'null'
+          ? createNode(
+              'span',
+              { class: 'breadcrumbs__folder' },
+              list.folder,
+              createNode('i', { 'data-feather': 'chevron-right' })
+            )
+          : '';
       const listLink = createNode(
-        "a",
-        { class: "breadcrumbs__link", href: `#${list.id}` },
+        'a',
+        { class: 'breadcrumbs__link', href: `#${list.id}` },
         list.name
       );
-      listLink.addEventListener("click", openList);
+      listLink.addEventListener('click', openList);
       const breadcrumbs = createNode(
-        "div",
-        { class: "breadcrumbs" },
+        'div',
+        { class: 'breadcrumbs' },
         folderName,
         listLink
       );
@@ -1130,24 +1052,23 @@ import 'dotenv/config';
   }
 
   function renderList(itemsArray, itemsList) {
-    const ulActiveList = $(".is-active-list");
-    if (itemsList === $("#filteredList")) {
-      $("#main").classList.add("show-search-results");
+    const ulActiveList = $('.is-active-list');
+    if (itemsList === $('#filteredList')) {
+      $('#main').classList.add('show-search-results');
     } else {
-      $("#main").classList.remove("show-search-results");
+      $('#main').classList.remove('show-search-results');
     }
 
-    if ($("#bulkActionsToolbar").classList.contains("is-active")) {
-      $("#bulkActionsToolbar").classList.remove("is-active");
-      ulActiveList.removeEventListener("click", enableBulkActions);
+    if ($('#bulkActionsToolbar').classList.contains('is-active')) {
+      $('#bulkActionsToolbar').classList.remove('is-active');
+      ulActiveList.removeEventListener('click', enableBulkActions);
       $('#main').removeEventListener('scroll', stickToolbar);
       ulActiveList.classList.remove('bulk-editing-list');
-      $("#addTodoForm").classList.remove("is-hidden");
+      $('#addTodoForm').classList.remove('is-hidden');
     }
 
     if (Array.isArray(itemsArray[0])) {
-
-      $all('.todo-list').forEach(list => list.innerHTML = "");
+      $all('.todo-list').forEach((list) => (list.innerHTML = ''));
 
       const filterByDate = itemsList === $('#upcoming');
       itemsArray.forEach((list) => {
@@ -1156,53 +1077,56 @@ import 'dotenv/config';
         const firstTask = listObj.getTask(taskId);
 
         const folderName =
-          listObj.folder !== "null"
+          listObj.folder !== 'null'
             ? createNode(
-                "span",
-                { class: "filtered-list__folder-name" },
+                'span',
+                { class: 'filtered-list__folder-name' },
                 listObj.folder,
-                createNode("i", { "data-feather": "chevron-right" })
+                createNode('i', { 'data-feather': 'chevron-right' })
               )
-            : "";
+            : '';
         // Create sub-list
-        const ulSubList = createNode("ul", {
-          class: "filtered-list__sub-list"
+        const ulSubList = createNode('ul', {
+          class: 'filtered-list__sub-list'
         });
         // Create list link
         const subListTitle = filterByDate
           ? createNode(
-              "h2",
-              { class: "filtered-list__date filtered-list__sub-list-name" },
+              'h2',
+              { class: 'filtered-list__date filtered-list__sub-list-name' },
               createNode(
-                "span",
-                { class: "filtered-list__day-num" },
+                'span',
+                { class: 'filtered-list__day-num' },
                 firstTask.dueDayNumStr
               ),
               createNode(
-                "span",
-                { class: "filtered-list__date-group" },
+                'span',
+                { class: 'filtered-list__date-group' },
                 createNode(
-                  "span",
-                  { class: "filtered-list__month" },
+                  'span',
+                  { class: 'filtered-list__month' },
                   firstTask.dueMonthAbbrev
                 ),
                 createNode(
-                  "span",
-                  { class: "filtered-list__year" },
+                  'span',
+                  { class: 'filtered-list__year' },
                   firstTask.dueYearStr
                 )
               ),
               createNode(
-                "span",
-                { class: "filtered-list__weekday" },
+                'span',
+                { class: 'filtered-list__weekday' },
                 firstTask.dueDayOfWeek
               )
             )
-        : createNode(
-          "a",
-          { class: "filtered-list__link filtered-list__sub-list-name", href: `#${listObj.id}` },
-          listObj.name
-        );
+          : createNode(
+              'a',
+              {
+                class: 'filtered-list__link filtered-list__sub-list-name',
+                href: `#${listObj.id}`
+              },
+              listObj.name
+            );
 
         if (filterByDate && firstTask.isDueToday) {
           subListTitle.classList.add('filtered-list__date--today');
@@ -1212,18 +1136,18 @@ import 'dotenv/config';
 
         // Create filtered list item
         const liFilteredListItem = createNode(
-          "li",
-          { class: "filtered-list__item" },
-          filterByDate ? "" : folderName,
+          'li',
+          { class: 'filtered-list__item' },
+          filterByDate ? '' : folderName,
           subListTitle,
           ulSubList
         );
         // Populate tasks for each sub-list
         populateList(list, ulSubList);
         if (!filterByDate) {
-          subListTitle.addEventListener("click", openList);
+          subListTitle.addEventListener('click', openList);
         } else {
-         createBreadcrumbs(ulSubList);
+          createBreadcrumbs(ulSubList);
         }
         itemsList.appendChild(liFilteredListItem);
         feather.replace();
@@ -1239,11 +1163,11 @@ import 'dotenv/config';
   function filterTasks(e) {
     e.preventDefault();
     const query = inputSearch.value.toLowerCase();
-    if (query !== "") {
+    if (query !== '') {
       const filteredArray = todoLists.reduce((acc, list) => {
         const filteredTasks = list.tasks.filter((todo) =>
           Object.keys(todo).some((key) => {
-            if (typeof todo[key] === "string") {
+            if (typeof todo[key] === 'string') {
               return todo[key].toLowerCase().includes(query);
             }
             if (Array.isArray(todo[key])) {
@@ -1259,7 +1183,7 @@ import 'dotenv/config';
         return acc;
       }, []);
 
-      const ulFilteredList = $("#filteredList");
+      const ulFilteredList = $('#filteredList');
       state.activeList = null;
       state.filteredList = filteredArray;
       renderList(filteredArray, ulFilteredList);
@@ -1268,14 +1192,14 @@ import 'dotenv/config';
         (acc, list) => acc.concat(list),
         []
       ).length;
-      $(".is-active-list").classList.remove("is-active-list");
-      ulFilteredList.classList.add("is-active-list");
+      $('.is-active-list').classList.remove('is-active-list');
+      ulFilteredList.classList.add('is-active-list');
       $(
-        "#activeListTitle"
+        '#activeListTitle'
       ).innerHTML = `${taskCount} search result(s) for <strong>${
         inputSearch.value
       }</strong>`;
-      formAddTodo.classList.add("is-hidden");
+      formAddTodo.classList.add('is-hidden');
       inputSearch.blur();
     }
   }
@@ -1297,36 +1221,42 @@ import 'dotenv/config';
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     if (timeFrame === 'today') {
-    filteredArray = filterTasksByDueDate(today);
-    $("#activeListTitle").innerHTML = `<span class="filtered-list__weekday--lg">Today,</span><span class="filtered-list__day-num">${today.getDate()}</span><span class="filtered-list__date-group"><span class="filtered-list__month">${monthsArr[today.getMonth()].abbrev}</span><span class="filtered-list__year">${today.getFullYear()}</span></span><span class="filtered-list__weekday">${weekdaysArr[today.getDay()].full}</span>`;
+      filteredArray = filterTasksByDueDate(today);
+      $(
+        '#activeListTitle'
+      ).innerHTML = `<span class="filtered-list__weekday--lg">Today,</span><span class="filtered-list__day-num">${today.getDate()}</span><span class="filtered-list__date-group"><span class="filtered-list__month">${
+        monthsArr[today.getMonth()].abbrev
+      }</span><span class="filtered-list__year">${today.getFullYear()}</span></span><span class="filtered-list__weekday">${
+        weekdaysArr[today.getDay()].full
+      }</span>`;
     } else if (timeFrame === 'upcoming') {
       const currentMonthIndex = today.getMonth();
       const currentYear = today.getFullYear();
       const nextYear = currentYear + 1;
       const currentMonth = monthsArr[currentMonthIndex];
       const nextMonthIndex =
-        currentMonth.name !== "December" ? currentMonthIndex + 1 : 0;
+        currentMonth.name !== 'December' ? currentMonthIndex + 1 : 0;
 
-      if (currentMonth.name === "February") {
+      if (currentMonth.name === 'February') {
         currentMonth.daysTotal = isLeapYear(currentYear) ? 29 : 28;
       }
       const daysInMonth = currentMonth.daysTotal;
-      
+
       let currentDay = today.getDate();
       for (let i = 0; i < 7; i++) {
         let day =
-        currentDay < daysInMonth
-          ? new Date(currentYear, currentMonthIndex, currentDay)
-          : nextMonthIndex !== 0
-            ? new Date(currentYear, nextMonthIndex, currentDay - daysInMonth)
-            : new Date(nextYear, nextMonthIndex, currentDay - daysInMonth);
-      currentDay++;
-      let tasksDue = filterTasksByDueDate(day);
-      if (tasksDue.length > 0) {
-        filteredArray.push(tasksDue);
+          currentDay < daysInMonth
+            ? new Date(currentYear, currentMonthIndex, currentDay)
+            : nextMonthIndex !== 0
+              ? new Date(currentYear, nextMonthIndex, currentDay - daysInMonth)
+              : new Date(nextYear, nextMonthIndex, currentDay - daysInMonth);
+        currentDay++;
+        let tasksDue = filterTasksByDueDate(day);
+        if (tasksDue.length > 0) {
+          filteredArray.push(tasksDue);
+        }
       }
-      };
-      $("#activeListTitle").textContent = 'Upcoming';
+      $('#activeListTitle').textContent = 'Upcoming';
     }
 
     if (todoAppContainer.classList.contains('show-task-details')) {
@@ -1336,13 +1266,13 @@ import 'dotenv/config';
     state.filteredList = filteredArray;
     renderList(filteredArray, listElem);
 
-    $(".is-active-list").classList.remove("is-active-list");
-    listElem.classList.add("is-active-list");
-    formAddTodo.classList.add("is-hidden");
+    $('.is-active-list').classList.remove('is-active-list');
+    listElem.classList.add('is-active-list');
+    formAddTodo.classList.add('is-hidden');
 
     // Closes sidebar if viewport is < 768px
     if (document.documentElement.clientWidth < 768) {
-      $("#siteWrapper").classList.remove("show-nav");
+      $('#siteWrapper').classList.remove('show-nav');
     }
   }
 
@@ -1365,14 +1295,19 @@ import 'dotenv/config';
       taskDetails.classList.toggle('is-priority');
     }
 
-    const reverseIndex = state.activeList.tasks.slice().reverse().findIndex(task => task.isPriority && !task.done);
+    const reverseIndex = state.activeList.tasks
+      .slice()
+      .reverse()
+      .findIndex((task) => task.isPriority && !task.done);
     const lastIndex = state.activeList.tasks.length - 1;
-    const indexLastPriority = reverseIndex >= 0 ? lastIndex - reverseIndex : reverseIndex;
+    const indexLastPriority =
+      reverseIndex >= 0 ? lastIndex - reverseIndex : reverseIndex;
 
-    
     // Move priority items to top of list
     if (currentTask.isPriority === true && !currentTask.done && taskIndex > 0) {
-      state.activeList.tasks.unshift(state.activeList.tasks.splice(taskIndex, 1)[0]);
+      state.activeList.tasks.unshift(
+        state.activeList.tasks.splice(taskIndex, 1)[0]
+      );
       $all('.todo-list__item', ulActiveList).forEach((item, i) => {
         if (i < taskIndex) {
           item.style.transform = `translateY(58px)`;
@@ -1380,30 +1315,44 @@ import 'dotenv/config';
           item.style.transform = `translateY(-${item.offsetTop}px)`;
         }
       });
-      
+
       setTimeout(() => {
         renderList(currentTasksList, ulActiveList);
-      if (todoAppContainer.classList.contains('show-task-details')) {
-        const activeTask = $(`#${hiddenTaskId.value}`);
-        activeTask.classList.add('is-selected');
-      }
+        if (todoAppContainer.classList.contains('show-task-details')) {
+          const activeTask = $(`#${hiddenTaskId.value}`);
+          activeTask.classList.add('is-selected');
+        }
       }, 300);
-    } 
-    
-    if (!currentTask.isPriority && !currentTask.done && taskIndex < indexLastPriority) {
-      state.activeList.tasks.splice(indexLastPriority, 0, state.activeList.tasks.splice(taskIndex, 1)[0]);
+    }
+
+    if (
+      !currentTask.isPriority &&
+      !currentTask.done &&
+      taskIndex < indexLastPriority
+    ) {
+      state.activeList.tasks.splice(
+        indexLastPriority,
+        0,
+        state.activeList.tasks.splice(taskIndex, 1)[0]
+      );
       const itemsBetween = indexLastPriority - taskIndex;
-      todoItem.style.transform = `translateY(${itemsBetween *  58}px)`;
-      for (let i = indexLastPriority; i > indexLastPriority - itemsBetween; i--) {
-        $all('.todo-list__item', ulActiveList)[i].style.transform = `translateY(-58px)`;
+      todoItem.style.transform = `translateY(${itemsBetween * 58}px)`;
+      for (
+        let i = indexLastPriority;
+        i > indexLastPriority - itemsBetween;
+        i--
+      ) {
+        $all('.todo-list__item', ulActiveList)[
+          i
+        ].style.transform = `translateY(-58px)`;
       }
-      
+
       setTimeout(() => {
         renderList(currentTasksList, ulActiveList);
-      if (todoAppContainer.classList.contains('show-task-details')) {
-        const activeTask = $(`#${hiddenTaskId.value}`);
-        activeTask.classList.add('is-selected');
-      }
+        if (todoAppContainer.classList.contains('show-task-details')) {
+          const activeTask = $(`#${hiddenTaskId.value}`);
+          activeTask.classList.add('is-selected');
+        }
       }, 300);
     }
 
@@ -1411,19 +1360,19 @@ import 'dotenv/config';
   }
 
   function toggleMenu() {
-    const siteWrapper = document.getElementById("siteWrapper");
+    const siteWrapper = document.getElementById('siteWrapper');
 
-    if (siteWrapper.classList.contains("show-nav")) {
-      siteWrapper.classList.remove("show-nav");
+    if (siteWrapper.classList.contains('show-nav')) {
+      siteWrapper.classList.remove('show-nav');
     } else {
-      siteWrapper.classList.add("show-nav");
+      siteWrapper.classList.add('show-nav');
     }
   }
 
   function setTagColor(e) {
     const el = e.target;
-    if (!el.classList.contains("color-picker__swatch")) return;
-    const currentColor = $(`#${el.getAttribute("for")}`);
+    if (!el.classList.contains('color-picker__swatch')) return;
+    const currentColor = $(`#${el.getAttribute('for')}`);
     currentColor.checked = true;
     const tag = colorPicker.parentNode;
     tag.className = `tag ${currentColor.value}`;
@@ -1431,67 +1380,77 @@ import 'dotenv/config';
     const todoItem = state.activeList.tasks.find((task) => task.id === id);
     const tagIndex = tag.dataset.tagIndex;
     todoItem.tags[tagIndex].color = currentColor.value;
-    const tagLabel = $all(".tag-label", $(`#${id}`))[tagIndex];
+    const tagLabel = $all('.tag-label', $(`#${id}`))[tagIndex];
     tagLabel.className = `tag tag-label ${currentColor.value}`;
     saveToStorage();
   }
 
   function createList(listObj) {
-    const list_ul = createNode("ul", {
-      class: "todo-list custom-list",
+    const list_ul = createNode('ul', {
+      class: 'todo-list custom-list',
       id: listObj.id,
-      "data-name": listObj.name
+      'data-name': listObj.name
     });
-    list_ul.addEventListener("click", toggleDone);
-    $("#main").insertBefore(list_ul, formAddTodo);
+    list_ul.addEventListener('click', toggleDone);
+    $('#main').insertBefore(list_ul, formAddTodo);
     renderListOption(listObj);
   }
 
   // Sidebar accordion
 
   function displayPanel(e) {
-    if (!e.target.classList.contains("accordion__item")) return;
-    const accordion = $(".accordion");
-    const accordionItems = accordion.getElementsByClassName("accordion__item");
-    const selectedPanel = e.currentTarget.querySelector(".accordion__panel");
+    if (!e.target.classList.contains('accordion__item')) return;
+    const accordion = $('.accordion');
+    const accordionItems = accordion.getElementsByClassName('accordion__item');
+    const selectedPanel = e.currentTarget.querySelector('.accordion__panel');
     for (let i = 0; i < accordionItems.length; i++) {
       if (accordionItems[i] === selectedPanel.parentNode) {
-        accordionItems[i].classList.toggle("is-active");
+        accordionItems[i].classList.toggle('is-active');
       }
     }
   }
 
-  const createNavItem = (listObj, parentNode = $("#sidebarMenu")) => {
-    const iListIcon = createNode("i", {
-      "data-feather": "list"
+  const createNavItem = (listObj, parentNode = $('#sidebarMenu')) => {
+    const iListIcon = createNode('i', {
+      'data-feather': 'list'
     });
-    const spanListName = createNode('span', {
-      class: "sidebar__list-name"
-    },
-    listObj.name);
-    const spanTaskCount = createNode('span', {
-      class: 'sidebar__task-count'
-    },
-    listObj.activeTaskCount > 0 ? ''+listObj.activeTaskCount : '');
-    const aListLink = createNode(
-      "a",
+    const spanListName = createNode(
+      'span',
       {
-        class: `sidebar__link${listObj.activeTaskCount > 0 ? ' has-active-tasks' : ''}`,
+        class: 'sidebar__list-name'
+      },
+      listObj.name
+    );
+    const spanTaskCount = createNode(
+      'span',
+      {
+        class: 'sidebar__task-count'
+      },
+      listObj.activeTaskCount > 0 ? '' + listObj.activeTaskCount : ''
+    );
+    const aListLink = createNode(
+      'a',
+      {
+        class: `sidebar__link${
+          listObj.activeTaskCount > 0 ? ' has-active-tasks' : ''
+        }`,
         href: `#${listObj.id}`
       },
       iListIcon,
       spanListName,
       spanTaskCount
     );
-    aListLink.addEventListener("click", openList);
+    aListLink.addEventListener('click', openList);
     const liItem = createNode(
-            "li",
-            {
-              class: `${listObj.folder === "null" ? 'sidebar__item' : 'accordion__sub-item'}`
-            },
-            aListLink
-          );
-    if (listObj.folder === "null") {
+      'li',
+      {
+        class: `${
+          listObj.folder === 'null' ? 'sidebar__item' : 'accordion__sub-item'
+        }`
+      },
+      aListLink
+    );
+    if (listObj.folder === 'null') {
       parentNode.appendChild(liItem);
     } else {
       $(`[data-folder="${listObj.folder}"]`, parentNode).appendChild(liItem);
@@ -1505,26 +1464,26 @@ import 'dotenv/config';
     const foldersArr = todoLists
       .map((list) => list.folder)
       .filter(
-        (folder, i, arr) => folder !== "null" && arr.indexOf(folder) === i
+        (folder, i, arr) => folder !== 'null' && arr.indexOf(folder) === i
       );
     const frag = document.createDocumentFragment();
     foldersArr.forEach((folder) => {
-      const ulFolderPanel = createNode("ul", {
-        class: "accordion__panel",
-        "data-folder": folder
+      const ulFolderPanel = createNode('ul', {
+        class: 'accordion__panel',
+        'data-folder': folder
       });
       renderFolderOption(folder);
-      const iFolderIcon = createNode("i", {
-        "data-feather": "folder"
+      const iFolderIcon = createNode('i', {
+        'data-feather': 'folder'
       });
-      const iChevronIcon = createNode("i", {
-        class: "chevron-icon",
-        "data-feather": "chevron-left"
+      const iChevronIcon = createNode('i', {
+        class: 'chevron-icon',
+        'data-feather': 'chevron-left'
       });
       const liFolder = createNode(
-        "li",
+        'li',
         {
-          class: "sidebar__item accordion__item"
+          class: 'sidebar__item accordion__item'
         },
         iFolderIcon,
         folder,
@@ -1532,7 +1491,7 @@ import 'dotenv/config';
         ulFolderPanel
       );
 
-      liFolder.addEventListener("click", displayPanel);
+      liFolder.addEventListener('click', displayPanel);
       frag.appendChild(liFolder);
 
       // Creates accordion panel for each folder, with links to children underneath
@@ -1541,20 +1500,20 @@ import 'dotenv/config';
     });
 
     // Creates regular nav items for miscellaneous lists
-    const miscLists = todoLists.filter((list) => list.folder === "null");
+    const miscLists = todoLists.filter((list) => list.folder === 'null');
     miscLists.forEach((item) => {
-      if (item.id !== "inbox") {
+      if (item.id !== 'inbox') {
         createNavItem(item, frag);
       }
     });
-    $("#sidebarMenu").appendChild(frag);
+    $('#sidebarMenu').appendChild(frag);
 
     // Render feather icons
     feather.replace();
 
     // Displays list on click
-    const navLinksAll = $all(".sidebar__link");
-    navLinksAll.forEach((link) => link.addEventListener("click", openList));
+    const navLinksAll = $all('.sidebar__link');
+    navLinksAll.forEach((link) => link.addEventListener('click', openList));
   }
 
   renderNavItems();
@@ -1566,7 +1525,8 @@ import 'dotenv/config';
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         const taskCountDueToday = filterTasksByDueDate(today).length;
-        $('.sidebar__task-count', navLink).textContent = taskCountDueToday > 0 ? ''+filterTasksByDueDate(today).length : '';
+        $('.sidebar__task-count', navLink).textContent =
+          taskCountDueToday > 0 ? '' + filterTasksByDueDate(today).length : '';
         if (taskCountDueToday > 0) {
           navLink.classList.add('has-active-tasks');
         } else {
@@ -1580,8 +1540,9 @@ import 'dotenv/config';
         return;
         break;
       default:
-        const listObj = todoLists.find(list => list.id === listId);
-        $('.sidebar__task-count', navLink).textContent = listObj.activeTaskCount > 0 ? ''+listObj.activeTaskCount : '';
+        const listObj = todoLists.find((list) => list.id === listId);
+        $('.sidebar__task-count', navLink).textContent =
+          listObj.activeTaskCount > 0 ? '' + listObj.activeTaskCount : '';
         if (listObj.activeTaskCount > 0) {
           navLink.classList.add('has-active-tasks');
         } else {
@@ -1593,119 +1554,123 @@ import 'dotenv/config';
 
   function openList(e) {
     e.preventDefault();
-    const navLinksAll = $all(".sidebar__link");
+    const navLinksAll = $all('.sidebar__link');
     navLinksAll.forEach((link) => {
       if (link === e.target) {
-        link.classList.add("is-active");
+        link.classList.add('is-active');
       } else {
-        link.classList.remove("is-active");
+        link.classList.remove('is-active');
       }
     });
-    if (e.target.id !== "todayNavLink" && e.target.id !== "upcomingNavLink") {
-      const id = e.target.getAttribute("href").slice(1);
+    if (e.target.id !== 'todayNavLink' && e.target.id !== 'upcomingNavLink') {
+      const id = e.target.getAttribute('href').slice(1);
       const listObj = todoLists.find((list) => list.id === id);
       displayList(listObj);
       if (document.documentElement.clientWidth < 768) {
-        $("#siteWrapper").classList.remove("show-nav");
+        $('#siteWrapper').classList.remove('show-nav');
       }
     }
   }
 
   function renderFolderOption(text) {
-    const folderRadio = createNode("input", {
-      type: "radio",
+    const folderRadio = createNode('input', {
+      type: 'radio',
       id: `folder--${camelCased(text)}`,
-      name: "folder",
+      name: 'folder',
       value: text
     });
     const folderLabel = createNode(
-      "label",
+      'label',
       {
-        class: "form__label--folder",
+        class: 'form__label--folder',
         for: `folder--${camelCased(text)}`
       },
       text
     );
-    const customFolders = $("#fieldsetFolders .custom-folders");
+    const customFolders = $('#fieldsetFolders .custom-folders');
     customFolders.appendChild(folderRadio);
     customFolders.appendChild(folderLabel);
   }
 
   function renderListOption(listObj) {
-    const listRadio = createNode("input", {
-      type: "radio",
+    const listRadio = createNode('input', {
+      type: 'radio',
       id: `list--${listObj.id}`,
-      name: "list",
+      name: 'list',
       value: listObj.id
     });
     const listLabel = createNode(
-      "label",
+      'label',
       {
-        class: "form__label--list",
+        class: 'form__label--list',
         for: `list--${listObj.id}`
       },
       listObj.name
     );
-    const fieldsetLists = $("#fieldsetLists");
+    const fieldsetLists = $('#fieldsetLists');
     fieldsetLists.appendChild(listRadio);
     fieldsetLists.appendChild(listLabel);
   }
 
   function addList(e) {
     e.preventDefault();
-    const newListName = $("#newListNameInput").value;
-    if (newListName === "") {
+    const newListName = $('#newListNameInput').value;
+    if (newListName === '') {
       $('#errorNoListName').classList.add('show-msg');
     } else {
       const checkedRadio = $('input[name="folder"]:checked').value;
-      const newFolder = $("#newFolderInput").value;
+      const newFolder = $('#newFolderInput').value;
       const selectedFolder =
-        checkedRadio !== "new" ? checkedRadio : newFolder !== "" ? newFolder : "null";
+        checkedRadio !== 'new'
+          ? checkedRadio
+          : newFolder !== ''
+            ? newFolder
+            : 'null';
       const newList = new List(newListName, selectedFolder);
       todoLists.push(newList);
       createList(newList);
       // Creates new folder accordion element
       if (newFolder) {
-        const ulFolderPanel = createNode("ul", {
-          class: "accordion__panel",
-          "data-folder": selectedFolder
+        const ulFolderPanel = createNode('ul', {
+          class: 'accordion__panel',
+          'data-folder': selectedFolder
         });
-        const iFolderIcon = createNode("i", {
-          "data-feather": "folder"
+        const iFolderIcon = createNode('i', {
+          'data-feather': 'folder'
         });
-        const iChevronIcon = createNode("i", {
-          class: "chevron-icon",
-          "data-feather": "chevron-left"
+        const iChevronIcon = createNode('i', {
+          class: 'chevron-icon',
+          'data-feather': 'chevron-left'
         });
         const folder_li = createNode(
-          "li",
+          'li',
           {
-            class: "sidebar__item accordion__item"
+            class: 'sidebar__item accordion__item'
           },
           iFolderIcon,
           selectedFolder,
           iChevronIcon,
           ulFolderPanel
         );
-        folder_li.addEventListener("click", displayPanel);
-        $("#sidebarMenu").insertBefore(folder_li, $('[data-folder="null"]'));
+        folder_li.addEventListener('click', displayPanel);
+        $('#sidebarMenu').insertBefore(folder_li, $('[data-folder="null"]'));
 
         renderFolderOption(selectedFolder);
         feather.replace();
       }
       createNavItem(newList);
       saveToStorage();
-      const navLinksAll = $all(".sidebar__link");
+      const navLinksAll = $all('.sidebar__link');
       navLinksAll.forEach((link) => {
-        if (link.getAttribute("href") === `#${newList.id}`) {
-          link.classList.add("is-active");
+        if (link.getAttribute('href') === `#${newList.id}`) {
+          link.classList.add('is-active');
         } else {
-          link.classList.remove("is-active");
+          link.classList.remove('is-active');
         }
       });
       e.currentTarget.reset();
-      $("#newListFormContainer").classList.remove("is-active");
-      if ($("#transferTasksFormContainer").classList.contains("is-active")) {
+      $('#newListFormContainer').classList.remove('is-active');
+      if ($('#transferTasksFormContainer').classList.contains('is-active')) {
         $(`input[name="list"][value=${newList.id}]`).checked = true;
       } else {
         displayList(newList);
@@ -1715,78 +1680,78 @@ import 'dotenv/config';
 
   function prepEditListForm(e) {
     // Attach folder options
-    const btnUpdateList = $("#btnUpdateList");
+    const btnUpdateList = $('#btnUpdateList');
     formEditList.insertBefore(fieldsetFolders, btnUpdateList);
     // Insert list name
-    $("#editListNameInput").value = state.activeList.name;
+    $('#editListNameInput').value = state.activeList.name;
     // Check radio for list folder
     $(
       `input[name="folder"][value="${state.activeList.folder}"]`
     ).checked = true;
-    $("#editListFormContainer").classList.add("is-active");
+    $('#editListFormContainer').classList.add('is-active');
   }
 
   function updateList(e) {
     e.preventDefault();
-    const newListName = $("#editListNameInput").value;
+    const newListName = $('#editListNameInput').value;
     const checkedRadio = $('input[name="folder"]:checked').value;
     const selectedFolder =
-      checkedRadio === "new" ? $("#newFolderInput").value : checkedRadio;
+      checkedRadio === 'new' ? $('#newFolderInput').value : checkedRadio;
     const listNavLink = $(`a[href="#${state.activeList.id}"]`);
     const listNavItem = listNavLink.parentNode;
     // Rename list
-    if (newListName !== "" && newListName !== state.activeList.name) {
+    if (newListName !== '' && newListName !== state.activeList.name) {
       state.activeList.name = newListName;
 
       // Update list nav link
       $('.sidebar__list-name', listNavLink).textContent = newListName;
-      $("#activeListTitle").textContent = newListName;
+      $('#activeListTitle').textContent = newListName;
     }
     // Create new folder
-    if (checkedRadio === "new" && selectedFolder !== "") {
+    if (checkedRadio === 'new' && selectedFolder !== '') {
       console.log({ selectedFolder });
-      const ulFolderPanel = createNode("ul", {
-        class: "accordion__panel",
-        "data-folder": selectedFolder
+      const ulFolderPanel = createNode('ul', {
+        class: 'accordion__panel',
+        'data-folder': selectedFolder
       });
-      const iFolderIcon = createNode("i", {
-        "data-feather": "folder"
+      const iFolderIcon = createNode('i', {
+        'data-feather': 'folder'
       });
       const folder_li = createNode(
-        "li",
+        'li',
         {
-          class: "sidebar__item accordion__item"
+          class: 'sidebar__item accordion__item'
         },
         iFolderIcon,
         selectedFolder,
         ulFolderPanel
       );
-      folder_li.addEventListener("click", displayPanel);
-      $("#sidebarMenu").insertBefore(folder_li, $('[data-folder="null"]'));
+      folder_li.addEventListener('click', displayPanel);
+      $('#sidebarMenu').insertBefore(folder_li, $('[data-folder="null"]'));
 
       renderFolderOption(selectedFolder);
       feather.replace();
     }
     // Set different/new folder
-    if (state.activeList.folder !== selectedFolder && selectedFolder !== "") {
+    if (state.activeList.folder !== selectedFolder && selectedFolder !== '') {
       state.activeList.folder = selectedFolder;
 
       // Append list nav item to sidebar
-      if (selectedFolder === "null") {
-        listNavItem.className = "sidebar__item";
-        listNavItem.dataset.folder = "null";
-        $("#sidebarMenu").appendChild(listNavItem);
+      if (selectedFolder === 'null') {
+        listNavItem.className = 'sidebar__item';
+        listNavItem.dataset.folder = 'null';
+        $('#sidebarMenu').appendChild(listNavItem);
       } else {
         // Append list nav item to different/new folder
-        listNavItem.className = "accordion__sub-item";
-        listNavItem.removeAttribute("data-folder");
+        listNavItem.className = 'accordion__sub-item';
+        listNavItem.removeAttribute('data-folder');
         $(`[data-folder="${selectedFolder}"]`).appendChild(listNavItem);
       }
     }
     // Save changes to storage
     saveToStorage();
     e.currentTarget.reset();
-    $("#editListFormContainer").classList.remove("is-active");
+    $('#editListFormContainer').classList.remove('is-active');
   }
 
   function deleteList(listObj) {
@@ -1805,7 +1770,7 @@ import 'dotenv/config';
     // Delete folder elements if list is the only item in folder
     const folder = listObj.folder;
     if (
-      folder !== "null" &&
+      folder !== 'null' &&
       todoLists.filter((list) => list.folder === folder).length === 0
     ) {
       // Delete nav folder item
@@ -1825,48 +1790,48 @@ import 'dotenv/config';
     $(`.form__label--list[for=${listRadio.id}]`).remove();
 
     // Reload inbox
-    const inbox = todoLists.find((list) => list.name === "Inbox");
+    const inbox = todoLists.find((list) => list.name === 'Inbox');
     displayList(inbox);
 
-    if ($("#alertWarningDeleteList").classList.contains("is-active")) {
-      $("#alertWarningDeleteList").classList.remove("is-active");
+    if ($('#alertWarningDeleteList').classList.contains('is-active')) {
+      $('#alertWarningDeleteList').classList.remove('is-active');
     }
   }
 
   function displayList(listObj) {
-    const ulActiveList = $(".is-active-list");
+    const ulActiveList = $('.is-active-list');
     const list_ul = $(`#${listObj.id}`);
-    
+
     // Updates state
     state.activeList = listObj;
     state.filteredList = null;
 
-    if ($("#bulkActionsToolbar").classList.contains("is-active")) {
-      $("#bulkActionsToolbar").classList.remove("is-active");
-      ulActiveList.removeEventListener("click", enableBulkActions);
+    if ($('#bulkActionsToolbar').classList.contains('is-active')) {
+      $('#bulkActionsToolbar').classList.remove('is-active');
+      ulActiveList.removeEventListener('click', enableBulkActions);
       $('#main').removeEventListener('scroll', stickToolbar);
       ulActiveList.classList.remove('bulk-editing-list');
     }
 
-    if ($("#main").classList.contains("show-search-results")) {
-      $("#main").classList.remove("show-search-results");
+    if ($('#main').classList.contains('show-search-results')) {
+      $('#main').classList.remove('show-search-results');
     }
 
     if (todoAppContainer.classList.contains('show-task-details')) {
       todoAppContainer.classList.remove('show-task-details');
     }
 
-    $("#activeListTitle").textContent = listObj.name;
+    $('#activeListTitle').textContent = listObj.name;
     populateList(listObj.tasks, list_ul);
-    
-    $all(".todo-list").forEach((x) => {
+
+    $all('.todo-list').forEach((x) => {
       if (x !== list_ul) {
-        x.classList.remove("is-active-list");
+        x.classList.remove('is-active-list');
       } else {
-        x.classList.add("is-active-list");
+        x.classList.add('is-active-list');
       }
     });
-    formAddTodo.classList.remove("is-hidden");
+    formAddTodo.classList.remove('is-hidden');
   }
 
   function populateCalendarYears() {
@@ -1875,25 +1840,25 @@ import 'dotenv/config';
     const frag = document.createDocumentFragment();
     // Adds current and next 2 years as radio options for year picker
     for (let i = 0; i <= 3; i++) {
-      const yearRadio = createNode("input", {
-        type: "radio",
-        name: "year",
+      const yearRadio = createNode('input', {
+        type: 'radio',
+        name: 'year',
         value: `${year + i}`,
         id: `${year + i}`,
-        class: "dp-calendar__radio"
+        class: 'dp-calendar__radio'
       });
       frag.appendChild(yearRadio);
       const yearLabel = createNode(
-        "label",
+        'label',
         {
           for: `${year + i}`,
-          class: "dp-calendar__year"
+          class: 'dp-calendar__year'
         },
         `${year + i}`
       );
       frag.appendChild(yearLabel);
     }
-    $("#dpCalendarYearDropdown").appendChild(frag);
+    $('#dpCalendarYearDropdown').appendChild(frag);
   }
 
   populateCalendarYears();
@@ -1901,30 +1866,30 @@ import 'dotenv/config';
   // Sets default month to current month
 
   function updateDateInput(dateComponent, ...newValues) {
-    const currentDate = $("#inputDueDate").value; // `mm/dd/yy`
+    const currentDate = $('#inputDueDate').value; // `mm/dd/yy`
     const currentYear = currentDate.slice(6);
     const currentMonth = currentDate.slice(0, 2);
     const currentDay = currentDate.slice(3, 5);
     switch (dateComponent) {
-      case "month":
+      case 'month':
         const monthNum = monthsArr.findIndex((x) => x.name === newValues[0]);
-        $("#inputDueDate").value = `${
+        $('#inputDueDate').value = `${
           monthNum > 8 ? monthNum + 1 : `0${monthNum + 1}`
         }/${currentDay}/${currentYear}`;
         break;
-      case "day":
-        $("#inputDueDate").value = `${currentMonth}/${
+      case 'day':
+        $('#inputDueDate').value = `${currentMonth}/${
           newValues[0] > 9 ? newValues[0] : `0${newValues[0]}`
         }/${currentYear}`;
         break;
-      case "year":
+      case 'year':
         $(
-          "#inputDueDate"
+          '#inputDueDate'
         ).value = `${currentMonth}/${currentDay}/${newValues[0].slice(2)}`;
         break;
-      case "all":
+      case 'all':
         const monthIndex = monthsArr.findIndex((x) => x.name === newValues[0]);
-        $("#inputDueDate").value = `${
+        $('#inputDueDate').value = `${
           monthIndex > 8 ? monthIndex + 1 : `0${monthIndex + 1}`
         }/${
           newValues[1] > 9 ? newValues[1] : `0${newValues[1]}`
@@ -1934,68 +1899,68 @@ import 'dotenv/config';
   }
 
   function selectMonth(e) {
-    if (!e.target.classList.contains("dp-calendar__month")) return;
-    const currentDueDate = $("#inputDueDate").value; // mm-dd-yy
+    if (!e.target.classList.contains('dp-calendar__month')) return;
+    const currentDueDate = $('#inputDueDate').value; // mm-dd-yy
     const dueMonthIndex = +currentDueDate.slice(0, 2) - 1;
     const dueMonth = monthsArr[dueMonthIndex].name;
     const dueDay = +currentDueDate.slice(3, 5);
 
     const prevSelectedMonth = $('input[name="month"]:checked').value;
-    const monthDropdown = $("#dpCalendarMonthDropdown");
-    const btnToggleMonthDropdown = $("#btnToggleMonthDropdown");
-    const radioId = e.target.getAttribute("for");
+    const monthDropdown = $('#dpCalendarMonthDropdown');
+    const btnToggleMonthDropdown = $('#btnToggleMonthDropdown');
+    const radioId = e.target.getAttribute('for');
     const radio = $(`#${radioId}`);
     radio.checked = true;
     const selectedMonth = radio.value;
     if (selectedMonth !== prevSelectedMonth) {
-      $("#btnToggleMonthDropdown .btn-text").textContent = selectedMonth;
+      $('#btnToggleMonthDropdown .btn-text').textContent = selectedMonth;
       populateCalendarDays(selectedMonth);
 
       if (selectedMonth === dueMonth) {
         $(
           `.dp-calendar__btn--select-day[value="${dueDay}"][data-month="${selectedMonth}"]`
-        ).classList.add("is-selected");
+        ).classList.add('is-selected');
       }
     }
-    btnToggleMonthDropdown.classList.remove("is-active");
-    monthDropdown.classList.remove("is-active");
+    btnToggleMonthDropdown.classList.remove('is-active');
+    monthDropdown.classList.remove('is-active');
   }
 
   function selectYear(e) {
-    if (!e.target.classList.contains("dp-calendar__year")) return;
+    if (!e.target.classList.contains('dp-calendar__year')) return;
 
-    const currentDueDate = $("#inputDueDate").value; // mm-dd-yy
+    const currentDueDate = $('#inputDueDate').value; // mm-dd-yy
     const dueMonthIndex = +currentDueDate.slice(0, 2) - 1;
     const dueMonth = monthsArr[dueMonthIndex].name;
     const dueDay = +currentDueDate.slice(3, 5);
     const dueYear = `20${currentDueDate.slice(6)}`;
 
     const prevSelectedYear = $('input[name="year"]:checked').value;
-    const btnToggleYearDropdown = $("#btnToggleYearDropdown");
-    const yearDropdown = $("#dpCalendarYearDropdown");
-    const radioId = e.target.getAttribute("for");
+    const btnToggleYearDropdown = $('#btnToggleYearDropdown');
+    const yearDropdown = $('#dpCalendarYearDropdown');
+    const radioId = e.target.getAttribute('for');
     const radio = $(`#${radioId}`);
     radio.checked = true;
     const selectedYear = radio.value;
 
     if (selectedYear !== prevSelectedYear) {
-      $("#btnToggleYearDropdown .btn-text").textContent = selectedYear;
+      $('#btnToggleYearDropdown .btn-text').textContent = selectedYear;
       populateCalendarDays(dueMonth);
 
       // Length of February depends on leap year
       if (selectedYear === dueYear) {
         $(
           `.dp-calendar__btn--select-day[value="${dueDay}"][data-month="${dueMonth}"]`
-        ).classList.add("is-selected");
+        ).classList.add('is-selected');
       }
     }
-    btnToggleYearDropdown.classList.remove("is-active");
-    yearDropdown.classList.remove("is-active");
+    btnToggleYearDropdown.classList.remove('is-active');
+    yearDropdown.classList.remove('is-active');
   }
 
   function populateCalendarDays(monthStr) {
-    while ($("#dpCalendar").contains($(".dp-calendar__day"))) {
-      $(".dp-calendar__day").remove();
+    while ($('#dpCalendar').contains($('.dp-calendar__day'))) {
+      $('.dp-calendar__day').remove();
     }
 
     const year = $('input[name="year"]:checked').value;
@@ -2008,7 +1973,7 @@ import 'dotenv/config';
     const nextMonth =
       monthIndex !== 11 ? monthsArr[monthIndex + 1] : monthsArr[0];
 
-    if (monthStr === "February") {
+    if (monthStr === 'February') {
       month.daysTotal = isLeapYear(year) ? 29 : 28;
     }
 
@@ -2021,21 +1986,21 @@ import 'dotenv/config';
         j++
       ) {
         const btnDay = createNode(
-          "button",
+          'button',
           {
-            class: "dp-calendar__btn--select-day dp-calendar__btn--prev-month",
-            type: "button",
-            "data-month": prevMonth.name,
-            "data-year": prevMonth.name === "December" ? +year - 1 : year,
-            "data-action": "selectDay",
+            class: 'dp-calendar__btn--select-day dp-calendar__btn--prev-month',
+            type: 'button',
+            'data-month': prevMonth.name,
+            'data-year': prevMonth.name === 'December' ? +year - 1 : year,
+            'data-action': 'selectDay',
             value: j
           },
           `${j}`
         );
         const divDay = createNode(
-          "div",
+          'div',
           {
-            class: "dp-calendar__day dp-calendar__day--prev-month"
+            class: 'dp-calendar__day dp-calendar__day--prev-month'
           },
           btnDay
         );
@@ -2045,23 +2010,23 @@ import 'dotenv/config';
 
     for (let i = 1; i <= month.daysTotal; i++) {
       const btnDay = createNode(
-        "button",
+        'button',
         {
-          class: "dp-calendar__btn--select-day",
-          type: "button",
-          "data-month": month.name,
-          "data-year": year,
-          "data-action": "selectDay",
-          "data-first": i === 1,
-          "data-last": i === month.daysTotal,
+          class: 'dp-calendar__btn--select-day',
+          type: 'button',
+          'data-month': month.name,
+          'data-year': year,
+          'data-action': 'selectDay',
+          'data-first': i === 1,
+          'data-last': i === month.daysTotal,
           value: i
         },
         `${i}`
       );
       const divDay = createNode(
-        "div",
+        'div',
         {
-          class: "dp-calendar__day"
+          class: 'dp-calendar__day'
         },
         btnDay
       );
@@ -2071,21 +2036,21 @@ import 'dotenv/config';
     if (frag.children.length % 7 !== 0) {
       for (let k = 1; k < 7; k++) {
         const btnDay = createNode(
-          "button",
+          'button',
           {
-            class: "dp-calendar__btn--select-day dp-calendar__btn--next-month",
-            type: "button",
-            "data-month": nextMonth.name,
-            "data-year": nextMonth.name === "January" ? +year + 1 : year,
-            "data-action": "selectDay",
+            class: 'dp-calendar__btn--select-day dp-calendar__btn--next-month',
+            type: 'button',
+            'data-month': nextMonth.name,
+            'data-year': nextMonth.name === 'January' ? +year + 1 : year,
+            'data-action': 'selectDay',
             value: k
           },
           `${k}`
         );
         const divDay = createNode(
-          "div",
+          'div',
           {
-            class: "dp-calendar__day dp-calendar__day--next-month"
+            class: 'dp-calendar__day dp-calendar__day--next-month'
           },
           btnDay
         );
@@ -2096,45 +2061,45 @@ import 'dotenv/config';
       }
     }
 
-    $("#dpCalendarDayPicker").appendChild(frag);
+    $('#dpCalendarDayPicker').appendChild(frag);
   }
 
   function selectDay(e) {
     const el = e.target;
-    if (el.dataset.action !== "selectDay") return;
+    if (el.dataset.action !== 'selectDay') return;
 
-    $all(".dp-calendar__btn--select-day").forEach((x) => {
+    $all('.dp-calendar__btn--select-day').forEach((x) => {
       if (x === el) {
-        x.classList.add("is-selected");
+        x.classList.add('is-selected');
       } else {
-        x.classList.remove("is-selected");
+        x.classList.remove('is-selected');
       }
     });
     const selectedDay = el.value;
     const selectedMonth = el.dataset.month;
     const selectedYear = el.dataset.year;
-    updateDateInput("all", selectedMonth, selectedDay, selectedYear);
+    updateDateInput('all', selectedMonth, selectedDay, selectedYear);
 
     if (
-      el.classList.contains("dp-calendar__btn--prev-month") ||
-      el.classList.contains("dp-calendar__btn--next-month")
+      el.classList.contains('dp-calendar__btn--prev-month') ||
+      el.classList.contains('dp-calendar__btn--next-month')
     ) {
       if (
-        (el.classList.contains("dp-calendar__btn--prev-month") &&
-          selectedMonth === "December") ||
-        (el.classList.contains("dp-calendar__btn--next-month") &&
-          selectedMonth === "January")
+        (el.classList.contains('dp-calendar__btn--prev-month') &&
+          selectedMonth === 'December') ||
+        (el.classList.contains('dp-calendar__btn--next-month') &&
+          selectedMonth === 'January')
       ) {
         $(`input[name="year"][value="${selectedYear}"]`).checked = true;
-        $("#btnToggleYearDropdown .btn-text").textContent = selectedYear;
+        $('#btnToggleYearDropdown .btn-text').textContent = selectedYear;
       }
 
       $(`input[name="month"][value="${selectedMonth}"]`).checked = true;
-      $("#btnToggleMonthDropdown .btn-text").textContent = selectedMonth;
+      $('#btnToggleMonthDropdown .btn-text').textContent = selectedMonth;
       populateCalendarDays(selectedMonth);
       $(
         `.dp-calendar__btn--select-day[value="${selectedDay}"][data-month="${selectedMonth}"]`
-      ).classList.add("is-selected");
+      ).classList.add('is-selected');
     }
   }
 
@@ -2143,7 +2108,7 @@ import 'dotenv/config';
     const currentTask = state.activeList.getTask(id);
     const todoItem = currentTask.elem;
 
-    const dueDate = $("#inputDueDate").value; // `mm/dd/yy`
+    const dueDate = $('#inputDueDate').value; // `mm/dd/yy`
     const dueYear = +`20${dueDate.slice(6)}`;
     const dueMonthIndex = +dueDate.slice(0, 2) - 1;
     const dueDay = +dueDate.slice(3, 5);
@@ -2154,41 +2119,40 @@ import 'dotenv/config';
     if (currentDueDate.valueOf() !== newDueDate.valueOf()) {
       currentTask.dueDate = newDueDate;
       saveToStorage();
-      const dueDateLabel = $(".badge--due-date", todoItem) ? $(".badge--due-date", todoItem)
-        : createNode("span");
+      const dueDateLabel = $('.badge--due-date', todoItem)
+        ? $('.badge--due-date', todoItem)
+        : createNode('span');
 
       if (currentTask.isDueToday) {
-        dueDateLabel.textContent = "Today";
-        dueDateLabel.className = "badge--due-date badge--today";
+        dueDateLabel.textContent = 'Today';
+        dueDateLabel.className = 'badge--due-date badge--today';
         updateTaskCount('today');
       } else if (currentTask.isDueTomorrow) {
-        dueDateLabel.textContent = "Tomorrow";
-        dueDateLabel.className = "badge--due-date badge--tomorrow";
+        dueDateLabel.textContent = 'Tomorrow';
+        dueDateLabel.className = 'badge--due-date badge--tomorrow';
       } else {
-        dueDateLabel.className = "badge--due-date";
+        dueDateLabel.className = 'badge--due-date';
         dueDateLabel.textContent = currentTask.dueDateText;
       }
 
-      if (!$(".badge--due-date", todoItem)) {
+      if (!$('.badge--due-date', todoItem)) {
         todoItem.appendChild(dueDateLabel);
       }
       todoItem.classList.add('show-info');
     }
 
-    $("#dueDateWrapper").classList.add("has-due-date");
-    $(
-      "#dueDateWrapper .due-date-text"
-    ).textContent = currentTask.dueDateText;
-    $("#dueDateWrapper").classList.remove("show-input");
+    $('#dueDateWrapper').classList.add('has-due-date');
+    $('#dueDateWrapper .due-date-text').textContent = currentTask.dueDateText;
+    $('#dueDateWrapper').classList.remove('show-input');
     $('#dueDateWrapper').parentNode.classList.remove('is-focused');
-    $("#dpCalendar").classList.remove("is-active");
+    $('#dpCalendar').classList.remove('is-active');
   }
 
   function closeModal(e) {
-    if (!e.target.classList.contains("modal__btn--close")) return;
-    e.currentTarget.classList.remove("is-active");
+    if (!e.target.classList.contains('modal__btn--close')) return;
+    e.currentTarget.classList.remove('is-active');
     const errors = $all('.error', e.currentTarget);
-    errors.forEach(error => {
+    errors.forEach((error) => {
       if (error.classList.contains('show-msg')) {
         error.classList.remove('show-msg');
       }
@@ -2200,22 +2164,22 @@ import 'dotenv/config';
   }
 
   function closeTooltip(e) {
-    if (!e.target.classList.contains("tooltip__btn--close")) return;
-    e.currentTarget.classList.remove("show-tooltip");
+    if (!e.target.classList.contains('tooltip__btn--close')) return;
+    e.currentTarget.classList.remove('show-tooltip');
     if (e.currentTarget.classList.contains('onboarding__tooltip')) {
       $('#onboarding').classList.add('is-active');
     }
   }
 
   function hideError(e) {
-    if (!e.target.classList.contains("error__btn--hide")) return;
-    e.currentTarget.classList.remove("show-msg");
+    if (!e.target.classList.contains('error__btn--hide')) return;
+    e.currentTarget.classList.remove('show-msg');
   }
 
   function initDpCalendar(e) {
-    if (e.currentTarget.classList.contains("show-input")) return;
+    if (e.currentTarget.classList.contains('show-input')) return;
 
-    const id = $("#dpCalendar").parentNode.dataset.id;
+    const id = $('#dpCalendar').parentNode.dataset.id;
     const currentTask = state.activeList.tasks.find((task) => task.id === id);
 
     if (currentTask.dueDate !== null) {
@@ -2226,61 +2190,61 @@ import 'dotenv/config';
       const dueDay = dueDate.getDate();
       const dueYear = `${dueDate.getFullYear()}`;
 
-      updateDateInput("all", dueMonth, dueDay, dueYear);
+      updateDateInput('all', dueMonth, dueDay, dueYear);
 
       $(`input[name="year"][value="${dueYear}"]`).checked = true;
-      $("#btnToggleYearDropdown .btn-text").textContent = dueYear;
+      $('#btnToggleYearDropdown .btn-text').textContent = dueYear;
       $(`input[name="month"][value="${dueMonth}"]`).checked = true;
-      $("#btnToggleMonthDropdown .btn-text").textContent = dueMonth;
+      $('#btnToggleMonthDropdown .btn-text').textContent = dueMonth;
       populateCalendarDays(dueMonth);
       $(
         `.dp-calendar__btn--select-day[value="${dueDay}"][data-month="${dueMonth}"]`
-      ).classList.add("is-selected");
+      ).classList.add('is-selected');
     } else {
       const now = new Date();
       const currentMonthNum = now.getMonth();
       const currentMonth = monthsArr[currentMonthNum];
       const currentYear = `${now.getFullYear()}`;
       const currentDay = now.getDate();
-      updateDateInput("all", currentMonth.name, currentDay, currentYear);
+      updateDateInput('all', currentMonth.name, currentDay, currentYear);
 
       // Set default month to current month
       $(
         `#dpCalendarMonthDropdown input[value="${currentMonth.name}"]`
       ).checked = true;
-      $("#btnToggleMonthDropdown .btn-text").textContent = currentMonth.name;
+      $('#btnToggleMonthDropdown .btn-text').textContent = currentMonth.name;
 
       // Sets default year to current year
       $(`#dpCalendarYearDropdown input[value="${currentYear}"]`).checked = true;
-      $("#btnToggleYearDropdown .btn-text").textContent = currentYear;
+      $('#btnToggleYearDropdown .btn-text').textContent = currentYear;
       populateCalendarDays(currentMonth.name);
       $(
         `.dp-calendar__btn--select-day[value="${currentDay}"][data-month="${
           currentMonth.name
         }"]`
-      ).classList.add("is-selected");
+      ).classList.add('is-selected');
     }
   }
 
   function expandSearchBar(e) {
     e.stopPropagation();
     if (e.target === searchInput) return;
-    if (!searchBar.classList.contains("is-expanded")) {
+    if (!searchBar.classList.contains('is-expanded')) {
       e.preventDefault();
-      searchBar.classList.add("is-expanded");
-      $("#searchInput").focus();
+      searchBar.classList.add('is-expanded');
+      $('#searchInput').focus();
     } else if (
-      searchBar.classList.contains("is-expanded") &&
-      searchInput.value == ""
+      searchBar.classList.contains('is-expanded') &&
+      searchInput.value == ''
     ) {
-      searchBar.classList.remove("is-expanded");
+      searchBar.classList.remove('is-expanded');
     }
   }
 
   // Disables/Enables bulk action buttons, depending on if items are checked
   function enableBulkActions(e) {
-    const ulActiveList = $(".is-active-list");
-    const checkedItems = $all(".bulk-actions__checkbox:checked", ulActiveList);
+    const ulActiveList = $('.is-active-list');
+    const checkedItems = $all('.bulk-actions__checkbox:checked', ulActiveList);
     const allItems = $all('.bulk-actions__checkbox', ulActiveList);
     const bulkActions = $all('.toolbar__btn[data-bulk-action="true"]');
     const masterCheckbox = $('#masterCheckbox');
@@ -2296,48 +2260,50 @@ import 'dotenv/config';
       // Enable bulk action buttons
       bulkActions.forEach((btn) => (btn.disabled = false));
       // If all items are selected, change state of master checkbox to true if unchecked
-      if (checkedItems.length === allItems.length && masterCheckbox.checked === false) {
+      if (
+        checkedItems.length === allItems.length &&
+        masterCheckbox.checked === false
+      ) {
         masterCheckbox.checked = true;
       }
     }
-
   }
 
   function initBulkEditing(e) {
     // Hide add todo form
-    $("#addTodoForm").classList.add("is-hidden");
+    $('#addTodoForm').classList.add('is-hidden');
     // Uncheck master bulk editing checkbox
-    $("#masterCheckbox").checked = false;
+    $('#masterCheckbox').checked = false;
     // Reveal bulk editing toolbar
-    $("#bulkActionsToolbar").classList.add("is-active");
+    $('#bulkActionsToolbar').classList.add('is-active');
     // Add bulk-editing checkboxes and hide regular checkboxes for toggling completeness
-    const ulActiveList = $(".is-active-list");
+    const ulActiveList = $('.is-active-list');
     ulActiveList.classList.add('bulk-editing-list');
-    $all(".todo-list__item", ulActiveList).forEach((x, i) => {
+    $all('.todo-list__item', ulActiveList).forEach((x, i) => {
       const frag = document.createDocumentFragment();
-      const checkbox = createNode("input", {
-        type: "checkbox",
+      const checkbox = createNode('input', {
+        type: 'checkbox',
         id: `bulk-item-${i}`,
-        "data-index": i,
-        "data-id": x.id,
-        class: "bulk-actions__checkbox"
+        'data-index': i,
+        'data-id': x.id,
+        class: 'bulk-actions__checkbox'
       });
       checkbox.addEventListener('change', highlightSelected);
-      const checkboxLabel = createNode("label", {
-        class: "bulk-actions__checkbox-label",
+      const checkboxLabel = createNode('label', {
+        class: 'bulk-actions__checkbox-label',
         for: `bulk-item-${i}`
       });
       frag.appendChild(checkbox);
       frag.appendChild(checkboxLabel);
       x.insertBefore(frag, $('input[type="checkbox"]', x));
-      $(".todo-list__checkbox", x).classList.add("is-hidden");
+      $('.todo-list__checkbox', x).classList.add('is-hidden');
       x.classList.add('bulk-editing-list__item');
     });
     // Disable bulk action buttons
     $all('.toolbar__btn[data-bulk-action="true"]').forEach(
       (btn) => (btn.disabled = true)
     );
-    ulActiveList.addEventListener("click", enableBulkActions);
+    ulActiveList.addEventListener('click', enableBulkActions);
     $('#main').addEventListener('scroll', stickToolbar);
   }
 
@@ -2352,10 +2318,10 @@ import 'dotenv/config';
 
   function transferTasks(e) {
     e.preventDefault();
-    const ulActiveList = $(".is-active-list");
+    const ulActiveList = $('.is-active-list');
     const currentTasksList =
       state.filteredList === null ? state.activeList.tasks : state.filteredList;
-    const checkedItems = $all(".bulk-actions__checkbox:checked", ulActiveList);
+    const checkedItems = $all('.bulk-actions__checkbox:checked', ulActiveList);
     const newListId = $('input[name="list"]:checked').value;
     const newListObj = todoLists.find((list) => list.id === newListId);
 
@@ -2375,23 +2341,23 @@ import 'dotenv/config';
     updateTaskCount(ulActiveList.id);
     // Reload current list to reflect changes
     renderList(currentTasksList, ulActiveList);
-    $("#transferTasksFormContainer").classList.remove("is-active");
+    $('#transferTasksFormContainer').classList.remove('is-active');
   }
 
   function deleteSelected(e) {
     e.preventDefault();
-    const ulActiveList = $(".is-active-list");
+    const ulActiveList = $('.is-active-list');
     const currentTasksList =
       state.filteredList === null ? state.activeList.tasks : state.filteredList;
-    const checkedItems = $all(".bulk-actions__checkbox:checked", ulActiveList);
+    const checkedItems = $all('.bulk-actions__checkbox:checked', ulActiveList);
     checkedItems.forEach((item) => {
       listObj = getListByTaskId(item.dataset.id);
       deleteTask(listObj, item.dataset.id);
     });
-    if (ulActiveList.id === "upcoming") {
-      displayTaskSchedule('upcoming', $("#upcoming"));
-    } else if (ulActiveList.id === "today") {
-      displayTaskSchedule('today', $("#today"));
+    if (ulActiveList.id === 'upcoming') {
+      displayTaskSchedule('upcoming', $('#upcoming'));
+    } else if (ulActiveList.id === 'today') {
+      displayTaskSchedule('today', $('#today'));
     } else {
       renderList(currentTasksList, ulActiveList);
     }
@@ -2400,70 +2366,74 @@ import 'dotenv/config';
   // Hides certain elements if you click outside of them
   function hideComponents(e) {
     if (
-      colorPicker.classList.contains("is-visible") &&
-      e.target !== $("#btnAddTag") &&
+      colorPicker.classList.contains('is-visible') &&
+      e.target !== $('#btnAddTag') &&
       e.target !== colorPicker &&
       !colorPicker.contains(e.target)
     ) {
-      colorPicker.classList.remove("is-visible");
+      colorPicker.classList.remove('is-visible');
       formEditTodo.appendChild(colorPicker);
     }
 
     // Hides tag labels tooltip
     if (
-      divTodoApp.contains($(".tag-labels__btn--tooltip.show-tooltip")) &&
-      e.target !== $(".tag-labels__btn--tooltip.show-tooltip")
+      divTodoApp.contains($('.tag-labels__btn--tooltip.show-tooltip')) &&
+      e.target !== $('.tag-labels__btn--tooltip.show-tooltip')
     ) {
-      $(".tag-labels__btn--tooltip.show-tooltip").classList.remove("show-tooltip");
+      $('.tag-labels__btn--tooltip.show-tooltip').classList.remove(
+        'show-tooltip'
+      );
     }
 
-    const monthDropdown = $("#dpCalendarMonthDropdown");
-    const btnToggleMonthDropdown = $("#btnToggleMonthDropdown");
-    const yearDropdown = $("#dpCalendarYearDropdown");
-    const btnToggleYearDropdown = $("#btnToggleYearDropdown");
+    const monthDropdown = $('#dpCalendarMonthDropdown');
+    const btnToggleMonthDropdown = $('#btnToggleMonthDropdown');
+    const yearDropdown = $('#dpCalendarYearDropdown');
+    const btnToggleYearDropdown = $('#btnToggleYearDropdown');
 
     // Hides monthDropdown
     if (
-      monthDropdown.classList.contains("is-active") &&
+      monthDropdown.classList.contains('is-active') &&
       e.target !== monthDropdown &&
       e.target !== btnToggleMonthDropdown &&
       !monthDropdown.contains(e.target)
     ) {
-      monthDropdown.classList.remove("is-active");
-      btnToggleMonthDropdown.classList.remove("is-active");
+      monthDropdown.classList.remove('is-active');
+      btnToggleMonthDropdown.classList.remove('is-active');
     }
 
     // Hides yearDropdown
     if (
-      yearDropdown.classList.contains("is-active") &&
+      yearDropdown.classList.contains('is-active') &&
       e.target !== yearDropdown &&
       e.target !== btnToggleYearDropdown &&
       !yearDropdown.contains(e.target)
     ) {
-      yearDropdown.classList.remove("is-active");
-      btnToggleYearDropdown.classList.remove("is-active");
+      yearDropdown.classList.remove('is-active');
+      btnToggleYearDropdown.classList.remove('is-active');
     }
 
     // Hides searchBar input
     if (
-      searchBar.classList.contains("is-expanded") &&
-      ((searchInput.value === "" &&
-        e.target !== searchBar &&
-        !searchBar.contains(e.target)) ||
-        e.target.classList.contains("sidebar__link") ||
-        e.target.classList.contains("filtered-list__link")) ||
-        e.target.classList.contains('breadcrumbs__link')
+      (searchBar.classList.contains('is-expanded') &&
+        ((searchInput.value === '' &&
+          e.target !== searchBar &&
+          !searchBar.contains(e.target)) ||
+          e.target.classList.contains('sidebar__link') ||
+          e.target.classList.contains('filtered-list__link'))) ||
+      e.target.classList.contains('breadcrumbs__link')
     ) {
       formSearch.reset();
       inputSearch.blur();
-      searchBar.classList.remove("is-expanded");
+      searchBar.classList.remove('is-expanded');
     }
 
     // Hides dropdown menus
-    $all('.more-actions__wrapper').forEach(item => {
-      if (item.classList.contains("show-actions") &&
-      e.target !== item &&
-      !item.contains(e.target)) {
+    $all('.more-actions__wrapper').forEach((item) => {
+      if (
+        item.classList.contains('show-actions') &&
+        e.target !== item &&
+        !item.contains(e.target)
+      ) {
         item.classList.remove('show-actions');
       }
     });
@@ -2476,24 +2446,28 @@ import 'dotenv/config';
     const action = el.dataset.action;
     const ulActiveList = $('.is-active-list');
 
-    if (action === "beginTour") {
+    if (action === 'beginTour') {
       $('.onboarding__footer', modal).classList.add('is-active');
       // Refresh completion status for all steps if tour is retaken
-      $all('.onboarding__stepper .stepper__btn').forEach(btn => btn.classList.remove('is-completed'));
-      state.onboarding.statusLog.forEach((status, i, arr) => arr[i] = false);
+      $all('.onboarding__stepper .stepper__btn').forEach((btn) =>
+        btn.classList.remove('is-completed')
+      );
+      state.onboarding.statusLog.forEach((status, i, arr) => (arr[i] = false));
       state.onboarding.currentStep = 0;
     }
 
     const currentStep = state.onboarding.currentStep;
     const nextStep = state.onboarding.nextStep;
-    
-    if (action === "endTour") {
+
+    if (action === 'endTour') {
       state.onboarding.currentStep = null;
       // Delete dummy tasks created in Step 3
-      const noDummyTasks = state.activeList.tasks.filter(task => task.text !== "Delete Me!");
+      const noDummyTasks = state.activeList.tasks.filter(
+        (task) => task.text !== 'Delete Me!'
+      );
       state.activeList.tasks = noDummyTasks;
       renderList(state.activeList.tasks, ulActiveList);
-      $all('.onboarding__step').forEach(section => {
+      $all('.onboarding__step').forEach((section) => {
         let step = +section.dataset.onboardingStep;
         if (step === 0) {
           section.classList.add('is-active');
@@ -2503,57 +2477,59 @@ import 'dotenv/config';
       });
       $('.onboarding__footer', modal).classList.remove('is-active');
     } else {
-
-    if (action === "activateTooltips") {
-      modal.classList.remove('is-active');
-      if (currentStep === 1) {
-        formAddTodo.appendChild($('#onboardingTooltip_1-1'));
-      }
-        $(`.onboarding__tooltip[data-onboarding-step="${currentStep}"][data-order="0"]`).classList.add('show-tooltip');
+      if (action === 'activateTooltips') {
+        modal.classList.remove('is-active');
+        if (currentStep === 1) {
+          formAddTodo.appendChild($('#onboardingTooltip_1-1'));
+        }
+        $(
+          `.onboarding__tooltip[data-onboarding-step="${currentStep}"][data-order="0"]`
+        ).classList.add('show-tooltip');
         const target = $(`[data-onboarding-target="${currentStep}"]`);
-      // Set up first interaction point for current onboarding step
-      if (target.tagName === 'FORM') {
-        target.addEventListener('submit', trackTourProgress);
+        // Set up first interaction point for current onboarding step
+        if (target.tagName === 'FORM') {
+          target.addEventListener('submit', trackTourProgress);
+        } else {
+          target.addEventListener('click', trackTourProgress);
+        }
       } else {
-        target.addEventListener('click', trackTourProgress);
-      }
-    } else {
-      console.log({nextStep});
-      // Show next section
-      $all('.onboarding__step').forEach(section => {
-        let step = +section.dataset.onboardingStep;
-        if (step === nextStep) {
-          section.classList.add('is-active');
-        } else {
-          section.classList.remove('is-active');
-        }
-      });
+        console.log({ nextStep });
+        // Show next section
+        $all('.onboarding__step').forEach((section) => {
+          let step = +section.dataset.onboardingStep;
+          if (step === nextStep) {
+            section.classList.add('is-active');
+          } else {
+            section.classList.remove('is-active');
+          }
+        });
 
-      // Set stepper btn to active
+        // Set stepper btn to active
 
-      $all('.onboarding__stepper .stepper__btn').forEach((btn, i) => {
-        if (i === nextStep - 1) {
-          btn.classList.add('is-active');
-        } else {
-          btn.classList.remove('is-active');
-        }
-      });
+        $all('.onboarding__stepper .stepper__btn').forEach((btn, i) => {
+          if (i === nextStep - 1) {
+            btn.classList.add('is-active');
+          } else {
+            btn.classList.remove('is-active');
+          }
+        });
         // Updates state, looping the tour back to the beginning, if it reaches the end (step 4)
         state.onboarding.currentStep = state.onboarding.nextStep;
+      }
     }
-  }
   }
 
   function trackTourProgress(e) {
-
     console.log(state.onboarding.nextStep);
     const target = e.currentTarget;
     const tooltip = $('.onboarding__tooltip.show-tooltip');
     const currentStep = state.onboarding.currentStep;
     const ulActiveList = $('.is-active-list');
-    const tooltipSet = Array.prototype.slice.call($all(`.onboarding__tooltip[data-onboarding-step="${currentStep}"]`)).sort((a, b) => {
-      return +a.dataset.order - +b.dataset.order;
-    });
+    const tooltipSet = Array.prototype.slice
+      .call($all(`.onboarding__tooltip[data-onboarding-step="${currentStep}"]`))
+      .sort((a, b) => {
+        return +a.dataset.order - +b.dataset.order;
+      });
 
     target.removeEventListener(e.type, trackTourProgress);
 
@@ -2572,8 +2548,8 @@ import 'dotenv/config';
     }
     // Part 2
     if (target.classList.contains('todo-list__item')) {
-        $('.task-details__header').appendChild($('#onboardingTooltip_1-3'));
-        $('#btnCloseTaskDetails').addEventListener('click', trackTourProgress);
+      $('.task-details__header').appendChild($('#onboardingTooltip_1-3'));
+      $('#btnCloseTaskDetails').addEventListener('click', trackTourProgress);
     }
 
     /**
@@ -2581,21 +2557,23 @@ import 'dotenv/config';
      */
     // Part 1
     if (target.classList.contains('sidebar__btn--toggle-open')) {
-
-      $('.sidebar__buttons').insertBefore($('#onboardingTooltip_2-2'), $('#helpActionsWrapper'));
+      $('.sidebar__buttons').insertBefore(
+        $('#onboardingTooltip_2-2'),
+        $('#helpActionsWrapper')
+      );
       $('#openListFormBtn').addEventListener('click', trackTourProgress);
     }
 
     // Part 2
 
     if (target === $('#openListFormBtn')) {
-      $('#fieldsetNewListInput').appendChild($("#onboardingTooltip_2-3"));
+      $('#fieldsetNewListInput').appendChild($('#onboardingTooltip_2-3'));
       $('#newListNameInput').addEventListener('input', trackTourProgress);
     }
 
     // Part 3
     if (target === $('#newListNameInput')) {
-      $('#fieldsetFolders').appendChild($("#onboardingTooltip_2-4"));
+      $('#fieldsetFolders').appendChild($('#onboardingTooltip_2-4'));
       $('#newListForm').addEventListener('submit', trackTourProgress);
     }
 
@@ -2619,7 +2597,7 @@ import 'dotenv/config';
     if (target === $('#btnInitBulkEditing')) {
       // Create dummy tasks for user to delete
       for (let i = 0; i < 3; i++) {
-        let dummyTask = new Task("Delete Me!");
+        let dummyTask = new Task('Delete Me!');
         state.activeList.tasks.push(dummyTask);
       }
       populateList(state.activeList.tasks, ulActiveList);
@@ -2632,20 +2610,20 @@ import 'dotenv/config';
       $('#btnDeleteSelected').addEventListener('click', trackTourProgress);
     }
 
-      // Close active tooltip
-      tooltip.classList.remove('show-tooltip');
-      // Ensure tooltip doesn't get deleted
-      divTodoApp.appendChild(tooltip);
+    // Close active tooltip
+    tooltip.classList.remove('show-tooltip');
+    // Ensure tooltip doesn't get deleted
+    divTodoApp.appendChild(tooltip);
 
-      // If current tooltip is not the last one in the set, activate the next one
-      if (tooltip !== tooltipSet[tooltipSet.length - 1]) {
-        tooltipSet.forEach((item, i, arr) => {
-          if (item === tooltip) {
-            arr[i + 1].classList.add("show-tooltip");
-          }
-        });
-        return;
-      }
+    // If current tooltip is not the last one in the set, activate the next one
+    if (tooltip !== tooltipSet[tooltipSet.length - 1]) {
+      tooltipSet.forEach((item, i, arr) => {
+        if (item === tooltip) {
+          arr[i + 1].classList.add('show-tooltip');
+        }
+      });
+      return;
+    }
 
     const nextStep = state.onboarding.nextStep;
 
@@ -2658,9 +2636,9 @@ import 'dotenv/config';
         btn.classList.add('is-active');
       }
     });
-    
-        // Update step status
-        state.onboarding.updateStatus = true;
+
+    // Update step status
+    state.onboarding.updateStatus = true;
     if (state.onboarding.isCompleted) {
       $('.onboarding__footer').classList.remove('is-active');
     }
@@ -2676,8 +2654,8 @@ import 'dotenv/config';
 
     console.log(state.onboarding.currentStep);
     console.log(state.onboarding.nextStep);
-    
-      // Reopen modal
+
+    // Reopen modal
     $('#onboarding').classList.add('is-active');
 
     // Update state
@@ -2686,88 +2664,93 @@ import 'dotenv/config';
 
   function selectStep(e) {
     $all('.onboarding__stepper .stepper__btn').forEach((btn, i) => {
-    if (e.target === btn) {
-      state.onboarding.currentStep = i + 1;
-      console.log(state.onboarding.currentStep);
-      console.log(state.onboarding.nextStep);
-      
-      $all('.onboarding__step').forEach(section => {
-        let step = +section.dataset.onboardingStep;
-        if (step === state.onboarding.currentStep) {
-          section.classList.add('is-active');
+      if (e.target === btn) {
+        state.onboarding.currentStep = i + 1;
+        console.log(state.onboarding.currentStep);
+        console.log(state.onboarding.nextStep);
+
+        $all('.onboarding__step').forEach((section) => {
+          let step = +section.dataset.onboardingStep;
+          if (step === state.onboarding.currentStep) {
+            section.classList.add('is-active');
           } else {
             section.classList.remove('is-active');
           }
-         });
-      btn.classList.add('is-active');
-    } else {
-      btn.classList.remove('is-active');
-    }
-  });
+        });
+        btn.classList.add('is-active');
+      } else {
+        btn.classList.remove('is-active');
+      }
+    });
   }
 
-function stickToolbar(e) {
-  const toolbar = $('#bulkActionsToolbar');
-  const main = $('#main');
-  if (main.scrollTop >= toolbar.offsetTop) {
-    main.classList.add('sticky-toolbar');
-  } else {
-   main.classList.remove('sticky-toolbar');
+  function stickToolbar(e) {
+    const toolbar = $('#bulkActionsToolbar');
+    const main = $('#main');
+    if (main.scrollTop >= toolbar.offsetTop) {
+      main.classList.add('sticky-toolbar');
+    } else {
+      main.classList.remove('sticky-toolbar');
+    }
   }
-}
 
   // Event Listeners
 
   $('#newListNameInput').addEventListener('input', (e) => {
-    if ($("#errorNoListName").classList.contains('show-msg')) {
-      $("#errorNoListName").classList.remove('show-msg');
+    if ($('#errorNoListName').classList.contains('show-msg')) {
+      $('#errorNoListName').classList.remove('show-msg');
     }
   });
 
-  $('#taskDetailsBreadcrumbs .breadcrumbs__link').addEventListener('click', openList);
+  $('#taskDetailsBreadcrumbs .breadcrumbs__link').addEventListener(
+    'click',
+    openList
+  );
 
   $('#taskDetailsLemon').addEventListener('click', setPriority);
 
-  $('#taskName').addEventListener("input", enableAutoHeightResize);
-    $('#todoItemNote').addEventListener("input", enableAutoHeightResize);
+  $('#taskName').addEventListener('input', enableAutoHeightResize);
+  $('#todoItemNote').addEventListener('input', enableAutoHeightResize);
 
   $('#btnCloseTaskDetails').addEventListener('click', toggleContent);
 
   $('#taskName').addEventListener('change', renameTodo);
 
   const stepper = $('.onboarding__stepper');
-    $all('.stepper__btn', stepper).forEach(btn => btn.addEventListener('click', selectStep));
+  $all('.stepper__btn', stepper).forEach((btn) =>
+    btn.addEventListener('click', selectStep)
+  );
 
   $('#onboarding').addEventListener('click', continueTour);
 
-  $("#transferTasksForm").addEventListener("submit", transferTasks);
+  $('#transferTasksForm').addEventListener('submit', transferTasks);
 
-  $("#newListInput").addEventListener("click", (e) => {
+  $('#newListInput').addEventListener('click', (e) => {
     $('input[id="listNew"]').checked = true;
   });
 
-  $("#bulkActionsToolbar").addEventListener("click", (e) => {
+  $('#bulkActionsToolbar').addEventListener('click', (e) => {
     const el = e.target;
-    const ulActiveList = $(".is-active-list");
+    const ulActiveList = $('.is-active-list');
     const currentListObj = state.activeList;
     const currentTasksList =
       state.filteredList === null ? state.activeList.tasks : state.filteredList;
-    if (el.dataset.action === "transferSelected") {
-      $("#transferTasksFormContainer").classList.add("is-active");
-    } else if (el.dataset.action === "deleteSelected") {
+    if (el.dataset.action === 'transferSelected') {
+      $('#transferTasksFormContainer').classList.add('is-active');
+    } else if (el.dataset.action === 'deleteSelected') {
       deleteSelected(e);
-    } else if (el.dataset.action === "closeBulkActionsToolbar") {
-      ulActiveList.removeEventListener("click", enableBulkActions);
+    } else if (el.dataset.action === 'closeBulkActionsToolbar') {
+      ulActiveList.removeEventListener('click', enableBulkActions);
       $('#main').removeEventListener('scroll', stickToolbar);
       ulActiveList.classList.remove('bulk-editing-list');
       renderList(currentTasksList, ulActiveList);
     }
   });
 
-  $("#masterCheckbox").addEventListener("change", (e) => {
+  $('#masterCheckbox').addEventListener('change', (e) => {
     const checkedState = e.currentTarget.checked;
-    const ulActiveList = $(".is-active-list");
-    const checkedItems = $all(".bulk-actions__checkbox", ulActiveList);
+    const ulActiveList = $('.is-active-list');
+    const checkedItems = $all('.bulk-actions__checkbox', ulActiveList);
     checkedItems.forEach((x) => {
       const todoItem = x.parentNode;
       x.checked = checkedState;
@@ -2787,69 +2770,69 @@ function stickToolbar(e) {
     }
   });
 
-  $("#btnDeleteList").addEventListener("click", (e) => {
+  $('#btnDeleteList').addEventListener('click', (e) => {
     deleteList(state.activeList);
   });
-  formEditList.addEventListener("submit", updateList);
+  formEditList.addEventListener('submit', updateList);
 
-  $("#listActionsWrapper").addEventListener("click", (e) => {
-    if (!e.target.classList.contains("more-actions__item")) return;
+  $('#listActionsWrapper').addEventListener('click', (e) => {
+    if (!e.target.classList.contains('more-actions__item')) return;
 
     const action = e.target.dataset.action;
 
     switch (action) {
-      case "editList":
+      case 'editList':
         prepEditListForm(e);
         break;
-      case "initBulkEditing":
+      case 'initBulkEditing':
         initBulkEditing(e);
         break;
-      case "clearAll":
-        $("#alertWarningClearAll").classList.add("is-active");
+      case 'clearAll':
+        $('#alertWarningClearAll').classList.add('is-active');
         break;
-      case "deleteList":
-        $("#alertWarningDeleteList .list-name").textContent =
+      case 'deleteList':
+        $('#alertWarningDeleteList .list-name').textContent =
           state.activeList.name;
-        $("#alertWarningDeleteList").classList.add("is-active");
+        $('#alertWarningDeleteList').classList.add('is-active');
         break;
     }
-    e.currentTarget.classList.remove("show-actions");
+    e.currentTarget.classList.remove('show-actions');
   });
 
   $('#helpActionsWrapper').addEventListener('click', (e) => {
-    if (!e.target.classList.contains("more-actions__item")) return;
+    if (!e.target.classList.contains('more-actions__item')) return;
     const action = e.target.dataset.action;
     switch (action) {
-      case "openTour":
-      $("#siteWrapper").classList.remove("show-nav");
+      case 'openTour':
+        $('#siteWrapper').classList.remove('show-nav');
         $('#onboarding').classList.add('is-active');
         break;
     }
-    e.currentTarget.classList.remove("show-actions");
+    e.currentTarget.classList.remove('show-actions');
   });
 
-  $("#clearAllBtn").addEventListener("click", clearAll);
+  $('#clearAllBtn').addEventListener('click', clearAll);
 
-  $all(".more-actions__btn--toggle").forEach((btn) => {
-    btn.addEventListener("click", (e) => {
+  $all('.more-actions__btn--toggle').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
       const moreActionsWrapper = e.currentTarget.parentNode;
-      if (btn.classList.contains("list-actions__btn--toggle")) {
-
-        if (todoAppContainer.classList.contains("show-task-details")) {
-          todoAppContainer.classList.remove("show-task-details");
+      if (btn.classList.contains('list-actions__btn--toggle')) {
+        if (todoAppContainer.classList.contains('show-task-details')) {
+          todoAppContainer.classList.remove('show-task-details');
         }
 
         // Disables bulk editing button if toolbar is active
         if ($('#bulkActionsToolbar').classList.contains('is-active')) {
-          $("#btnInitBulkEditing").disabled = true;
+          $('#btnInitBulkEditing').disabled = true;
         } else {
-          $("#btnInitBulkEditing").disabled = false;
+          $('#btnInitBulkEditing').disabled = false;
         }
 
-        $all('button[data-required="custom-list"]', moreActionsWrapper).forEach((item) => {
+        $all('button[data-required="custom-list"]', moreActionsWrapper).forEach(
+          (item) => {
             if (
               state.activeList === null ||
-              state.activeList.name === "Inbox"
+              state.activeList.name === 'Inbox'
             ) {
               item.disabled = true;
             } else {
@@ -2858,48 +2841,49 @@ function stickToolbar(e) {
           }
         );
       }
-      moreActionsWrapper.classList.toggle("show-actions");
+      moreActionsWrapper.classList.toggle('show-actions');
     });
   });
 
-  searchBar.addEventListener("click", expandSearchBar);
+  searchBar.addEventListener('click', expandSearchBar);
 
-  $("#btnAddTag").addEventListener("click", addTag);
+  $('#btnAddTag').addEventListener('click', addTag);
 
-  document.querySelectorAll(".sidebar__btn--toggle").forEach((btn) => {
-    btn.addEventListener("click", toggleMenu, true);
+  document.querySelectorAll('.sidebar__btn--toggle').forEach((btn) => {
+    btn.addEventListener('click', toggleMenu, true);
   });
-  divViews.addEventListener("click", updateView);
-  formAddTodo.addEventListener("submit", addTodo);
+  divViews.addEventListener('click', updateView);
+  formAddTodo.addEventListener('submit', addTodo);
   $('#todoInput').addEventListener('focus', (e) => {
     e.currentTarget.parentNode.classList.add('is-focused');
   });
-  ulSubtasks.addEventListener("click", toggleComplete);
+  ulSubtasks.addEventListener('click', toggleComplete);
   ulSubtasks.addEventListener('input', (e) => {
-    if (!e.target.classList.contains('edit-todo-form__textarea--subtask')) return;
+    if (!e.target.classList.contains('edit-todo-form__textarea--subtask'))
+      return;
     autoHeightResize(e.target);
   });
-  formEditTodo.addEventListener("submit", addSubtask);
-  $("#btnAddSubtask").addEventListener("click", addSubtask);
-  colorPicker.addEventListener("click", setTagColor);
+  formEditTodo.addEventListener('submit', addSubtask);
+  $('#btnAddSubtask').addEventListener('click', addSubtask);
+  colorPicker.addEventListener('click', setTagColor);
 
-  formEditTodo.addEventListener("keyup", (e) => {
+  formEditTodo.addEventListener('keyup', (e) => {
     if (e.keyCode === ENTER_KEY) {
-      if (e.target === $("#newSubtaskInput")) {
+      if (e.target === $('#newSubtaskInput')) {
         addSubtask(e);
       }
-      if (e.target === $("#newTagInput")) {
+      if (e.target === $('#newTagInput')) {
         addTag(e);
       }
     }
   });
 
-  $("#todoItemNote").addEventListener("change", addNote);
-  formEditTodo.addEventListener("change", editSubtask);
+  $('#todoItemNote').addEventListener('change', addNote);
+  formEditTodo.addEventListener('change', editSubtask);
 
   // Delete tag on double backspace
-  formEditTodo.addEventListener("keyup", (e) => {
-    const newTagInput = $("#newTagInput");
+  formEditTodo.addEventListener('keyup', (e) => {
+    const newTagInput = $('#newTagInput');
     if (e.target !== newTagInput) return;
     const id = e.currentTarget.dataset.id;
     const todoIndex = state.activeList.tasks.findIndex(
@@ -2908,95 +2892,96 @@ function stickToolbar(e) {
     const currentTask = state.activeList.tasks.find((task) => task.id === id);
     if (currentTask.tags.length > 0) {
       const lastIndex = currentTask.tags.length - 1;
-      const lastTag = formEditTodo.querySelectorAll("#tagsContainer .tag")[
+      const lastTag = formEditTodo.querySelectorAll('#tagsContainer .tag')[
         lastIndex
       ];
-      const lastTagBtn = lastTag.querySelector(".close-icon");
+      const lastTagBtn = lastTag.querySelector('.close-icon');
       if (e.keyCode === BACKSPACE_KEY && !newTagInput.value) {
-        lastTag.classList.add("is-focused");
+        lastTag.classList.add('is-focused');
         // Removes tag when backspace key is hit consecutively
         setTimeout(() => {
-          lastTagBtn.value = "true";
+          lastTagBtn.value = 'true';
         }, 10);
-        if (lastTagBtn.value === "true") {
+        if (lastTagBtn.value === 'true') {
           if (lastTag.contains(colorPicker)) {
             formEditTodo.appendChild(colorPicker);
-            colorPicker.classList.remove("is-visible");
+            colorPicker.classList.remove('is-visible');
           }
           removeTag(todoIndex, lastIndex);
-          lastTag.classList.remove("is-focused");
+          lastTag.classList.remove('is-focused');
         }
-        lastTagBtn.value = "false";
+        lastTagBtn.value = 'false';
       } else if (e.keyCode !== BACKSPACE_KEY) {
-        lastTag.classList.remove("is-focused");
-        lastTagBtn.value = "false";
+        lastTag.classList.remove('is-focused');
+        lastTagBtn.value = 'false';
       }
     }
   });
 
-  formSearch.addEventListener("submit", filterTasks);
+  formSearch.addEventListener('submit', filterTasks);
 
-  inputSearch.addEventListener("click", (e) => e.currentTarget.select());
+  inputSearch.addEventListener('click', (e) => e.currentTarget.select());
 
   document.body.addEventListener(clickTouch(), hideComponents);
 
   $all("[data-action='openListForm']").forEach((btn) => {
-    btn.addEventListener("click", (e) => {
+    btn.addEventListener('click', (e) => {
       if (document.documentElement.clientWidth < 768) {
-        $("#siteWrapper").classList.remove("show-nav");
+        $('#siteWrapper').classList.remove('show-nav');
       }
       if (!formNewList.contains(fieldsetFolders)) {
-        formNewList.insertBefore(fieldsetFolders, $("#addListBtn"));
+        formNewList.insertBefore(fieldsetFolders, $('#addListBtn'));
       }
-      $("#newListFormContainer").classList.add("is-active");
+      $('#newListFormContainer').classList.add('is-active');
       window.setTimeout(() => {
-        $("#newListNameInput").focus();
+        $('#newListNameInput').focus();
       }, 200);
     });
   });
 
-  formNewList.addEventListener("submit", addList);
-  inputNewFolder.addEventListener("click", (e) => {
+  formNewList.addEventListener('submit', addList);
+  inputNewFolder.addEventListener('click', (e) => {
     const newFolderRadio = $('input[id="folderNew"]');
     newFolderRadio.checked = true;
   });
-  
 
   inputNewFolder.addEventListener('input', (e) => {
-    if (e.currentTarget.value !== "") {
-      $("#formGroupCreateFolder").classList.add('is-active');
+    if (e.currentTarget.value !== '') {
+      $('#formGroupCreateFolder').classList.add('is-active');
     } else {
-      $("#formGroupCreateFolder").classList.remove('is-active');
+      $('#formGroupCreateFolder').classList.remove('is-active');
     }
-  })
+  });
 
   // Prevents empty folder names from being created
-  inputNewFolder.addEventListener("blur", (e) => {
+  inputNewFolder.addEventListener('blur', (e) => {
     const noFolderRadio = $('input[id="folderNone"]');
-    if (e.currentTarget.value === "") {
+    if (e.currentTarget.value === '') {
       noFolderRadio.checked = true;
     }
   });
 
-  $all(".modal").forEach((modal) =>
-    modal.addEventListener("click", closeModal)
+  $all('.modal').forEach((modal) =>
+    modal.addEventListener('click', closeModal)
   );
 
-  $all('.tooltip').forEach(tooltip => tooltip.addEventListener('click', closeTooltip));
-  $all('.error').forEach(error => error.addEventListener('click', hideError));
+  $all('.tooltip').forEach((tooltip) =>
+    tooltip.addEventListener('click', closeTooltip)
+  );
+  $all('.error').forEach((error) => error.addEventListener('click', hideError));
 
-  $all(".dp-calendar__toggle-btn").forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      e.currentTarget.nextElementSibling.classList.toggle("is-active");
-      e.currentTarget.classList.toggle("is-active");
+  $all('.dp-calendar__toggle-btn').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.currentTarget.nextElementSibling.classList.toggle('is-active');
+      e.currentTarget.classList.toggle('is-active');
     });
   });
 
-  $all(".dp-calendar__dropdown").forEach((x) => {
-    if (x.dataset.name === "month") {
-      x.addEventListener("click", selectMonth);
-    } else if (x.dataset.name == "year") {
-      x.addEventListener("click", selectYear);
+  $all('.dp-calendar__dropdown').forEach((x) => {
+    if (x.dataset.name === 'month') {
+      x.addEventListener('click', selectMonth);
+    } else if (x.dataset.name == 'year') {
+      x.addEventListener('click', selectYear);
     }
   });
 
@@ -3010,67 +2995,67 @@ function stickToolbar(e) {
     const prevMonth =
       selectedMonthIndex !== 0
         ? monthsArr[selectedMonthIndex - 1].name
-        : "December";
+        : 'December';
     const nextMonth =
       selectedMonthIndex !== 11
         ? monthsArr[selectedMonthIndex + 1].name
-        : "January";
-    const currentDueDate = $("#inputDueDate").value; // mm/dd/yy
+        : 'January';
+    const currentDueDate = $('#inputDueDate').value; // mm/dd/yy
     const dueMonthIndex = +currentDueDate.slice(0, 2) - 1;
     const dueMonth = monthsArr[dueMonthIndex].name;
     const dueDay = +currentDueDate.slice(3, 5);
     const dueYear = `20${currentDueDate.slice(6)}`;
     console.log({ dueDay });
 
-    if (action === "selectNextMonth") {
-      if (nextMonth === "January") {
+    if (action === 'selectNextMonth') {
+      if (nextMonth === 'January') {
         const nextYear = +selectedYear + 1;
         $(`input[value="${nextYear}"]`).checked = true;
-        $("#btnToggleYearDropdown .btn-text").textContent = nextYear;
+        $('#btnToggleYearDropdown .btn-text').textContent = nextYear;
       }
       $(`input[value="${nextMonth}"]`).checked = true;
-      $("#btnToggleMonthDropdown .btn-text").textContent = nextMonth;
+      $('#btnToggleMonthDropdown .btn-text').textContent = nextMonth;
       populateCalendarDays(nextMonth);
       if (nextMonth === dueMonth && selectedYear === dueYear) {
         $(
           `.dp-calendar__btn--select-day[value="${dueDay}"][data-month="${dueMonth}"]`
-        ).classList.add("is-selected");
+        ).classList.add('is-selected');
       }
     }
 
-    if (action === "selectPrevMonth") {
-      if (prevMonth === "December") {
+    if (action === 'selectPrevMonth') {
+      if (prevMonth === 'December') {
         const prevYear = +selectedYear - 1;
         $(`input[value="${prevYear}"]`).checked = true;
-        $("#btnToggleYearDropdown .btn-text").textContent = prevYear;
+        $('#btnToggleYearDropdown .btn-text').textContent = prevYear;
       }
       $(`input[value="${prevMonth}"]`).checked = true;
-      $("#btnToggleMonthDropdown .btn-text").textContent = prevMonth;
+      $('#btnToggleMonthDropdown .btn-text').textContent = prevMonth;
       populateCalendarDays(prevMonth);
       if (prevMonth === dueMonth && selectedYear === dueYear) {
         console.log({ selectedYear });
         $(
           `.dp-calendar__btn--select-day[value="${dueDay}"][data-month="${dueMonth}"]`
-        ).classList.add("is-selected");
+        ).classList.add('is-selected');
       }
     }
   }
   // Select previous or next month on click
-  $all(".dp-calendar__btn-prevnext").forEach((x) =>
-    x.addEventListener("click", selectPrevNext)
+  $all('.dp-calendar__btn-prevnext').forEach((x) =>
+    x.addEventListener('click', selectPrevNext)
   );
 
-  $("#dpCalendarDayPicker").addEventListener("click", selectDay);
-  $("#btnSetDueDate").addEventListener("click", setDueDate);
+  $('#dpCalendarDayPicker').addEventListener('click', selectDay);
+  $('#btnSetDueDate').addEventListener('click', setDueDate);
 
-  $("#dueDateWrapper").addEventListener("click", (e) => {
+  $('#dueDateWrapper').addEventListener('click', (e) => {
     initDpCalendar(e);
     e.currentTarget.parentNode.classList.add('is-focused');
-    e.currentTarget.classList.add("show-input");
-    $("#dpCalendar").classList.add("is-active");
+    e.currentTarget.classList.add('show-input');
+    $('#dpCalendar').classList.add('is-active');
   });
 
-  $("#inputDueDate").addEventListener("change", (e) => {
+  $('#inputDueDate').addEventListener('change', (e) => {
     const dateRegex = /[01][0-9]\/[0-3][0-9]\/[12][0-9]/; // mm/dd/yy
 
     if (!dateRegex.test(e.target.value)) {
@@ -3088,89 +3073,89 @@ function stickToolbar(e) {
     }
 
     if (dateRegex.test(e.target.value)) {
-      const dateStr = $("#inputDueDate").value; // mm/dd/yy
+      const dateStr = $('#inputDueDate').value; // mm/dd/yy
       console.log({ dateStr });
 
-      const selectedDay = $(".dp-calendar__btn--select-day.is-selected");
+      const selectedDay = $('.dp-calendar__btn--select-day.is-selected');
       const year = `20${dateStr.slice(6)}`;
       console.log({ year });
       const monthNum = +dateStr.slice(0, 2) - 1;
       const month = monthsArr[monthNum];
       const monthText = month.name;
-      if (monthText === "February") {
+      if (monthText === 'February') {
         month.daysTotal = isLeapYear(+year) ? 29 : 28;
       }
 
       const lastDay = month.daysTotal;
       const day =
         +dateStr.slice(3, 5) > lastDay
-          ? (updateDateInput("day", lastDay), lastDay)
+          ? (updateDateInput('day', lastDay), lastDay)
           : +dateStr.slice(3, 5);
 
       console.log({ day });
 
       if ($(`input[name="year"]:checked`).value !== year) {
         $(`input[value="${year}"]`).checked = true;
-        $("#btnToggleYearDropdown .btn-text").textContent = year;
+        $('#btnToggleYearDropdown .btn-text').textContent = year;
         populateCalendarDays(monthText);
         $(
           `.dp-calendar__btn--select-day[value="${day}"][data-month="${monthText}"]`
-        ).classList.add("is-selected");
+        ).classList.add('is-selected');
       }
 
       if ($(`input[name="month"]:checked`).value !== monthText) {
         $(`input[value="${monthText}"]`).checked = true;
-        $("#btnToggleMonthDropdown .btn-text").textContent = monthText;
+        $('#btnToggleMonthDropdown .btn-text').textContent = monthText;
         populateCalendarDays(monthText);
       }
 
       if (selectedDay && selectedDay.value !== day) {
-        $all(".dp-calendar__btn--select-day").forEach((x) => {
+        $all('.dp-calendar__btn--select-day').forEach((x) => {
           if (
             x.value == day &&
-            !x.classList.contains("dp-calendar__btn--prev-month") &&
-            !x.classList.contains("dp-calendar__btn--next-month")
+            !x.classList.contains('dp-calendar__btn--prev-month') &&
+            !x.classList.contains('dp-calendar__btn--next-month')
           ) {
-            x.classList.add("is-selected");
+            x.classList.add('is-selected');
           } else {
-            x.classList.remove("is-selected");
+            x.classList.remove('is-selected');
           }
         });
       }
     }
   });
 
-  $("#todayNavLink").addEventListener("click", (e) => {
-    displayTaskSchedule('today', $("#today"));
+  $('#todayNavLink').addEventListener('click', (e) => {
+    displayTaskSchedule('today', $('#today'));
   });
 
-  $("#upcomingNavLink").addEventListener("click", (e) => {
+  $('#upcomingNavLink').addEventListener('click', (e) => {
     displayTaskSchedule('upcoming', $('#upcoming'));
   });
 
-  $("#btnClearDueDate").addEventListener("click", (e) => {
+  $('#btnClearDueDate').addEventListener('click', (e) => {
     const id = hiddenTaskId.value;
     const currentTask = state.activeList.getTask(id);
     const todoItem = $(`#${id}`);
     currentTask.dueDate = null;
     saveToStorage();
-    const dueDateWrapper = $("#dueDateWrapper");
-    dueDateWrapper.classList.remove("has-due-date");
-    $(".due-date-text", dueDateWrapper).textContent = "Set due date";
-    dueDateWrapper.classList.remove("show-input");
+    const dueDateWrapper = $('#dueDateWrapper');
+    dueDateWrapper.classList.remove('has-due-date');
+    $('.due-date-text', dueDateWrapper).textContent = 'Set due date';
+    dueDateWrapper.classList.remove('show-input');
     dueDateWrapper.parentNode.classList.remove('is-focused');
-    $("#dpCalendar").classList.remove("is-active");
+    $('#dpCalendar').classList.remove('is-active');
     $('.badge--due-date', todoItem).remove();
   });
 
-  $("#btnResetDueDate").addEventListener("click", (e) => {
-    $("#dueDateWrapper").classList.remove("show-input");
-    $("#dueDateWrapper").parentNode.classList.remove('is-focused');
-    $("#dpCalendar").classList.remove("is-active");
+  $('#btnResetDueDate').addEventListener('click', (e) => {
+    $('#dueDateWrapper').classList.remove('show-input');
+    $('#dueDateWrapper').parentNode.classList.remove('is-focused');
+    $('#dpCalendar').classList.remove('is-active');
   });
 
-  $all(".edit-todo-form__control").forEach((x) => {
-    x.addEventListener("focus", (e) => {
+  $all('.edit-todo-form__control').forEach((x) => {
+    x.addEventListener('focus', (e) => {
       const parent = e.currentTarget.parentNode;
       const grandparent = parent.parentNode;
       if (grandparent.classList.contains('edit-todo-form__form-group')) {
@@ -3179,7 +3164,7 @@ function stickToolbar(e) {
         parent.classList.add('is-focused');
       }
     });
-    x.addEventListener("focusout", (e) => {
+    x.addEventListener('focusout', (e) => {
       const parent = e.currentTarget.parentNode;
       const grandparent = parent.parentNode;
       if (grandparent.classList.contains('edit-todo-form__form-group')) {
@@ -3190,14 +3175,14 @@ function stickToolbar(e) {
     });
   });
 
-  $("#btnTriggerWarningDeleteTask").addEventListener("click", (e) => {
+  $('#btnTriggerWarningDeleteTask').addEventListener('click', (e) => {
     const taskId = hiddenTaskId.value;
     const currentTask = state.activeList.getTask(taskId);
-    $("#alertWarningDeleteTask .task-text").textContent = currentTask.text;
-    $("#alertWarningDeleteTask").classList.add("is-active");
+    $('#alertWarningDeleteTask .task-text').textContent = currentTask.text;
+    $('#alertWarningDeleteTask').classList.add('is-active');
   });
 
-  $("#btnDeleteTask").addEventListener("click", (e) => {
+  $('#btnDeleteTask').addEventListener('click', (e) => {
     const taskId = hiddenTaskId.value;
     deleteTask(state.activeList, taskId);
   });
