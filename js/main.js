@@ -1,3 +1,6 @@
+import 'dotenv/config';
+
+
 (function app() {
   // for feather icons
 
