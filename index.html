@@ -13,12 +13,15 @@
 </head>
 
 <body>
-
+  <!-- #siteWrapper -->
   <div id="siteWrapper" class="site-wrapper">
+    <!-- #sidebarCanvas -->
     <div class="sidebar__canvas" id="sidebarCanvas">
       <!-- #todoApp -->
       <div id="todoApp" class="todo-app">
+        <!-- .todo-app__header -->
         <header class="todo-app__header">
+          <!-- #sideNav -->
           <nav class="sidebar" id="sideNav">
             <button type="button" class="sidebar__btn--icon sidebar__btn--toggle sidebar__btn--toggle-open"
               data-onboarding-target="2" id="toggleOpenBtn" data-action="toggleMenu">
@@ -94,7 +97,6 @@
                     Delete List
                   </button>
                   <button type="button" class="btn btn--neutral more-actions__item" data-action="clearAll">Clear All</button>
-
                 </div>
                 <!--/ #listActions -->
               </div>
@@ -102,15 +104,23 @@
             </div>
             <!--/ .header__content-wrapper -->
           </nav>
+          <!--/ #sideNav -->
         </header>
+        <!--/ .todo-app__header -->
+
+        <!-- #todoAppContainer -->
         <div id="todoAppContainer" class="todo-app__container">
+          <!-- #main -->
           <main class="todo-app__main" id="main">
+            <!-- #views -->
             <div id="views" class="views">
               <button type="button" class="btn btn--neutral form__btn views__btn is-selected" data-action="viewAll">All</button>
               <button type="button" class="btn btn--neutral form__btn views__btn" data-action="viewActive">Active</button>
               <button type="button" class="btn btn--neutral form__btn views__btn" data-action="viewCompleted">Done</button>
             </div>
+            <!--/ #views -->
             <h1 class="active-list__title" id="activeListTitle"></h1>
+            <!-- #bulkActionsToolbar -->
             <div id="bulkActionsToolbar" class="toolbar bulk-actions-toolbar">
               <div class="toolbar__item bulk-actions-toolbar__item--check-all" data-action="checkAll">
                 <input type="checkbox" id="masterCheckbox" class="bulk-actions__checkbox">
@@ -123,7 +133,6 @@
                   <i data-feather="arrow-right-circle"></i>
                   <span class="toolbar__item-label">Move</span>
                 </button>
-
               </div>
               <div class="toolbar__item flex-column">
                 <button class="btn btn--inline toolbar__btn" type="button" data-action="deleteSelected"
@@ -139,6 +148,9 @@
                 </button>
               </div>
             </div>
+            <!--/ #bulkActionsToolbar-->
+
+            <!-- Prebuilt Lists -->
             <ul id="inbox" class="todo-list is-active-list" data-name="Inbox">
             </ul>
             <ul id="filteredList" class="todo-list filtered-list" data-name="Search Results">
@@ -159,15 +171,19 @@
             </form>
             <!--/ #addTodoForm -->
           </main>
-          <!--/ todo-app__main-->
+          <!--/ #main-->
 
           <!-- #taskDetails -->
           <div id="taskDetails" class="task-details">
+            <!-- .task-details__header -->
             <div class="task-details__header">
               <button id="btnCloseTaskDetails" type="button" class="form__btn--icon task-details__btn task-details__btn--close"
                 data-action="toggleContent">
                 <i data-feather="arrow-left"></i><span class="list-name"></span>
-              </button></div>
+              </button>
+            </div>
+            <!--/ .task-details__header -->
+            <!-- #editTodoForm -->
             <form id="editTodoForm" class="form edit-todo-form" data-index="">
               <div class="task-details__name-wrapper clearfix">
                 <textarea id="taskName" class="form__textarea todo-item__title edit-todo-form__control task-details__name"
@@ -189,14 +205,16 @@
                     <input class="edit-todo-form__input--due-date" id="inputDueDate" type="text" required pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
                   </div>
                 </div>
-
               </div>
 
+              <!-- #dpCalendar -->
               <div class="dp-calendar clearfix" id="dpCalendar">
+                <!-- .dp-calendar__main-header -->
                 <div class="dp-calendar__wrapper dp-calendar__main-header">
                   <button type="button" class="dp-calendar__btn-prevnext dp-calendar__btn-prevnext--prev" id="btnSelectPrevMonth"
                     data-action="selectPrevMonth"><i data-feather="chevron-left"></i></button>
                   <div class="d-flex justify-content-center">
+                    <!-- #dpCalendarMonthPicker -->
                     <div class="dp-calendar__month-picker" id="dpCalendarMonthPicker">
                       <button type="button" class="dp-calendar__toggle-btn dp-calendar__toggle-btn--month" id="btnToggleMonthDropdown"
                         data-action="toggleMonthDropdown"><span class="btn-text"></span><i data-feather="chevron-down"></i></button>
@@ -253,6 +271,7 @@
                       </div>
                     </div>
                     <!--/ #dpCalendarMonthPicker-->
+                    <!-- #dpCalendarYearPicker -->
                     <div class="dp-calendar__year-picker" id="dpCalendarYearPicker">
                       <button type="button" class="dp-calendar__toggle-btn dp-calendar__toggle-btn--year" id="btnToggleYearDropdown"
                         data-action="toggleYearDropdown"><span class="btn-text"></span><i data-feather="chevron-down"></i></button>
@@ -265,10 +284,9 @@
                   <!--/ .d-flex -->
                   <button type="button" class="dp-calendar__btn-prevnext dp-calendar__btn-prevnext--next" id="btnSelectNextMonth"
                     data-action="selectNextMonth"><i data-feather="chevron-right"></i></button>
-
                 </div>
-                <!--/ .dp-calendar__wrapper-->
-
+                <!--/ .dp-calendar__main-header -->
+                <!-- #dpCalendarWeekdayHeaders -->
                 <div class="dp-calendar__wrapper dp-calendar__weekday-headers" id="dpCalendarWeekdayHeaders">
                   <div class="dp-calendar__weekday-header">S</div>
                   <div class="dp-calendar__weekday-header">M</div>
@@ -279,8 +297,8 @@
                   <div class="dp-calendar__weekday-header">S</div>
                 </div>
                 <!--/ #dpCalendarWeekdayHeaders-->
-
                 <div class="dp-calendar__wrapper">
+                  <!-- #dpCalendarDayPicker -->
                   <div class="dp-calendar__day-picker" id="dpCalendarDayPicker">
                   </div>
                   <!--/ #dpCalendarDayPicker -->
@@ -294,7 +312,7 @@
                 <button class="btn btn--neutral form__btn dp-calendar__btn dp-calendar__btn--clear" type="button" id="btnClearDueDate"
                   data-action="clearDueDate">Clear</button>
               </div>
-              <!--/ #datePickerCalendar-->
+              <!--/ #dpCalendar-->
 
               <div class="task-details__section">
                 <div class="edit-todo-form__form-group">
@@ -332,6 +350,7 @@
               </div>
               <!--/ #tagsContainer -->
 
+              <!-- #colorPicker -->
               <div class="color-picker" id="colorPicker">
                 <input type="radio" class="color-picker__radio" name="tagColor" id="colorDefault" value="bg--default"
                   checked />
@@ -349,6 +368,8 @@
               </div>
               <!--/ #colorPicker-->
             </form>
+            <!--/ #editTodoForm -->
+            <!-- .task-details__footer -->
             <div class="task-details__footer clearfix">
               <button id="btnTriggerWarningDeleteTask" type="button" class="btn btn--neutral form__btn task-details__btn--rt"
                 data-action="triggerWarningDeleteTask"><i data-feather="trash-2"></i></button>
@@ -359,6 +380,10 @@
         </div>
         <!--/ #todoAppContainer -->
 
+        <!-- 
+          Forms
+        -->
+        <!-- #newListFormContainer -->
         <div id="newListFormContainer" class="new-list-form__container modal">
           <div id="newListFormWrapper" class="new-list-form__wrapper modal__content">
             <button type="button" class="form__btn--icon modal__btn--close modal__icon-btn--close" data-action="closeModal">
@@ -405,6 +430,7 @@
         </div>
         <!--/ #newListFormContainer-->
 
+        <!-- #editListFormContainer -->
         <div id="editListFormContainer" class="edit-list-form__container modal">
           <div id="editListFormWrapper" class="edit-list-form__wrapper modal__content">
             <button type="button" class="form__btn--icon modal__btn--close modal__icon-btn--close" data-action="closeModal">
@@ -426,6 +452,7 @@
         </div>
         <!--/ #editListFormContainer-->
 
+        <!-- #transferTasksFormContainer -->
         <div id="transferTasksFormContainer" class="transfer-tasks-form__container modal">
           <div id="transferTasksFormWrapper" class="transfer-tasks-form__wrapper modal__content">
             <button type="button" class="form__btn--icon modal__btn--close modal__icon-btn--close" data-action="closeModal">
@@ -456,6 +483,12 @@
           <!--/ #editListFormWrapper-->
         </div>
         <!--/ #editListFormContainer-->
+
+        <!--
+          Alerts
+        -->
+
+        <!-- #alertWarningClearAll -->
         <div class="alert-warning modal modal--sm" id="alertWarningClearAll">
           <div class="modal__content modal__content--sm clearfix">
             <h3 class="alert__title">Are you sure?</h3>
@@ -469,7 +502,9 @@
             </button>
           </div>
         </div>
+        <!--/ #alertWarningClearAll -->
 
+        <!-- #alertWarningDeleteList -->
         <div class="alert-warning modal modal--sm" id="alertWarningDeleteList">
           <div class="modal__content modal__content--sm clearfix">
             <h3 class="alert__title">Are you sure?</h3>
@@ -483,7 +518,9 @@
             </button>
           </div>
         </div>
+        <!--/ #alertWarningDeleteList -->
 
+        <!-- #alertWarningDeleteTask -->
         <div class="alert-warning modal modal--sm" id="alertWarningDeleteTask">
           <div class="modal__content modal__content--sm clearfix">
             <h3 class="alert__title">Are you sure?</h3>
@@ -497,7 +534,12 @@
             </button>
           </div>
         </div>
+        <!--/ #alertWarningDeleteTask -->
 
+        <!--
+          Onboarding
+        -->
+        
         <!-- #onboarding -->
         <div class="modal modal--md onboarding" id="onboarding">
           <div class="modal__content modal__content--md clearfix">
@@ -711,9 +753,9 @@
       </div>
       <!--/ #todoApp -->
     </div>
-    <!--/ sidebarCanvas -->
+    <!--/ #sidebarCanvas -->
   </div>
-  <!--/ siteWrapper -->
+  <!--/ #siteWrapper -->
 
   <script src="js/vendors/feather.min.js"></script>
   <script src="js/main.js"></script>
