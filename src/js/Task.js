@@ -1,8 +1,11 @@
+import { uniqueID } from './helpers.js';
+import { isLeapYear, monthsArr, weekdaysArr } from './DatePicker.js';
+
 export default class Task {
   constructor(text, obj = null) {
     if (!obj) {
       this.text = text;
-      this.done = false;
+      this.isDone = false;
       this.subtasks = [];
       this.note = '';
       this.tags = [];
@@ -13,7 +16,7 @@ export default class Task {
       this.lastModified = null;
     } else {
       this.text = obj.text;
-      this.done = obj.done;
+      this.isDone = obj.isDone;
       this.subtasks = obj.subtasks;
       this.note = obj.note;
       this.tags = obj.tags;
@@ -93,4 +96,17 @@ export default class Task {
         ? 'Tomorrow'
         : weekdaysArr[dueDate.getDay()].full;
   }
+
+  toggleDone() {
+    this.isDone = !this.isDone;
+  }
+
+  addNote(note) {
+    this.note = note;
+  }
+
+  editSubtask(subtaskIndex, text) {
+    this.subtasks[subtaskIndex].text = text.trim();
+  }
+
 }

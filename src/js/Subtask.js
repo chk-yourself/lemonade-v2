@@ -1,6 +1,10 @@
 export default class Subtask {
   constructor(text) {
     this.text = text;
-    this.done = false;
+    this.isDone = false;
+  }
+
+  toggleDone() {
+    this.isDone = !this.isDone;
   }
 }
