@@ -1,18 +1,43 @@
-import List from './List.js';
-import Task from './Task.js';
-import Subtask from './Subtask.js';
+import List from './components/List.js';
+import Task from './components/Task.js';
+import Subtask from './components/Subtask.js';
 import { 
   uniqueID,
   camelCased, 
   $, 
   $all,
   clickTouch,
-  createNode
-} from './helpers.js';
-import { isLeapYear, monthsArr, weekdaysArr } from './DatePicker.js';
+  createNode,
+  autoHeightResize,
+  saveToStorage
+} from './lib/helpers.js';
+import { 
+  isLeapYear, 
+  monthsArr, 
+  weekdaysArr, 
+  populateCalendarYears,
+  updateDateInput,
+  selectMonth,
+  selectYear,
+  populateCalendarDays,
+  selectDay
+} from './components/DatePicker.js';
+import expandSearchBar from './components/SearchBar.js';
+import {
+  toggleMenu,
+displayPanel
+} from './components/Nav.js';
+import {
+  stickToolbar,
+  initBulkEditing,
+  highlightSelected,
+  enableBulkActions
+} from './components/BulkActionsToolbar.js'
+import { initClasses } from './store/state.js';
+
+
 
 (function app() {
-
 
   // Variables
   const divTodoApp = $('#todoApp');
@@ -34,18 +59,6 @@ import { isLeapYear, monthsArr, weekdaysArr } from './DatePicker.js';
   const todoLists = localStorage.getItem('todoLists')
     ? initClasses(JSON.parse(localStorage.getItem('todoLists')))
     : [];
-
-  // Converts JSON list and task objects back to instances of original classes
-  function initClasses(arr) {
-    return arr.map((item) => {
-      const list = new List(null, null, item);
-      list.tasks = item.tasks.map((task) => new Task(null, task));
-      return list;
-    });
-  }
-
-  const saveToStorage = () =>
-    localStorage.setItem('todoLists', JSON.stringify(todoLists));
 
   const BACKSPACE_KEY = 8;
   const ENTER_KEY = 13;
@@ -74,7 +87,7 @@ import { isLeapYear, monthsArr, weekdaysArr } from './DatePicker.js';
 
   if (!todoLists.find((list) => list.name === 'Inbox')) {
     $('#onboarding').classList.add('is-active');
-    const initInbox = new List('Inbox', 'null');
+    const initInbox = new List('Inbox', null);
     todoLists.push(initInbox);
     saveToStorage();
   }
@@ -167,6 +180,7 @@ import { isLeapYear, monthsArr, weekdaysArr } from './DatePicker.js';
     for (let i = 0; i < itemsCollection.length; i++) {
       let todoItem = itemsCollection[i];
       todoItem.addEventListener('click', toggleContent, true);
+      todoItem.addEventListener('click', setPriority);
 
       if (state.filteredList !== null) {
         todoItem.addEventListener(
@@ -178,9 +192,7 @@ import { isLeapYear, monthsArr, weekdaysArr } from './DatePicker.js';
           true
         );
       }
-
-      const lemon = $('.lemon', todoItem);
-      lemon.addEventListener('click', setPriority);
+      
       const itemTitle = $('.todo-item__title', todoItem);
       itemTitle.addEventListener('click', (e) => {
         const id = e.currentTarget.dataset.id;
@@ -193,7 +205,7 @@ import { isLeapYear, monthsArr, weekdaysArr } from './DatePicker.js';
 
       for (let j = 0; j < itemsArray.length; j++) {
         if (itemsArray[j].id === id) {
-          let taskObj = itemsArray[j];
+          const taskObj = itemsArray[j];
 
           // Renders tag labels
           if (taskObj.tags.length > 0) {
@@ -202,12 +214,11 @@ import { isLeapYear, monthsArr, weekdaysArr } from './DatePicker.js';
               'button',
               {
                 class: 'btn btn--tooltip tag-labels__btn--tooltip',
-                'data-tooltip': '',
+                'data-tooltip': `${taskObj.tagSummary}`,
                 type: 'button'
               },
               '...'
             );
-            tagsTooltipBtn.dataset.tooltip = itemsArray[j].tagSummary;
             tagsTooltipBtn.addEventListener('click', (e) => {
               e.currentTarget.classList.toggle('show-tooltip');
             });
@@ -429,12 +440,6 @@ import { isLeapYear, monthsArr, weekdaysArr } from './DatePicker.js';
     }
   }
 
-  // Resizes text inputs and textareas to show all content within
-  function autoHeightResize(elem) {
-    elem.style.height = '0px';
-    elem.style.height = `${elem.scrollHeight}px`;
-  }
-
   function renameTodo(e) {
     if (!e.target.classList.contains('todo-item__title')) return;
     const id = e.target.dataset.id;
@@ -568,7 +573,6 @@ import { isLeapYear, monthsArr, weekdaysArr } from './DatePicker.js';
    */
   function findExistingTag(text, todoIndex = undefined) {
     let existingTag;
-    const ulActiveList = $('.is-active-list');
     const currentList = state.activeList;
     if (todoIndex !== undefined) {
       existingTag = currentList.tasks[todoIndex].tags.find(
@@ -700,7 +704,6 @@ import { isLeapYear, monthsArr, weekdaysArr } from './DatePicker.js';
   }
 
   function populateTaskDetails(id) {
-    const todoItem = $(`#${id}`);
     // Change state to current list object
     state.activeList = getListByTaskId(id);
     const ulActiveList = $('.is-active-list');
@@ -730,7 +733,7 @@ import { isLeapYear, monthsArr, weekdaysArr } from './DatePicker.js';
       `#${state.activeList.id}`
     );
 
-    if (state.activeList.folder !== 'null') {
+    if (state.activeList.folder !== null) {
       $('#taskDetailsBreadcrumbs .folder-name').textContent =
         state.activeList.folder;
       $('#taskDetailsBreadcrumbs').classList.add('show-folder');
@@ -850,7 +853,7 @@ import { isLeapYear, monthsArr, weekdaysArr } from './DatePicker.js';
     $all('.todo-list__item', listElement).forEach((item) => {
       const list = getListByTaskId(item.id);
       const folderName =
-        list.folder !== 'null'
+        list.folder !== null
           ? createNode(
               'span',
               { class: 'breadcrumbs__folder' },
@@ -905,7 +908,7 @@ import { isLeapYear, monthsArr, weekdaysArr } from './DatePicker.js';
         const firstTask = listObj.getTask(taskId);
 
         const folderName =
-          listObj.folder !== 'null'
+          listObj.folder !== null
             ? createNode(
                 'span',
                 { class: 'filtered-list__folder-name' },
@@ -1106,7 +1109,7 @@ import { isLeapYear, monthsArr, weekdaysArr } from './DatePicker.js';
 
   function setPriority(e) {
     if (!e.target.classList.contains('lemon')) return;
-    const id = e.currentTarget.dataset.id;
+    const id = e.target.dataset.id;
     if (state.filteredList !== null) {
       state.activeList = getListByTaskId(id);
     }
@@ -1187,16 +1190,6 @@ import { isLeapYear, monthsArr, weekdaysArr } from './DatePicker.js';
     saveToStorage();
   }
 
-  function toggleMenu() {
-    const siteWrapper = document.getElementById('siteWrapper');
-
-    if (siteWrapper.classList.contains('show-nav')) {
-      siteWrapper.classList.remove('show-nav');
-    } else {
-      siteWrapper.classList.add('show-nav');
-    }
-  }
-
   function setTagColor(e) {
     const el = e.target;
     if (!el.classList.contains('color-picker__swatch')) return;
@@ -1222,20 +1215,6 @@ import { isLeapYear, monthsArr, weekdaysArr } from './DatePicker.js';
     list_ul.addEventListener('click', toggleDone);
     $('#main').insertBefore(list_ul, formAddTodo);
     renderListOption(listObj);
-  }
-
-  // Sidebar accordion
-
-  function displayPanel(e) {
-    if (!e.target.classList.contains('accordion__item')) return;
-    const accordion = $('.accordion');
-    const accordionItems = accordion.getElementsByClassName('accordion__item');
-    const selectedPanel = e.currentTarget.querySelector('.accordion__panel');
-    for (let i = 0; i < accordionItems.length; i++) {
-      if (accordionItems[i] === selectedPanel.parentNode) {
-        accordionItems[i].classList.toggle('is-active');
-      }
-    }
   }
 
   const createNavItem = (listObj, parentNode = $('#sidebarMenu')) => {
@@ -1273,12 +1252,12 @@ import { isLeapYear, monthsArr, weekdaysArr } from './DatePicker.js';
       'li',
       {
         class: `${
-          listObj.folder === 'null' ? 'sidebar__item' : 'accordion__sub-item'
+          listObj.folder === null ? 'sidebar__item' : 'accordion__sub-item'
         }`
       },
       aListLink
     );
-    if (listObj.folder === 'null') {
+    if (listObj.folder === null) {
       parentNode.appendChild(liItem);
     } else {
       $(`[data-folder="${listObj.folder}"]`, parentNode).appendChild(liItem);
@@ -1292,7 +1271,7 @@ import { isLeapYear, monthsArr, weekdaysArr } from './DatePicker.js';
     const foldersArr = todoLists
       .map((list) => list.folder)
       .filter(
-        (folder, i, arr) => folder !== 'null' && arr.indexOf(folder) === i
+        (folder, i, arr) => folder !== null && arr.indexOf(folder) === i
       );
     const frag = document.createDocumentFragment();
     foldersArr.forEach((folder) => {
@@ -1328,7 +1307,7 @@ import { isLeapYear, monthsArr, weekdaysArr } from './DatePicker.js';
     });
 
     // Creates regular nav items for miscellaneous lists
-    const miscLists = todoLists.filter((list) => list.folder === 'null');
+    const miscLists = todoLists.filter((list) => list.folder === null);
     miscLists.forEach((item) => {
       if (item.id !== 'inbox') {
         createNavItem(item, frag);
@@ -1400,6 +1379,8 @@ import { isLeapYear, monthsArr, weekdaysArr } from './DatePicker.js';
     }
   }
 
+   
+
   function renderFolderOption(text) {
     const folderRadio = createNode('input', {
       type: 'radio',
@@ -1453,7 +1434,7 @@ import { isLeapYear, monthsArr, weekdaysArr } from './DatePicker.js';
           ? checkedRadio
           : newFolder !== ''
             ? newFolder
-            : 'null';
+            : null;
       const newList = new List(newListName, selectedFolder);
       todoLists.push(newList);
       createList(newList);
@@ -1565,9 +1546,9 @@ import { isLeapYear, monthsArr, weekdaysArr } from './DatePicker.js';
       state.activeList.folder = selectedFolder;
 
       // Append list nav item to sidebar
-      if (selectedFolder === 'null') {
+      if (selectedFolder === null) {
         listNavItem.className = 'sidebar__item';
-        listNavItem.dataset.folder = 'null';
+        listNavItem.dataset.folder = null;
         $('#sidebarMenu').appendChild(listNavItem);
       } else {
         // Append list nav item to different/new folder
@@ -1598,7 +1579,7 @@ import { isLeapYear, monthsArr, weekdaysArr } from './DatePicker.js';
     // Delete folder elements if list is the only item in folder
     const folder = listObj.folder;
     if (
-      folder !== 'null' &&
+      folder !== null &&
       todoLists.filter((list) => list.folder === folder).length === 0
     ) {
       // Delete nav folder item
@@ -1662,275 +1643,11 @@ import { isLeapYear, monthsArr, weekdaysArr } from './DatePicker.js';
     formAddTodo.classList.remove('is-hidden');
   }
 
-  function populateCalendarYears() {
-    const date = new Date();
-    const year = date.getFullYear();
-    const frag = document.createDocumentFragment();
-    // Adds current and next 2 years as radio options for year picker
-    for (let i = 0; i <= 3; i++) {
-      const yearRadio = createNode('input', {
-        type: 'radio',
-        name: 'year',
-        value: `${year + i}`,
-        id: `${year + i}`,
-        class: 'dp-calendar__radio'
-      });
-      frag.appendChild(yearRadio);
-      const yearLabel = createNode(
-        'label',
-        {
-          for: `${year + i}`,
-          class: 'dp-calendar__year'
-        },
-        `${year + i}`
-      );
-      frag.appendChild(yearLabel);
-    }
-    $('#dpCalendarYearDropdown').appendChild(frag);
-  }
-
   populateCalendarYears();
 
   // Sets default month to current month
 
-  function updateDateInput(dateComponent, ...newValues) {
-    const currentDate = $('#inputDueDate').value; // `mm/dd/yy`
-    const currentYear = currentDate.slice(6);
-    const currentMonth = currentDate.slice(0, 2);
-    const currentDay = currentDate.slice(3, 5);
-    switch (dateComponent) {
-      case 'month':
-        const monthNum = monthsArr.findIndex((x) => x.name === newValues[0]);
-        $('#inputDueDate').value = `${
-          monthNum > 8 ? monthNum + 1 : `0${monthNum + 1}`
-        }/${currentDay}/${currentYear}`;
-        break;
-      case 'day':
-        $('#inputDueDate').value = `${currentMonth}/${
-          newValues[0] > 9 ? newValues[0] : `0${newValues[0]}`
-        }/${currentYear}`;
-        break;
-      case 'year':
-        $(
-          '#inputDueDate'
-        ).value = `${currentMonth}/${currentDay}/${newValues[0].slice(2)}`;
-        break;
-      case 'all':
-        const monthIndex = monthsArr.findIndex((x) => x.name === newValues[0]);
-        $('#inputDueDate').value = `${
-          monthIndex > 8 ? monthIndex + 1 : `0${monthIndex + 1}`
-        }/${
-          newValues[1] > 9 ? newValues[1] : `0${newValues[1]}`
-        }/${newValues[2].slice(2)}`;
-        break;
-    }
-  }
-
-  function selectMonth(e) {
-    if (!e.target.classList.contains('dp-calendar__month')) return;
-    const currentDueDate = $('#inputDueDate').value; // mm-dd-yy
-    const dueMonthIndex = +currentDueDate.slice(0, 2) - 1;
-    const dueMonth = monthsArr[dueMonthIndex].name;
-    const dueDay = +currentDueDate.slice(3, 5);
-
-    const prevSelectedMonth = $('input[name="month"]:checked').value;
-    const monthDropdown = $('#dpCalendarMonthDropdown');
-    const btnToggleMonthDropdown = $('#btnToggleMonthDropdown');
-    const radioId = e.target.getAttribute('for');
-    const radio = $(`#${radioId}`);
-    radio.checked = true;
-    const selectedMonth = radio.value;
-    if (selectedMonth !== prevSelectedMonth) {
-      $('#btnToggleMonthDropdown .btn-text').textContent = selectedMonth;
-      populateCalendarDays(selectedMonth);
-
-      if (selectedMonth === dueMonth) {
-        $(
-          `.dp-calendar__btn--select-day[value="${dueDay}"][data-month="${selectedMonth}"]`
-        ).classList.add('is-selected');
-      }
-    }
-    btnToggleMonthDropdown.classList.remove('is-active');
-    monthDropdown.classList.remove('is-active');
-  }
-
-  function selectYear(e) {
-    if (!e.target.classList.contains('dp-calendar__year')) return;
-
-    const currentDueDate = $('#inputDueDate').value; // mm-dd-yy
-    const dueMonthIndex = +currentDueDate.slice(0, 2) - 1;
-    const dueMonth = monthsArr[dueMonthIndex].name;
-    const dueDay = +currentDueDate.slice(3, 5);
-    const dueYear = `20${currentDueDate.slice(6)}`;
-
-    const prevSelectedYear = $('input[name="year"]:checked').value;
-    const btnToggleYearDropdown = $('#btnToggleYearDropdown');
-    const yearDropdown = $('#dpCalendarYearDropdown');
-    const radioId = e.target.getAttribute('for');
-    const radio = $(`#${radioId}`);
-    radio.checked = true;
-    const selectedYear = radio.value;
-
-    if (selectedYear !== prevSelectedYear) {
-      $('#btnToggleYearDropdown .btn-text').textContent = selectedYear;
-      populateCalendarDays(dueMonth);
-
-      // Length of February depends on leap year
-      if (selectedYear === dueYear) {
-        $(
-          `.dp-calendar__btn--select-day[value="${dueDay}"][data-month="${dueMonth}"]`
-        ).classList.add('is-selected');
-      }
-    }
-    btnToggleYearDropdown.classList.remove('is-active');
-    yearDropdown.classList.remove('is-active');
-  }
-
-  function populateCalendarDays(monthStr) {
-    while ($('#dpCalendar').contains($('.dp-calendar__day'))) {
-      $('.dp-calendar__day').remove();
-    }
-
-    const year = $('input[name="year"]:checked').value;
-    const monthIndex = monthsArr.findIndex((month) => month.name === monthStr);
-    const month = monthsArr[monthIndex];
-    const monthStartingDate = new Date(year, monthIndex, 1);
-    const monthStartingDayNum = monthStartingDate.getDay();
-    const prevMonth =
-      monthIndex !== 0 ? monthsArr[monthIndex - 1] : monthsArr[11];
-    const nextMonth =
-      monthIndex !== 11 ? monthsArr[monthIndex + 1] : monthsArr[0];
-
-    if (monthStr === 'February') {
-      month.daysTotal = isLeapYear(year) ? 29 : 28;
-    }
-
-    const frag = document.createDocumentFragment();
-
-    if (monthStartingDayNum !== 0) {
-      for (
-        let j = prevMonth.daysTotal - monthStartingDayNum + 1;
-        j <= prevMonth.daysTotal;
-        j++
-      ) {
-        const btnDay = createNode(
-          'button',
-          {
-            class: 'dp-calendar__btn--select-day dp-calendar__btn--prev-month',
-            type: 'button',
-            'data-month': prevMonth.name,
-            'data-year': prevMonth.name === 'December' ? +year - 1 : year,
-            'data-action': 'selectDay',
-            value: j
-          },
-          `${j}`
-        );
-        const divDay = createNode(
-          'div',
-          {
-            class: 'dp-calendar__day dp-calendar__day--prev-month'
-          },
-          btnDay
-        );
-        frag.appendChild(divDay);
-      }
-    }
-
-    for (let i = 1; i <= month.daysTotal; i++) {
-      const btnDay = createNode(
-        'button',
-        {
-          class: 'dp-calendar__btn--select-day',
-          type: 'button',
-          'data-month': month.name,
-          'data-year': year,
-          'data-action': 'selectDay',
-          'data-first': i === 1,
-          'data-last': i === month.daysTotal,
-          value: i
-        },
-        `${i}`
-      );
-      const divDay = createNode(
-        'div',
-        {
-          class: 'dp-calendar__day'
-        },
-        btnDay
-      );
-      frag.appendChild(divDay);
-    }
-
-    if (frag.children.length % 7 !== 0) {
-      for (let k = 1; k < 7; k++) {
-        const btnDay = createNode(
-          'button',
-          {
-            class: 'dp-calendar__btn--select-day dp-calendar__btn--next-month',
-            type: 'button',
-            'data-month': nextMonth.name,
-            'data-year': nextMonth.name === 'January' ? +year + 1 : year,
-            'data-action': 'selectDay',
-            value: k
-          },
-          `${k}`
-        );
-        const divDay = createNode(
-          'div',
-          {
-            class: 'dp-calendar__day dp-calendar__day--next-month'
-          },
-          btnDay
-        );
-        frag.appendChild(divDay);
-        if (frag.children.length % 7 === 0) {
-          break;
-        }
-      }
-    }
-
-    $('#dpCalendarDayPicker').appendChild(frag);
-  }
-
-  function selectDay(e) {
-    const el = e.target;
-    if (el.dataset.action !== 'selectDay') return;
-
-    $all('.dp-calendar__btn--select-day').forEach((x) => {
-      if (x === el) {
-        x.classList.add('is-selected');
-      } else {
-        x.classList.remove('is-selected');
-      }
-    });
-    const selectedDay = el.value;
-    const selectedMonth = el.dataset.month;
-    const selectedYear = el.dataset.year;
-    updateDateInput('all', selectedMonth, selectedDay, selectedYear);
-
-    if (
-      el.classList.contains('dp-calendar__btn--prev-month') ||
-      el.classList.contains('dp-calendar__btn--next-month')
-    ) {
-      if (
-        (el.classList.contains('dp-calendar__btn--prev-month') &&
-          selectedMonth === 'December') ||
-        (el.classList.contains('dp-calendar__btn--next-month') &&
-          selectedMonth === 'January')
-      ) {
-        $(`input[name="year"][value="${selectedYear}"]`).checked = true;
-        $('#btnToggleYearDropdown .btn-text').textContent = selectedYear;
-      }
-
-      $(`input[name="month"][value="${selectedMonth}"]`).checked = true;
-      $('#btnToggleMonthDropdown .btn-text').textContent = selectedMonth;
-      populateCalendarDays(selectedMonth);
-      $(
-        `.dp-calendar__btn--select-day[value="${selectedDay}"][data-month="${selectedMonth}"]`
-      ).classList.add('is-selected');
-    }
-  }
-
+  
   function setDueDate(e) {
     const id = hiddenTaskId.value;
     const currentTask = state.activeList.getTask(id);
@@ -2054,95 +1771,8 @@ import { isLeapYear, monthsArr, weekdaysArr } from './DatePicker.js';
     }
   }
 
-  function expandSearchBar(e) {
-    e.stopPropagation();
-    if (e.target === searchInput) return;
-    if (!searchBar.classList.contains('is-expanded')) {
-      e.preventDefault();
-      searchBar.classList.add('is-expanded');
-      $('#searchInput').focus();
-    } else if (
-      searchBar.classList.contains('is-expanded') &&
-      searchInput.value == ''
-    ) {
-      searchBar.classList.remove('is-expanded');
-    }
-  }
-
-  // Disables/Enables bulk action buttons, depending on if items are checked
-  function enableBulkActions(e) {
-    const ulActiveList = $('.is-active-list');
-    const checkedItems = $all('.bulk-actions__checkbox:checked', ulActiveList);
-    const allItems = $all('.bulk-actions__checkbox', ulActiveList);
-    const bulkActions = $all('.toolbar__btn[data-bulk-action="true"]');
-    const masterCheckbox = $('#masterCheckbox');
-    // If no items are selected...
-    if (checkedItems.length === 0) {
-      // Disable bulk action buttons
-      bulkActions.forEach((btn) => (btn.disabled = true));
-      // Uncheck master checkbox
-      if (masterCheckbox.checked === true) {
-        masterCheckbox.checked = false;
-      }
-    } else {
-      // Enable bulk action buttons
-      bulkActions.forEach((btn) => (btn.disabled = false));
-      // If all items are selected, change state of master checkbox to true if unchecked
-      if (
-        checkedItems.length === allItems.length &&
-        masterCheckbox.checked === false
-      ) {
-        masterCheckbox.checked = true;
-      }
-    }
-  }
-
-  function initBulkEditing(e) {
-    // Hide add todo form
-    $('#addTodoForm').classList.add('is-hidden');
-    // Uncheck master bulk editing checkbox
-    $('#masterCheckbox').checked = false;
-    // Reveal bulk editing toolbar
-    $('#bulkActionsToolbar').classList.add('is-active');
-    // Add bulk-editing checkboxes and hide regular checkboxes for toggling completeness
-    const ulActiveList = $('.is-active-list');
-    ulActiveList.classList.add('bulk-editing-list');
-    $all('.todo-list__item', ulActiveList).forEach((x, i) => {
-      const frag = document.createDocumentFragment();
-      const checkbox = createNode('input', {
-        type: 'checkbox',
-        id: `bulk-item-${i}`,
-        'data-index': i,
-        'data-id': x.id,
-        class: 'bulk-actions__checkbox'
-      });
-      checkbox.addEventListener('change', highlightSelected);
-      const checkboxLabel = createNode('label', {
-        class: 'bulk-actions__checkbox-label',
-        for: `bulk-item-${i}`
-      });
-      frag.appendChild(checkbox);
-      frag.appendChild(checkboxLabel);
-      x.insertBefore(frag, $('input[type="checkbox"]', x));
-      $('.todo-list__checkbox', x).classList.add('is-hidden');
-      x.classList.add('bulk-editing-list__item');
-    });
-    // Disable bulk action buttons
-    $all('.toolbar__btn[data-bulk-action="true"]').forEach(
-      (btn) => (btn.disabled = true)
-    );
-    ulActiveList.addEventListener('click', enableBulkActions);
-    $('#main').addEventListener('scroll', stickToolbar);
-  }
-
-  function highlightSelected(e) {
-    const todoItem = e.currentTarget.parentNode;
-    if (e.currentTarget.checked === true) {
-      todoItem.classList.add('is-checked');
-    } else {
-      todoItem.classList.remove('is-checked');
-    }
-  }
+  
+  
 
   function transferTasks(e) {
     e.preventDefault();
@@ -2243,7 +1873,7 @@ import { isLeapYear, monthsArr, weekdaysArr } from './DatePicker.js';
     // Hides searchBar input
     if (
       (searchBar.classList.contains('is-expanded') &&
-        ((searchInput.value === '' &&
+        ((inputSearch.value === '' &&
           e.target !== searchBar &&
           !searchBar.contains(e.target)) ||
           e.target.classList.contains('sidebar__link') ||
@@ -2480,9 +2110,6 @@ import { isLeapYear, monthsArr, weekdaysArr } from './DatePicker.js';
       }
     });
 
-    console.log(state.onboarding.currentStep);
-    console.log(state.onboarding.nextStep);
-
     // Reopen modal
     $('#onboarding').classList.add('is-active');
 
@@ -2494,8 +2121,6 @@ import { isLeapYear, monthsArr, weekdaysArr } from './DatePicker.js';
     $all('.onboarding__stepper .stepper__btn').forEach((btn, i) => {
       if (e.target === btn) {
         state.onboarding.currentStep = i + 1;
-        console.log(state.onboarding.currentStep);
-        console.log(state.onboarding.nextStep);
 
         $all('.onboarding__step').forEach((section) => {
           let step = +section.dataset.onboardingStep;
@@ -2510,16 +2135,6 @@ import { isLeapYear, monthsArr, weekdaysArr } from './DatePicker.js';
         btn.classList.remove('is-active');
       }
     });
-  }
-
-  function stickToolbar(e) {
-    const toolbar = $('#bulkActionsToolbar');
-    const main = $('#main');
-    if (main.scrollTop >= toolbar.offsetTop) {
-      main.classList.add('sticky-toolbar');
-    } else {
-      main.classList.remove('sticky-toolbar');
-    }
   }
 
   // Event Listeners
@@ -2919,8 +2534,6 @@ import { isLeapYear, monthsArr, weekdaysArr } from './DatePicker.js';
         +dateStr.slice(3, 5) > lastDay
           ? (updateDateInput('day', lastDay), lastDay)
           : +dateStr.slice(3, 5);
-
-      console.log({ day });
 
       if ($(`input[name="year"]:checked`).value !== year) {
         $(`input[value="${year}"]`).checked = true;

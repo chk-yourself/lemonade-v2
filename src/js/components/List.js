@@ -1,20 +1,30 @@
-import { camelCased } from './helpers.js';
+import { camelCased, $, createNode } from '../lib/helpers.js';
+import Component from '../lib/Component.js';
 
-export default class List {
-  constructor(name, folder, obj = null) {
+export default class List extends Component {
+  constructor(name, folder = null, obj = null) {
+    super();
     if (!obj) {
       this.name = name;
       this.folder = folder;
       this.id = `${camelCased(name)}-${Date.now()}`;
       this.tasks = [];
+      this.elem =
+        document.getElementById(this.id) ||
+        createNode('ul', {
+        class: 'todo-list custom-list',
+        id: this.id,
+        'data-name': this.name
+      });
     } else {
       this.name = obj.name;
       this.folder = obj.folder;
       this.id = obj.id;
       this.tasks = obj.tasks;
+      this.elem = document.getElementById(this.id);
     }
   }
-
+  
   get activeTaskCount() {
     return this.tasks.filter((task) => !task.isDone).length;
   }
@@ -32,14 +42,14 @@ export default class List {
   }
 
   deleteTask(taskId) {
-    this.tasks = this.tasks.filter(task => task.id !== taskId);
-  }
-
-  elem() {
-    return document.getElementById(this.id);
+    this.tasks = this.tasks.filter((task) => task.id !== taskId);
   }
 
   render() {
+    if (!document.getElementById(this.id)) {
+      this.elem.addEventListener('click', toggleDone);
+      $('#main').insertBefore(this.elem, $('#addTodoForm'));
+    }
     this.elem.innerHTML = this.tasks.map(
       (item, i) => `<li class= "todo-list__item${
         item.isDone ? ' is-done' : ''
@@ -77,5 +87,6 @@ export default class List {
       }
 </li>`
     );
-  };
+    return this.elem;
+  }
 }

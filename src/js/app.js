@@ -14,6 +14,7 @@ export default const App = (function() {
     : [],
     activeList: null,
     filteredList: null,
+    openTask: null,
     nextOnboardingStep: null,
     onboarding: {
       currentStep: null,
@@ -63,6 +64,12 @@ export default const App = (function() {
     const fieldsetLists = $('#fieldsetLists');
     fieldsetLists.appendChild(listRadio);
     fieldsetLists.appendChild(listLabel);
+  }
+
+  function getListByTaskId(todoId) {
+    return todoLists.find((list) =>
+      list.tasks.find((task) => task.id === todoId)
+    );
   }
 
   function init() {

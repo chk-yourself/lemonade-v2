@@ -1,4 +1,4 @@
-import { uniqueID } from './helpers.js';
+import { uniqueID } from '../lib/helpers.js';
 import { isLeapYear, monthsArr, weekdaysArr } from './DatePicker.js';
 
 export default class Task {
@@ -107,6 +107,14 @@ export default class Task {
 
   editSubtask(subtaskIndex, text) {
     this.subtasks[subtaskIndex].text = text.trim();
+  }
+
+  addTag(tag) {
+
+  }
+
+  removeTag() {
+    
   }
 
 }

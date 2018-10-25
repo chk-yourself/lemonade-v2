@@ -95,3 +95,12 @@ export const createNode = (tagName, attributes, ...children) => {
 
   return node;
 };
+
+// Resizes text inputs and textareas to show all content within
+export function autoHeightResize(elem) {
+  elem.style.height = '0px';
+  elem.style.height = `${elem.scrollHeight}px`;
+}
+
+export const saveToStorage = () =>
+  localStorage.setItem('todoLists', JSON.stringify(todoLists));
