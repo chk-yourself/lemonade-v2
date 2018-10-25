@@ -70,6 +70,10 @@ export default class Store {
 
     this.state = Object.assign({}, this.state, newState);
 
+    if (Object.prototype.hasOwnProperty.call(this.state, 'todoLists')) {
+      localStorage.setItem('todoLists', JSON.stringify(this.state.todoLists));
+    }
+
     return true;
   }
 }

@@ -1,4 +1,5 @@
 import { $, $all, createNode } from '../lib/helpers.js';
+import Component from '../lib/Component.js';
 
 export function toggleMenu() {
   const siteWrapper = document.getElementById('siteWrapper');

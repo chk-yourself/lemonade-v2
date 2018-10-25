@@ -1,8 +1,10 @@
 import {
   $
 } from '../lib/helpers.js';
+import store from '../store/index.js';
+import Component from '../lib/Component.js';
 
-export default function expandSearchBar(e) {
+export function expandSearchBar(e) {
   const searchBar = $('#searchBar');
   const inputSearch = $('#searchInput');
 
@@ -19,8 +21,6 @@ export default function expandSearchBar(e) {
     searchBar.classList.remove('is-expanded');
   }
 }
-
-import { store } from '../store/index.js';
 
 export default class SearchBar extends Component {
   constructor() {

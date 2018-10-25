@@ -1,19 +1,19 @@
 import List from '../components/List.js';
 import Task from '../components/Task.js';
-  
-  // Converts JSON list and task objects back to instances of original classes
-  export function initClasses(arr) {
-    return arr.map((item) => {
-      const list = new List(null, null, item);
-      list.tasks = item.tasks.map((task) => new Task(null, task));
-      return list;
-    });
-  }
+
+// Converts JSON list and task objects back to instances of original classes
+export function initClasses(arr) {
+  return arr.map((item) => {
+    const list = new List(null, null, item);
+    list.tasks = item.tasks.map((task) => new Task(null, task));
+    return list;
+  });
+}
 
 export default {
   todoLists: localStorage.getItem('todoLists')
-  ? initClasses(JSON.parse(localStorage.getItem('todoLists')))
-  : [],
+    ? initClasses(JSON.parse(localStorage.getItem('todoLists')))
+    : [],
   activeList: null,
   filteredList: null,
   activeTask: null,

@@ -1,4 +1,5 @@
-import { store } from '../store/index.js';
+import store from '../store/index.js';
+import Component from '../lib/Component.js';
 
 export default class App extends Component {
   constructor() {

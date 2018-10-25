@@ -21,8 +21,8 @@ import {
   selectYear,
   populateCalendarDays,
   selectDay
-} from './components/DatePicker.js';
-import expandSearchBar from './components/SearchBar.js';
+} from './components/Calendar.js';
+import {expandSearchBar} from './components/SearchBar.js';
 import {
   toggleMenu,
 displayPanel
@@ -1640,7 +1640,6 @@ import { initClasses } from './store/state.js';
     const id = hiddenTaskId.value;
     const currentTask = state.activeList.getTask(id);
     const todoItem = currentTask.elem;
-
     const dueDate = $('#inputDueDate').value; // `mm/dd/yy`
     const dueYear = +`20${dueDate.slice(6)}`;
     const dueMonthIndex = +dueDate.slice(0, 2) - 1;
