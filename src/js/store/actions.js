@@ -6,6 +6,18 @@
 
 export default {
   addList(context, payload) {
-    context.commit('addList', payload)
+    context.commit('addList', payload);
+  },
+
+  deleteList(context, payload) {
+    context.commit('deleteList', payload);
+  },
+
+  addTask(context, payload) {
+    context.commit('addTask', payload);
+  },
+
+  deleteTask(context, payload) {
+    context.commit('deleteTask', payload);
   }
 };

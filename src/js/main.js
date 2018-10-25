@@ -8,8 +8,7 @@ import {
   $all,
   clickTouch,
   createNode,
-  autoHeightResize,
-  saveToStorage
+  autoHeightResize
 } from './lib/helpers.js';
 import { 
   isLeapYear, 
@@ -59,6 +58,8 @@ import { initClasses } from './store/state.js';
   const todoLists = localStorage.getItem('todoLists')
     ? initClasses(JSON.parse(localStorage.getItem('todoLists')))
     : [];
+    const saveToStorage = () =>
+  localStorage.setItem('todoLists', JSON.stringify(todoLists));
 
   const BACKSPACE_KEY = 8;
   const ENTER_KEY = 13;
@@ -100,6 +101,7 @@ import { initClasses } from './store/state.js';
   // Add toggleDone functionality to all prebuilt lists
   $all('.todo-list').forEach((list) => {
     list.addEventListener('click', toggleDone);
+    list.addEventListener('click', toggleContent)
     updateTaskCount(list.id);
   });
 
@@ -179,7 +181,7 @@ import { initClasses } from './store/state.js';
     // Adds event listeners to each list item
     for (let i = 0; i < itemsCollection.length; i++) {
       let todoItem = itemsCollection[i];
-      todoItem.addEventListener('click', toggleContent, true);
+     
       todoItem.addEventListener('click', setPriority);
 
       if (state.filteredList !== null) {
@@ -473,16 +475,12 @@ import { initClasses } from './store/state.js';
 
   function toggleContent(e) {
     if (
-      e.target.classList.contains('lemon') ||
-      e.target.classList.contains('todo-list__checkbox') ||
-      e.target.getAttribute('type') === 'checkbox' ||
-      e.currentTarget.contains(
-        $('.bulk-actions__checkbox-label', e.currentTarget)
-      ) ||
-      e.target.classList.contains('tag-labels__btn--tooltip')
-    )
-      return;
-    let todoItem = e.currentTarget;
+      !e.target.classList.contains('todo-list__item') 
+      && e.target.dataset.action !== 'toggleContent'
+      || e.target.contains($('.bulk-actions__checkbox-label', e.target))
+      )
+       return;
+    let todoItem = e.target;
     const id = todoItem.id;
     const dueDateLabel = $('.badge--due-date', todoItem);
     const todoItemTitle = $('.todo-item__title', todoItem);
@@ -1213,6 +1211,7 @@ import { initClasses } from './store/state.js';
       'data-name': listObj.name
     });
     list_ul.addEventListener('click', toggleDone);
+    list_ul.addEventListener('click', toggleContent)
     $('#main').insertBefore(list_ul, formAddTodo);
     renderListOption(listObj);
   }

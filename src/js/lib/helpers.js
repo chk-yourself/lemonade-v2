@@ -101,6 +101,3 @@ export function autoHeightResize(elem) {
   elem.style.height = '0px';
   elem.style.height = `${elem.scrollHeight}px`;
 }
-
-export const saveToStorage = () =>
-  localStorage.setItem('todoLists', JSON.stringify(todoLists));
