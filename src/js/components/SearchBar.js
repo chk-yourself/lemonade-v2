@@ -20,3 +20,16 @@ export default function expandSearchBar(e) {
   }
 }
 
+import { store } from '../store/index.js';
+
+export default class SearchBar extends Component {
+  constructor() {
+    super({
+      store
+    });
+  }
+
+  render() {
+    
+  }
+}

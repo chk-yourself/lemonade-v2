@@ -9,7 +9,8 @@ export const uniqueID = () =>
 export const camelCased = (text) =>
   text
     .trim()
-    .replace(/[^A-Za-z0-9 ]/g, '')
+    .replace(/[^\w -]/g, '')
+    .replace(/  +|-+|_+/g, ' ')
     .split(' ')
     .map(
       (str, i) =>
@@ -100,4 +101,12 @@ export const createNode = (tagName, attributes, ...children) => {
 export function autoHeightResize(elem) {
   elem.style.height = '0px';
   elem.style.height = `${elem.scrollHeight}px`;
+}
+
+// Removes whitespace from both ends of string, non-alphanumeric characters, and excess whitespace between words
+export function filterTag(tag) {
+  return tag
+    .trim()
+    .replace(/  +/g, ' ')
+    .replace(/[^\w -]/g, '');
 }

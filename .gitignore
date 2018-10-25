@@ -11,3 +11,5 @@ package.json
 node_modules/
 
 .env
+
+*.test.js

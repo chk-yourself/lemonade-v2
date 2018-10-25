@@ -8,7 +8,8 @@ import {
   $all,
   clickTouch,
   createNode,
-  autoHeightResize
+  autoHeightResize,
+  filterTag
 } from './lib/helpers.js';
 import { 
   isLeapYear, 
@@ -101,7 +102,8 @@ import { initClasses } from './store/state.js';
   // Add toggleDone functionality to all prebuilt lists
   $all('.todo-list').forEach((list) => {
     list.addEventListener('click', toggleDone);
-    list.addEventListener('click', toggleContent)
+    list.addEventListener('click', toggleContent);
+    list.addEventListener('click', setPriority);
     updateTaskCount(list.id);
   });
 
@@ -181,8 +183,6 @@ import { initClasses } from './store/state.js';
     // Adds event listeners to each list item
     for (let i = 0; i < itemsCollection.length; i++) {
       let todoItem = itemsCollection[i];
-     
-      todoItem.addEventListener('click', setPriority);
 
       if (state.filteredList !== null) {
         todoItem.addEventListener(
@@ -556,13 +556,6 @@ import { initClasses } from './store/state.js';
       updateTaskCount('today');
     }
     $('#alertWarningDeleteTask').classList.remove('is-active');
-  }
-
-  function filterTag(tag) {
-    return tag
-      .trim()
-      .replace(/  +/g, ' ')
-      .replace(/[^\w -]/g, '');
   }
 
   /**
@@ -1211,7 +1204,8 @@ import { initClasses } from './store/state.js';
       'data-name': listObj.name
     });
     list_ul.addEventListener('click', toggleDone);
-    list_ul.addEventListener('click', toggleContent)
+    list_ul.addEventListener('click', toggleContent);
+    list_ul.addEventListener('click', setPriority);
     $('#main').insertBefore(list_ul, formAddTodo);
     renderListOption(listObj);
   }
@@ -1296,8 +1290,6 @@ import { initClasses } from './store/state.js';
         iChevronIcon,
         ulFolderPanel
       );
-
-      liFolder.addEventListener('click', displayPanel);
       frag.appendChild(liFolder);
 
       // Creates accordion panel for each folder, with links to children underneath
@@ -1378,8 +1370,6 @@ import { initClasses } from './store/state.js';
     }
   }
 
-   
-
   function renderFolderOption(text) {
     const folderRadio = createNode('input', {
       type: 'radio',
@@ -1429,11 +1419,12 @@ import { initClasses } from './store/state.js';
       const checkedRadio = $('input[name="folder"]:checked').value;
       const newFolder = $('#newFolderInput').value;
       const selectedFolder =
-        checkedRadio !== 'new'
+        checkedRadio !== 'new' && checkedRadio !== 'null'
           ? checkedRadio
           : newFolder !== ''
             ? newFolder
             : null;
+
       const newList = new List(newListName, selectedFolder);
       todoLists.push(newList);
       createList(newList);
@@ -1460,7 +1451,6 @@ import { initClasses } from './store/state.js';
           iChevronIcon,
           ulFolderPanel
         );
-        folder_li.addEventListener('click', displayPanel);
         $('#sidebarMenu').insertBefore(folder_li, $('[data-folder="null"]'));
 
         renderFolderOption(selectedFolder);
@@ -1534,7 +1524,6 @@ import { initClasses } from './store/state.js';
         selectedFolder,
         ulFolderPanel
       );
-      folder_li.addEventListener('click', displayPanel);
       $('#sidebarMenu').insertBefore(folder_li, $('[data-folder="null"]'));
 
       renderFolderOption(selectedFolder);
@@ -1769,9 +1758,6 @@ import { initClasses } from './store/state.js';
       ).classList.add('is-selected');
     }
   }
-
-  
-  
 
   function transferTasks(e) {
     e.preventDefault();
@@ -2626,4 +2612,6 @@ import { initClasses } from './store/state.js';
     const taskId = hiddenTaskId.value;
     deleteTask(state.activeList, taskId);
   });
+
+  $('#sidebarMenu').addEventListener('click', displayPanel);
 })();

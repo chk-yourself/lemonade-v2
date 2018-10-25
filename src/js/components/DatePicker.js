@@ -344,4 +344,16 @@ export function selectDay(e) {
   }
 }
 
+import { store } from '../store/index.js';
 
+export default class DatePicker extends Component {
+  constructor() {
+    super({
+      store
+    });
+  }
+
+  render() {
+    
+  }
+}

@@ -84,3 +84,17 @@ export function enableBulkActions(e) {
     }
   }
 }
+
+import { store } from '../store/index.js';
+
+export default class BulkActionsToolbar extends Component {
+  constructor() {
+    super({
+      store
+    });
+  }
+
+  render() {
+    
+  }
+}
