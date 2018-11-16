@@ -33,8 +33,15 @@ import {
   highlightSelected,
   enableBulkActions
 } from './components/BulkActionsToolbar.js'
-import { initClasses } from './store/state.js';
+import store from './store/index.js';
 
+function initClasses(arr) {
+  return arr.map((item) => {
+    const list = new List(null, null, item);
+    list.tasks = item.tasks.map((task) => new Task(null, task));
+    return list;
+  });
+}
 
 
 (function app() {

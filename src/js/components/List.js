@@ -1,9 +1,10 @@
 import { camelCased, $, createNode } from '../lib/helpers.js';
 import Component from '../lib/Component.js';
+import store from '../store/index.js';
 
 export default class List extends Component {
   constructor(name, folder = null, obj = null) {
-    super();
+    super({ store });
     if (!obj) {
       this.name = name;
       this.folder = folder;

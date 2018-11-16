@@ -16,7 +16,6 @@ export default class Store {
     if (Object.prototype.hasOwnProperty.call(props, 'mutations')) {
       this.mutations = props.mutations;
     }
-    
     this.state = new Proxy(props.state || {}, {
       set(state, key, value) {
         state[key] = value;

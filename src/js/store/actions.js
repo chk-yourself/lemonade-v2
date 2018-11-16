@@ -13,11 +13,17 @@ export default {
     context.commit('deleteList', payload);
   },
 
+  renameList(context, payload) {
+    context.commit('renameList', payload);
+  },
+
   addTask(context, payload) {
     context.commit('addTask', payload);
   },
 
-  deleteTask(context, payload) {
-    context.commit('deleteTask', payload);
+  // newly added
+
+  editTask(context, payload) {
+    context.commit('editTask', payload);
   }
 };
