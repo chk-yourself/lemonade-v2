@@ -21,8 +21,6 @@ export default {
     context.commit('addTask', payload);
   },
 
-  // newly added
-
   editTask(context, payload) {
     context.commit('editTask', payload);
   }

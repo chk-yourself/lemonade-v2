@@ -42,7 +42,8 @@ export default {
   },
 
   deleteTask(state, payload) {
-    return Object.assign({}, state, {
+    return {
+      ...state,
       todoLists: state.todoLists.map(
         (list) =>
           list.id !== payload.listId
@@ -51,6 +52,6 @@ export default {
                 tasks: list.tasks.filter((task) => task.id !== payload.taskId)
               })
       )
-    });
+    };
   }
 };
