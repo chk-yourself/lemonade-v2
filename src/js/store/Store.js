@@ -35,6 +35,10 @@ export default class Store {
     });
   }
 
+  getState() {
+    return this.state;
+  }
+
   // Calls an action, which passes a payload to a mutation
   dispatch(actionKey, payload) {
 
@@ -65,13 +69,8 @@ export default class Store {
 
     this.status = 'mutation';
 
-    const newState = this.mutations[mutationKey](this.state, payload);
+    this.state = this.mutations[mutationKey](this.state, payload);
 
-    this.state = Object.assign({}, this.state, newState);
-
-    if (Object.prototype.hasOwnProperty.call(this.state, 'todoLists')) {
-      localStorage.setItem('todoLists', JSON.stringify(this.state.todoLists));
-    }
 
     return true;
   }

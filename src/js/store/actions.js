@@ -5,6 +5,9 @@
  */
 
 export default {
+  loadLists(context, payload) {
+    context.commit('loadLists', payload);
+  },
   addList(context, payload) {
     context.commit('addList', payload);
   },
@@ -23,5 +26,27 @@ export default {
 
   editTask(context, payload) {
     context.commit('editTask', payload);
+  },
+
+  toggleTaskCompletion(context, payload) {
+    context.commit('toggleTaskCompletion', payload);
+  },
+  setTaskPriority(context, payload) {
+    context.commit('setTaskPriority', payload);
+  },
+  addTag(context, payload) {
+    context.commit('addTag', payload);
+  },
+  removeTag(context, payload) {
+    context.commit('removeTag', payload);
+  },
+  addSubtask(context, payload) {
+    context.commit('addSubtask', payload);
+  },
+  editSubtask(context, payload) {
+    context.commit('editSubtask', payload);
+  },
+  setDueDate(context, payload) {
+    
   }
 };
