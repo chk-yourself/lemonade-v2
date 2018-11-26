@@ -1,7 +1,8 @@
+import { camelCased, $, createNode, uniqueID } from '../lib/helpers.js';
+
 // Pure functions that return a new state object, without mutating the original state object
 
 export default {
-  
   // List reducers
 
   loadLists(state, payload) {
@@ -10,45 +11,52 @@ export default {
       listsById: payload.lists
     };
   },
+
   addList(state, payload) {
-    const { list } = payload;
+    const list = { ...payload };
+    const id = `${camelCased(list.name)}-${list.createdAt}`;
     return {
       ...state,
       listsById: {
         ...state.listsById,
-        [list.id]: list
+        [id]: {
+          id,
+          name: list.name,
+          folder: list.folder,
+          taskIds: []
+        }
       }
     };
   },
 
   deleteList(state, payload) {
     const { listId } = payload;
-    const taskIds = state.listsById[listId].taskIds;
+    const taskIds = [...state.listsById[listId].taskIds];
     const newState = {
       ...state,
       listsById: {
         ...state.listsById
       },
-      tasksById: Object.keys(state.tasksById).reduce((acc, key) => {
-          if (taskIds.indexOf(key) === -1) {
-            acc[key] = state.tasksById[key];
-          }
-          return acc;
-        }, {})
+      tasksById: {
+        ...state.tasksById
+      }
     };
     delete newState.listsById[listId];
+    taskIds.forEach((taskId) => {
+      delete newState.tasksById[taskId];
+    });
     return newState;
   },
 
   renameList(state, payload) {
-    const { listId, listName } = payload;
+    const { listId, name } = payload;
     return {
       ...state,
       listsById: {
         ...state.listsById,
         [listId]: {
           ...state.listsById[listId],
-          name: listName
+          name
         }
       }
     };
@@ -57,22 +65,33 @@ export default {
   // Task Reducers
 
   addTask(state, payload) {
-    const { listId, task } = payload;
-    const taskId = task.id;
+    const task = { ...payload };
     return {
       ...state,
       listsById: {
         ...state.listsById,
-        [listId]: {
-          ...state.listsById[listId],
-          taskIds: state.listsById[listId].taskIds.concat(taskId)
+        [task.listId]: {
+          ...state.listsById[task.listId],
+          taskIds: state.listsById[task.listId].taskIds.concat(task.taskId)
         }
       },
       tasksById: {
-          ...state.tasksById,
-          [taskId]: task
+        ...state.tasksById,
+        [task.taskId]: {
+          id: task.taskId,
+          listId: task.listId,
+          text: task.text,
+          dateCreated: task.dateCreated,
+          isDone: false,
+          subtasks: [],
+          note: '',
+          tags: [],
+          dueDate: null,
+          isPriority: false,
+          lastModified: null
         }
-      };
+      }
+    };
   },
 
   deleteTask(state, payload) {
@@ -94,7 +113,7 @@ export default {
     return newState;
   },
 
-  toggleTaskCompletion(state, payload) {
+  toggleTaskDone(state, payload) {
     const { taskId } = payload;
     return {
       ...state,
@@ -105,10 +124,10 @@ export default {
           isDone: !state.tasksById[taskId].isDone
         }
       }
-    }
+    };
   },
 
-  setTaskPriority(state, payload) {
+  toggleTaskPriority(state, payload) {
     const { taskId } = payload;
     return {
       ...state,
@@ -123,21 +142,24 @@ export default {
   },
 
   addTag(state, payload) {
-    const { taskId, tag } = payload;
-    const count = !state.tagsByText[tag.text] ? 0 : ++state.tagsByText[tag.text].count
+    const tag = { ...payload };
+    const count = !state.tagsByText[tag.text]
+      ? 0
+      : state.tagsByText[tag.text].count + 1;
     return {
       ...state,
       tasksById: {
         ...state.tasksById,
-        [taskId]: {
-          ...state.tasksById[taskId],
-          tags: state.tasksById[taskId].tags.concat(tag)
+        [tag.taskId]: {
+          ...state.tasksById[tag.taskId],
+          tags: state.tasksById[tag.taskId].tags.concat(tag.text)
         }
       },
       tagsByText: {
         ...state.tagsByText,
         [tag.text]: {
           ...state.tagsByText[tag.text],
+          color: tag.color,
           count
         }
       }
@@ -145,41 +167,57 @@ export default {
   },
 
   removeTag(state, payload) {
-    const { taskId, tagText } = payload;
-    const count = --state.tagsByText[tag.text].count;
+    const tag = { ...payload };
+    const count = state.tagsByText[tag.tagText].count - 1;
     const newState = {
       ...state,
       tasksById: {
         ...state.tasksById,
-        [taskId]: {
-          ...state.tasksById[taskId],
-          tags: state.tasksById[taskId].tags.filter((tag) => tag.text !== tagText)
+        [tag.taskId]: {
+          ...state.tasksById[tag.taskId],
+          tags: state.tasksById[tag.taskId].tags.filter(
+            (item) => item.text !== tag.tagText
+          )
         }
       },
       tagsByText: {
         ...state.tagsByText,
-        [tag.text]: {
-          ...state.tagsByText[tag.text],
+        [tag.tagText]: {
+          ...state.tagsByText[tag.tagText],
           count
         }
       }
     };
     if (count === 0) {
-      delete newState.tagsByText[tag.text];
+      delete newState.tagsByText[tag.tagText];
     }
     return newState;
   },
 
   addSubtask(state, payload) {
-
+    const subtask = { ...payload };
   },
 
-  editSubtask(state, payload) {
+  editSubtask(state, payload) {},
 
+  setDueDate(state, payload) {},
+
+  setActiveList(state, payload) {
+    return {
+      ...state,
+      activeViews: {
+        ...state.activeViews,
+        list: payload.listId
+      }
+    };
   },
-
-  setDueDate(state, payload) {
-    
+  setActiveTask(state, payload) {
+    return {
+      ...state,
+      activeViews: {
+        ...state.activeViews,
+        task: payload.taskId
+      }
+    };
   }
-
 };

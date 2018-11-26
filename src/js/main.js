@@ -234,7 +234,7 @@ function initClasses(arr) {
             const tagsTooltipBtn = createNode(
               'button',
               {
-                class: 'btn btn--tooltip tag-labels__btn--tooltip',
+                className: 'btn btn--tooltip tag-labels__btn--tooltip',
                 'data-tooltip': `${taskObj.tagSummary}`,
                 type: 'button'
               },
@@ -250,7 +250,7 @@ function initClasses(arr) {
               const tagLabel = createNode(
                 'span',
                 {
-                  class: `tag tag-label ${tag.color}`
+                  className: `tag tag-label ${tag.color}`
                 },
                 tag.text
               );
@@ -497,7 +497,7 @@ function initClasses(arr) {
     if (currentTask.tags.length > 0) {
       currentTask.tags.forEach((tag, i) => {
         const deleteTagBtn = createNode('button', {
-          class: 'close-icon',
+          className: 'close-icon',
           type: 'button',
           value: 'false'
         });
@@ -507,7 +507,7 @@ function initClasses(arr) {
         const newTagNode = createNode(
           'span',
           {
-            class: 'tag',
+            className: 'tag',
             'data-tag-index': i
           },
           tag.text,
@@ -571,20 +571,20 @@ function initClasses(arr) {
         list.folder !== null
           ? createNode(
               'span',
-              { class: 'breadcrumbs__folder' },
+              { className: 'breadcrumbs__folder' },
               list.folder,
               createNode('i', { 'data-feather': 'chevron-right' })
             )
           : '';
       const listLink = createNode(
         'a',
-        { class: 'breadcrumbs__link', href: `#${list.id}` },
+        { className: 'breadcrumbs__link', href: `#${list.id}` },
         list.name
       );
       listLink.addEventListener('click', openList);
       const breadcrumbs = createNode(
         'div',
-        { class: 'breadcrumbs' },
+        { className: 'breadcrumbs' },
         folderName,
         listLink
       );
@@ -626,49 +626,49 @@ function initClasses(arr) {
           listObj.folder !== null
             ? createNode(
                 'span',
-                { class: 'filtered-list__folder-name' },
+                { className: 'filtered-list__folder-name' },
                 listObj.folder,
                 createNode('i', { 'data-feather': 'chevron-right' })
               )
             : '';
         // Create sub-list
         const ulSubList = createNode('ul', {
-          class: 'filtered-list__sub-list'
+          className: 'filtered-list__sub-list'
         });
         // Create list link
         const subListTitle = filterByDate
           ? createNode(
               'h2',
-              { class: 'filtered-list__date filtered-list__sub-list-name' },
+              { className: 'filtered-list__date filtered-list__sub-list-name' },
               createNode(
                 'span',
-                { class: 'filtered-list__day-num' },
+                { className: 'filtered-list__day-num' },
                 firstTask.dueDayNumStr
               ),
               createNode(
                 'span',
-                { class: 'filtered-list__date-group' },
+                { className: 'filtered-list__date-group' },
                 createNode(
                   'span',
-                  { class: 'filtered-list__month' },
+                  { className: 'filtered-list__month' },
                   firstTask.dueMonthAbbrev
                 ),
                 createNode(
                   'span',
-                  { class: 'filtered-list__year' },
+                  { className: 'filtered-list__year' },
                   firstTask.dueYearStr
                 )
               ),
               createNode(
                 'span',
-                { class: 'filtered-list__weekday' },
+                { className: 'filtered-list__weekday' },
                 firstTask.dueDayOfWeek
               )
             )
           : createNode(
               'a',
               {
-                class: 'filtered-list__link filtered-list__sub-list-name',
+                className: 'filtered-list__link filtered-list__sub-list-name',
                 href: `#${listObj.id}`
               },
               listObj.name
@@ -683,7 +683,7 @@ function initClasses(arr) {
         // Create filtered list item
         const liFilteredListItem = createNode(
           'li',
-          { class: 'filtered-list__item' },
+          { className: 'filtered-list__item' },
           filterByDate ? '' : folderName,
           subListTitle,
           ulSubList
@@ -950,8 +950,6 @@ function initClasses(arr) {
     }
   }
 
-  
-
   function renderFolderOption(text) {
     const folderRadio = createNode('input', {
       type: 'radio',
@@ -962,7 +960,7 @@ function initClasses(arr) {
     const folderLabel = createNode(
       'label',
       {
-        class: 'form__label--folder',
+        className: 'form__label--folder',
         for: `folder--${camelCased(text)}`
       },
       text
@@ -986,27 +984,25 @@ function initClasses(arr) {
           : newFolder !== ''
             ? newFolder
             : null;
-
-      const newList = new List(newListName, selectedFolder);
-      store.dispatch("addList", {list: newList});
+      store.dispatch("addList", newListName, selectedFolder);
       createList(newList);
       // Creates new folder accordion element
       if (newFolder) {
         const ulFolderPanel = createNode('ul', {
-          class: 'accordion__panel',
+          className: 'accordion__panel',
           'data-folder': selectedFolder
         });
         const iFolderIcon = createNode('i', {
           'data-feather': 'folder'
         });
         const iChevronIcon = createNode('i', {
-          class: 'chevron-icon',
+          className: 'chevron-icon',
           'data-feather': 'chevron-left'
         });
         const folder_li = createNode(
           'li',
           {
-            class: 'sidebar__item accordion__item'
+            className: 'sidebar__item accordion__item'
           },
           iFolderIcon,
           selectedFolder,
@@ -1325,16 +1321,18 @@ function initClasses(arr) {
 
   $('#btnCloseTaskDetails').addEventListener('click', toggleContent);
 
-  $('#taskName').addEventListener('change', renameTodo);
+  // $('#taskName').addEventListener('change', renameTodo);
 
+  /*
   const stepper = $('.onboarding__stepper');
   $all('.stepper__btn', stepper).forEach((btn) =>
     btn.addEventListener('click', selectStep)
   );
+*/
 
-  $('#onboarding').addEventListener('click', continueTour);
+  // $('#onboarding').addEventListener('click', continueTour);
 
-  $('#transferTasksForm').addEventListener('submit', transferTasks);
+  //$('#transferTasksForm').addEventListener('submit', transferTasks);
 
   $('#newListInput').addEventListener('click', (e) => {
     $('input[id="listNew"]').checked = true;
@@ -1456,10 +1454,10 @@ function initClasses(arr) {
     });
   });
 
-  searchBar.addEventListener('click', expandSearchBar);
+ // searchBar.addEventListener('click', expandSearchBar);
 
-  $('#btnAddTag').addEventListener('click', addTag);
-
+  // $('#btnAddTag').addEventListener('click', addTag);
+/*
   document.querySelectorAll('.sidebar__btn--toggle').forEach((btn) => {
     btn.addEventListener('click', toggleMenu, true);
   });
@@ -1797,4 +1795,5 @@ function initClasses(arr) {
   });
 
   $('#sidebarMenu').addEventListener('click', displayPanel);
+  */
 })();

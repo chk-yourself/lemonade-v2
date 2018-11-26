@@ -2,19 +2,16 @@
 
 export default {
   listsById: {
-      inbox: {
-        id: 'inbox',
-        name: 'Inbox',
-        folder: null,
-        taskIds: [],
-        elem: document.getElementById('inbox')
-      }
+    inbox: {
+      id: 'inbox',
+      name: 'Inbox',
+      folder: null,
+      taskIds: [],
+      elem: document.getElementById('inbox')
+    }
   },
-  tasksById: {
-  },
-  tagsByText: {
-
-  },
+  tasksById: {},
+  tagsByText: {},
   settings: {
     isNewUser: true,
     visibilityFilter: 'all',
@@ -41,8 +38,5 @@ export default {
   activeViews: {
     list: null,
     task: null
-  },
-  activeList: null,
-  filteredList: null,
-  activeTask: null
+  }
 };

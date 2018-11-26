@@ -40,7 +40,7 @@ export default class Store {
   }
 
   // Calls an action, which passes a payload to a mutation
-  dispatch(actionKey, payload) {
+  dispatch(actionKey, ...payload) {
 
     if (typeof this.actions[actionKey] !== 'function') {
       console.error(`Action "${actionKey} doesn't exist.`);

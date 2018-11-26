@@ -1,9 +1,15 @@
 // Helper functions that return state data to views in a more digestible format
 
-export const getAllListIds = (state) => {
+export const getListIds = (state) => {
   const lookup = state.listsById;
   return Object.keys(lookup);
-}
+};
+
+export const getLists = (state) => {
+  const listIds = getListIds(state);
+  const lookup = state.listsById;
+  return listIds.map((id) => lookup(id));
+};
 
 export const getAllFolders = (state) => {
   const lookup = state.listsById;
@@ -21,15 +27,15 @@ export const getListsByFolder = (state) => {
     if (!listsByFolder[folder]) {
       listsByFolder[folder] = [];
     }
-    listsByFolder[folder].push(id);
+    listsByFolder[folder].push(lookup[id]);
     return listsByFolder;
   }, {});
 };
 
-export const getAllTaskIds = (state) => {
+export const getTaskIds = (state) => {
   const lookup = state.tasksById;
   return Object.keys(lookup);
-}
+};
 
 export const getTasksByDueDate = (state) => {
   const lookup = state.tasksById;
@@ -45,3 +51,11 @@ export const getTasksByDueDate = (state) => {
     return tasksByDueDate;
   }, {});
 };
+
+export const getTagColor = (state, tagText) => {
+  const tagsByText = state.tagsByText;
+  return !tagsByText[tagText] ? 'bg--default' : tagsByText[tagText].color;
+};
+
+export const getActiveList = (state) => state.activeViews.list;
+export const getActiveTask = (state) => state.activeViews.task;

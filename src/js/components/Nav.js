@@ -1,8 +1,8 @@
-import { $, $all, createNode } from '../lib/helpers.js';
+import { $, $all, i, span, a, li, ul } from '../lib/helpers.js';
 import Component from '../lib/Component.js';
 import * as selectors from '../store/selectors.js';
 import store from '../store/index.js';
-import {openList} from './List.js';
+import { openList } from './List.js';
 
 export function toggleMenu() {
   const siteWrapper = document.getElementById('siteWrapper');
@@ -28,25 +28,22 @@ export function displayPanel(e) {
 }
 
 export const createNavItem = (listObj, parentNode = $('#sidebarMenu')) => {
-  const iListIcon = createNode('i', {
+  const iListIcon = i({
     'data-feather': 'list'
   });
-  const spanListName = createNode(
-    'span',
+  const spanListName = span(
     {
       class: 'sidebar__list-name'
     },
     listObj.name
   );
-  const spanTaskCount = createNode(
-    'span',
+  const spanTaskCount = span(
     {
       class: 'sidebar__task-count'
     },
-    listObj.activeTaskCount > 0 ? '' + listObj.activeTaskCount : ''
+    listObj.activeTaskCount > 0 ? `${listObj.activeTaskCount}` : ''
   );
-  const aListLink = createNode(
-    'a',
+  const aListLink = a(
     {
       class: `sidebar__link${
         listObj.activeTaskCount > 0 ? ' has-active-tasks' : ''
@@ -58,8 +55,7 @@ export const createNavItem = (listObj, parentNode = $('#sidebarMenu')) => {
     spanTaskCount
   );
   aListLink.addEventListener('click', openList);
-  const liItem = createNode(
-    'li',
+  const liItem = li(
     {
       class: `${
         listObj.folder === null ? 'sidebar__item' : 'accordion__sub-item'
@@ -78,24 +74,23 @@ export const createNavItem = (listObj, parentNode = $('#sidebarMenu')) => {
 
 export function renderNavItems() {
   // Array of folder names
-  const foldersArr = selectors.getAllFolders(store.state);
+  const foldersArr = selectors.getAllFolders(store.getState());
   const frag = document.createDocumentFragment();
   foldersArr.forEach((folder) => {
     if (folder == null) return;
-    const ulFolderPanel = createNode('ul', {
+    const ulFolderPanel = ul({
       class: 'accordion__panel',
       'data-folder': folder
     });
     renderFolderOption(folder);
-    const iFolderIcon = createNode('i', {
+    const iFolderIcon = i({
       'data-feather': 'folder'
     });
-    const iChevronIcon = createNode('i', {
+    const iChevronIcon = i({
       class: 'chevron-icon',
       'data-feather': 'chevron-left'
     });
-    const liFolder = createNode(
-      'li',
+    const liFolder = li(
       {
         class: 'sidebar__item accordion__item'
       },
@@ -112,7 +107,7 @@ export function renderNavItems() {
   });
 
   // Creates regular nav items for miscellaneous lists
-  const miscLists = selectors.getListsByFolder(store.state)['null'];
+  const miscLists = selectors.getListsByFolder(store.getState()).null;
   miscLists.forEach((item) => {
     if (item.id !== 'inbox') {
       createNavItem(item, frag);

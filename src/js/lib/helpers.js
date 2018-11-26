@@ -62,7 +62,7 @@ export const createNode = (tagName, attributes, ...children) => {
 
   if (attributes) {
     Object.keys(attributes).forEach((key) => {
-      if (key === 'class') {
+      if (key === 'className') {
         const classes = attributes[key].split(' ');
         classes.forEach((x) => node.classList.add(x));
       } else if (/^data-/.test(key)) {
@@ -97,11 +97,29 @@ export const createNode = (tagName, attributes, ...children) => {
   return node;
 };
 
+export const h1 = createNode.bind(this, 'h1');
+export const h2 = createNode.bind(this, 'h2');
+export const h3 = createNode.bind(this, 'h3');
+export const h4 = createNode.bind(this, 'h4');
+
+export const span = createNode.bind(this, 'span');
+export const a = createNode.bind(this, 'a');
+export const i = createNode.bind(this, 'i');
+
+export const ul = createNode.bind(this, 'ul');
+export const li = createNode.bind(this, 'li');
+
+export const button = createNode.bind(this, 'button');
+export const div = createNode.bind(this, 'div');
+
+export const input = createNode.bind(this, 'input');
+export const label = createNode.bind(this, 'label');
+
 // Resizes text inputs and textareas to show all content within
 export function autoHeightResize(elem) {
   elem.style.height = '0px';
   elem.style.height = `${elem.scrollHeight}px`;
-};
+}
 
 // Removes whitespace from both ends of string, non-alphanumeric characters, and excess whitespace between words
 export function filterTag(tag) {
@@ -109,4 +127,4 @@ export function filterTag(tag) {
     .trim()
     .replace(/  +/g, ' ')
     .replace(/[^\w -]/g, '');
-};
+}

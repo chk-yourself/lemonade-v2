@@ -3,29 +3,18 @@ import Component from '../lib/Component.js';
 import store from '../store/index.js';
 
 export default class List extends Component {
-  constructor(name, folder = null, obj = null) {
+  constructor(props) {
     super({ store });
-    if (!obj) {
-      this.name = name;
-      this.folder = folder;
-      this.id = `${camelCased(name)}-${Date.now()}`;
-      this.tasks = [];
-      this.elem =
-        document.getElementById(this.id) ||
-        createNode('ul', {
+    this.id = props.id;
+    this.elem =
+      document.getElementById(props.id) ||
+      createNode('ul', {
         class: 'todo-list custom-list',
-        id: this.id,
-        'data-name': this.name
+        id: props.id,
+        'data-name': props.name
       });
-    } else {
-      this.name = obj.name;
-      this.folder = obj.folder;
-      this.id = obj.id;
-      this.tasks = obj.tasks;
-      this.elem = document.getElementById(this.id);
-    }
   }
-  
+
   get activeTaskCount() {
     return this.tasks.filter((task) => !task.isDone).length;
   }
@@ -54,7 +43,7 @@ export default class List extends Component {
 
   render() {
     if (!document.getElementById(this.id)) {
-      this.elem.addEventListener('click', clickHandler);
+      this.elem.addEventListener('click', (e) => this.clickHandler(e));
       $('#main').insertBefore(this.elem, $('#addTodoForm'));
     }
     this.elem.innerHTML = this.tasks.map(
@@ -295,11 +284,11 @@ export function displayList(listObj) {
 
 export function toggleContent(e) {
   if (
-    !e.target.classList.contains('todo-list__item') 
-    && e.target.dataset.action !== 'toggleContent'
-    || e.target.contains($('.bulk-actions__checkbox-label', e.target))
-    )
-     return;
+    (!e.target.classList.contains('todo-list__item') &&
+      e.target.dataset.action !== 'toggleContent') ||
+    e.target.contains($('.bulk-actions__checkbox-label', e.target))
+  )
+    return;
   let todoItem = e.target;
   const id = todoItem.id;
   const dueDateLabel = $('.badge--due-date', todoItem);
@@ -344,7 +333,6 @@ export function toggleContent(e) {
     todoAppContainer.classList.add('show-task-details');
   }
 }
-
 
 export function deleteTask(listObj, taskId) {
   const currentTask = listObj.getTask(taskId);

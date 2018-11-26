@@ -1,3 +1,3 @@
-(function plugins() {
+(function initFeather() {
   feather.replace();
 }());
